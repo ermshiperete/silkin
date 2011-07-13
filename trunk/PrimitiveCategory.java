@@ -1,0 +1,1 @@
+/** This categtory of Predicate reflects a built-in predicate the Kinship 	system understands.*/public class PrimitiveCategory	extends PredCategory  {	}

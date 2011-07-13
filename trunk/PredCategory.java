@@ -1,0 +1,1 @@
+import java.io.*;/** Super class for the two categories of Predicate in the Kinship system.*/		public abstract class PredCategory implements Serializable 	{}	// class defined only to create sub-classes  

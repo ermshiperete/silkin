@@ -1,0 +1,94 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Properties>
+    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+      <Color blue="cc" green="ff" red="ff" type="rgb"/>
+    </Property>
+    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+      <Font name="Arial Black" size="14" style="1"/>
+    </Property>
+    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[907, 300]"/>
+    </Property>
+  </Properties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="2"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="startupHelpCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" min="-2" pref="505" max="-2" attributes="1"/>
+                  <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="1"/>
+              </Group>
+              <EmptySpace pref="120" max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="208" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="startupHelpCheckBox" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial Black" size="18" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Getting Started with SIL Kinship Data Gathering"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <Properties>
+        <Property name="viewportView" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="jTextArea1"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="jTextArea1">
+          <Properties>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="rows" type="int" value="5"/>
+            <Property name="text" type="java.lang.String" value="You can view this information (&amp; more) at any time via the Help menu.&#xa;&#xa;The UPPER panel on the screen is for displaying information about &#xa;persons and families in family tree charts drawn below. The LOWER&#xa;panel is where you draw family tree charts (genealogies).&#xa;&#xa;To begin a new project, click on the chart where you would like to draw &#xa;the first person. A menu will appear; choose a male, female or a &#xa;marriage (union). As soon as you make your choice, a pop-up box will&#xa;appear asking the NAME OF YOUR PROJECT. Normally, if you are studying &#xa;the XYZ people you will name your project &quot;XYZ.&quot; All the files for your&#xa;project will be based on that name. For example, the file storing all your&#xa;data will be named &quot;XYZ.silk&quot;. If you do not intend to keep this data,&#xa;click the &quot;Use Temp Name&quot; button. Your files will use the name &quot;Temp&quot;.&#xa;&#xa;To continue working on a project you previously started, choose &quot;File&quot;&#xa;and &quot;Open&quot;. A dialog box will ask you to pick the file holding your project.&#xa;It will have a file extension of &quot;.silk&quot;.&#xa;&#xa;After you have created one or more people, you can create marriages &#xa;(unions). To place someone in a union, drag and drop (or &quot;pick and &#xa;plop&quot;) them onto it. If you drop them onto the TOP of a union, they are &#xa;added as a spouse. If you drop them onto the BOTTOM of a union, &#xa;they are added as children. As soon as they are added, a line appears &#xa;linking them to the union. &#xa;&#xa;If you add someone to a union incorrectly, you can remove them by &#xa;&quot;re-dropping&quot; them on the union. That is, drop them once to add them &#xa;to the union; drop them a second time to remove them.&#xa;&#xa;If you want to tidy up your chart, you can drag any person or union to &#xa;a new location with the mouse. If you run out of room on the screen, &#xa;simply scroll up, down, or sideways to get more room. Scroll bars will &#xa;appear once your chart is larger than the viewing area. Whenever you &#xa;place a person or union right on the edge of the chart, it will auto-&#xa;matically add an empty space to allow room for one more. To force&#xa;the chart to grow, keep placing objects right on the edge. If you later&#xa;move a person or union away from the edge, the chart will NOT get&#xa;smaller.&#xa;&#xa;You can make charts as large as you like. The bigger they are, the &#xa;more scrolling you must do to locate someone.&#xa;&#xa;Whenever you click on a person or union, the upper display panel will&#xa;display details about them. You should enter the name, birth date, etc.&#xa;of a person in the appropriate text fields. A few fields are generated by&#xa;the system (e.g. a person&apos;s or union&apos;s ID number) and cannot be altered.&#xa;&#xa;The person whose data is displayed is called &quot;Alter.&quot; In the upper right &#xa;of the display is a box labeled &quot;Current Ego.&quot; The kinship term of reference &#xa;that Ego calls Alter is recorded in the first text field near the bottom of the &#xa;display. The reciprocal term that Alter calls Ego is recorded in the second &#xa;field. &#xa;&#xa;In many cultures, the terms of reference and terms of address are the same.&#xa;The third and fourth fields hold the term of address and its reciprocal. By &#xa;default these terms are the same, and the system fills them in. You cannot&#xa;edit those fields ordinarily. However, if you check the menu item &quot;Distinct&#xa;Terms of Address&quot; in the Context menu, then these fields will NOT be filled&#xa;automatically -- you must enter the terms of address manually. &#xa;&#xa;Each of these kin terms represents a &quot;dyad&quot; - the basic&#xa;data you need to learn a kinship system. As you create persons and &#xa;unions and fill in the kin terms, the system is capturing the dyads for&#xa;analysis. The system is also capturing the genealogical data in the&#xa;family tree charts. &#xa;&#xa;NOTE: When viewing the details about a union, the husband, wife and &#xa;children are listed in text fields. You cannot edit these; the correct way&#xa;to add or delete persons to a union is described above; you do it &#xa;graphically by dragging and dropping. &#xa;"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JCheckBox" name="startupHelpCheckBox">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Show This Help Screen on Start-Up"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startupHelpCheckBoxActionPerformed"/>
+      </Events>
+    </Component>
+  </SubComponents>
+</Form>

@@ -1,0 +1,1 @@
+   /** Each instance is a parse token.        		@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu	*/		public class TokenScanned	{	    String lexeme, token;    int lineNum, charPos, intVal;    float floatVal;    }	// end of class TokenScanned

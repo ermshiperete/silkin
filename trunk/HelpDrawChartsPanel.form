@@ -1,0 +1,80 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Properties>
+    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+      <Color blue="cc" green="ff" red="ff" type="rgb"/>
+    </Property>
+  </Properties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="2"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <EmptySpace pref="129" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="jLabel1" min="-2" pref="279" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="243" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="drawChartsScrollPane" min="-2" pref="533" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="123" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="drawChartsScrollPane" pref="221" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Lucida Grande" size="18" style="1"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="Drawing Charts in SILKin"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="drawChartsScrollPane">
+      <Properties>
+        <Property name="viewportView" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="drawChartsHelpText"/>
+        </Property>
+      </Properties>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="drawChartsHelpText">
+          <Properties>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="rows" type="int" value="5"/>
+            <Property name="text" type="java.lang.String" value="*** Creating People or Unions&#xa;Click at an empty point on the chart approximately where you&#xa;want a new person or union (marriage) to appear. A menu will appear &#xa;at that point. Choose the symbol you want. To cancel the menu without&#xa;making a choice, click somewhere outside the menu boundaries.&#xa;NOTE: The menu choices to insert an existing person do not work yet.&#xa;&#xa;*** Relating People and Unions&#xa;Drag a person to either the top or bottom of a union.&#xa;Dragging to the TOP of a union symbol (=) adds a link to that person as a &#xa;parent/spouse. Dragging to the BOTTOM of a union symbol adds the &#xa;person as a child/sibling.&#xa;&#xa;***Choosing Ego&#xa;The first person created on a chart becomes the default Ego, i.e.&#xa;the focal point of the family tree. Ego is always colored red,&#xa;and the name (and serial number) of Ego is displayed in a drop-&#xa;down menu in the upper right corner of the Person display. You&#xa;may select a different Ego at any time using this drop-down menu.&#xa;&#xa;If you ALT (Mac OPTION)-CLICK on any person in the chart, they become Ego.&#xa;&#xa;*** Choosing Alter&#xa;When you click on anyone else on the chart, they are displayed as&#xa;blue and their information appears in the Person display. They are&#xa;called &apos;Current Alter.&apos; The kin term boxes on the Person display&#xa;show what Ego calls Alter and vice versa. Each alter, of course,&#xa;may have many sets of kin terms: one set for each possible alter.&#xa;&#xa;Entering the kin terms used by Ego and Alter is the chief purpose&#xa;of SILKin. (See &quot;Editing Charts&quot; re: terms of address and entering&#xa;multiple kin terms.&#xa;&#xa;*** Linking Kinsmen&#xa;All persons who are part of the chain of relations between Ego and&#xa;Alter are displayed in yellow/orange. For example, if Alter is married&#xa;to Ego&apos;s granddaughter, Ego will be red, Alter will be blue, Alter&apos;s wife&#xa;(the granddaughter) will be yellow, and one of the granddaughter&apos;s&#xa;parents will be yellow. If there are multiple paths between Ego and&#xa;Alter, SILKin will choose the shortest one.&#xa;&#xa;*** Labelling People on the Chart&#xa;If you have entered names for people these names can be used to&#xa;label the symbols. In the &apos;Labels&apos; menu you may choose the labelling &#xa;style: Initials, First Name, Last Name or Whole Name. You can change &#xa;the style at any time.&#xa;&#xa;The labelling style does not affect the way you enter names, only&#xa;the display on the chart. If you do not enter names, default &#xa;names (Person 1, Person 2 etc.) are generated automatically.&#xa;&#xa;The &apos;Labels&apos; menu also allows you to display the kin term used by &#xa;the current Ego for the current Alter. You may choose terms of &#xa;address or terms of reference. You also may choose to place a letter&#xa;(A, B, ...) under each person&apos;s symbol that represents their kin &#xa;term. That shoud make it easier to see patterns of kin terms.&#xa;&#xa;*** Making the Chart Editable or Static&#xa;The Context menu has a &quot;Context is Editable&quot; item. When it is checked, &#xa;the diagram can be changed. If it is unchecked, the diagram is immutable. &#xa;&#xa;*** Saving your Chart and Data&#xa;The File Menu has &apos;Save&apos; and &apos;Save As&apos; options similar to other&#xa;software programs. Use &apos;Save As&apos; to change the file name or location.&#xa;&#xa;Your data is saved in SILK files with an extension &quot;.silk&quot;; this&#xa;format uses a slightly modified version of XML, (eXtended Markup Language). &#xa;Because of these modifications, SILK files cannot be displayed in XML browsers.&#xa;You can view them as plain text (if you are willing to search through the XML &#xa;formatting code). You should be very careful not to modify these files while &#xa;viewing them; this could corrupt the file and make it unusable in SILKin.&#xa;&#xa;*** Loading a Saved Chart&#xa;In the File Menu select &apos;Open&apos; and navigate to the folder where&#xa;your SILK file is stored. The suggested (and default) location is the&#xa;&apos;Context Under Construction&apos; folder in the &apos;Library&apos; folder in the&#xa;SILKin folder. "/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>

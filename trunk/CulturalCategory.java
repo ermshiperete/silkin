@@ -1,0 +1,1 @@
+/** A Predicate category in the Kinship system: reflects a kinship term in 	the language of the target culture.*/		public class CulturalCategory extends PredCategory {}
