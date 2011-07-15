@@ -251,7 +251,8 @@ public class SILKFileParser extends Parser {
 
     /*
     Parameters ->  "<language name=",  string,  "/>", Theory1, Theory2,
-                    Comments, CreateDate, DataAuthor, IndSerial, FamSerial,
+                    Comments, CreateDate, DataAuthor, DataChgDate, SuggestionDate,
+                    IndSerial, FamSerial,
                     "<polygamyPermit>", boolean, "</polygamyPermit>", UDPs.
         First: ["<language name="]   Follow: [flag: "</parameters>"]
     */
@@ -265,6 +266,8 @@ public class SILKFileParser extends Parser {
         newCtxt.comments = parseComments();
         parseCreateDate();
         parseDataAuthor();
+        parseDataChgDate();
+        parseLastSuggestionDate();
         parseIndSerial();
         parseFamSerial();
         newCtxt.polygamyPermit = readTaggedBoolean("polygamyPermit", "parseParameters");
@@ -348,9 +351,31 @@ public class SILKFileParser extends Parser {
         current = scanner.lookAhead();
         if (current.lexeme.indexOf("<dataAuthor") == 0)  {
             Library.currDataAuthor = readOneAttribute("dataAuthor", "name", "parseDataAuthor");
+        }else if (current.lexeme.equals("<indSerNum>")
+                || current.lexeme.indexOf("<lastDataChangeDate") == 0
+                || current.lexeme.indexOf("<lastSuggestionDate") == 0)  {
+            return;
+        }else error("parseDataAuthor seeking a flag: '<dataAuthor>' or '<indSerNum>'" 
+                + "\n or '<lastDataChangeDate>' or '<lastSuggestionDate>'.");
+    }
+
+    void parseDataChgDate()  throws KSParsingErrorException  {
+        current = scanner.lookAhead();
+        if (current.lexeme.indexOf("<lastDataChangeDate") == 0)  {
+            newCtxt.dateOfLastDataChange = readOneAttribute("lastDataChangeDate", "value", "parseDataChgDate");
+        }else if (current.lexeme.equals("<indSerNum>")
+                || current.lexeme.indexOf("<lastSuggestionDate") == 0)  {
+            return;
+        }else error("parseDataChgDate seeking a flag: '<lastDataChangeDate>' or '<lastSuggestionDate>' or '<indSerNum>'.");
+    }
+
+    void parseLastSuggestionDate()  throws KSParsingErrorException  {
+        current = scanner.lookAhead();
+        if (current.lexeme.indexOf("<lastSuggestionDate") == 0)  {
+            newCtxt.dateOfLastSuggestion = readOneAttribute("lastSuggestionDate", "value", "parseLastSuggestionDate");
         }else if (current.lexeme.equals("<indSerNum>"))  {
             return;
-        }else error("parseDataAuthor seeking a flag: '<dataAuthor>' or '<indSerNum>'.");
+        }else error("parseLastSuggestionDate seeking a flag: '<lastSuggestionDate>' or '<indSerNum>'.");
     }
 
     /*
@@ -2005,14 +2030,10 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             propDef.eqc = parseKTD_EQC();
             current = scanner.lookAhead(); // must be start tag of next element
         }
-        String reqDate = readOneAttribute("request-date", "value", "parsePropDef");
-        Date d = null;
-        try {
-            d = UDate.parse(reqDate);
-        } catch (KSDateParseException dpe) {
-            error("parsePropDef cannot parse '" + reqDate + "' as date.\n" + dpe);
+        current = scanner.lookAhead();
+        if (current.lexeme.indexOf("<request-date") == 0) {
+            scanner.readToken();
         }
-        propDef.setDate(UDate.formatAsXSD(d));
         current = scanner.readToken();
         if (!current.lexeme.equals("</proposed-def>")) {
             error("parsePropDef seeking tag '</proposed-def>'. ");
@@ -2501,14 +2522,10 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         if (! current.lexeme.equals("</misfits>")) {
             error("parseAnomaly seeking tag '</misfits>'");
         }
-        String reqDate = readOneAttribute("request-date", "value", "parseAnomaly");
-        Date d = null;
-        try {
-            d = UDate.parse(reqDate);
-        } catch (KSDateParseException dpe) {
-            error("parseAnomaly cannot parse '" + reqDate + "' as date.\n" + dpe);
+        current = scanner.lookAhead();
+        if (current.lexeme.indexOf("<request-date") == 0) {
+            scanner.readToken();
         }
-        anna.setDate(UDate.formatAsXSD(d));
         current = scanner.readToken();
         if (! current.lexeme.equals("</anomaly>")) {
             error("parseAnomaly seeking tag '</anomaly>'");
@@ -2538,14 +2555,10 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             scanner.readToken(); // consume the </questions> tag
         }
         dis.relatedCB_Ptrs = parseCB_Ptrs();
-        String reqDate = readOneAttribute("request-date", "value", "parseDataRequest");
-        Date d = null;
-        try {
-            d = UDate.parse(reqDate);
-        } catch (KSDateParseException dpe) {
-            error("parseDataRequest cannot parse '" + reqDate + "' as date.\n" + dpe);
+        current = scanner.lookAhead();
+        if (current.lexeme.indexOf("<request-date") == 0) {
+            scanner.readToken();
         }
-        dis.setDate(UDate.formatAsXSD(d));
         current = scanner.readToken();
         if (! current.lexeme.equals("</data-request>")) {
             error("parseDataRequest seeking tag '</data-request>'");
@@ -2589,7 +2602,9 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             }
             theList.add(ptr);
             theList.addAll(parseCB_Ptrs());
-        }else if (current.lexeme.indexOf("<request-date value=") == 0) {
+        }else if (current.lexeme.indexOf("<request-date") == 0) {
+            return theList;
+        }else if (current.lexeme.equals("</data-request>")) {
             return theList;
         }else {
             error("parseCB_Ptrs seeking tags: <named-dyad>, <request-date>, <error>, or <kin-type-dyad>.");
@@ -2653,14 +2668,10 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         }
         oc.intersection = new ArrayList<Object>();
         readStringSet(oc.intersection, "pc-strings-overlap", "parseOverlap");
-        String reqDate = readOneAttribute("request-date", "value", "parseOverlap");
-        Date d = null;
-        try {
-            d = UDate.parse(reqDate);
-        } catch (KSDateParseException dpe) {
-            error("parseOverlap cannot parse '" + reqDate + "' as date.\n" + dpe);
+        current = scanner.lookAhead();
+        if (current.lexeme.indexOf("<request-date") == 0) {
+            scanner.readToken();
         }
-        oc.setDate(UDate.formatAsXSD(d));
         current = scanner.readToken();
         if (! current.lexeme.equals("</overlap>")) {
             error("parseOverlap seeking tag '</overlap>'");
@@ -2732,14 +2743,10 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         if (! current.lexeme.equals("</other-term-dyads>")) {
             error("parseSynonym seeking tag '</other-term-dyads>'");
         }
-        String reqDate = readOneAttribute("request-date", "value", "parseSynonym");
-        Date d = null;
-        try {
-            d = UDate.parse(reqDate);
-        } catch (KSDateParseException dpe) {
-            error("parseSynonym cannot parse '" + reqDate + "' as date.\n" + dpe);
+        current = scanner.lookAhead();
+        if (current.lexeme.indexOf("<request-date") == 0) {
+            scanner.readToken();
         }
-        sc.setDate(UDate.formatAsXSD(d));
         current = scanner.readToken();
         if (! current.lexeme.equals("</synonym>")) {
             error("parseSynonym seeking tag '</synonym>'");
@@ -2778,14 +2785,10 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         if (! current.lexeme.equals("</sub-terms>")) {
             error("parseUmbrella seeking tag '</sub-terms>'");
         }
-        String reqDate = readOneAttribute("request-date", "value", "parseUmbrella");
-        Date d = null;
-        try {
-            d = UDate.parse(reqDate);
-        } catch (KSDateParseException dpe) {
-            error("parseUmbrella cannot parse '" + reqDate + "' as date.\n" + dpe);
+        current = scanner.lookAhead();
+        if (current.lexeme.indexOf("<request-date") == 0) {
+            scanner.readToken();
         }
-        uc.setDate(UDate.formatAsXSD(d));
         current = scanner.readToken();
         if (! current.lexeme.equals("</umbrella>")) {
             error("parseUmbrella seeking tag '</umbrella>'");
