@@ -2713,14 +2713,10 @@ public class SILKFileParserPreXML extends Parser {
             propDef.eqc = parseKTD_EQC();
             current = scanner.lookAhead(); // must be start tag of next element
         }
-        String reqDate = readTaggedString("request-date", "parsePropDef");
-        Date d = null;
-        try {
-            d = UDate.parse(reqDate);
-        } catch (KSDateParseException dpe) {
-            error("parsePropDef cannot parse '" + reqDate + "' as date.\n" + dpe);
+        current = scanner.lookAhead();
+        if (current.lexeme.indexOf("<request-date") == 0) {
+            scanner.readToken();
         }
-        propDef.setDate(UDate.formatAsXSD(d));
         current = scanner.readToken();
         if (!current.lexeme.equals("</proposed-def>")) {
             error("parsePropDef seeking tag '</proposed-def>'. ");
@@ -3208,14 +3204,10 @@ public class SILKFileParserPreXML extends Parser {
         if (!current.lexeme.equals("</misfits>")) {
             error("parseAnomaly seeking tag '</misfits>'");
         }
-        String reqDate = readTaggedString("request-date", "parseAnomaly");
-        Date d = null;
-        try {
-            d = UDate.parse(reqDate);
-        } catch (KSDateParseException dpe) {
-            error("parseAnomaly cannot parse '" + reqDate + "' as date.\n" + dpe);
+        current = scanner.lookAhead();
+        if (current.lexeme.indexOf("<request-date") == 0) {
+            scanner.readToken();
         }
-        anna.setDate(UDate.formatAsXSD(d));
         current = scanner.readToken();
         if (!current.lexeme.equals("</anomaly>")) {
             error("parseAnomaly seeking tag '</anomaly>'");
@@ -3245,17 +3237,9 @@ public class SILKFileParserPreXML extends Parser {
             scanner.readToken(); // consume the </questions> tag
         }
         dis.relatedCB_Ptrs = parseCB_Ptrs();
-        String reqDate = readTaggedString("request-date", "parseDataRequest");
-        Date d = null;
-        try {
-            d = UDate.parse(reqDate);
-        } catch (KSDateParseException dpe) {
-            error("parseDataRequest cannot parse '" + reqDate + "' as date.\n" + dpe);
-        }
-        dis.setDate(UDate.formatAsXSD(d));
-        current = scanner.readToken();
-        if (!current.lexeme.equals("</data-request>")) {
-            error("parseDataRequest seeking tag '</data-request>'");
+        current = scanner.lookAhead();
+        if (current.lexeme.indexOf("<request-date") == 0) {
+            scanner.readToken();
         }
         addToIssues(issues, dis);
     }
@@ -3326,14 +3310,10 @@ public class SILKFileParserPreXML extends Parser {
         readStringSet(oc.otherTermDyads, "pc-strings-covered-2", "parseOverlap");
         oc.intersection = new ArrayList<Object>();
         readStringSet(oc.intersection, "pc-strings-overlap", "parseOverlap");
-        String reqDate = readTaggedString("request-date", "parseOverlap");
-        Date d = null;
-        try {
-            d = UDate.parse(reqDate);
-        } catch (KSDateParseException dpe) {
-            error("parseOverlap cannot parse '" + reqDate + "' as date.\n" + dpe);
+        current = scanner.lookAhead();
+        if (current.lexeme.indexOf("<request-date") == 0) {
+            scanner.readToken();
         }
-        oc.setDate(UDate.formatAsXSD(d));
         current = scanner.readToken();
         if (!current.lexeme.equals("</overlap>")) {
             error("parseOverlap seeking tag '</overlap>'");
@@ -3407,14 +3387,10 @@ public class SILKFileParserPreXML extends Parser {
         if (!current.lexeme.equals("</other-term-dyads>")) {
             error("parseSynonym seeking tag '</other-term-dyads>'");
         }
-        String reqDate = readTaggedString("request-date", "parseSynonym");
-        Date d = null;
-        try {
-            d = UDate.parse(reqDate);
-        } catch (KSDateParseException dpe) {
-            error("parseSynonym cannot parse '" + reqDate + "' as date.\n" + dpe);
+        current = scanner.lookAhead();
+        if (current.lexeme.indexOf("<request-date") == 0) {
+            scanner.readToken();
         }
-        sc.setDate(UDate.formatAsXSD(d));
         current = scanner.readToken();
         if (!current.lexeme.equals("</synonym>")) {
             error("parseSynonym seeking tag '</synonym>'");
@@ -3453,14 +3429,10 @@ public class SILKFileParserPreXML extends Parser {
         if (!current.lexeme.equals("</sub-terms>")) {
             error("parseUmbrella seeking tag '</sub-terms>'");
         }
-        String reqDate = readTaggedString("request-date", "parseUmbrella");
-        Date d = null;
-        try {
-            d = UDate.parse(reqDate);
-        } catch (KSDateParseException dpe) {
-            error("parseUmbrella cannot parse '" + reqDate + "' as date.\n" + dpe);
+        current = scanner.lookAhead();
+        if (current.lexeme.indexOf("<request-date") == 0) {
+            scanner.readToken();
         }
-        uc.setDate(UDate.formatAsXSD(d));
         current = scanner.readToken();
         if (!current.lexeme.equals("</umbrella>")) {
             error("parseUmbrella seeking tag '</umbrella>'");

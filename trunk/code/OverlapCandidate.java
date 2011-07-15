@@ -98,7 +98,6 @@ import java.io.*;
                 pw.print(", " + strIter.next());
             }
             pw.println(dblSpacer + "</pc-strings-overlap>");
-            pw.println(dblSpacer + "<request-date value=\"" + getDate() + "\"/>");
             pw.println(spacer + "</overlap>");
         }
 

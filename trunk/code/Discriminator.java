@@ -37,7 +37,6 @@ public class Discriminator extends Issue {
             for (Library.CB_Ptr ptr : relatedCB_Ptrs) {
                 pw.println(dblSpacer + spacer + ptr.toSILKString());
             }
-            pw.println(dblSpacer + "<request-date value=\"" + getDate() + "\"/>\n");
             pw.println(spacer + "</data-request>");
         }
 

@@ -90,7 +90,6 @@ public class SynonymCandidate extends Issue {
                 pw.println(d.toXML(dblSpacer + spacer));
             }
             pw.println(dblSpacer + "</other-term-dyads>");
-            pw.println(dblSpacer + "<request-date value=\"" + getDate() + "\"/>\n");
             pw.println(spacer + "</synonym>\n");
         }
 

@@ -796,6 +796,7 @@ public class SIL_Edit extends JFrame {
             File outfile = makeHTMLfile(suggsDataFile);
             XMLTransformer tformer = new XMLTransformer();
             tformer.transform(suggsDataFile, stylesheet, outfile);
+            ctxt.dateOfLastSuggestion = UDate.today();
         }catch(KinshipSystemException internalExc) {
             String msg = "SILKin learning INTERNAL failure: " + internalExc;
             MainPane.displayError(msg, "SILKin learning module failure", JOptionPane.PLAIN_MESSAGE);

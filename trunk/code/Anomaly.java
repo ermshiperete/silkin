@@ -132,7 +132,6 @@ public class Anomaly extends Issue {
                 s += dy.toXML(dblSpacer + spacer);
             }
             s += "\n" + dblSpacer + "</misfits>\n";
-            s += dblSpacer + "<request-date value=\"" + getDate() + "\"/>\n";
             s += spacer + "</anomaly>\n";
             pw.println(s);
         }

@@ -132,7 +132,6 @@ import java.io.*;
             }
             pw.println(ktd.toSILKString(dblSpacer));
             pw.println(eqc.toSILKString(dblSpacer));
-            pw.println(dblSpacer + "<request-date value=\"" + getDate() + "\"/>\n");
             pw.println(spacer + "</proposed-def>\n");
         }
 

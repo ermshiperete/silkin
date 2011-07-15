@@ -15,7 +15,6 @@ import java.io.*;
  public abstract class Issue implements Serializable {
 
         String kinTerm;
-        private String date = UDate.today();
         ArrayList<Object> questions = new ArrayList<Object>();
         boolean stillViable = true;
         boolean processed = false;
@@ -30,14 +29,6 @@ import java.io.*;
         public abstract String toThyString();
 
         public abstract String typeString();
-
-        public String getDate() { return date; }
-
-        public void setDate(String s) throws KSDateParseException {
-            if (! UDate.validXSD(s)) {
-                date = UDate.convertToXSD(s);
-            }else date = s;
-        }
 
         public String questionsToXML(String bacer) {
             String spacer = "\t";

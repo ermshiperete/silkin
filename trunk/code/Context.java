@@ -28,6 +28,7 @@ public class Context implements Serializable {
     public String comments = "",
             /**	Date this context was initialized.	*/
             createDate;
+    public String dateOfLastSuggestion, dateOfLastDataChange;
     int indSerNumGen = 0, famSerNumGen = 0, maxBaseDefMisFits = 4;
     /**	Name of the language spoken in this culture. It is limited administratively to 28 characters.	*/
     public String languageName;
@@ -681,6 +682,12 @@ public class Context implements Serializable {
         if (Library.currDataAuthor != null && Library.currDataAuthor.length() > 0) {
             silk.println("  <dataAuthor name=\"" + Library.currDataAuthor + "\"/>");
         }  //  end of optional createDate
+        if (dateOfLastDataChange != null) {
+            silk.println("  <lastDataChangeDate value=\"" + dateOfLastDataChange + "\"/>");
+        }
+        if (dateOfLastSuggestion != null) {
+            silk.println("  <lastSuggestionDate value=\"" + dateOfLastSuggestion + "\"/>");
+        }
         silk.println("  <indSerNum>" + indSerNumGen + "</indSerNum> ");
         silk.println("  <famSerNum>" + famSerNumGen + "</famSerNum> ");
         silk.println("  <polygamyPermit>" + polygamyPermit + "</polygamyPermit> ");

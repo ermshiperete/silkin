@@ -329,7 +329,6 @@ import java.io.*;
                 pw.println(dy.toXML(dblSpacer + spacer));
             }
             pw.println(dblSpacer + " </neg-dyads-covered>\n");
-            pw.println(dblSpacer + "<request-date value=\"" + getDate() + "\"/>\n");
             pw.println(spacer + " </proposed-def>");
         }
 

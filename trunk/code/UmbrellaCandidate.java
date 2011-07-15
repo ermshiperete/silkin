@@ -103,7 +103,6 @@ public class UmbrellaCandidate extends Issue {
                 pw.println(dblSpacer + spacer + "</sub-term>");
             }
             pw.println(dblSpacer + "</sub-terms>");
-            pw.println(dblSpacer + "<request-date value=\"" + getDate() + "\"/>\n");
             pw.println(spacer + "</umbrella>");
         }
 
