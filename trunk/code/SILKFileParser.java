@@ -69,10 +69,6 @@ public class SILKFileParser extends Parser {
             dt = new DomainTheory(newCtxt, false, "");
             newCtxt.addDomainTheory(dt);
         }
-        if (! newCtxt.domTheoryAdrExists()) {
-            dt = new DomainTheory(newCtxt, true, "");
-            newCtxt.addDomainTheory(dt);
-        }
         if (newCtxt.indSerNumGen != origIndCount) //  verify number of individuals loaded
         {
             error("ERROR: Number of individuals created does not equal parameter <indSerNum>.");
@@ -171,6 +167,14 @@ public class SILKFileParser extends Parser {
             if (! current.lexeme.equals("</editorSettings>"))
                 error("parseBody seeking the end flag '</editorSettings>'. ");
             parseBody();
+        }else if (current.lexeme.startsWith("<domain-theory"))  {
+            parseDomTheoryRef();
+            parseDomTheoryAdr();
+            parseBody();
+        }else if (!newCtxt.domTheoryRefExists() && !newCtxt.domTheoryAdrExists()) {
+        // If we've read as far as the Individual Census, we should have encountered a domain
+        // theory in the parameters or else in a domain-theory block. 
+            error("Did not find any domain theory (in either format).");
         }else if (current.lexeme.equals("<individualCensus>")) {
        		scanner.readToken();  //  consume the start flag
             parseIndividuals();
@@ -198,7 +202,7 @@ public class SILKFileParser extends Parser {
             scanner.readToken();  //  consume the start flag
             DomainTheory dt = newCtxt.domTheoryRef();
             dt.dyadsDefined = new DyadTMap();
-				tempDyadsDefinedRef = new ArrayList<DyadTemp>();
+            tempDyadsDefinedRef = new ArrayList<DyadTemp>();
             parseDyadKinTerms(tempDyadsDefinedRef);
             current = scanner.readToken();  // read token, which must be the flag '</dyadsDefinedRef>'
             if (! current.lexeme.equals("</dyadsDefinedRef>"))
@@ -231,15 +235,31 @@ public class SILKFileParser extends Parser {
             if (! current.lexeme.equals("</kinTypeIndex>"))
                 error("parseBody seeking the end flag '</kinTypeIndex>'. ");
             parseBody();
-        }else if (current.lexeme.substring(0,17).equals("<learning-history")) { //
+        }else if (current.lexeme.startsWith("<learning-history")) { //
             scanner.readToken();  //  consume the start flag
             boolean ref = current.lexeme.substring(24,27).equals("Ref");
+            if (!ref && newCtxt.learningHistoryAdr == null) {
+                newCtxt.learningHistoryAdr = new TreeMap<String, ArrayList<Context.HistoryItem>>(); 
+            }
             TreeMap<String, ArrayList<Context.HistoryItem>> learningHistory = 
                     (ref ? newCtxt.learningHistoryRef : newCtxt.learningHistoryAdr);
             parseHistoryItems(learningHistory);
             current = scanner.readToken();  // read token, which must be the flag '</learning-history>
             if (! current.lexeme.equals("</learning-history>"))
                 error("parseBody seeking the end flag '</learning-history>'. ");
+            parseBody();
+        }else if (current.lexeme.startsWith("<auto-def")) {
+            scanner.readToken();  //  consume the start flag
+            boolean ref = current.lexeme.substring(16, 19).equals("Ref");
+            if (!ref && newCtxt.autoDefAdr == null) {
+                newCtxt.autoDefAdr = new TreeMap<String, ArrayList<Context.CB_Ptr>>();
+            }
+            TreeMap<String, ArrayList<Context.CB_Ptr>> autos =
+                    (ref ? newCtxt.autoDefRef : newCtxt.autoDefAdr);
+            parseAutoDefs(autos);
+            current = scanner.readToken();  // read token, which must be the flag '</auto-def>
+            if (! current.lexeme.equals("</auto-def>"))
+                error("parseBody seeking the end flag '</auto-def>'. ");
             parseBody();
         }else if (current.lexeme.equals("</SIL_KinData>") ||
                 current.lexeme.substring(0,14).equals("<silkin-issues")) {
@@ -250,7 +270,7 @@ public class SILKFileParser extends Parser {
 
 
     /*
-    Parameters ->  "<language name=",  string,  "/>", Theory1, Theory2,
+    Parameters ->  "<language name=",  string,  "/>", Theory1, Theory2, DTRef, DTAdr,
                     Comments, CreateDate, DataAuthor, DataChgDate, SuggestionDate,
                     IndSerial, FamSerial,
                     "<polygamyPermit>", boolean, "</polygamyPermit>", UDPs.
@@ -263,9 +283,18 @@ public class SILKFileParser extends Parser {
 	Library.activeContexts.put(newCtxt.languageName, newCtxt);
         parseTheory1();
         parseTheory2();
+        parseDomTheoryRef();
+        parseDomTheoryAdr();
         newCtxt.comments = parseComments();
         parseCreateDate();
-        parseDataAuthor();
+        current = scanner.lookAhead();
+        if (current.lexeme.equals("<dataAuthors>")) {
+            parseDataAuthors();
+        }else if (current.lexeme.indexOf("<dataAuthor") == 0) {
+            parseAuthors();
+        }else {
+            error("parseParameters did not find a dat author (in either format).");
+        }
         parseDataChgDate();
         parseLastSuggestionDate();
         parseIndSerial();
@@ -277,14 +306,18 @@ public class SILKFileParser extends Parser {
 
     /*
     Theory1 -> "<theory file=", string, "/>".
+     *      |  \empty.
          First: ["<theory..."]	 Follow: [tags: "<theory...", "<comments>", "<createDate...", "<indSerialNum"]
     */
     void parseTheory1() throws KSParsingErrorException, JavaSystemException, KSBadHornClauseException,
 				KSInternalErrorException, KSConstraintInconsistency {
-        String fileName = readOneAttribute("theory", "file", "parseTheory1");
-        File currFile = new File(filePath);     //  current token is relative pathname to .thy file
-        String theoryFile = currFile.getParent() + "/" + fileName;
-        DomainTheory dt = Library.readThyFile(theoryFile);  // dt automatically added by readThyFile
+        current = scanner.lookAhead();  //  inspect the next flag.
+        if (current.lexeme.indexOf("<theory") == 0) {
+            String fileName = readOneAttribute("theory", "file", "parseTheory1");
+            File currFile = new File(filePath);     //  current token is relative pathname to .thy file
+            String theoryFile = currFile.getParent() + "/" + fileName;
+            Library.readThyFile(theoryFile);  // dt automatically added by readThyFile
+        }
     }
 
     /*
@@ -299,12 +332,247 @@ public class SILKFileParser extends Parser {
             String fileName = readOneAttribute("theory", "file", "parseTheory2");
             File currFile = new File(filePath);     //  current token is relative pathname to .thy file
             String theoryFile = currFile.getParent() + "/" + fileName;
-            DomainTheory dt = Library.readThyFile(theoryFile);  // dt automatically added by readThyFile
-        }else if (current.lexeme.indexOf("<comments") == 0 || current.lexeme.indexOf("<createDate") == 0
-                || current.lexeme.equals("<indSerialNum>")) {
-            return;
-        }else error("parseTheory2 seeking a flag: '<theory...', '<comments..., '<createDate...' or '<indSerialNum>. ");
+            Library.readThyFile(theoryFile);  // dt automatically added by readThyFile
+        }
     }
+
+
+    /**
+     * DomTheoryRef -> '<domain-theory type="Ref"', DomTheoryComponents.
+     *              |  \empty.
+     */
+    void parseDomTheoryRef() throws KSParsingErrorException, KSInternalErrorException {
+        current = scanner.lookAhead();  //  inspect the next flag.
+        if (current.lexeme.indexOf("<domain-theory type=\"Ref\"") == 0) {
+            DomainTheory dt = new DomainTheory(newCtxt.languageName);
+            dt.addressTerms = false;
+            parseDomTheoryComponents(dt);
+        }
+    }
+
+
+    /**
+     * DomTheoryAdr -> '<domain-theory type="Adr"', DomTheoryComponents.
+     *              |  \empty.
+     */
+    void parseDomTheoryAdr() throws KSParsingErrorException, KSInternalErrorException {
+        current = scanner.lookAhead();  //  inspect the next flag.
+        if (current.lexeme.indexOf("<domain-theory type=\"Adr\"") == 0) {
+            DomainTheory dt = new DomainTheory(newCtxt.languageName);
+            dt.addressTerms = true;
+            parseDomTheoryComponents(dt);
+        }
+    }
+
+    /**
+     * DomTheoryComponents -> Citation, NonTerms, NonTermFlags, LevelsOfRecursion,
+     *                          Theory, Synonyms, Umbrellas, Overlaps, NonSynonyms,
+     *                          NonOverlaps, NonUmbrellas, '</domain-theory>'.
+     *                      |  \empty.
+     *
+     * @param dt    the DomainTheory to receive the components. 
+     * 
+     *      NOTE: all components are optional, but the order is fixed.
+     */
+    void parseDomTheoryComponents(DomainTheory dt) throws KSParsingErrorException,
+                KSInternalErrorException  {
+        scanner.readToken();  // consume start tag
+        current = scanner.lookAhead();
+        if (current.lexeme.indexOf("<citation") == 0) {
+            dt.citation = readOneAttribute("citation", "text", "parseDomTheoryComponents");
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.equals("<non-terms>")) {
+            scanner.readToken();  //  consume '<non-terms>'
+            dt.nonTerms = new ArrayList<Object>();
+            current = scanner.lookAhead();  // peek at next tag
+            while (current.lexeme.indexOf("<non-term value=") == 0) {
+                dt.nonTerms.add(readOneAttribute("non-term", "value", "parseDomTheoryComponents"));
+                current = scanner.lookAhead();
+            }
+            scanner.readToken();  //  consume next, which must be  '</non-terms>'
+            if (!current.lexeme.equals("</non-terms>")) {
+                error("parseDomTheoryComponents seeking end tag '</non-terms>'.");
+            }
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.equals("<non-term-flags>")) {
+            scanner.readToken();  //  consume '<non-term-flags>'
+            dt.nonTermFlags = new ArrayList<Object>();
+            current = scanner.lookAhead();  // peek at next tag
+            while (current.lexeme.indexOf("<non-term value=") == 0) {
+                dt.nonTerms.add(readOneAttribute("non-term-flag", "value", "parseDomTheoryComponents"));
+                current = scanner.lookAhead();
+            }
+            scanner.readToken();  //  consume next, which must be  '</non-term-flags>'
+            if (!current.lexeme.equals("</non-term-flags>")) {
+                error("parseDomTheoryComponents seeking end tag '</non-term-flags>'.");
+            }
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.indexOf("<levels-of-recursion") == 0) {
+            String num = readOneAttribute("levels-of-recursion", "n", "parseDomTheoryComponents");
+            try {
+                dt.levelsOfRecursion = Integer.parseInt(num);
+            }catch(Exception ex) {
+                error("parseDomTheoryComponents unable to parse '" + num + "' as integer for levelsOfRecursion.");
+            }
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.equals("<theory>")) {
+            scanner.readToken();  //  consume '<theory>'
+            current = scanner.lookAhead();  // peek at next tag
+            while (current.lexeme.indexOf("<kin-term-def term=") == 0) {
+                scanner.readToken();  //  consume start tag
+                dt.addTerm(parseKinTermDef());
+                current = scanner.lookAhead();
+            }
+            scanner.readToken();  //  consume next, which must be  '</theory>'
+            if (!current.lexeme.equals("</theory>")) {
+                error("parseDomTheoryComponents seeking end tag '</theory>'.");
+            }
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.equals("<synonyms>")) {
+            scanner.readToken();  //  consume '<synonyms>'
+            dt.synonyms = new TreeMap();
+            current = scanner.lookAhead();  // peek at next tag
+            while (current.lexeme.indexOf("<pair") == 0) {
+                String[] names = {"subTerm", "baseTerm" }, values;
+                values = readAttributes("pair", names, "parseDomTheoryComponents");
+                dt.synonyms.put(values[0], values[1]);
+                current = scanner.lookAhead();
+            }
+            scanner.readToken();  //  consume next, which must be  '</synonyms>'
+            if (!current.lexeme.equals("</synonyms>")) {
+                error("parseDomTheoryComponents seeking end tag '</synonyms>'.");
+            }
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.equals("<umbrellas>")) {
+            scanner.readToken();  //  consume '<umbrellas>'
+            dt.umbrellas = new TreeMap();
+            current = scanner.lookAhead();  // peek at next tag
+            while (current.lexeme.indexOf("<umbrella") == 0) {
+                String umbTerm = readOneAttribute("umbrella", "umbTerm", "parseDomTheoryComponents");
+                ArrayList<String> subTerms = new ArrayList<String>();
+                current = scanner.lookAhead();
+                while (current.lexeme.indexOf("<sub-term") == 0) {
+                    subTerms.add(readOneAttribute("sub-term", "value", "parseDomTheoryComponents"));
+                    current = scanner.lookAhead();
+                }
+                scanner.readToken();  //  consume next, which must be  '</umbrella>'
+                if (!current.lexeme.equals("</umbrella>")) {
+                    error("parseDomTheoryComponents seeking end tag '</umbrella>'.");
+                }
+                dt.umbrellas.put(umbTerm, subTerms);
+                current = scanner.lookAhead();
+            }
+            scanner.readToken();  //  consume next, which must be  '</umbrellas>'
+            if (!current.lexeme.equals("</umbrellas>")) {
+                error("parseDomTheoryComponents seeking end tag '</umbrellas>'.");
+            }
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.equals("<overlaps>")) {
+            scanner.readToken();  //  consume '<overlaps>'
+            dt.overlaps = new TreeMap();
+            current = scanner.lookAhead();  // peek at next tag
+            while (current.lexeme.indexOf("<overlap") == 0) {
+                String baseTerm = readOneAttribute("overlap", "baseTerm", "parseDomTheoryComponents");
+                ArrayList<String> olapTerms = new ArrayList<String>();
+                current = scanner.lookAhead();
+                while (current.lexeme.indexOf("<overlap-term") == 0) {
+                    olapTerms.add(readOneAttribute("overlap-term", "value", "parseDomTheoryComponents"));
+                    current = scanner.lookAhead();
+                }
+                scanner.readToken();  //  consume next, which must be  '</overlap>'
+                if (!current.lexeme.equals("</overlap>")) {
+                    error("parseDomTheoryComponents seeking end tag '</overlap>'.");
+                }
+                dt.overlaps.put(baseTerm, olapTerms);
+                current = scanner.lookAhead();
+            }
+            scanner.readToken();  //  consume next, which must be  '</overlaps>'
+            if (!current.lexeme.equals("</overlaps>")) {
+                error("parseDomTheoryComponents seeking end tag '</overlaps>'.");
+            }
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.equals("<nonSynonyms>")) {
+            scanner.readToken();  //  consume '<nonSynonyms>'
+            dt.nonSynonyms = new ArrayList<Object>();
+            current = scanner.lookAhead();  // peek at next tag
+            while (current.lexeme.indexOf("<nonSynonym") == 0) {
+                String[] names = {"term1", "term2" }, values;
+                values = readAttributes("nonSynonym", names, "parseDomTheoryComponents");
+                String newPair = values[0] + "/" + values[1];
+                dt.nonSynonyms.add(newPair);
+                current = scanner.lookAhead();
+            }
+            scanner.readToken();  //  consume next, which must be  '</nonSynonyms>'
+            if (!current.lexeme.equals("</nonSynonyms>")) {
+                error("parseDomTheoryComponents seeking end tag '</nonSynonyms>'.");
+            }
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.equals("<nonOverlaps>")) {
+            scanner.readToken();  //  consume '<nonOverlaps>'
+            dt.nonOverlaps = new TreeMap();
+            current = scanner.lookAhead();  // peek at next tag
+            while (current.lexeme.indexOf("<nonOverlap") == 0) {
+                String baseTerm = readOneAttribute("nonOverlap", "baseTerm", "parseDomTheoryComponents");
+                ArrayList<String> olapTerms = new ArrayList<String>();
+                current = scanner.lookAhead();
+                while (current.lexeme.indexOf("<nonOverlap-term") == 0) {
+                    olapTerms.add(readOneAttribute("nonOverlap-term", "value", "parseDomTheoryComponents"));
+                    current = scanner.lookAhead();
+                }
+                scanner.readToken();  //  consume next, which must be  '</nonOverlaps>'
+                if (!current.lexeme.equals("</nonOverlap>")) {
+                    error("parseDomTheoryComponents seeking end tag '</nonOverlap>'.");
+                }
+                dt.nonOverlaps.put(baseTerm, olapTerms);
+                current = scanner.lookAhead();
+            }
+            scanner.readToken();  //  consume next, which must be  '</nonOverlaps>'
+            if (!current.lexeme.equals("</nonOverlaps>")) {
+                error("parseDomTheoryComponents seeking end tag '</nonOverlaps>'.");
+            }
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.equals("<nonUmbrellas>")) {
+            scanner.readToken();  //  consume '<nonUmbrellas>'
+            dt.nonUmbrellas = new TreeMap();
+            current = scanner.lookAhead();  // peek at next tag
+            while (current.lexeme.indexOf("<nonUmbrella") == 0) {
+                String umbTerm = readOneAttribute("nonUmbrella", "umbTerm", "parseDomTheoryComponents");
+                ArrayList<String> subTerms = new ArrayList<String>();
+                current = scanner.lookAhead();
+                while (current.lexeme.indexOf("<sub-term") == 0) {
+                    subTerms.add(readOneAttribute("sub-term", "value", "parseDomTheoryComponents"));
+                    current = scanner.lookAhead();
+                }
+                scanner.readToken();  //  consume next, which must be  '</nonUmbrella>'
+                if (!current.lexeme.equals("</nonUmbrella>")) {
+                    error("parseDomTheoryComponents seeking end tag '</nonUmbrella>'.");
+                }
+                dt.nonUmbrellas.put(umbTerm, subTerms);
+                current = scanner.lookAhead();
+            }
+            scanner.readToken();  //  consume next, which must be  '</nonUmbrellas>'
+            if (!current.lexeme.equals("</nonUmbrellas>")) {
+                error("parseDomTheoryComponents seeking end tag '</nonUmbrellas>'.");
+            }
+            current = scanner.lookAhead();
+        }
+        scanner.readToken();  //  consume next, which must be the end tag
+        if (!current.lexeme.equals("</domain-theory>")) {
+            error("parseDomTheoryComponents seeking end tag '</domain-theory>'.");
+        }
+        newCtxt.addDomainTheory(dt);
+    }
+    
 
     /*
     Comments -> "<comments txt=", string, "/>".
@@ -343,20 +611,34 @@ public class SILKFileParser extends Parser {
     }
 
     /*
-    DataAuthor -> "<dataAuthor name=", string, "/>".
-              |  \empty.
-         First: ["<dataAuthor..."]	 Follow: ["<indSerNum>"]
+    DataAuthor -> "<dataAuthors>", Authors, </dataAuthors>.
+     *
+         First: ["<dataAuthors>"]	 Follow: ["<indSerNum>"]
     */
-    void parseDataAuthor()  throws KSParsingErrorException  {
+    void parseDataAuthors()  throws KSParsingErrorException  {
+        current = scanner.readToken();  //  consume start tag
+        if (!current.lexeme.equals("<dataAuthors>")) {
+            error("parseDataAuthors seeking the tag: '<dataAuthors>'.");
+        }
+        parseAuthors();
+        current = scanner.readToken();  //  consume end tag
+        if (!current.lexeme.equals("</dataAuthors>")) {
+            error("parseDataAuthors seeking the tag: '</dataAuthors>'.");
+        }
+    }
+
+    /** Authors -> "<dataAuthor name=", string, "/>", Authors.
+              |  \empty.
+     *
+         First: ["<dataAuthor..."]	 Follow: ["</dataAuthors>"]
+     */
+    void parseAuthors()  throws KSParsingErrorException  {
         current = scanner.lookAhead();
-        if (current.lexeme.indexOf("<dataAuthor") == 0)  {
-            Library.currDataAuthor = readOneAttribute("dataAuthor", "name", "parseDataAuthor");
-        }else if (current.lexeme.equals("<indSerNum>")
-                || current.lexeme.indexOf("<lastDataChangeDate") == 0
-                || current.lexeme.indexOf("<lastSuggestionDate") == 0)  {
-            return;
-        }else error("parseDataAuthor seeking a flag: '<dataAuthor>' or '<indSerNum>'" 
-                + "\n or '<lastDataChangeDate>' or '<lastSuggestionDate>'.");
+        while (current.lexeme.indexOf("<dataAuthor") == 0)  {
+            String author = readOneAttribute("dataAuthor", "name", "parseAuthors");
+            Context.current.dataAuthors.add(author);
+            current = scanner.lookAhead();
+        }
     }
 
     void parseDataChgDate()  throws KSParsingErrorException  {
@@ -816,6 +1098,8 @@ public class SILKFileParser extends Parser {
         newCtxt.distinctAdrTerms = readTaggedBoolean("distinctAdrTerms", "parseKAESParameters");
         newCtxt.maxNoiseP = readTaggedInteger("maxNoise", "parseKAESParameters");
         newCtxt.ignorableP = readTaggedInteger("ignorable", "parseKAESParameters");
+        newCtxt.doBaseCBs = Boolean.parseBoolean(readOneAttribute("doBaseCBs", "value", "parseKAESParameters"));
+        newCtxt.doInduction = Boolean.parseBoolean(readOneAttribute("doInduction", "value", "parseKAESParameters"));
     }
 
     int readTaggedInteger(String tag, String caller) throws KSParsingErrorException  {
@@ -1549,32 +1833,114 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
      */
     void parseItems(ArrayList<Context.HistoryItem> items) throws KSParsingErrorException {
         current = scanner.lookAhead();
-        if (current.lexeme.indexOf("<accepted-def kinTerm=") == 0) {
+        if (current.lexeme.indexOf("<accepted-def") == 0) {
             parseAccDef(items);
             parseItems(items);
-        } else if (current.lexeme.indexOf("<rejected-def kinTerm=") == 0) {
+        } else if (current.lexeme.indexOf("<rejected-def") == 0) {
             parseRejectedDef(items);
             parseItems(items);
-        }  //  add other types HERE
+        } else if (current.lexeme.indexOf("<accepted-synonym") == 0) {
+            parseSynonymHistItem(items, "accepted");
+            parseItems(items);
+        } else if (current.lexeme.indexOf("<rejected-synonym") == 0) {
+            parseSynonymHistItem(items, "rejected");
+            parseItems(items);
+        } else if (current.lexeme.indexOf("<accepted-umbrella") == 0) {
+            parseUmbrellaHistItem(items, "accepted");
+            parseItems(items);
+        } else if (current.lexeme.indexOf("<rejected-umbrella") == 0) {
+            parseUmbrellaHistItem(items, "rejected");
+            parseItems(items);
+        } else if (current.lexeme.indexOf("<umbrella-into-synonyms") == 0) {
+            parseUmbrella2Synonyms(items);
+            parseItems(items);
+        } else if (current.lexeme.indexOf("<accepted-overlap") == 0) {
+            parseOverlapHistItem(items, "accepted");
+            parseItems(items);
+        } else if (current.lexeme.indexOf("<rejected-overlap") == 0) {
+            parseOverlapHistItem(items, "rejected");
+            parseItems(items);
+        }
+                
+                
         else if (current.lexeme.equals("</history>")) {
             return;
         }else {
-            error("parseItems seeking tags: <accepted-def..., <rejected-def..., or  </history>");
+            error("parseItems seeking tags for accepted/rejected def, syn, umb, overlap or  </history>");
         }
     }
 
-     /* AccDedf -> "<accepted-def kinTerm=", string, date=, string,
-     *                  notes=, string "/>".
+    /*  AutoDefs -> '<auto-def type=', string, '>', Defs, '</auto-def>'.
+     *
+     *
+     */
+    void parseAutoDefs(TreeMap<String, ArrayList<Context.CB_Ptr>> autos)
+            throws KSParsingErrorException {
+        // the start tag has already been consumed
+        current = scanner.lookAhead();
+        while (current.lexeme.indexOf("<kinType") == 0) {
+            String kinType = readOneAttribute("kinType", "type", "parseAutoDefs");
+            if (autos.get(kinType) == null) {
+                autos.put(kinType, new ArrayList<Context.CB_Ptr>());
+            }
+            ArrayList<Context.CB_Ptr> ptrs = autos.get(kinType);
+            current = scanner.lookAhead();
+            while (current.lexeme.indexOf("<def") == 0) {
+                String[] vals, names = { "kinTerm", "clause-number" };
+                vals = readAttributes("def", names, "parseAutoDefs");
+                int cbNum = Integer.parseInt(vals[1]);
+                ptrs.add(new Context.CB_Ptr(vals[0], cbNum));
+                current = scanner.lookAhead();
+            }
+            scanner.readToken();  //  consume end tag
+            if (!current.lexeme.equals("</kinType>")) {
+                error("parseAutoDefs seeking tag: </kinType>");
+            }
+            current = scanner.lookAhead();
+        } // end tag </auto-def> is checked in calling method
+    }
+
+    /* AccDedf -> "<accepted-def kinTerm=", string, date=, string, notes=, string "/>",
+     *              AutoDefPairs, "</accepted-def>".
      * First: [tag: <accepted-def...]
      * Follow: [tags: <accepted-def..., <rejected-def..., </history> ]
      */
     void parseAccDef(ArrayList<Context.HistoryItem> items)
             throws KSParsingErrorException {
-        String[] vals, attributes = {"kinTerm", "date", "notes"};
+        String[] vals, attributes = {"kinTerm", "date", "rescinded", "notes"};
         vals = readAttributes("accepted-def", attributes, "parseAccDef");
         Context.AcceptedDefPtr ptr = new Context.AcceptedDefPtr(
-                vals[0], vals[1], vals[2]);
+                vals[0], vals[1], vals[2], vals[3]);
         items.add(ptr);
+        current = scanner.lookAhead();
+        if (current.lexeme.equals("<auto-defs>")) {
+            scanner.readToken();  //  consume start tag
+            current = scanner.lookAhead();  //  at least 1 pair required
+            if (current.lexeme.indexOf("<pair") != 0) {
+                error("parseAccDef seeking tag <pair ego=...");
+            }
+            while (current.lexeme.indexOf("<pair") == 0) {
+                attributes = new String[2];
+                attributes[0] = "ego";
+                attributes[1] = "alter";
+                Integer[] pair = new Integer[2];
+                vals = readAttributes("pair", attributes, "parseAccDef");
+                pair[0] = Integer.parseInt(vals[0]);
+                pair[1] = Integer.parseInt(vals[1]);
+                ptr.autoDefPairs.add(pair);
+                current = scanner.lookAhead(); 
+            }
+            if (!current.lexeme.equals("</auto-defs>")) {
+                error("parseAccDef seeking end tag </auto-defs>");
+            }
+            scanner.readToken();  //  consume end tag of auto-defs
+            current = scanner.lookAhead();  // look at next tag
+        }
+        if (current.lexeme.equals("</accepted-def>")) {
+            scanner.readToken();  //  consume end tag of accepted-defs
+        }else {
+            error("parseAccDef seeking end tag </accepted-def>");
+        }        
     }
 
 
@@ -1586,13 +1952,154 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
     */
     void parseRejectedDef(ArrayList<Context.HistoryItem> items)
             throws KSParsingErrorException {
-        String[] vals, attributes = {"kinTerm", "date", "notes", "sigString",
+        String[] vals, attributes = {"kinTerm", "date", "rescinded", "notes", "sigString",
             "protoLang", "protoKT"};
         vals = readAttributes("rejected-def", attributes, "parseRejectedDefs");
         Context.RejectedPropDefPtr ptr = new Context.RejectedPropDefPtr(
-                vals[0], vals[1], vals[2], vals[3], vals[4], vals[5]);
+                vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6]);
         items.add(ptr);
     }
+    
+    
+    /* Synonym -> <"typ-synonym primary=", string, "date=", string,
+     * "notes=", string, "synonym=", string, ">".
+     * */
+    void parseSynonymHistItem(ArrayList<Context.HistoryItem> items, String typ) 
+            throws KSParsingErrorException {
+        String tag = typ + "-synonym";
+        String[] vals, attributes = {"primary", "date", "rescinded", "notes", "synonym"};
+        vals = readAttributes(tag, attributes, "parseSynonymHistItem");
+        Context.HistoryItem item;
+        if (typ.equals("accepted")) {
+            item = new Context.AcceptedSynonym(vals[0], vals[1], vals[2], vals[3], vals[4]);
+        }else {
+            item = new Context.RejectedSynonym(vals[0], vals[1], vals[2], vals[3], vals[4]);
+        } // any 'typ' other than 'rejected' or 'accepted' will throw error in readAttributes
+        items.add(item);
+    }
+    
+    
+    /* Umbrella -> "<typ-umbrella primary=", string, "date=", string,
+     * "notes=", string, ">", SubTerms, "</typ-umbrella".
+     * */
+    void parseUmbrellaHistItem(ArrayList<Context.HistoryItem> items, String typ)
+            throws KSParsingErrorException {
+        String tag = typ + "-umbrella";
+        String[] vals, attributes = {"umbTerm", "date", "rescinded", "notes"};
+        vals = readAttributes(tag, attributes, "parseUmbrellaHistItem");
+        ArrayList<String> originalSubs = new ArrayList<String>(),
+                editedSubs = new ArrayList<String>(), newAdds = null;
+        current = scanner.lookAhead();
+        if (current.lexeme.equals("<original-sub-terms>")) {
+            scanner.readToken();  //  consume the start tag
+            current = scanner.lookAhead();
+            while (current.lexeme.indexOf("<sub-term") == 0) {
+                originalSubs.add(readOneAttribute("sub-term", "value", "parseUmbrellaHistItem"));
+                current = scanner.lookAhead();
+            }
+            if (!current.lexeme.equals("</original-sub-terms>")) {
+                error("parseUmbrellaHistItem seeking end tag </original-sub-terms>");
+            }
+            scanner.readToken();  //  consume the end tag
+            current = scanner.lookAhead();
+        }        
+        if (current.lexeme.equals("<edited-sub-terms>")) {
+            scanner.readToken();  //  consume the start tag
+            current = scanner.lookAhead();
+            while (current.lexeme.indexOf("<sub-term") == 0) {
+                editedSubs.add(readOneAttribute("sub-term", "value", "parseUmbrellaHistItem"));
+                current = scanner.lookAhead();
+            }
+            if (!current.lexeme.equals("</edited-sub-terms>")) {
+                error("parseUmbrellaHistItem seeking end tag </edited-sub-terms>");
+            }
+            scanner.readToken();  //  consume the end tag
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.equals("<added-sub-terms>")) {
+            scanner.readToken();  //  consume the start tag
+            newAdds = new ArrayList<String>();
+            current = scanner.lookAhead();
+            while (current.lexeme.indexOf("<sub-term") == 0) {
+                newAdds.add(readOneAttribute("sub-term", "value", "parseUmbrellaHistItem"));
+                current = scanner.lookAhead();
+            }
+            if (!current.lexeme.equals("</added-sub-terms>")) {
+                error("parseUmbrellaHistItem seeking end tag </added-sub-terms>");
+            }
+            scanner.readToken();  //  consume the end tag
+        }
+        Context.HistoryItem item;
+        if (typ.equals("accepted")) {
+            item = new Context.AcceptedUmbrella(vals[0], vals[1], vals[2], vals[3], originalSubs, editedSubs);
+            ((Context.AcceptedUmbrella) item).addedSubTerms = newAdds;
+        } else {
+            item = new Context.RejectedUmbrella(vals[0], vals[1], vals[2], vals[3], originalSubs);
+        } // any 'typ' other than 'rejected' or 'accepted' will throw error in readAttributes
+        items.add(item);
+        current = scanner.readToken(); // consume next, which must be end tag
+        if (!current.lexeme.equals("</" + tag + ">")) {
+            error("parseUmbrellaHistItem seeking end tag " + "</" + tag + ">");
+        }
+    }
+    
+    
+    void parseUmbrella2Synonyms(ArrayList<Context.HistoryItem> items) 
+            throws KSParsingErrorException {
+        String[] vals, attributes = {"umbTerm", "date", "rescinded", "newKey", "notes"};
+        vals = readAttributes("umbrella-into-synonyms", attributes, "parseUmbrella2Synonyms");
+        ArrayList<String> subs = new ArrayList<String>();
+        current = scanner.lookAhead();
+        if (current.lexeme.equals("<sub-terms>")) {
+            scanner.readToken();  //  consume the start tag
+            current = scanner.lookAhead();
+            while (current.lexeme.indexOf("<sub-term") == 0) {
+                subs.add(readOneAttribute("sub-term", "value", "parseUmbrella2Synonyms"));
+                current = scanner.lookAhead();
+            }
+            if (!current.lexeme.equals("</sub-terms>")) {
+                error("parseUmbrella2Synonyms seeking end tag </sub-terms>");
+            }
+            scanner.readToken();  //  consume the end tag
+        }
+        ArrayList<String> syns = new ArrayList<String>();
+        current = scanner.lookAhead();
+        if (current.lexeme.equals("<syn-terms>")) {
+            scanner.readToken();  //  consume the start tag
+            current = scanner.lookAhead();
+            while (current.lexeme.indexOf("<syn-term") == 0) {
+                syns.add(readOneAttribute("syn-term", "value", "parseUmbrella2Synonyms"));
+                current = scanner.lookAhead();
+            }
+            if (!current.lexeme.equals("</syn-terms>")) {
+                error("parseUmbrella2Synonyms seeking end tag </syn-terms>");
+            }
+            scanner.readToken();  //  consume the end tag
+        }
+        current = scanner.readToken(); // consume next, which must be end tag
+        if (!current.lexeme.equals("</umbrella-into-synonyms>")) {
+            error("parseUmbrellaHistItem seeking end tag " + "</umbrella-into-synonyms>");
+        }
+        Context.HistoryItem item = new Context.UmbrellaIntoSyns(vals[0], vals[1], 
+                vals[2], vals[4], subs, syns, vals[3]);
+        items.add(item);
+    }
+    
+    
+    void parseOverlapHistItem(ArrayList<Context.HistoryItem> items, String typ) 
+            throws KSParsingErrorException {
+        String tag = typ + "-overlap";
+        String[] vals, attributes = {"term1", "date", "rescinded", "notes", "term2"};
+        vals = readAttributes(tag, attributes, "parseOverlapHistItem");
+        Context.HistoryItem item;
+        if (typ.equals("accepted")) {
+            item = new Context.AcceptedOverlap(vals[0], vals[1], vals[2], vals[3], vals[4]);
+        }else {
+            item = new Context.RejectedOverlap(vals[0], vals[1], vals[2], vals[3], vals[4]);
+        } // any 'typ' other than 'rejected' or 'accepted' will throw error in readAttributes
+        items.add(item);
+    }
+    
 
     /*
     KinTypeIndex -> Entries, KinTypeIndex.
@@ -1793,9 +2300,10 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             if (ctrs.size() != 3) {
                 error("parseDyadComponents did not find 3 counters.");
             }
-            dy.pcCounter = (Integer) ctrs.get(0);
-            dy.sCounter = (Integer) ctrs.get(1);
-            dy.starCounter = (Integer) ctrs.get(2);
+            // The 3 counters were deleted from Dyads 2011-09-12.
+//            dy.pcCounter = (Integer) ctrs.get(0);
+//            dy.sCounter = (Integer) ctrs.get(1);
+//            dy.starCounter = (Integer) ctrs.get(2);
         } else if (attr.equals("kinTerm=")) {
             dy.kinTerm = val;
         } else if (attr.equals("kinTermType=")) {
@@ -2066,26 +2574,26 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             ktd.eqcSigStruct = readTagEnclosedText("eqcSigStruct", "parseKinTermDef");
             current = scanner.lookAhead();
         }
-        if (current.lexeme.equals("<comment>")) {  // optional comments
-            ktd.comments = readTagEnclosedText("comment", "parseKinTermDef");
+        if (current.lexeme.indexOf("<comments") == 0) {  // optional comments
+            ktd.comments = readOneAttribute("comments", "text", "parseKinTermDef");
             current = scanner.lookAhead();
         }
-        current = scanner.readToken(); // must be <domain-theory> tag
-        if (!current.lexeme.equals("<domain-theory>")) {
-            error("parseKinTermDef seeking tag '<domain-theory>'. ");
+        current = scanner.lookAhead(); //  check for <domain-theory> tag
+        if (current.lexeme.equals("<domain-theory>")) {
+            scanner.readToken(); // consume <domain-theory> tag
+            ktd.domTh = parseDT_Highlights();
+            current = scanner.readToken(); // must be </domain-theory> tag
+            if (!current.lexeme.equals("</domain-theory>")) {
+                error("parseKinTermDef seeking tag '</domain-theory>'. ");
+            }
+            ktd.domTh.addTerm(ktd);
         }
-        ktd.domTh = parseDT_Highlights();
-        current = scanner.readToken(); // must be <domain-theory> tag
-        if (!current.lexeme.equals("</domain-theory>")) {
-            error("parseKinTermDef seeking tag '</domain-theory>'. ");
-        }
-        ktd.domTh.addTerm(ktd);
         parseDefinitions(ktd); // min 1 def'n required
         current = scanner.lookAhead();
         if (current.lexeme.equals("<expandedDefs>")) {
             parseExpandedDefs(ktd);
         }
-        current = scanner.readToken(); // must be divorceYr tag
+        current = scanner.readToken(); // must be end tag
         if (!current.lexeme.equals("</kin-term-def>")) {
             error("parseKinTermDef seeking tag '</kin-term-def>'. ");
         }
@@ -2130,17 +2638,23 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         }
     }
 
-    /* ClauseBody -> "<clause>", PCString, PCStringStruct,
+    /* ClauseBody -> "<clause level=", integer, ">", PCString, PCStringStruct,
                         Literal, Literals, "</clause>".
 	 First: [<clause>]
  	 Follow: [<clause>, </definitions>, </expandedDefs>, </kin-term-def>]
 	*/
     ClauseBody parseClauseBody() throws KSParsingErrorException {
-        current = scanner.readToken(); // must be start tag of clause
-        if (!current.lexeme.equals("<clause>")) {
+        current = scanner.lookAhead(); // must be start tag of clause
+        if (current.lexeme.indexOf("<clause") != 0) {
             error("parseClauseBody seeking tag '<clause>'. ");
         }
         ClauseBody cb = new ClauseBody();
+        if (current.lexeme.indexOf("<clause level=") == 0) {
+            String lvl = readOneAttribute("clause", "level", "parseClauseBody");
+            cb.level = Integer.parseInt(lvl);
+        } else {
+            scanner.readToken(); // consume start tag with no attribute
+        }
         current = scanner.lookAhead();
         if (current.lexeme.equals("<pc-string>")) {
             cb.pcString = readTagEnclosedText("pc-string", "parseClauseBody");
@@ -2167,7 +2681,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
     void parseClauseBodies(KinTermDef ktd, ArrayList<Object> list)
                 throws KSParsingErrorException {
         current = scanner.lookAhead(); // must be tag
-        if (current.lexeme.equals("<clause>")) {
+        if (current.lexeme.indexOf("<clause") == 0) {
             ClauseBody cb = parseClauseBody();
             list.add(cb);
             cb.ktd = ktd;
@@ -2299,7 +2813,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
     void parseQuestions(Issue issue) throws KSParsingErrorException {
         // start tag <questions> has already been consumed
         current = scanner.lookAhead(); // must be start tag <qn>
-        String qn = readTagEnclosedText("qn", "parseQuestions");
+        String qn = readOneAttribute("qn", "text", "parseQuestions");
         issue.questions.add(qn);
         current = scanner.lookAhead(); // must be start tag <qn>
         // There may be zero or more other questions
@@ -2454,7 +2968,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
     ArrayList<Object> parseCBList() throws KSParsingErrorException {
         ArrayList<Object> list = new ArrayList<Object>();
         current = scanner.lookAhead();
-        while (current.lexeme.equals("<clause>")) {
+        while (current.lexeme.startsWith("<clause")) {
             ClauseBody cb = parseClauseBody();
             list.add(cb);
             current = scanner.lookAhead();
@@ -2542,7 +3056,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         scanner.readToken(); // consume the start tag
         int start = current.lexeme.indexOf("\"") +1,
             stop = current.lexeme.indexOf("\"", start);
-        Discriminator dis = new Discriminator();
+        DataRequest dis = new DataRequest();
         dis.kinTerm = current.lexeme.substring(start, stop);
         current = scanner.lookAhead(); // may be start tag of optional <processed> block
         if (current.lexeme.equals("<processed>")) {

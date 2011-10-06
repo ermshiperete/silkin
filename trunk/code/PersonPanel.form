@@ -91,13 +91,7 @@
                           <Component id="alterAdrTerm" alignment="0" pref="264" max="32767" attributes="0"/>
                           <Component id="recipAdrTerm" alignment="0" pref="264" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="confirmKT" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="confirmRKT" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="confirmKTAdr" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="confirmRKTAdr" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <EmptySpace min="-2" pref="93" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -170,30 +164,24 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="alterRefTerm" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="confirmKT" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="recipRefTerm" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="confirmRKT" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="recipRefTerm" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="alterAdrTerm" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="confirmKTAdr" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="recipAdrTerm" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="confirmRKTAdr" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Component id="jScrollPane1" alignment="0" max="32767" attributes="1"/>
@@ -391,22 +379,6 @@
         <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="recipRefTermFocusLost"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="confirmKT">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Confirm"/>
-      </Properties>
-      <Events>
-        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="confirmKTItemStateChanged"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="confirmRKT">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Confirm"/>
-      </Properties>
-      <Events>
-        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="confirmRKTItemStateChanged"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ego addresses Alter:"/>
@@ -434,16 +406,6 @@
       <Events>
         <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="recipAdrTermFocusGained"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="confirmKTAdr">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Confirm"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="confirmRKTAdr">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Confirm"/>
-      </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>

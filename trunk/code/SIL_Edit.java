@@ -118,15 +118,13 @@ public class SIL_Edit extends JFrame {
         editableItem = new JCheckBoxMenuItem();
         getSuggestionsItem = new JMenuItem();
         actOnSuggsItem = new JMenuItem();
+        actOnSuggsItem.setEnabled(false);
         returnToSuggsItem = new JMenuItem();
-        helpMenu = new JMenu();
-        helpGetStartedItem = new JMenuItem();
-        helpDrawChartsItem = new JMenuItem();
-        helpEditChartsItem = new JMenuItem();
-        helpNewSuggestionsItem = new JMenuItem();
-        helpProcessSuggestionsItem = new JMenuItem();
+        helpMenu = new HelpFrame.HMenu();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // Initialize help window, but keep invisible
+        HelpFrame.help = new HelpFrame();
 
         fileMenu.setText("File");
 
@@ -267,7 +265,6 @@ public class SIL_Edit extends JFrame {
                 editPrefsItemActionPerformed(evt);
             }
         });
-        editPrefsItem.setEnabled(false);
         editMenu.add(editPrefsItem);
 
         editContextItem.setText("Edit Context ...");
@@ -368,6 +365,7 @@ public class SIL_Edit extends JFrame {
 
         kinTermButtonGroup.add(kinTmAdrBtn);
         kinTmAdrBtn.setText("Kin Term (Adr)");
+        kinTmAdrBtn.setEnabled(false);
         kinTmAdrBtn.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent evt) {
@@ -388,6 +386,7 @@ public class SIL_Edit extends JFrame {
 
         kinTermButtonGroup.add(ltrAdrBtn);
         ltrAdrBtn.setText("Letter (Adr)");
+        ltrAdrBtn.setEnabled(false);
         ltrAdrBtn.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent evt) {
@@ -468,61 +467,13 @@ public class SIL_Edit extends JFrame {
         returnToSuggsItem.setEnabled(false);
 
         jMenuBar1.add(contextMenu);
-
+        
         helpMenu.setText("Help");
-
-        helpGetStartedItem.setText("Getting Started");
-        helpGetStartedItem.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent evt) {
-                helpGetStartedItemActionPerformed(evt);
-            }
-        });
-        helpMenu.add(helpGetStartedItem);
-
-        helpDrawChartsItem.setText("Drawing Charts");
-        helpDrawChartsItem.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent evt) {
-                helpDrawChartsItemActionPerformed(evt);
-            }
-        });
-        helpMenu.add(helpDrawChartsItem);
-
-        helpEditChartsItem.setText("Editing Charts");
-        helpEditChartsItem.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent evt) {
-                helpEditPersonsItemActionPerformed(evt);
-            }
-        });
-        helpMenu.add(helpEditChartsItem);
-
-        helpNewSuggestionsItem.setText("Getting New Suggestions");
-        helpNewSuggestionsItem.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent evt) {
-                helpNewSuggestionsItemActionPerformed(evt);
-            }
-        });
-        helpMenu.add(helpNewSuggestionsItem);
-        helpNewSuggestionsItem.setEnabled(false);
-
-        helpProcessSuggestionsItem.setText("Acting on Suggestions");
-        helpProcessSuggestionsItem.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent evt) {
-                helpProcessSuggestionsItemActionPerformed(evt);
-            }
-        });
-        helpMenu.add(helpProcessSuggestionsItem);
-        helpProcessSuggestionsItem.setEnabled(false);
-
         jMenuBar1.add(helpMenu);
-
+        
         setJMenuBar(jMenuBar1);
 
-        chart = new KinEditPanel();
+        chart = new ChartPanel();
         chart.init(this);
         chartScrollPane.setPreferredSize(new Dimension(877, 350));
         chartScrollPane.setViewportView(chart);
@@ -649,8 +600,14 @@ public class SIL_Edit extends JFrame {
     }
 
     private void editPrefsItemActionPerformed(ActionEvent evt) {
-        // TODO Create a PrefsPanel (or Frame?) that pops up, can be edited,
-        // auto-saves, and vanishes.
+        if (chart.saveFile == null) {
+            String msg3 = "You must edit the Preferences for a particular context (SILK file).";
+            msg3 += "First open a context (or create & save one), then set it's preferences.";
+            JOptionPane.showMessageDialog(this, msg3, "Cannot Perform Your Command", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        EditPrefsWindow epw = new EditPrefsWindow();
+        epw.setVisible(true);        
     }
 
     private void editContextItemActionPerformed(ActionEvent evt) {        
@@ -733,10 +690,72 @@ public class SIL_Edit extends JFrame {
     
     private void distinctAdrItemActionPerformed(ActionEvent evt) {
         if (distinctAdrItem.isSelected()) {
+            String msg = "Do you want to copy all the reference terms you have\n"
+                    + "gathered to date as terms of address also?";
+            Object[] btns = {"Copy Them", "Do Not Copy", "Cancel"};
+            int ch = JOptionPane.showOptionDialog(this,
+                    msg, "Initializing Terms of Address",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null, btns, btns[0]);
+            if (ch == JOptionPane.CANCEL_OPTION) {
+                distinctAdrItem.setSelected(false);
+                return;
+            }
+            boolean copy = (ch == JOptionPane.YES_OPTION);
             personPanel1.setDistinctAdrTerms(true);
-        }else {
+            activateDomThAdr(copy);
+        } else { // De-selection            
+            String msg = "You currently have separate data for Terms of Address.\n"
+                    + "This action will ERASE all that data. Proceed?";
+            Object[] btns = {"Erase Everything", "Cancel"};
+            int ch = JOptionPane.showOptionDialog(this,
+                    msg, "Erasing Terms of Address",
+                    JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.WARNING_MESSAGE,
+                    null, btns, btns[1]);
+            if (ch == JOptionPane.CANCEL_OPTION) {
+                distinctAdrItem.setSelected(true);
+                return;
+            }
             personPanel1.setDistinctAdrTerms(false);
+            deactivateDomThAdr();
         }
+    }
+
+    void activateDomThAdr(boolean copy) {
+        Context ctxt = Context.current;
+        DomainTheory dtRef = null, dtAdr = null;
+        try {
+            dtRef = ctxt.domTheoryRef();
+            dtAdr = new DomainTheory(dtRef);  //  i.e. clone it
+            dtAdr.addressTerms = true;
+            dtAdr.languageName = ctxt.languageName + "(Adr)";
+            if (! copy) dtAdr.theory = new TreeMap();
+            ctxt.addDomainTheory(dtAdr);
+        } catch (Exception ex) {
+            MainPane.displayError("Internal error while accessing terms of reference",
+                    "Fatal Error", JOptionPane.WARNING_MESSAGE);
+        }
+        ctxt.learningHistoryAdr = new 
+                TreeMap<String, ArrayList<Context.HistoryItem>>(ctxt.learningHistoryRef);
+        if (copy) {
+            dtAdr.dyadsDefined = dtRef.dyadsDefined.convertToAdr();
+            dtAdr.dyadsUndefined = dtRef.dyadsUndefined.convertToAdr();
+            dtAdr.issuesForUser.putAll(dtRef.issuesForUser);
+            ctxt.ktm.addAdrCloneTerms();
+            ctxt.autoDefAdr = new TreeMap<String, ArrayList<Context.CB_Ptr>>(ctxt.autoDefRef);
+        }else {
+            ctxt.autoDefAdr = new TreeMap<String, ArrayList<Context.CB_Ptr>>();
+        }
+    }
+    
+    void deactivateDomThAdr() {
+        Context ctxt = Context.current;
+        ctxt.domTheoryAdrNullify();
+        ctxt.autoDefAdr = null;
+        ctxt.learningHistoryAdr = null;
+        ctxt.ktm.cleanAdrTerms();
     }
 
     private void editableItemActionPerformed(ActionEvent evt) {
@@ -747,6 +766,10 @@ public class SIL_Edit extends JFrame {
             chart.editable = false;
             Context.current.editable = false;
         }
+    }
+    
+    public void setActOnSuggsEnabled(boolean yn) {
+        actOnSuggsItem.setEnabled(yn);
     }
 
 
@@ -770,6 +793,7 @@ public class SIL_Edit extends JFrame {
                 priorFamSerial = ctxt.famSerNumGen;
             DomainTheory dtRef = ctxt.domTheoryRef();
             Learned_DT learner = new Learned_DT(dtRef);
+            loadParameters(learner);
             doActiveLearning(learner);
             // in case artificial people were created during learning
             ctxt.resetTo(priorIndSerial, priorFamSerial);
@@ -778,6 +802,7 @@ public class SIL_Edit extends JFrame {
             if (ctxt.distinctAdrTerms) {
                 DomainTheory dtAdr = ctxt.domTheoryAdr();
                 learner = new Learned_DT(dtAdr);
+                loadParameters(learner);
                 doActiveLearning(learner);
                 ctxt.resetTo(priorIndSerial, priorFamSerial); 
                 suggestionsAdr = learner.issuesForUser;
@@ -804,6 +829,12 @@ public class SIL_Edit extends JFrame {
             String msg = "SILKin learning module encountered a SYSTEM error: " + exc;
             MainPane.displayError(msg, "System failure", JOptionPane.ERROR_MESSAGE);
         }
+        actOnSuggsItem.setEnabled(true);
+    }
+    
+    void loadParameters(Learned_DT learner) {
+        learner.doBaseCBs = learner.ctxt.doBaseCBs;
+        learner.doInduction = learner.ctxt.doInduction;
     }
 
     File makeHTMLfile(String lName) {
@@ -836,10 +867,12 @@ public class SIL_Edit extends JFrame {
             htmlFile = makeHTMLfile(baseName);
             if (!htmlFile.exists()) {  // 2nd tried langName - failed
                 msg += "\nNor can we find " + htmlFile.getName() + ".";
+                msg += "\nPerhaps you should Get New Suggestions.";
                 MainPane.displayError(msg, "Can't Find Suggestions", JOptionPane.ERROR_MESSAGE);
                 return;
             }else { // maybe this is it
                 msg += "\nBut we did find " + htmlFile.getName() + ".";
+                msg += "\nHit 'Cancel' if you meant to Get New Suggestions.";
                 Object[] btns = { "Use " + htmlFile.getName(), "Cancel" };
                 int ch = JOptionPane.showOptionDialog(this,
                         msg, "Looking for Suggestion File",
@@ -853,11 +886,13 @@ public class SIL_Edit extends JFrame {
         }
         decisionFrame = new DecisionFrame(suggs, suggsInFocus, htmlFile);
         decisionFrame.setVisible(true);
-        actOnSuggsItem.setEnabled(false);
         returnToSuggsItem.setEnabled(true);
     }
 
     private void returnToSuggestionsItemActionPerformed(ActionEvent evt) {
+        try {
+            storeInfo();
+        }catch(Exception ex) {  }  //  nothing can go wrong ....
         if (decisionFrame == null || ! decisionFrame.isShowing()) {
             actOnSuggsActionPerformed(evt);
         }else {
@@ -908,7 +943,6 @@ public class SIL_Edit extends JFrame {
         EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new SIL_Edit().setVisible(true);
                 try {
                     SILKin.mainPane = new MainPane("SILKin: Kinship Analysis");
                     Predicate.loadPrimitiveNames();
@@ -918,8 +952,9 @@ public class SIL_Edit extends JFrame {
                 } catch (Exception e) {
                     System.err.println(e);
                 }
+                new SIL_Edit().setVisible(true);
                 if (helpScreenOnStartUp) {
-                    editWindow.helpGetStartedItemActionPerformed(null);
+                    HelpFrame.help.displayPage(HelpFrame.START, "screen");
                 }
             }
         });
@@ -1007,7 +1042,7 @@ public class SIL_Edit extends JFrame {
             }            
         }
         //  Must build nodes for each person who is connected to currentEgo
-        KinEditPanel.doIndexes = true;
+        ChartPanel.doIndexes = true;
         Individual ego = Context.current.individualCensus.get(egoNum);
         for (Individual i : Context.current.individualCensus) {
             i.seenB4 = 0;
@@ -1136,6 +1171,7 @@ public class SIL_Edit extends JFrame {
     }
 
     void applyDef(KinTermDef newDef, DomainTheory dt) {
+        chart.recomputingDyads = true;
         KinTypeIndex kti = Context.current.kti;
         kti.updateIndex(Context.current);
         DomainTheory.current = dt;
@@ -1160,9 +1196,8 @@ public class SIL_Edit extends JFrame {
                         dad.makePath(nod.miniPreds, dad.alter);
                         dt.dyadsDefined.dyAdd(dad);
                         if (infoPerson == dad.alter && currentEgo == dad.ego.serialNmbr) {
-                            PersonPanel pPanel = getPPanel();
-                            pPanel.fillTextField(nod, "primary", dt.addressTerms);
-                            pPanel.dirty = true;
+                            personPanel1.fillTextField(nod, "primary", dt.addressTerms);
+                            personPanel1.dirty = true;
                             chart.dirty = true;
                         }
                     }
@@ -1173,7 +1208,25 @@ public class SIL_Edit extends JFrame {
                 }
             }
         }
+        chart.recomputingDyads = false;
+        personPanel1.debugDyads();
+    }   
+    
+    
+    public void removeDef(DomainTheory dt, int egoInt, int alterInt, String term) {
+        Node nod = ktm.getCell(egoInt, alterInt);
+        String pcString = nod.pcString;
+        String clas = (dt.addressTerms ? "address" : "reference");
+        nod.removeTerm(term, "primary", clas);
+        dt.dyadsDefined.removeDyad(dt, egoInt, alterInt, term, pcString);
+        Individual alter = Context.current.individualCensus.get(alterInt);
+        if (infoPerson == alter && currentEgo == egoInt) {
+            personPanel1.fillTextField(nod, "primary", dt.addressTerms);
+            personPanel1.dirty = true;
+            chart.dirty = true;
+        }
     }
+    
 
     int suggsInFocus;
 
@@ -1212,7 +1265,7 @@ public class SIL_Edit extends JFrame {
         //  NOTE:  When simulations have ended and real User is employed, I must assure that the entries
         //	   in DyadsUndefined for erroneous terms (e.g. sistex) are removed from the tree once the
         //	   activity dyads have been corrected.  that is currently done in DyadTMap.summaryString()
-        int maxConf = chart.ignorable / 2;
+        int maxConf = learner.ctxt.ignorableP / 2;
         learner.ctxt.simDataGen = true;
         Context.current = learner.ctxt;
         DomainTheory.current = learner;
@@ -1224,7 +1277,7 @@ public class SIL_Edit extends JFrame {
         while (dyadIter.hasNext()) {
             String kterm = (String) dyadIter.next();
             if (nonTermsFound || learner.dyadsUndefined.containsKey(kterm)) {
-                ArrayList<Object> validationIssues = learner.validateNewDyads(kterm, chart.maxNoise);
+                ArrayList<Object> validationIssues = learner.validateNewDyads(kterm, learner.ctxt.maxNoiseP);
                 learner.postAnomaliesForUser(kterm, validationIssues);
             }
         }  //  end of 1st loop thru kinTerms in theory
@@ -1233,7 +1286,7 @@ public class SIL_Edit extends JFrame {
         while (dyadIter.hasNext()) {
             String kterm = (String) dyadIter.next();
             if (learner.dyadsUndefined.avgDyadsPerPCStr(kterm) >= minDyadsPerPCStr) {
-                learner.learnKinTerm(kterm, chart.maxNoise, chart.ignorable, maxConf, learner);
+                learner.learnKinTerm(kterm, learner.ctxt.maxNoiseP, learner.ctxt.ignorableP, maxConf, learner);
                 ctr++;
             }
         }  //  end of 2nd loop thru kinTerms in DyadTMap
@@ -1251,7 +1304,7 @@ public class SIL_Edit extends JFrame {
                 String kterm = (String) entry.getKey();
                 TreeMap pos = (TreeMap) entry.getValue(),
                         neg = learner.makeNEG(kterm, pos);
-                learner.detectSynonymsAndUmbrellas(kterm, pos, neg, chart.maxNoise);
+                learner.detectSynonymsAndUmbrellas(kterm, pos, neg, learner.ctxt.maxNoiseP);
             }  //  end of loop thru definedTerm dyads
         }
         // Now analyze all potentialUmbrellas & synonyms found in this loop
@@ -1272,7 +1325,7 @@ public class SIL_Edit extends JFrame {
     // Variables declaration
     public JMenuItem actOnSuggsItem;
     private JMenuItem adminSILKinItem;
-    public KinEditPanel chart;
+    public ChartPanel chart;
     private JPanel chartHolderPanel;
     private JPanel chartHolderHorizontal;
     private JLabel chartLabel;
@@ -1296,11 +1349,6 @@ public class SIL_Edit extends JFrame {
     private JRadioButtonMenuItem firstNameBtn;
     private JMenuItem getSuggestionsItem;
     private JMenu helpMenu;
-    private JMenuItem helpDrawChartsItem;
-    private JMenuItem helpEditChartsItem;
-    private JMenuItem helpGetStartedItem;
-    private JMenuItem helpNewSuggestionsItem;
-    private JMenuItem helpProcessSuggestionsItem;
     private JRadioButtonMenuItem initialsBtn;
     private JMenuBar jMenuBar1;
     private JPopupMenu.Separator jSeparator1;
@@ -1308,10 +1356,10 @@ public class SIL_Edit extends JFrame {
     private JPopupMenu.Separator jSeparator3;
     private JPopupMenu.Separator jSeparator4;
     private ButtonGroup kinTermButtonGroup;
-    private JRadioButtonMenuItem kinTmAdrBtn;
+    JRadioButtonMenuItem kinTmAdrBtn;
     private JRadioButtonMenuItem kinTmRefBtn;
     private JMenu labelMenu;
-    private JRadioButtonMenuItem ltrAdrBtn;
+    JRadioButtonMenuItem ltrAdrBtn;
     private JRadioButtonMenuItem ltrRefBtn;
     private JRadioButtonMenuItem lastNameBtn;
     private JMenuItem loadItem;

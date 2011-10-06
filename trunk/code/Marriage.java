@@ -55,7 +55,7 @@ public class Marriage  {
 	String beginq="9";
 	String divorceYr="";
 	String endq="9";
-	String comment="No Comment";
+	String comment="";
 	String reason="NA";
 	int id=knots.size() +1;
 	int mid;
@@ -194,7 +194,7 @@ public class Marriage  {
             people.add((Individual)p);
             sp = sp.getNext();
         }
-        KinEditPanel.parent.chart.delayedAreaCk(people);
+        ChartPanel.parent.chart.delayedAreaCk(people);
     }
 
     public void lineageDeltaMove(int dx, int dy, ArrayList<Individual> people) {

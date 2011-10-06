@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.event.*;
 import java.util.*;
 
 /** This class creates the Action Box for a Proposed Definition in the
@@ -150,7 +149,7 @@ public class ActionPropDef extends JPanel {
 
     private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
         Context ctxt = Context.current;
-        if (accepted) {
+        if (accepted) {  
             try {
                 KinTermDef newDef = new KinTermDef(propDef.kinTerm);
                 newDef.comments = FamilyPanel.convertBannedCharacters(notesText.getText());
@@ -161,7 +160,7 @@ public class ActionPropDef extends JPanel {
                 newDef.makeSigStrings();
                 dt.addTerm(newDef);
                 Context.AcceptedDefPtr ptr;
-                ptr = new Context.AcceptedDefPtr(propDef.kinTerm, UDate.today(), newDef.comments);
+                ptr = new Context.AcceptedDefPtr(propDef.kinTerm, UDate.today(), "false", newDef.comments);
                 ptr.postToHistory(learningHistory);
                 // Move all dyads for this kinTerm to "Defined" category.
                 TreeMap<String, ArrayList<Object>> dyads;
@@ -169,16 +168,16 @@ public class ActionPropDef extends JPanel {
                 dt.dyadsDefined.put(newDef.kinTerm, dyads);
                 SIL_Edit.editWindow.chart.dirty = true;
                 //  Set up auto-def for this KTD
-                TreeMap<String, ArrayList<String>> autoDef =
+                TreeMap<String, ArrayList<Context.CB_Ptr>> autoDef = // autoDef: kinType => AList of Context.CB_Ptrs
                         (dt.addressTerms ? ctxt.autoDefAdr : ctxt.autoDefRef);
                 for (Object o : newDef.expandedDefs) {
                     ClauseBody cb = (ClauseBody)o;
                     String kinType = cb.pcString;
                     if (autoDef.get(kinType) == null) {
-                        autoDef.put(kinType, new ArrayList<String>());
+                        autoDef.put(kinType, new ArrayList<Context.CB_Ptr>());
                     }
-                    ArrayList<String> defList = autoDef.get(kinType);
-                    defList.add(newDef.kinTerm);
+                    ArrayList<Context.CB_Ptr> defList = autoDef.get(kinType);
+                    defList.add(new Context.CB_Ptr(newDef.kinTerm, cb.seqNmbr));
                 }
                 String msg = "Would you like to apply this new definition to all\n" +
                             "Ego/Alter pairs that it fits?";
@@ -186,10 +185,11 @@ public class ActionPropDef extends JPanel {
                         "Apply Definition?", JOptionPane.YES_NO_OPTION);
                 if (decision == JOptionPane.YES_OPTION) {
                     SIL_Edit.editWindow.applyDef(newDef, dt);
-                    if (! SIL_Edit.editWindow.chart.distinctAdrTerms) {
-                        DomainTheory altDT = (dt.addressTerms ? dt.ctxt.domTheoryRef() : dt.ctxt.domTheoryAdr());
-                        SIL_Edit.editWindow.applyDef(newDef, altDT);
-                    }
+                    //  With implicit Address Terms, we don't want this dual posting.
+//                    if (! SIL_Edit.editWindow.chart.distinctAdrTerms) {
+//                        DomainTheory altDT = (dt.addressTerms ? dt.ctxt.domTheoryRef() : dt.ctxt.domTheoryAdr());
+//                        SIL_Edit.editWindow.applyDef(newDef, altDT);
+//                    }
                 }                
                 //  Mark this suggestion as processed and update menu
                 papa.markProcessed(suggNmbr);
@@ -200,7 +200,7 @@ public class ActionPropDef extends JPanel {
             }
         }else if (rejected) {
             Context.RejectedPropDefPtr reject =
-                    new Context.RejectedPropDefPtr(propDef.kinTerm, UDate.today(), 
+                    new Context.RejectedPropDefPtr(propDef.kinTerm, UDate.today(), "false",
                     FamilyPanel.convertBannedCharacters(notesText.getText()),
                     propDef.eqc.sigString,
                     propDef.eqc.prototype.languageName,
@@ -208,7 +208,7 @@ public class ActionPropDef extends JPanel {
             reject.postToHistory(learningHistory);
             papa.markProcessed(suggNmbr);
         }
-        reset();
+        reset(); 
     }//GEN-LAST:event_doneButtonActionPerformed
 
     

@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.event.*;
 import java.util.*;
 
 /** This class creates the Action Box for a Proposed Definition in the
@@ -10,11 +9,14 @@ import java.util.*;
  *
  * Created on Feb 23, 2011, 3:21:57 PM
  */
-public class ActionUmbrella extends javax.swing.JPanel {
+public class ActionUmbrella extends JPanel {
     // Logical variables.  GUI variables at end of file.
     DecisionFrame papa;
+    TreeMap<String, ArrayList<Context.HistoryItem>> learningHistory;
     UmbrellaCandidate umb;
     int suggNmbr;
+    DomainTheory dt = null;  // set externally by DecisionFrame
+    ArrayList<String> priorSubTerms;
 
 
     /** Creates new form ActionUmbrella */
@@ -41,7 +43,6 @@ public class ActionUmbrella extends javax.swing.JPanel {
         acceptBtn = new javax.swing.JRadioButton();
         rejectBtn = new javax.swing.JRadioButton();
         noActionBtn = new javax.swing.JRadioButton();
-        editBtn = new javax.swing.JRadioButton();
         synonymBtn = new javax.swing.JRadioButton();
         commentsScrollPane = new javax.swing.JScrollPane();
         comments = new javax.swing.JTextArea();
@@ -79,16 +80,8 @@ public class ActionUmbrella extends javax.swing.JPanel {
             }
         });
 
-        actionBtnGrp.add(editBtn);
-        editBtn.setText("Edit Sub-Terms");
-        editBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editBtnActionPerformed(evt);
-            }
-        });
-
         actionBtnGrp.add(synonymBtn);
-        synonymBtn.setText("This is really a Synonym");
+        synonymBtn.setText("These are really Synonyms");
         synonymBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 synonymBtnActionPerformed(evt);
@@ -127,20 +120,17 @@ public class ActionUmbrella extends javax.swing.JPanel {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                         .add(layout.createSequentialGroup()
-                            .add(commentsScrollPane)
+                            .add(commentsScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
                             .addContainerGap())
                         .add(layout.createSequentialGroup()
                             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                 .add(acceptBtn)
                                 .add(noActionBtn))
                             .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 109, Short.MAX_VALUE)
-                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                 .add(rejectBtn)
-                                .add(editBtn))
-                            .addContainerGap(124, Short.MAX_VALUE))
-                        .add(layout.createSequentialGroup()
-                            .add(synonymBtn)
-                            .addContainerGap(314, Short.MAX_VALUE))
+                                .add(synonymBtn))
+                            .addContainerGap(56, Short.MAX_VALUE))
                         .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                             .add(doneBtn)
                             .add(30, 30, 30)))
@@ -166,10 +156,8 @@ public class ActionUmbrella extends javax.swing.JPanel {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(noActionBtn)
-                    .add(editBtn))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(synonymBtn)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                    .add(synonymBtn))
+                .add(35, 35, 35)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(umbTermLabel)
                     .add(umbTerm))
@@ -190,48 +178,126 @@ public class ActionUmbrella extends javax.swing.JPanel {
     public void load(UmbrellaCandidate uc, int nmbr) {
         umb = uc;
         suggNmbr = nmbr;
+        if (dt.addressTerms) {
+            learningHistory = dt.ctxt.learningHistoryAdr;
+        }else {
+            learningHistory = dt.ctxt.learningHistoryRef;
+        }
         // fill in primary term and subTerms
         umbTerm.setText(umb.kinTerm);
         Iterator subTmIter = umb.subTerms.keySet().iterator();
         String subText = (String)subTmIter.next();
         while (subTmIter.hasNext()) {
-            subText += "\n" + (String)subTmIter.next();
+            subText += ", " + (String)subTmIter.next();
         }
         subTerms.setText(subText);
-        subTerms.setEditable(false);
+        priorSubTerms = PersonPanel.getKinTerms(subText);
         noActionBtn.setSelected(true);
         comments.setText("");
     }
 
 
-
-
-
-
     private void acceptBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acceptBtnActionPerformed
-        // TODO add your handling code here:
+        subTerms.setEditable(true);
     }//GEN-LAST:event_acceptBtnActionPerformed
 
     private void noActionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noActionBtnActionPerformed
-        // TODO add your handling code here:
+      // No action; the button serves as a switch
     }//GEN-LAST:event_noActionBtnActionPerformed
 
     private void rejectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rejectBtnActionPerformed
-        // TODO add your handling code here:
+        subTerms.setEditable(false);
     }//GEN-LAST:event_rejectBtnActionPerformed
 
-    private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editBtnActionPerformed
-
     private void synonymBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_synonymBtnActionPerformed
-        // TODO add your handling code here:
+        // No action; the button serves as a switch
     }//GEN-LAST:event_synonymBtnActionPerformed
 
     private void doneBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneBtnActionPerformed
-        // TODO add your handling code here:
+        ArrayList<String> newSubTerms = PersonPanel.getKinTerms(subTerms.getText());
+        if (!acceptBtn.isSelected() && !newSubTerms.equals(priorSubTerms)) {
+            String msg = "You may only edit the Sub-Terms if you are accepting this umbrella.\n";
+            msg += "If you take No Action or Reject this suggestion, the suggestion is unchanged.\n";
+            msg += "To Accept with these edited Sub-Terms, click 'Accept' and then 'Done.'";
+            JOptionPane.showMessageDialog(papa, msg, "Operation Not Allowed", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Context.HistoryItem item;
+        if (acceptBtn.isSelected()) {
+            item = new Context.AcceptedUmbrella(umb.kinTerm, UDate.today(), "false",
+                   FamilyPanel.convertBannedCharacters(comments.getText()),
+                   priorSubTerms, newSubTerms);
+            ((Context.AcceptedUmbrella)item).addedSubTerms = postToDT();
+        }else if (rejectBtn.isSelected()) {
+            item = new Context.RejectedUmbrella(umb.kinTerm, UDate.today(), "false",
+                   FamilyPanel.convertBannedCharacters(comments.getText()),
+                   priorSubTerms);
+            postToDT();
+        }else if (synonymBtn.isSelected()) {
+            Object[] terms = new Object[newSubTerms.size() +1];
+            int cntr = 1;
+            terms[0] = umb.kinTerm;
+            for (String term : newSubTerms) {
+                terms[cntr++] = term;
+            }
+            String msg = "Choose below the primary term.\n" + 
+                    "All others are its synonyms.";
+            int ch = JOptionPane.showOptionDialog(papa, msg,
+                    "Pick the Primary Term",
+                    JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    terms,
+                    terms[0]);
+            if (ch == JOptionPane.CLOSED_OPTION) {
+                return;
+            }
+            String keyTerm = (String)terms[ch];
+            ArrayList<String> newSubs = new ArrayList<String>(newSubTerms);
+            newSubs.add(umb.kinTerm);
+            newSubs.remove(keyTerm);
+            item = new Context.UmbrellaIntoSyns(umb.kinTerm, UDate.today(), "false",
+                   FamilyPanel.convertBannedCharacters(comments.getText()),
+                   priorSubTerms, newSubs, keyTerm);
+            for (String sub : newSubs) {
+                dt.synonyms.put(sub, keyTerm);
+            }
+        }else return;  //  No Action
+        item.postToHistory(learningHistory);
+        papa.markProcessed(suggNmbr);
+        papa.reset();
     }//GEN-LAST:event_doneBtnActionPerformed
 
+    
+    ArrayList<String> postToDT() {
+        TreeMap theMap = null;
+        ArrayList<String> subs = null, newAdds = new ArrayList<String>();
+        if (acceptBtn.isSelected()) {
+            if (dt.umbrellas == null) {
+                dt.umbrellas = new TreeMap();
+            }
+            theMap = dt.umbrellas;
+            subs = PersonPanel.getKinTerms(subTerms.getText());
+        }else if (rejectBtn.isSelected()) {
+            if (dt.nonUmbrellas == null) {
+                dt.nonUmbrellas = new TreeMap();
+            }
+            theMap = dt.nonUmbrellas;
+            subs = priorSubTerms;
+        }
+        if (theMap.get(umb.kinTerm) == null) {
+            theMap.put(umb.kinTerm, new ArrayList<String>());
+        }
+        ArrayList<String> lst = (ArrayList<String>)theMap.get(umb.kinTerm); 
+        for (String s : subs) {
+            if (!lst.contains(s)) {
+                lst.add(s);
+                newAdds.add(s);
+            }
+        }
+        return newAdds;
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton acceptBtn;
@@ -239,7 +305,6 @@ public class ActionUmbrella extends javax.swing.JPanel {
     private javax.swing.JTextArea comments;
     private javax.swing.JScrollPane commentsScrollPane;
     private javax.swing.JButton doneBtn;
-    private javax.swing.JRadioButton editBtn;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButton noActionBtn;
     private javax.swing.JRadioButton rejectBtn;

@@ -11,6 +11,7 @@ import java.io.*;
 
         String otherTerm;
         ArrayList<Object> intersection, ktermDyads, otherTermDyads;
+        ArrayList<Dyad> dyadsProcessed = new ArrayList<Dyad>();
 
         public OverlapCandidate() {
         }  //  0-arg constructor for Serialization

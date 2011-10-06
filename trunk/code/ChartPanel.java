@@ -17,7 +17,7 @@ import java.io.*;
  *
  * @author Gary Morris, University of Pennsylvania
  */
-public class KinEditPanel extends JPanel implements MouseInputListener {
+public class ChartPanel extends JPanel implements MouseInputListener {
     // class variables
 
     static SIL_Edit parent;
@@ -43,12 +43,11 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
             tiedKnot = -1,
             whichHalf = -1;
     Line selectLine;
-    int maxNoise = 25,
-            ignorable = 5;
     boolean editable = true,
             dragged = false,
             resize = false,
             distinctAdrTerms = false,
+            recomputingDyads = false,
             loading = false;
     int originX = 0;
     int originY = 0;
@@ -331,18 +330,19 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
             }
             Context.current = new Context(dt);
             DomainTheory.current = dt;
-            dt = new DomainTheory(ctxtName + "(Adr)", auth, createDate, false);
-            dt.addressTerms = true;
-            dt.dyadsDefined = new DyadTMap();
-            dt.dyadsUndefined = new DyadTMap();
-            // Load Std Macros
-            macroIter = tempDT.theory.values().iterator();
-            while (macroIter.hasNext()) {
-                KinTermDef ktd = (KinTermDef) macroIter.next();
-                dt.addTerm(ktd);
-                dt.nonTerms.add(ktd.kinTerm);
-            }
-            Context.current.addDomainTheory(dt);
+            Context.current.dataAuthors.add(auth);
+//            dt = new DomainTheory(ctxtName + "(Adr)", auth, createDate, false);
+//            dt.addressTerms = true;
+//            dt.dyadsDefined = new DyadTMap();
+//            dt.dyadsUndefined = new DyadTMap();
+//            // Load Std Macros
+//            macroIter = tempDT.theory.values().iterator();
+//            while (macroIter.hasNext()) {
+//                KinTermDef ktd = (KinTermDef) macroIter.next();
+//                dt.addTerm(ktd);
+//                dt.nonTerms.add(ktd.kinTerm);
+//            }
+//            Context.current.addDomainTheory(dt);
         } catch (Exception e) {
             msg = "Fatal error while creating new context.\n" + e;
             MainPane.displayError(msg, "Internal Error", JOptionPane.ERROR_MESSAGE);
@@ -416,7 +416,7 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
         }
         if (newPerson != null) {
             // Attach the standard 'self' node and store it in the KTM
-            newPerson.node = Node.makeSelfNode();
+            newPerson.node = Node.makeSelfNode(distinctAdrTerms);
             newPerson.node.indiv = newPerson;
             int nmbr = newPerson.serialNmbr;
             parent.ktm.addNode(nmbr, nmbr, newPerson.node);
@@ -639,6 +639,12 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
         }
         lastKnot = whichKnot;
     }  //  end of method paint0
+    
+    public void setAlter(int serial) {
+        whichFolk = serial;
+        parent.infoPerson = Context.current.individualCensus.get(serial);
+        repaint();
+    }
 
     public void showInfo(Individual p) {
         if (!loading) {
@@ -733,7 +739,6 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
         if (!editable) {
             return;
         }
-//        repaint();
         int mouseX = event.getX(), mouseY = event.getY();
         boolean ctrlDn = event.isControlDown(),
                 shiftDn = event.isShiftDown(),
@@ -813,15 +818,17 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
                             // Love triumphs over all
                             mx.addSpouse(px);
                             try {
-                                newNode = createNode(ix, fx, "spouse");
+                                newNode = createNode(ix, fx, "spouse");                                
                             } catch (KSInternalErrorException e) {
-                                System.out.println("Node creation error: " + e);
+                                String msg = "Fatal error while creating new context.\n" + e;
+                                MainPane.displayError(msg, "Internal Error", JOptionPane.ERROR_MESSAGE);
                                 System.exit(9);
                             }
                             // If ix has a node, we just propogated it to family
                             // If not, then this is ix's new node (maybe null).
                             if (ix.node == null && newNode != null) {
                                 ix.node = newNode;
+                                showInfo(ix);
                             }
                             dirty = true;
                         } else {  // ix is already a spouse in fx. This is a deletion request.
@@ -874,15 +881,14 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
                                 newNode = createNode(ix, fx, "child");
                             } catch (KSInternalErrorException e) {
                                 String msg = "FATAL Node creation error:\n" + e;
-                                System.out.println(msg);
-                                MainPane.activity.log.append(msg);
+                                MainPane.displayError(msg, "Internal Error", JOptionPane.ERROR_MESSAGE);
                                 System.exit(9);
                             }
                             // If ix has a node, we just propogated it to family
                             // If not, then this is ix's new node (maybe null).
                             if (ix.node == null && newNode != null) {
                                 ix.node = newNode;
-//                                System.out.println("Actually used the value returned by createNode!");
+                                showInfo(ix);
                             }
                             dirty = true;
                         } else {  //  Removing a child
@@ -966,10 +972,7 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
                     whichKnot = which;
                 }
                 Family fam = Marriage.knots.get(whichKnot);
-                Individual person = fam.husband;
-                if (person == null) {
-                    person = fam.wife;
-                }
+                Individual person = (fam.husband != null ? fam.husband : fam.wife);
                 try {
                     fam.delete();
                     if (person != null) {
@@ -1009,9 +1012,10 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
      */
     public static Node createNode(Individual ind, Family fam, String role)
             throws KSInternalErrorException {
-        Node node = null;
+        Node node = null, oldNode = ind.node;
         Individual mate, kid, shortestPathPerson = findShortestPath(ind, fam);
         String miniCB, pred, arg0, arg1;
+        PersonPanel.debugDyads();
         if (shortestPathPerson == ind) {
             // ind is already connected to Ego by the shortest path
             if (role.equals("spouse")) {
@@ -1039,6 +1043,7 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
                 }
                 for (Object o : fam.children) {
                     kid = (Individual) o;
+                    if (kid == ind) continue;
                     propogateNodes(ind, kid, fam, "sibling");
                 }
             } //  end of ind-is-a-child-in-this-fam
@@ -1128,11 +1133,20 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
                 propogateNodes(ind, pers, fam, "starLink");
             }
         }
+        if (node != null && oldNode != null && oldNode.hasKinTerms()
+                && oldNode.pcString.equals(node.pcString)) {
+            node = oldNode;
+        }
         if (node != null && doIndexes) {
             parent.ktm.addNode(parent.getCurrentEgo(), ind.serialNmbr, node);
             Integer[] pair = {parent.getCurrentEgo(), ind.serialNmbr};
             Context.current.kti.addPair(node.pcString, pair);
         }
+        if (node != null) {
+            Individual ego = Context.current.individualCensus.get(parent.getCurrentEgo());
+            parent.getPPanel().checkForAutoDefs(node, ego);
+        }
+        PersonPanel.debugDyads();
         return node;
     }
 
@@ -1349,13 +1363,16 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
             return;
         }
 //        System.out.println("From: " + fromPerson.serialNmbr + "\tTo: " + toPerson.serialNmbr + "\t" + toPerson.seenB4);
-        if (toPerson.seenB4 > 4) {
+        if (toPerson.seenB4++ > 4) {
             return;
         }
-        if (++toPerson.seenB4 > 1 && toPerson.node != null && toPerson.node.miniPreds.size() > 0
+        // The first time we see someone, propagate even if they have a node. They may be
+        // connected to someone who doesn't. But second time around, stop here.
+        if (toPerson.seenB4 > 1 && toPerson.node != null && toPerson.node.miniPreds.size() > 0
                 && (toPerson.node.miniPreds.size() <= fromPerson.node.miniPreds.size() + 1)) {
             return;
         }
+        PersonPanel.debugDyads();
         String role = null;
         if (relat.equals("spouse") || relat.equals("child")) {
             role = "spouse";
@@ -1377,8 +1394,10 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
             node.miniPreds.add(mini);
             makePCString2(node);
         }
+        //  If we made a new node with the same kin type as prior node,
+        //  keep the old node with its kin terms.
         if (node != null) {
-            toPerson.node = node;
+            toPerson.node = node;            
         }
         //  We've made a node for toPerson. Now propogate further
         if (role.equals("spouse") || role.equals("starLink")) {
@@ -1434,6 +1453,7 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
                 }
             }
         }
+        PersonPanel.debugDyads();
     }
 
     /** Remove this person from fam, then modify/remove all nodes
@@ -1444,7 +1464,7 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
      */
     void removePersonAndRecomputeNodes(Individual ix, Family fam)
             throws KSInternalErrorException {
-        // remove (perhaps redundantly) ix from each family in famArray
+        recomputingDyads = true;
         if (ix == fam.husband) {
             fam.husband = null;
         } else if (ix == fam.wife) {
@@ -1482,9 +1502,12 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
             }
         }
         parent.changeEgo(savedEgo);
+        recomputingDyads = false;
         try {
-            if (!Context.current.domTheoryRef().issuesForUser.isEmpty()
-                    || !Context.current.domTheoryAdr().issuesForUser.isEmpty()) {
+            if ((Context.current.domTheoryRefExists() && 
+                    !Context.current.domTheoryRef().issuesForUser.isEmpty())
+                || (Context.current.domTheoryAdrExists() && 
+                    !Context.current.domTheoryAdr().issuesForUser.isEmpty())) {
                 String msg = "The Suggestions from prior learning sessions may\n"
                         + "contain references to " + ix.name + " that are\n"
                         + " no longer valid. If so, you should Get New Suggestions.\n";
@@ -1527,7 +1550,7 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
             i.seenB4 = 0;
             i.node = null;  //  clean out node slots
         }
-        Node selfNode = Node.makeSelfNode();
+        Node selfNode = Node.makeSelfNode(distinctAdrTerms);
         Individual egoPerson = Context.current.individualCensus.get(rowNum);
         selfNode.indiv = egoPerson;
         newRow.put(rowNum, selfNode);
@@ -1626,7 +1649,7 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
         currCtxt.editDirectory = saveFile.getParent();
         Library.editDirectory = currCtxt.editDirectory;
         try {
-            currCtxt.writeSILKFile(saveFile, kaesParameters());
+            currCtxt.writeSILKFile(saveFile, editParameters(currCtxt));
             Library.saveUserContext();
         } catch (FileNotFoundException fnf) {
             String msg = "File system error while writing SILK & .ctxt files: " + fnf;
@@ -1641,7 +1664,7 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
         dirty = false;
     }
 
-    public String kaesParameters() {
+    public String editParameters(Context ctxt) {
         String params = "";
         params += "  <origin x=\"" + originX + "\" y=\"" + originY + "\"/>" + EOL;
         params += "  <area W=\"" + area.width + "\" H=\"" + area.height + "\"/>" + EOL;
@@ -1651,8 +1674,10 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
         params += "  <ktlabel>" + kinTermLabel + "</ktlabel>" + EOL + "  <editable>";
         params += (editable ? "true" : "false") + "</editable>" + EOL + "  <distinctAdrTerms>";
         params += (distinctAdrTerms ? "true" : "false") + "</distinctAdrTerms>" + EOL;
-        params += "  <maxNoise>" + maxNoise + "</maxNoise>" + EOL;
-        params += "  <ignorable>" + ignorable + "</ignorable>";
+        params += "  <maxNoise>" + ctxt.maxNoiseP + "</maxNoise>" + EOL;
+        params += "  <ignorable>" + ctxt.ignorableP + "</ignorable>" + EOL;
+        params += "  <doBaseCBs value=\"" + ctxt.doBaseCBs + "\"/>" + EOL;
+        params += "  <doInduction value=\"" + ctxt.doInduction + "\"/>";
         return params;
     }
 
@@ -1933,7 +1958,9 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
                 ctxt = Context.current;
                 parent.ktm = ctxt.ktm;
                 parent.suggestionsRef = ctxt.domTheoryRef().issuesForUser;
-                parent.suggestionsAdr = ctxt.domTheoryAdr().issuesForUser;
+                if (ctxt.domTheoryAdrExists()) {
+                    parent.suggestionsAdr = ctxt.domTheoryAdr().issuesForUser;
+                }
                 int egoNum = ctxt.currentEgo.serialNmbr;
                 parent.setCurrentEgo(egoNum);
                 originX = ctxt.origin.x;
@@ -1944,8 +1971,6 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
                 parent.synchronizeLabelParams(nameLabel, kinTermLabel);
                 editable = ctxt.editable;
                 parent.getPPanel().setDistinctAdrTerms(ctxt.distinctAdrTerms);
-                maxNoise = ctxt.maxNoiseP;
-                ignorable = ctxt.ignorableP;
                 whichFolk = ctxt.infoPerson;
                 whichKnot = ctxt.infoMarriage;
                 boolean empty = ctxt.infoPerson == -1;
@@ -1961,13 +1986,15 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
                         }
                     }
                 }
+                Library.currDataAuthor = getCurrentUser();
+                parent.setActOnSuggsEnabled(ctxt.hasIssues());
             } catch (Exception e) {
                 String msg = "While reading " + saveFile.getName() + "\n" + e;
                 System.err.println(msg);
                 MainPane.displayError(msg, "Internal Problem", JOptionPane.WARNING_MESSAGE);
             }
             Person.folks = ctxt.individualCensus;
-            Marriage.knots = ctxt.familyCensus;
+            Marriage.knots = ctxt.familyCensus;            
             String frameTitle = fc.getName(saveFile);
             parent.setTitle("Editing: " + frameTitle);
             //  We read in some people, so update egoChoiceBox
@@ -1977,5 +2004,58 @@ public class KinEditPanel extends JPanel implements MouseInputListener {
             revalidate();
             repaint();
         }
+    }
+
+    String getCurrentUser() throws KSInternalErrorException {
+        int size = Context.current.dataAuthors.size(),
+             repeats = -1;
+        String[] authors = new String[size + 1];
+        for (int i = 0; i < size; i++) {
+            authors[i] = Context.current.dataAuthors.get(i);
+        }
+        authors[size] = "Add a New User";
+        String author = (String) JOptionPane.showInputDialog(
+                parent, "Find yourself in the list below,\n"
+                + "or choose 'Add New User'",
+                "Register Current User",
+                JOptionPane.PLAIN_MESSAGE, null,
+                authors, authors[0]);
+        if (author == null) {
+            Context.current.editable = false;
+            throw new KSInternalErrorException("Failure to capture current User's identity.");
+        }
+        while (author.equals("Add a New User")) {
+            repeats++;
+            String rep = (repeats == 0 ? "\n" : "\n -- CAREFULLY --\n"),
+                   msg = "Please enter your name" + rep + "as it should appear in the User List.",
+                   title = author;
+            author = JOptionPane.showInputDialog(parent,
+                    msg, title, JOptionPane.PLAIN_MESSAGE);
+            while (author.isEmpty() || author.length() < 3) {
+                String badAuth = (author.isEmpty() ? "A blank " : "'" + author + "' ");
+                msg = badAuth + "is not a valid entry. Enter at least\n 3 non-blank characters (e.g. your initials).";
+                author = JOptionPane.showInputDialog(parent,
+                        msg, title, JOptionPane.PLAIN_MESSAGE);
+            }
+            Object[] options = {"Use '" + author + "'", "Try Again"};
+            msg = "Display your name as '" + author + "'?";
+            int ch = JOptionPane.showOptionDialog(parent, msg,
+                    "Just Making Sure ...",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
+            if (ch == JOptionPane.NO_OPTION) {
+                author = "Add a New User";
+            } else if (ch == JOptionPane.CANCEL_OPTION) {
+                Context.current.editable = false;
+                throw new KSInternalErrorException("Failure to capture current User's identity.");
+            } else {
+                Context.current.dataAuthors.add(author);
+                return getCurrentUser();
+            }
+        }
+        return author;
     }
 }

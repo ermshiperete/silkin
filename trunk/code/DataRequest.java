@@ -6,14 +6,14 @@
 import java.util.*;
 import java.io.*;
 
-public class Discriminator extends Issue {
+public class DataRequest extends Issue {
 
         ArrayList<Library.CB_Ptr> relatedCB_Ptrs;
 
-        public Discriminator() {
+        public DataRequest() {
         }  //  0-arg constructor for Serialization
 
-        public Discriminator(String localKinTerm, ArrayList<Object> questions, ArrayList<Library.CB_Ptr> relatedCBList) {
+        public DataRequest(String localKinTerm, ArrayList<Object> questions, ArrayList<Library.CB_Ptr> relatedCBList) {
             kinTerm = localKinTerm;
             this.questions = questions;
             relatedCB_Ptrs = relatedCBList;
@@ -64,7 +64,7 @@ public class Discriminator extends Issue {
         public void buildDiscrimDyads(Learned_DT lrnDT, DomainTheory sourceDT)
                 throws KSParsingErrorException, JavaSystemException, KSBadHornClauseException, KSNoChainOfRelations2Alter,
                 KSInternalErrorException, KSConstraintInconsistency, KinshipSystemException, ClassNotFoundException {
-            //  NOTE:	We do not deal with UDPs; a Discriminator is modelled after a kinType in some other language -- we want
+            //  NOTE:	We do not deal with UDPs; a DataRequest is modelled after a kinType in some other language -- we want
             //			to see if that kinType exists in this culture, and if so what kinTerm is given to it.  If the kinType
             //			definition involves a UDP from the other culture, it cannot match anything in the current culture.
             //			ERGO: do not build a discriminator if any literal in the CB is a UDP.
@@ -122,4 +122,4 @@ public class Discriminator extends Issue {
         public void presentToUser() {
             System.out.println(toString());
         }  //  end of method presentToUser
-    }  //  end of class Discriminator
+    }  //  end of class DataRequest

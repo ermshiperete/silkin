@@ -37,7 +37,7 @@ public class DomainTheory extends DT_Abstract2 {
     }	// end of no-arg constructor
 
 
-    /*  This constructor is for cloning a DomainTheory.  It is intended for use in Leave One Out testing.	*/
+    /*  This constructor is for cloning a DomainTheory.  It is intended for use in Learning & Leave One Out testing.	*/
     DomainTheory(DomainTheory model) {
         languageName = model.languageName;
         if (model.addressTerms) {
@@ -50,6 +50,13 @@ public class DomainTheory extends DT_Abstract2 {
         addressTerms = model.addressTerms;
         polygamyOK = model.polygamyOK;
         theory = new TreeMap(model.theory);
+        userDefinedProperties = model.userDefinedProperties;
+        synonyms = model.synonyms;
+        umbrellas = model.umbrellas;
+        overlaps = model.overlaps;
+        nonUmbrellas = model.nonUmbrellas;
+        nonOverlaps = model.nonOverlaps;
+        nonSynonyms = model.nonSynonyms;
     }	// end of cloning constructor
 
 
@@ -1194,6 +1201,14 @@ public class DomainTheory extends DT_Abstract2 {
             return;
         }
     }  //  end of method proposeDefinition(String kinTerm, Library.KTD_EQC eqc)
+    
+    public boolean previouslyRejected(String kinTerm, Library.KTD_EQC eqc) {
+        TreeMap<String, ArrayList<Context.HistoryItem>> history = null;
+        history = (addressTerms ? ctxt.learningHistoryAdr : ctxt.learningHistoryRef);
+        
+        return false;
+    }
+    
 
     public double sumSimScoresALT(ArrayList<Object> solidKTD_EQCmatches) {
         //  TEST version of this method, which eliminates all influence of similarity
@@ -1433,7 +1448,7 @@ public class DomainTheory extends DT_Abstract2 {
         }
         questions.add("This hypothetical dyad has not yet been seen. Please find a real example"
                 + " of this and assign it the proper kin term.");
-        Discriminator disc = new Discriminator(kinTerm, questions, cbPtrs);
+        DataRequest disc = new DataRequest(kinTerm, questions, cbPtrs);
         if (issuesForUser.get(kinTerm) == null) {
             issuesForUser.put(kinTerm, new ArrayList<Issue>());
         }

@@ -90,7 +90,9 @@ public class MainPane extends JFrame implements ActionListener {
             createActivityLog(desktop, menuView);
         }
         JFrame topWindow = topPane;
-        if (topWindow == null) topWindow = SIL_Edit.editWindow;
+        if (topWindow == null || !topWindow.isVisible()) {
+            topWindow = SIL_Edit.editWindow;
+        }
         JOptionPane.showMessageDialog(topWindow, msg, title, typ);
         MainPane.activity.log.append(msg + "\n\n");
     }

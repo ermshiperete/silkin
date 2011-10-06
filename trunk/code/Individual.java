@@ -505,13 +505,6 @@ public boolean hasDoD() {
                 }
                 image += ".\n";
             }  //  end of if-node.extKinTermsRef-has-any.
-            if (node.exceptionsRef.size() > 0) {
-                image += "Exception Terms: " + (String) node.exceptionsRef.get(0) + node.ktSuffix;
-                for (int i = 1; i < node.exceptionsRef.size(); i++) {
-                    image += ", " + (String) node.exceptionsRef.get(i) + node.ktSuffix;
-                }
-                image += ".\n";
-            }  //  end of if-node.exceptionsRef-has-any.
             if (node.kinTermsAddr.size() > 0) {
                 image += "*Kin Terms: " + (String) node.kinTermsAddr.get(0) + node.ktSuffix;
                 for (int i = 1; i < node.kinTermsAddr.size(); i++) {
@@ -526,13 +519,6 @@ public boolean hasDoD() {
                 }
                 image += ".\n";
             }  //  end of if-node.extKinTermsAddr-has-any.
-            if (node.exceptionsAddr.size() > 0) {
-                image += "*Exception Terms: " + (String) node.exceptionsAddr.get(0) + node.ktSuffix;
-                for (int i = 1; i < node.exceptionsAddr.size(); i++) {
-                    image += ", " + (String) node.exceptionsAddr.get(i) + node.ktSuffix;
-                }
-                image += ".\n";
-            }  //  end of if-node.exceptionsAddr-has-any.
         }
         if (nameHistory.size() > 0) {
                 image += "Kin Term Name History: ";

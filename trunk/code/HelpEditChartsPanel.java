@@ -39,14 +39,14 @@ public class HelpEditChartsPanel extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(255, 255, 204));
 
-        jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 18));
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         jLabel1.setText("How To Edit Charts in SILKin");
 
         jScrollPane1.setViewportView(jTextArea1);
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
-        jTextArea1.setText("*** Moving People and Unions\nClick on and drag a person or union symbol to move it. The links will automatically be redrawn. \nIf you hold down the SHIFT key and move a union, you will also move the immediate nuclear \nfamily associated with that union. If you hold down the ALT (Mac COMMAND) key while moving a \nunion you will move the entire lineage descended from that union.\n\n*** Deleting relationships\nDrag  a person to either the top (if they are a parent/spouse) or bottom (if they are a child/sibling)\nof a union. If there was a relationship, it will be deleted.\n\n*** Deleting People or Unions\nHold down the CONTROL (CTRL) key and click on a symbol. This will be deleted along with its \nrelationships. BE CAREFUL. Do not delete the person if you only need to delete a relationship \n(see above).\n\nThe 'Clear All' entry under the File menu deletes all people, unions and relationships.\nNOTE: This is not yet implemented.\n\n*** Entering Data about People and Unions\nClick on a person or union. The symbol should turn blue. You can then fill in the information\nat the top of the window. Information is not recorded unless you change to a different symbol. \nNormally this suggests that the last entry should be followed by clicking on some other person \nor union. \n\nNOTE that the month and day portion of all dates (birth, death, marriage and divorce) are \nconverted by SILKin into a standard \"medium-length\" format (e.g. Feb 29) but you may enter \nthem in either that format or as numbers (e.g. 2/29).");
+        jTextArea1.setText("*** Moving People and Unions\nClick on and drag a person or union symbol to move it. The links will automatically be redrawn. \nIf you hold down the SHIFT key and move a union, you will also move the immediate nuclear \nfamily associated with that union. If you hold down the ALT (Mac COMMAND) key while moving a \nunion you will move the entire lineage descended from that union.\n\n*** Deleting relationships\nDrag  a person to either the top (if they are a parent/spouse) or bottom (if they are a child/sibling)\nof a union. If there was a relationship, it will be deleted.\n\n*** Deleting People or Unions\nHold down the CONTROL (CTRL) key and click on a symbol. This will be deleted along with its \nrelationships. BE CAREFUL. Do not delete the person if you only need to delete a relationship \n(see above).\n\nThe 'Clear All' entry under the File menu deletes all people, unions and relationships.\n\n*** Entering Data about People and Unions\nClick on a person or union. The symbol should turn blue. You can then fill in the information\nat the top of the window. Information is not recorded unless you change to a different symbol. \nNormally this suggests that the last entry should be followed by clicking on some other person \nor union. \n\nNOTE that all dates in SILKin are expressed in 'universal format' like 2011-07-21 \nfor July 7, 2011.  If you are entering an approximate date, you can enter only the \nYear-Month or just the Year. If you accidentally enter a date in your native format,\nSILKin will try to interpret it; if it cannot you will get an error message. You should\nform the habit of entering dates in Year-Month-Day numeric format.");
         jScrollPane1.setViewportView(jTextArea1);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
@@ -56,19 +56,19 @@ public class HelpEditChartsPanel extends javax.swing.JPanel {
             .add(layout.createSequentialGroup()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
-                        .add(294, 294, 294)
-                        .add(jLabel1))
+                        .addContainerGap()
+                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 640, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(layout.createSequentialGroup()
-                        .add(106, 106, 106)
-                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 640, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(115, Short.MAX_VALUE))
+                        .add(194, 194, 194)
+                        .add(jLabel1)))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .addContainerGap()
+                .add(9, 9, 9)
                 .add(jLabel1)
-                .add(18, 18, 18)
+                .add(29, 29, 29)
                 .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 292, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(51, Short.MAX_VALUE))
         );

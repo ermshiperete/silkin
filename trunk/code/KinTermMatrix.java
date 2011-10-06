@@ -1,10 +1,11 @@
 import java.util.*;
 import java.io.*;
+import javax.swing.JOptionPane;
 
 /** 
 A KinTermMatrix has one row and one column for each person in a culture; each cell contains null or a
 {@link Node} containing the kinTerms <code>Row</code> (Ego) could use to refer to <code>Column</code> (Alter).
-This sparse matrix is currently implemented as a TreeMap of TreeMaps.  That may change in the future.
+This sparse matrix is currently implemented as a nested TreeMap.  That may change in the future.
 <p>
 A KinTermMatrix grows by adding a new person (indexed by their serialNmbr) to the rows (list of Egos) 
 and columns (list of Alters) of the matrix.  Each Node holds lists of terms that Ego calls Alter, 
@@ -62,6 +63,23 @@ public class KinTermMatrix implements Serializable {
             row.remove(ndx);
         }
     }
+    
+    public void deleteKinTerm(int ego, int alter, String kinTerm, boolean adr) {
+        TreeMap egoRow = (TreeMap)matrix.get(ego);
+        Node nod = (Node)egoRow.get(alter);
+        ArrayList<Object> lst = (adr ? nod.kinTermsAddr : nod.kinTermsAddr);
+        lst.remove(kinTerm);
+    }
+    
+    public void correctKinTerm(int ego, int alter, String oldTerm, String newTerm, boolean adr) {
+        TreeMap egoRow = (TreeMap)matrix.get(ego);
+        Node nod = (Node)egoRow.get(alter);
+        ArrayList<Object> lst = (adr ? nod.kinTermsAddr : nod.kinTermsRef);
+        lst.remove(oldTerm);
+        if (!lst.contains(newTerm)) {
+            lst.add(newTerm);
+        }
+    }
 
     public int numberOfKinTerms() {
         int s = 0, ego, alter;
@@ -86,6 +104,50 @@ public class KinTermMatrix implements Serializable {
     public int numberOfCells() {
         return DomainTheory.countLeaves(matrix);
     }
+
+    /** For every Node in the matrix, make terms of address that mimic the
+     *  terms of reference.
+     */
+    public void addAdrCloneTerms() {
+        Iterator rowIter = matrix.values().iterator();
+        while (rowIter.hasNext()) {
+            TreeMap rowMap = (TreeMap)rowIter.next();
+            Iterator nodeIter = rowMap.values().iterator();
+            while (nodeIter.hasNext()) {
+                Node nod = (Node)nodeIter.next();
+                nod.kinTermsAddr = union(nod.kinTermsRef, nod.kinTermsAddr);
+                nod.extKinTermsAddr = union(nod.extKinTermsRef, nod.extKinTermsAddr);
+            }
+        }
+    }
+    
+    
+    /** Used when deleting a domain theory for Terms of Address.
+     *  Visit every node of every row and nullify the Address terms.
+     * */
+    public void cleanAdrTerms() {
+        Iterator rowIter = matrix.values().iterator(), altIter;
+        while (rowIter.hasNext()) {
+            TreeMap egoRow = (TreeMap)rowIter.next();
+            altIter = egoRow.values().iterator();
+            while (altIter.hasNext()) {
+                Node nod = (Node)altIter.next();
+                nod.kinTermsAddr.clear();
+                nod.extKinTermsAddr.clear();
+            }
+        }
+    }
+    
+    public ArrayList union(ArrayList lst1, ArrayList lst2) {
+        ArrayList merge = new ArrayList(lst1);
+        for (Object o : lst2) {
+            if (! merge.contains(o)) {
+                merge.add(o);
+            }
+        }
+        return merge;
+    }
+
 
     /**  This method builds a string that represents a KinTermMatrix in a SILKin data (_.silk) file.   */
     public String toSILKString() {
@@ -479,13 +541,52 @@ public class KinTermMatrix implements Serializable {
         addTerm(egoInd.serialNmbr, alterInd.serialNmbr, kinTerm, type, addr);
     }  //  end of method replaceTerms with Individuals
 
-
     public void addNode(int egoInt, int alterInt, Node node) {
         Integer ego = new Integer(egoInt), alter = new Integer(alterInt);
+        Node oldNode = null;
         if (matrix.get(ego) == null) {
             matrix.put(ego, new TreeMap());
+        } else {
+            oldNode = (Node) ((TreeMap) matrix.get(ego)).get(alter);
         }
-        ((TreeMap)matrix.get(ego)).put(alter, node);
+        ((TreeMap) matrix.get(ego)).put(alter, node);
+        if (oldNode != null) {
+            try {
+                ArrayList<String> deletedTerms = oldNode.getKinTerms(false);
+                deletedTerms.removeAll(node.getKinTerms(false));
+                DomainTheory dt = Context.current.domTheoryRef();
+                deleteDyads(deletedTerms, egoInt, alterInt, node, dt);                
+                String oldPC = oldNode.pcString, 
+                       newPC = node.pcString;
+                if (! oldPC.equals(newPC)) {
+                    KinTypeIndex kti = Context.current.kti;
+                    Integer[] pair = {egoInt, alterInt};
+                    kti.removePair(oldPC, pair);
+                }
+                if (SIL_Edit.editWindow.chart.distinctAdrTerms) {
+                    dt = Context.current.domTheoryAdr();
+                    deletedTerms = oldNode.getKinTerms(true);
+                    deletedTerms.removeAll(node.getKinTerms(true));
+                    deleteDyads(deletedTerms, egoInt, alterInt, node, dt);                     
+                }
+            } catch (Exception ex) {
+                String msg = "Error while loading domain theories: " + ex;
+                MainPane.displayError(msg, "Internal Error", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }
+    
+    void deleteDyads(ArrayList<String> deletedTerms, int egoInt, int alterInt,
+            Node node, DomainTheory dt) {
+        DyadTMap dyadsDef = dt.dyadsDefined;
+        DyadTMap dyadsUndef = dt.dyadsUndefined;
+        for (String kinTerm : deletedTerms) {
+            if (dyadsDef.containsKey(kinTerm)) {
+                dyadsDef.removeDyad(dt, egoInt, alterInt, kinTerm, node.pcString);
+            } else {
+                dyadsUndef.removeDyad(dt, egoInt, alterInt, kinTerm, node.pcString);
+            }
+        }
     }
 
     /**

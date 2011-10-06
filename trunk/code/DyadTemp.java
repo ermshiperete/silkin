@@ -30,9 +30,6 @@ public class DyadTemp extends Dyad {
         newGuy.challenged = challenged;
         newGuy.confirmed = confirmed;
         newGuy.level = level;
-        newGuy.pcCounter = pcCounter;
-        newGuy.sCounter = sCounter;
-        newGuy.starCounter = starCounter;
         newGuy.kinTerm = kinTerm;
         newGuy.kinTermType = kinTermType;
         for (Object obj : path) {

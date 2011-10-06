@@ -559,14 +559,14 @@ public class Family extends Marriage implements Serializable {
         }
         image += "\n     H =  #" + husband.serialNmbr + ", W =";
         image += " #" + wife.serialNmbr + ".\n";
-        image += "     " + nmbrOfKids;
-        if (nmbrOfKids != 1) {
+        image += "     " + children.size();
+        if (children.size() != 1) {
             image += " children.\n";
         } else {
             image += " child.\n";
         }
-        if (nmbrOfKids >= 1) {
-            for (int i = 0; i < nmbrOfKids; i++) {
+        if (children.size() >= 1) {
+            for (int i = 0; i < children.size(); i++) {
                 image += "        #" + ((Individual) children.get(i)).serialNmbr
                         + " (" + ((Individual) children.get(i)).gender + ").\n";
             }

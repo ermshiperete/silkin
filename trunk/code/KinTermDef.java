@@ -428,9 +428,10 @@ public class KinTermDef	 implements Serializable, Comparable  {
         }
         
         
-        public String toSILKString(String bacer) {
+        public String toSILKString(String bacer, boolean writeDT) {
             String spacer = "\t", dblSpacer = "\t\t";
-            String s = bacer + "<kin-term-def>\n", langName = null;
+            String kt = (writeDT ? "" : " term=\"" + kinTerm + "\"");
+            String s = bacer + "<kin-term-def" + kt + ">\n", langName = null;
             s += bacer + spacer + "<head>" + kinTerm + "</head>\n";
             if (eqcSigExact != null) {
                 s += bacer + spacer + "<eqcSigExact>" + eqcSigExact + "</eqcSigExact>\n";
@@ -439,21 +440,23 @@ public class KinTermDef	 implements Serializable, Comparable  {
                 s += bacer + spacer + "<eqcSigStruct>" + eqcSigStruct + "</eqcSigStruct>\n";
             }
             if (comments != null && ! comments.isEmpty()) {
-                s += bacer + spacer + "<comment>" + comments + "</comment>\n";
+                s += bacer + spacer + "<comments text=\"" + comments + "\"/>\n";
             }
-            s += bacer + spacer + "<domain-theory>\n";
-            s += bacer + dblSpacer + "<language name=\"" + domTh.languageName + "\"/>\n";
-            if (domTh.polygamyOK) {
-                s += bacer + dblSpacer + "<polygamyOK />\n";
+            if (writeDT) {
+                s += bacer + spacer + "<domain-theory>\n";
+                s += bacer + dblSpacer + "<language name=\"" + domTh.languageName + "\"/>\n";
+                if (domTh.polygamyOK) {
+                    s += bacer + dblSpacer + "<polygamyOK />\n";
+                }
+                if (domTh.author != null && domTh.author.length() > 0) {
+                    s += bacer + dblSpacer + "<author name=\"" + sanitize(domTh.author) + "\"/>\n";
+                }
+                s += bacer + dblSpacer + "<create-date value=\"" + domTh.createDate + "\"/>\n";
+                if (domTh.citation != null && domTh.citation.length() > 0) {
+                    s += bacer + dblSpacer + "<citation txt=\"" + sanitize(domTh.citation) + "\"/>\n";
+                }
+                s += bacer + spacer + "</domain-theory>\n";
             }
-            if (domTh.author != null && domTh.author.length() > 0) {
-                s += bacer + dblSpacer + "<author name=\"" + sanitize(domTh.author) + "\"/>\n";
-            }
-            s += bacer + dblSpacer + "<create-date value=\"" + domTh.createDate + "\"/>\n";
-            if (domTh.citation != null && domTh.citation.length() > 0) {
-                s += bacer + dblSpacer + "<citation txt=\"" + sanitize(domTh.citation) + "\"/>\n";
-            }
-            s += bacer + spacer + "</domain-theory>\n";
             if (definitions == null || definitions.isEmpty()) {
                 try {
                     langName = domTh.languageName;

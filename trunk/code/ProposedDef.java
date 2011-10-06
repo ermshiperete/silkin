@@ -130,7 +130,7 @@ import java.io.*;
             if (processed) {
                 pw.println(dblSpacer + "<processed>true</processed>");
             }
-            pw.println(ktd.toSILKString(dblSpacer));
+            pw.println(ktd.toSILKString(dblSpacer, true));
             pw.println(eqc.toSILKString(dblSpacer));
             pw.println(spacer + "</proposed-def>\n");
         }

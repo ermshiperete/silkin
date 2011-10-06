@@ -13,10 +13,13 @@ import javax.swing.*;
 public class ActionOverlap extends javax.swing.JPanel {
 
     DecisionFrame papa;
+    TreeMap<String, ArrayList<Context.HistoryItem>> learningHistory;
+    DomainTheory dt;  // filled in by DecisionFrame
     OverlapCandidate oc;
-    int suggNmbr;
+    int suggNmbr, oldNDX = 0;
+    boolean chartEditPending = false;
     String[] emptyModel = { "Overlapping Dyads for Review" };
-    ArrayList<Dyad> olapDyads;
+    ArrayList<Dyad> olapDyads, beforeEditList;
 
     /** Creates new form ActionOverlap */
     public ActionOverlap() {
@@ -41,7 +44,7 @@ public class ActionOverlap extends javax.swing.JPanel {
         buttonGroup2 = new javax.swing.ButtonGroup();
         olapNoActionBtn = new javax.swing.JRadioButton();
         overlapOKBtn = new javax.swing.JRadioButton();
-        olapNotOKBtn = new javax.swing.JRadioButton();
+        editOlapBtn = new javax.swing.JRadioButton();
         notesScrollPane = new javax.swing.JScrollPane();
         notesText = new javax.swing.JTextArea();
         doneBtn = new javax.swing.JButton();
@@ -49,12 +52,14 @@ public class ActionOverlap extends javax.swing.JPanel {
         term1Text = new javax.swing.JLabel();
         term2Label = new javax.swing.JLabel();
         term2Text = new javax.swing.JLabel();
-        overlappingDyadComboBox = new javax.swing.JComboBox();
+        dyadComboBox = new javax.swing.JComboBox();
         dyadOKBtn = new javax.swing.JRadioButton();
         dyadDeleteBtn = new javax.swing.JRadioButton();
-        dyadEditBtn = new javax.swing.JRadioButton();
+        dyadCorrectBtn = new javax.swing.JRadioButton();
         correctKinTermText = new javax.swing.JTextField();
         recordDyadEditBtn = new javax.swing.JButton();
+        rejectOlapBtn = new javax.swing.JRadioButton();
+        showOnChartBtn = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Action Box: Overlapping Terms"));
 
@@ -63,13 +68,13 @@ public class ActionOverlap extends javax.swing.JPanel {
         olapNoActionBtn.setText("No Action");
 
         buttonGroup1.add(overlapOKBtn);
-        overlapOKBtn.setText("This overlap is OK.");
+        overlapOKBtn.setText("ACCEPT this overlap.");
 
-        buttonGroup1.add(olapNotOKBtn);
-        olapNotOKBtn.setText("This overlap is NOT correct. I will edit the dyads below.");
-        olapNotOKBtn.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup1.add(editOlapBtn);
+        editOlapBtn.setText("I will fix this overlap by EDITing the dyads below.");
+        editOlapBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                olapNotOKBtnActionPerformed(evt);
+                editOlapBtnActionPerformed(evt);
             }
         });
 
@@ -94,10 +99,10 @@ public class ActionOverlap extends javax.swing.JPanel {
 
         term2Text.setText("_____");
 
-        overlappingDyadComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Overlapping Dyads for Review" }));
+        dyadComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Overlapping Dyads for Review" }));
 
         buttonGroup2.add(dyadOKBtn);
-        dyadOKBtn.setText("Confirm this dyad.");
+        dyadOKBtn.setText("CONFIRM this dyad.");
         dyadOKBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dyadOKBtnActionPerformed(evt);
@@ -105,18 +110,18 @@ public class ActionOverlap extends javax.swing.JPanel {
         });
 
         buttonGroup2.add(dyadDeleteBtn);
-        dyadDeleteBtn.setText("Delete this dyad.");
+        dyadDeleteBtn.setText("DELETE this dyad.");
         dyadDeleteBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dyadDeleteBtnActionPerformed(evt);
             }
         });
 
-        buttonGroup2.add(dyadEditBtn);
-        dyadEditBtn.setText("Correct the kin term to ");
-        dyadEditBtn.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup2.add(dyadCorrectBtn);
+        dyadCorrectBtn.setText("CORRECT the kin term to ");
+        dyadCorrectBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dyadEditBtnActionPerformed(evt);
+                dyadCorrectBtnActionPerformed(evt);
             }
         });
 
@@ -124,6 +129,21 @@ public class ActionOverlap extends javax.swing.JPanel {
 
         recordDyadEditBtn.setText("Record decision on this dyad.");
         recordDyadEditBtn.setEnabled(false);
+        recordDyadEditBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                recordDyadEditBtnActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(rejectOlapBtn);
+        rejectOlapBtn.setText("REJECT this overlap.");
+
+        showOnChartBtn.setText("Show This Dyad on the Chart");
+        showOnChartBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showOnChartBtnActionPerformed(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -133,49 +153,57 @@ public class ActionOverlap extends javax.swing.JPanel {
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
-                        .add(term1Label)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(term1Text)
-                        .add(95, 95, 95)
-                        .add(term2Label)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(term2Text)
-                        .add(136, 136, 136))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(recordDyadEditBtn)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 95, Short.MAX_VALUE)
-                        .add(doneBtn)
-                        .addContainerGap())
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                        .add(notesScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                                .add(recordDyadEditBtn)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 129, Short.MAX_VALUE)
+                                .add(doneBtn))
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, notesScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE))
                         .addContainerGap())
                     .add(layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                .add(layout.createSequentialGroup()
-                                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                        .add(overlapOKBtn)
-                                        .add(olapNoActionBtn))
-                                    .add(109, 109, 109))
-                                .add(olapNotOKBtn, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE))
                             .add(layout.createSequentialGroup()
-                                .add(8, 8, 8)
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                .add(term1Label)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                .add(term1Text)
+                                .add(95, 95, 95)
+                                .add(term2Label)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(term2Text)
+                                .add(136, 136, 136))
+                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                     .add(layout.createSequentialGroup()
-                                        .add(dyadOKBtn)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .add(dyadDeleteBtn))
-                                    .add(overlappingDyadComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 366, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                    .add(layout.createSequentialGroup()
-                                        .add(dyadEditBtn)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(correctKinTermText)))
-                                .add(15, 15, 15)))
+                                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                            .add(overlapOKBtn)
+                                            .add(layout.createSequentialGroup()
+                                                .add(olapNoActionBtn)
+                                                .add(140, 140, 140)
+                                                .add(rejectOlapBtn)))
+                                        .add(34, 34, 34))
+                                    .add(editOlapBtn, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE))
+                                .add(layout.createSequentialGroup()
+                                    .add(8, 8, 8)
+                                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                        .add(layout.createSequentialGroup()
+                                            .add(dyadOKBtn)
+                                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .add(dyadDeleteBtn))
+                                        .add(dyadComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 366, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .add(layout.createSequentialGroup()
+                                            .add(dyadCorrectBtn)
+                                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                            .add(correctKinTermText)))
+                                    .add(15, 15, 15))))
                         .add(30, 30, 30))))
+            .add(layout.createSequentialGroup()
+                .add(47, 47, 47)
+                .add(showOnChartBtn)
+                .addContainerGap(203, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .add(20, 20, 20)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(term1Label)
@@ -183,22 +211,26 @@ public class ActionOverlap extends javax.swing.JPanel {
                     .add(term2Label)
                     .add(term2Text))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(olapNoActionBtn)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(olapNoActionBtn)
+                    .add(rejectOlapBtn))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(overlapOKBtn)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(olapNotOKBtn)
+                .add(editOlapBtn)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(overlappingDyadComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(dyadComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(dyadOKBtn)
                     .add(dyadDeleteBtn))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(dyadEditBtn)
+                    .add(dyadCorrectBtn)
                     .add(correctKinTermText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(showOnChartBtn)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 19, Short.MAX_VALUE)
                 .add(notesScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 66, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
@@ -210,19 +242,29 @@ public class ActionOverlap extends javax.swing.JPanel {
     public void load(OverlapCandidate olap, int nmbr) {
         oc = olap;
         suggNmbr = nmbr;
+        if (dt.addressTerms) {
+            learningHistory = dt.ctxt.learningHistoryAdr;
+        }else {
+            learningHistory = dt.ctxt.learningHistoryRef;
+        }
         term1Text.setText(oc.kinTerm);
         term2Text.setText(oc.otherTerm);
         olapNoActionBtn.setSelected(true);
-        correctKinTermText.setText("");
-        overlappingDyadComboBox.setModel(new DefaultComboBoxModel(emptyModel));
-        dyadDeleteBtn.setSelected(false);
-        dyadOKBtn.setSelected(false);
-        dyadEditBtn.setSelected(false);
-        correctKinTermText.setEditable(false);
-        recordDyadEditBtn.setEnabled(false);
+        dyadComboBox.setModel(new DefaultComboBoxModel(emptyModel));
+        setDyadBtnGroupEnabled(false);
         olapDyads = makeOlapDyadList();
     }
 
+    public void setDyadBtnGroupEnabled(boolean bool) {
+        dyadDeleteBtn.setSelected(false);
+        dyadOKBtn.setSelected(bool);
+        dyadCorrectBtn.setSelected(false);
+        correctKinTermText.setEditable(false);
+        correctKinTermText.setText("");
+        recordDyadEditBtn.setEnabled(bool);
+        showOnChartBtn.setEnabled(bool);
+    }
+    
 
     ArrayList<Dyad> makeOlapDyadList() {
         ArrayList<Dyad> dys = new ArrayList<Dyad>();
@@ -240,68 +282,218 @@ public class ActionOverlap extends javax.swing.JPanel {
         }
         return dys;
     }
-
+    
+    void reviewOlapDyads() {
+        Dyad seed = olapDyads.get(oldNDX -1);
+        ArrayList<Dyad> afterEditList = currentDyadList(seed);
+        Iterator iter = beforeEditList.iterator();
+        while (iter.hasNext()) {
+            Dyad d = (Dyad)iter.next();
+            if (afterEditList.contains(d)) {
+                iter.remove();
+                afterEditList.remove(d);
+            }
+        } // Now only changed dyads remain in B4 list
+        for (Dyad d : beforeEditList) {
+            if (olapDyads.contains(d)) {
+                oc.dyadsProcessed.add(d);
+            }
+        }
+    }
+    
+    
     void resetDyadComboBox() {
-        // Must think thru how to know when all dyads have been dealt with,
-        // whether to let User re-edit a dyad, or ignore some dyads.
-        // MAYBE a separate list of processedDyads (don't remove from olapDyads,
-        // just mark them "DONE" in combo box.
-        String[] model = new String[olapDyads.size()];
-        String line;
-        int cntr = 0;
+        String[] model = new String[olapDyads.size() +1];
+        String line;        
+        model[0] = "Overlapping Dyads for Review" ;
+        int cntr = 1;
         for (Dyad d : olapDyads) {
-            line = "Ego: #" + d.ego.serialNmbr;
+            line = (oc.dyadsProcessed.contains(d) ? "DONE " : "");
+            line += "Ego: #" + d.ego.serialNmbr;
             line += "   Alter: #" + d.alter.serialNmbr;
             line += "   kin term: " + d.kinTerm;
             line += "   kin type: " + d.pcString;
             model[cntr++] = line;
         }
-        overlappingDyadComboBox.setModel(new DefaultComboBoxModel(model));
+        dyadComboBox.setModel(new DefaultComboBoxModel(model));
+        correctKinTermText.setText("");
         correctKinTermText.setEditable(true);
     }
 
 
     private void doneBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneBtnActionPerformed
-        if (overlapOKBtn.isSelected() || olapNotOKBtn.isSelected()) {
-            papa.markProcessed(suggNmbr);
+        if (olapNoActionBtn.isSelected()) {
+            return;
         }
+        Context.HistoryItem item = null;
+        if (overlapOKBtn.isSelected()) {
+            item = new Context.AcceptedOverlap(oc.kinTerm,
+                   UDate.today(), "false",
+                   FamilyPanel.convertBannedCharacters(notesText.getText()),
+                   oc.otherTerm);
+        }else if (rejectOlapBtn.isSelected()) {
+            item = new Context.RejectedOverlap(oc.kinTerm,
+                   UDate.today(), "false",
+                   FamilyPanel.convertBannedCharacters(notesText.getText()),
+                   oc.otherTerm);
+        }else if (editOlapBtn.isSelected()) {
+            String msg = "After editing dyads, you must choose Accept, Reject or NoAction.\n";
+            msg += "\nIf your edits eliminated the overlap, choose 'Reject' and 'Done'.\n";
+            msg += "\nIf your edits reduced the overlap but the remaining \noverlap is NOT VALID, choose 'Reject' and 'Done'.\n";
+            msg += "\nIf your edits reduced the overlap but the remaining \noverlap is VALID, choose 'Accept' and 'Done'.\n";
+            msg += "\nTo decide later about acceptance, choose 'No Action' and 'Done.'";
+            JOptionPane.showMessageDialog(papa, msg, "Operation Not Allowed", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (item != null) {
+            item.postToHistory(learningHistory);
+        }
+        papa.markProcessed(suggNmbr);
+        postToDT();
+        papa.reset();
     }//GEN-LAST:event_doneBtnActionPerformed
-
-    private void olapNotOKBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_olapNotOKBtnActionPerformed
+    
+   
+    
+    private void editOlapBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editOlapBtnActionPerformed
         // activate the dyad radio btns, RecordDyadEditBtn and load combo box.
-        dyadOKBtn.setSelected(true);
-        recordDyadEditBtn.setEnabled(true);
+        setDyadBtnGroupEnabled(true);
         resetDyadComboBox();
-    }//GEN-LAST:event_olapNotOKBtnActionPerformed
+    }//GEN-LAST:event_editOlapBtnActionPerformed
 
     private void dyadOKBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dyadOKBtnActionPerformed
-        // TODO annotate the dyad (and remove from combo???)
+        correctKinTermText.setEditable(false);        
+        recordDyadEditBtn.setEnabled(true);
     }//GEN-LAST:event_dyadOKBtnActionPerformed
 
     private void dyadDeleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dyadDeleteBtnActionPerformed
-        // TODO confirmation pop-up, then delete.
+        correctKinTermText.setEditable(false);        
+        recordDyadEditBtn.setEnabled(true);
     }//GEN-LAST:event_dyadDeleteBtnActionPerformed
 
-    private void dyadEditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dyadEditBtnActionPerformed
-        // TODO amend dyad in all locations
-    }//GEN-LAST:event_dyadEditBtnActionPerformed
+    private void dyadCorrectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dyadCorrectBtnActionPerformed
+        correctKinTermText.setEditable(true);
+    }//GEN-LAST:event_dyadCorrectBtnActionPerformed
 
+    private void recordDyadEditBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recordDyadEditBtnActionPerformed
+        if (chartEditPending) {
+            chartEditPending = false;
+            reviewOlapDyads();
+            resetDyadComboBox();
+            dyadComboBox.setSelectedIndex(oldNDX);
+            oldNDX = 0;
+            dyadOKBtn.setSelected(true);        
+            recordDyadEditBtn.setEnabled(true);        
+            showOnChartBtn.setEnabled(true);
+            return;
+        }
+        int ndx = dyadComboBox.getSelectedIndex();
+        if (ndx == 0) {
+            return;
+        }
+        Dyad dad = olapDyads.get(ndx - 1);
+        if (dyadOKBtn.isSelected()) {
+            Context.current.confirmDyad(dt, dad);
+        } else if (dyadDeleteBtn.isSelected()) {
+            int egoNum = dad.ego.serialNmbr,
+                altNum = dad.alter.serialNmbr;
+            boolean distinct = dt.addressTerms;
+            Context.current.deleteDyad(dt, dad.kinTerm, dad.pcString, egoNum, altNum);
+            Context.current.ktm.deleteKinTerm(egoNum, altNum, dad.kinTerm, distinct);
+        } else if (dyadCorrectBtn.isSelected()) {
+            int egoNum = dad.ego.serialNmbr,
+                altNum = dad.alter.serialNmbr;
+            boolean distinct = dt.addressTerms;
+            String oldTerm = dad.kinTerm,
+                   newTerm = correctKinTermText.getText();
+            Dyad dad2 = new Dyad(dad);
+            dad2.kinTerm = newTerm;
+            Context.current.deleteDyad(dt, oldTerm, dad.pcString, egoNum, altNum);
+            Context.current.addDyad(dt, dad2);
+            Context.current.ktm.correctKinTerm(egoNum, altNum, oldTerm, newTerm, distinct);
+        }
+        if (! oc.dyadsProcessed.contains(dad)) {
+            oc.dyadsProcessed.add(dad);
+        }
+        resetDyadComboBox();
+    }//GEN-LAST:event_recordDyadEditBtnActionPerformed
+
+    private void showOnChartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showOnChartBtnActionPerformed
+        chartEditPending = true;
+        oldNDX = dyadComboBox.getSelectedIndex();
+        Dyad seed = olapDyads.get(oldNDX -1);
+        beforeEditList = currentDyadList(seed);
+        String[] pendingModel = { "After editing chart, click 'Record'." };
+        setDyadBtnGroupEnabled(false);      
+        recordDyadEditBtn.setEnabled(true);
+        dyadComboBox.setModel(new DefaultComboBoxModel(pendingModel));
+        SIL_Edit.editWindow.changeEgo(seed.ego.serialNmbr);
+        SIL_Edit.editWindow.getPPanel().resetEgoBox(seed.ego.serialNmbr);
+        SIL_Edit.editWindow.chart.setAlter(seed.alter.serialNmbr);  
+        SIL_Edit.editWindow.toFront();  
+    }//GEN-LAST:event_showOnChartBtnActionPerformed
+    
+    
+    void postToDT() {
+        TreeMap theMap = null;
+        if (overlapOKBtn.isSelected()) {
+            if (dt.overlaps == null) {
+                dt.overlaps = new TreeMap();
+            }
+            theMap = dt.overlaps;
+        }else {  //  rejected
+            if (dt.nonOverlaps == null) {
+                dt.nonOverlaps = new TreeMap();
+            }
+            theMap = dt.nonOverlaps;
+        }
+        if (theMap.get(oc.kinTerm) == null) {
+            theMap.put(oc.kinTerm, new ArrayList<String>());
+        }
+        ArrayList<String> lst = (ArrayList<String>)theMap.get(oc.kinTerm);
+        lst.add(oc.otherTerm);
+        // Post the inverse as well
+        if (theMap.get(oc.otherTerm) == null) {
+            theMap.put(oc.otherTerm, new ArrayList<String>());
+        }
+        lst = (ArrayList<String>)theMap.get(oc.otherTerm);
+        lst.add(oc.kinTerm);
+    }
+
+    ArrayList<Dyad> currentDyadList(Dyad seed) {
+        ArrayList<Dyad> lst = new ArrayList<Dyad>();
+        ArrayList<Dyad> all = dt.dyadsUndefined.findDyadList(seed);        
+        for (Dyad d : all) {
+            if (d.ego == seed.ego && d.alter == seed.alter) {
+                lst.add(d);
+            }
+        }
+        all = dt.dyadsDefined.findDyadList(seed);        
+        for (Dyad d : all) {
+            if (d.ego == seed.ego && d.alter == seed.alter) {
+                lst.add(d);
+            }
+        }
+        return lst;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JTextField correctKinTermText;
     private javax.swing.JButton doneBtn;
+    private javax.swing.JComboBox dyadComboBox;
+    private javax.swing.JRadioButton dyadCorrectBtn;
     private javax.swing.JRadioButton dyadDeleteBtn;
-    private javax.swing.JRadioButton dyadEditBtn;
     private javax.swing.JRadioButton dyadOKBtn;
+    private javax.swing.JRadioButton editOlapBtn;
     private javax.swing.JScrollPane notesScrollPane;
     private javax.swing.JTextArea notesText;
     private javax.swing.JRadioButton olapNoActionBtn;
-    private javax.swing.JRadioButton olapNotOKBtn;
     private javax.swing.JRadioButton overlapOKBtn;
-    private javax.swing.JComboBox overlappingDyadComboBox;
     private javax.swing.JButton recordDyadEditBtn;
+    private javax.swing.JRadioButton rejectOlapBtn;
+    private javax.swing.JButton showOnChartBtn;
     private javax.swing.JLabel term1Label;
     private javax.swing.JLabel term1Text;
     private javax.swing.JLabel term2Label;

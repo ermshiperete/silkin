@@ -55,6 +55,11 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
             MainPane.displayError(msg, "Internal Problem", JOptionPane.ERROR_MESSAGE);
         }
         actionPropDef.dt = dt;
+        actionSynonym.dt = dt;
+        actionUmbrella.dt = dt;
+        actionOverlap.dt = dt;
+        actionAnomaly.dt = dt;
+        doneOrUNDO.dt = dt;
     }
 
     /** This method is called from within the constructor to
@@ -68,7 +73,6 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
         //  Make right-hand display area
         jLabel1 = new JLabel();
         detailsScrollPane = new JScrollPane();
-        detailsTextArea = new JTextArea();
         jLabel1.setText("Details");
         jLabel1.setAlignmentX(0.5f);
         //  New Code
@@ -108,8 +112,10 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
         actionBoxes.add(actionPropDef);
         instructions = new ActionBoxInstructions();
         actionBoxes.add(instructions);
-        alreadyDone = new ActionAlreadyProcessed();
-        actionBoxes.add(alreadyDone);
+        anomalyOrDataReqDone = new AnomalyAlreadyProcessed();
+        actionBoxes.add(anomalyOrDataReqDone);
+        doneOrUNDO = new ActionDONEorUnDo(this);
+        actionBoxes.add(doneOrUNDO);
         actionSynonym = new ActionSynonym(this);
         actionBoxes.add(actionSynonym);
         actionUmbrella = new ActionUmbrella(this);
@@ -138,7 +144,8 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
         leftPanel.add(Box.createRigidArea(new Dimension(0, 8)));
         leftPanel.add(instructions);
         leftPanel.add(actionPropDef);
-        leftPanel.add(alreadyDone);
+        leftPanel.add(anomalyOrDataReqDone);
+        leftPanel.add(doneOrUNDO);
         leftPanel.add(actionSynonym);
         leftPanel.add(actionUmbrella);
         leftPanel.add(actionDataRequest);
@@ -182,7 +189,7 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
                     MainPane.createActivityLog(MainPane.desktop, MainPane.menuView);
                 }
                 String msg = "Unbalanced sizes for suggestions and titles.\n";
-                msg += "Lef count = " + size + ", but suggestion count = " + suggestions.size();
+                msg += "Leaf count = " + size + ", but suggestion count = " + suggestions.size();
                 msg += ".\nREPORT A BUG.";
                 MainPane.displayError(msg, "Internal Problem", JOptionPane.ERROR_MESSAGE);
             }
@@ -196,7 +203,7 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
         }
         pack();
     }
-
+    
     public void markProcessed(int suggNmbr) {
         DefaultComboBoxModel model = (DefaultComboBoxModel)suggestionComboBox.getModel();
         String listing = (String)model.getElementAt(suggNmbr +1);
@@ -206,6 +213,18 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
         String newListing = listing.substring(0,dot) + " DONE:" + listing.substring(dot);
         model.removeElementAt(suggNmbr +1);
         model.insertElementAt(newListing, suggNmbr +1);
+        SIL_Edit.editWindow.chart.dirty = true;
+    }
+    
+    public void markUnProcessed(int suggNmbr) {
+        DefaultComboBoxModel model = (DefaultComboBoxModel)suggestionComboBox.getModel();
+        String listing = (String)model.getElementAt(suggNmbr +1);
+        Issue sugg = suggestions.get(suggNmbr);
+        sugg.processed = false;
+        String newListing = listing.replace(" DONE:", "");
+        model.removeElementAt(suggNmbr +1);
+        model.insertElementAt(newListing, suggNmbr +1);
+        SIL_Edit.editWindow.chart.dirty = true;
     }
 
     void reset() {
@@ -233,18 +252,27 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
             }
             detailsPane.fireHyperlinkUpdate(event);
         } catch (Exception ex) {
-            if (MainPane.activity == null) {
-                MainPane.createActivityLog(MainPane.desktop, MainPane.menuView);
-            }
             String msg = "Error encountered displaying " + filePath + "#" + index;
+            msg += "\nReason: " + ex;
             MainPane.displayError(msg, "Malformed URL", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     void setActionBox(int elementNmbr) {
         Issue sugg = suggestions.get(elementNmbr);
+        // There is nothing to undo in a DataRequest or Anomaly
         if (sugg.processed) {
-            displayActionBox(alreadyDone);
+            if (sugg instanceof Anomaly) {
+                anomalyOrDataReqDone.setDisplay("questionable dyads");
+                anomalyOrDataReqDone.addToDisplay(((Anomaly)sugg).doneList());
+                displayActionBox(anomalyOrDataReqDone);
+            } else if (sugg instanceof DataRequest) {
+                anomalyOrDataReqDone.setDisplay("requested dyads");
+                displayActionBox(anomalyOrDataReqDone);
+            } else {
+                doneOrUNDO.load(sugg, elementNmbr);
+                displayActionBox(doneOrUNDO);
+            }
         } else if (sugg instanceof ProposedDef) {
             actionPropDef.load((ProposedDef) sugg, elementNmbr);
             displayActionBox(actionPropDef);
@@ -254,12 +282,12 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
         } else if (sugg instanceof UmbrellaCandidate) {
             actionUmbrella.load((UmbrellaCandidate) sugg, elementNmbr);
             displayActionBox(actionUmbrella);
-        } else if (sugg instanceof Discriminator) {
-            actionDataRequest.load((Discriminator) sugg, elementNmbr);
-            displayActionBox(actionDataRequest);
         } else if (sugg instanceof OverlapCandidate) {
             actionOverlap.load((OverlapCandidate) sugg, elementNmbr);
             displayActionBox(actionOverlap);
+        } else if (sugg instanceof DataRequest) {
+            actionDataRequest.load((DataRequest) sugg, elementNmbr);
+            displayActionBox(actionDataRequest);
         } else if (sugg instanceof Anomaly) {
             actionAnomaly.load((Anomaly) sugg, elementNmbr);
             displayActionBox(actionAnomaly);
@@ -281,9 +309,6 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
                     }
                 }
             } catch (IOException ex) {
-                if (MainPane.activity == null) {
-                    MainPane.createActivityLog(MainPane.desktop, MainPane.menuView);
-                }
                 String msg = "Error encountered displaying "
                         + (event.getURL().toExternalForm());
                 MainPane.displayError(msg, "Internal Problem", JOptionPane.ERROR_MESSAGE);
@@ -307,8 +332,8 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
     private ActionPropDef actionPropDef;
     private ActionSynonym actionSynonym;
     private ActionUmbrella actionUmbrella;
-    private ActionAlreadyProcessed alreadyDone;
-    private JTextArea detailsTextArea;
+    private AnomalyAlreadyProcessed anomalyOrDataReqDone;
+    private ActionDONEorUnDo doneOrUNDO;
     private ActionBoxInstructions instructions;
     private JLabel jLabel1;
     private JScrollPane detailsScrollPane;

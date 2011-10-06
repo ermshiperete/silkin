@@ -66,10 +66,6 @@ public class SILKFileParserPreXML extends Parser {
             dt = new DomainTheory(newCtxt, false, "");
             newCtxt.addDomainTheory(dt);
         }
-        if (!newCtxt.domTheoryAdrExists()) {
-            dt = new DomainTheory(newCtxt, true, "");
-            newCtxt.addDomainTheory(dt);
-        }
         if (newCtxt.indSerNumGen != origIndCount) //  verify number of individuals loaded
         {
             error("ERROR: Number of individuals created does not equal parameter <indSerNum>.");
@@ -236,6 +232,9 @@ public class SILKFileParserPreXML extends Parser {
         } else if (current.lexeme.substring(0, 14).equals("<accepted-defs")) { //
             scanner.readToken();  //  consume the start flag
             boolean ref = current.lexeme.substring(20, 23).equals("Ref");
+            if (!ref && newCtxt.learningHistoryAdr == null) {
+                newCtxt.learningHistoryAdr = new TreeMap<String, ArrayList<Context.HistoryItem>>();
+            }
             TreeMap<String, ArrayList<Context.HistoryItem>> learningHistory = 
                     (ref ? newCtxt.learningHistoryRef : newCtxt.learningHistoryAdr);
             parseAccDefs(learningHistory);
@@ -418,7 +417,8 @@ public class SILKFileParserPreXML extends Parser {
     void parseDataAuthor() throws KSParsingErrorException {
         current = scanner.lookAhead();
         if (current.lexeme.equals("<dataAuthor>")) {
-            Library.currDataAuthor = readTaggedString("dataAuthor", "parseDataAuthor");
+            String author = readTaggedString("dataAuthor", "parseDataAuthor");
+            newCtxt.dataAuthors.add(author);
         } else if (current.lexeme.equals("<indSerNum>")) {
             return;
         } else {
@@ -2223,7 +2223,7 @@ public class SILKFileParserPreXML extends Parser {
             String[] vals, attributes = {"kinTerm", "date", "notes" };
             vals = readAttributes("accepted-def", attributes, "");
             Context.AcceptedDefPtr ptr = new Context.AcceptedDefPtr(
-                    vals[0], vals[1], vals[2]);
+                    vals[0], vals[1], "false", vals[2]);
             ptr.postToHistory(learningHistory);
             parseAccDefs(learningHistory);
         }else if (current.lexeme.equals("</accepted-defs>")) {
@@ -2464,9 +2464,10 @@ public class SILKFileParserPreXML extends Parser {
             if (ctrs.size() != 3) {
                 error("parseDyadComponents did not find 3 counters.");
             }
-            dy.pcCounter = (Integer) ctrs.get(0);
-            dy.sCounter = (Integer) ctrs.get(1);
-            dy.starCounter = (Integer) ctrs.get(2);
+            // The 3 counters were deleted from Dyads 2011-09-12.
+//            dy.pcCounter = (Integer) ctrs.get(0);
+//            dy.sCounter = (Integer) ctrs.get(1);
+//            dy.starCounter = (Integer) ctrs.get(2);
         } else if (attr.equals("kinTerm=")) {
             dy.kinTerm = val;
         } else if (attr.equals("kinTermType=")) {
@@ -3224,7 +3225,7 @@ public class SILKFileParserPreXML extends Parser {
         scanner.readToken(); // consume the start tag
         int start = current.lexeme.indexOf("\"") + 1,
                 stop = current.lexeme.indexOf("\"", start);
-        Discriminator dis = new Discriminator();
+        DataRequest dis = new DataRequest();
         dis.kinTerm = current.lexeme.substring(start, stop);
         current = scanner.lookAhead(); // may be start tag of optional <processed> block
         if (current.lexeme.equals("<processed>")) {

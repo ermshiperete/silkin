@@ -11,7 +11,7 @@
 public class ActionDataRequest extends javax.swing.JPanel {
 
     DecisionFrame papa;
-    Discriminator dr;  // the Data Request in focus
+    DataRequest dr;  // the Data Request in focus
     int suggNmbr;
 
     /** Creates new form ActionDataRequest */
@@ -120,7 +120,7 @@ public class ActionDataRequest extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    public void load(Discriminator dis, int nmbr) {
+    public void load(DataRequest dis, int nmbr) {
         dr = dis;
         suggNmbr = nmbr;
         keepActiveBtn.setSelected(true);
@@ -135,6 +135,8 @@ public class ActionDataRequest extends javax.swing.JPanel {
     private void doneBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneBtnActionPerformed
         if (markCompletedBtn.isSelected()) {
             papa.markProcessed(suggNmbr);
+        }else {
+            papa.markUnProcessed(suggNmbr);
         }
     }//GEN-LAST:event_doneBtnActionPerformed
 

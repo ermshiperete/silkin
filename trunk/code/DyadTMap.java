@@ -80,6 +80,23 @@ public class DyadTMap extends TreeMap implements Serializable {
         else dyadList.set(ndx, item);
     }  //  end of method dyAddOrUpdate
 
+    
+    public ArrayList<Dyad> findDyadList(Dyad dy) {
+        TreeMap subTree = (TreeMap)get(dy.kinTerm);
+        ArrayList<Dyad> dyList = new ArrayList<Dyad>();
+        if (subTree == null) {
+            return dyList;
+        }
+        ArrayList<Object> list = (ArrayList<Object>)subTree.get(dy.pcString);
+        if (list == null) {
+            return dyList;
+        }
+        for (Object o : list) {
+            dyList.add((Dyad)o);
+        }
+        return dyList;
+    }
+    
     int findExistingDyad(ArrayList<Object> dyadList, Dyad item) {
         for (int ndx = 0; ndx < dyadList.size(); ndx++) {
             Dyad cand = (Dyad)dyadList.get(ndx);
@@ -133,7 +150,6 @@ public class DyadTMap extends TreeMap implements Serializable {
             Dyad dy = (Dyad)dyIter.next();
             if (dy.ego == ego && dy.alter == alter) {
                 dyIter.remove();
-                System.out.println("\t\t***********   Removed a bad Dyad: " + dy);
                 break;
             }
         }
@@ -171,6 +187,36 @@ public class DyadTMap extends TreeMap implements Serializable {
         System.out.println("\t\t***********   Removed a bad Dyad: " + dy);
         return true;
     }  //  end of method removeDyad
+    
+    
+    public void removeDyad(DomainTheory dt, int egoInt, int alterInt, String term, String pcString) {
+        TreeMap termTM = (TreeMap) get(term);
+        if (termTM == null && dt.synonyms != null && dt.synonyms.get(term) != null) {
+            //  If it's a synonym, all dyads may have already been moved to base term
+            String synTerm = (String) dt.synonyms.get(term);
+            termTM = (TreeMap) get(synTerm);
+        }
+        if (termTM == null) {
+            return;
+        }
+        ArrayList<Object> dyList = (ArrayList<Object>) termTM.get(pcString);
+        if (dyList == null) {
+            return;
+        }
+        Individual ego = Context.current.individualCensus.get(egoInt),
+                   alter = Context.current.individualCensus.get(alterInt);
+        Dyad target = null;
+        for (Object o : dyList) {
+            Dyad dy = (Dyad)o;
+            if (dy.ego == ego && dy.alter == alter) {
+                target = dy;
+                break;
+            }
+        }
+        if (target != null) {
+            dyList.remove(target);
+        }
+    }
 
     /**  Integrate all the dyads in <code>otherMap</code> into this one.    
         @param  otherMap   the DyadTMap to be assimilated. */
@@ -188,6 +234,33 @@ public class DyadTMap extends TreeMap implements Serializable {
             }
         }  //  end of loop thru otherMap's keys
     }  //  end of method assimlate
+
+    public DyadTMap convertToAdr() {
+        DyadTMap newMap = new DyadTMap();
+        Iterator kinTermIter = entrySet().iterator();
+        while (kinTermIter.hasNext()) {
+            Map.Entry entry = (Map.Entry) kinTermIter.next();
+            String kinTerm = (String) entry.getKey();
+            TreeMap subTree = (TreeMap) entry.getValue();
+            TreeMap newSubTree = new TreeMap();
+            newMap.put(kinTerm, newSubTree);
+            Iterator kinTypeIter = subTree.entrySet().iterator();
+            while (kinTypeIter.hasNext()) {
+                Map.Entry subEntry = (Map.Entry) kinTypeIter.next();
+                String kinType = (String) subEntry.getKey();
+                ArrayList dyads = (ArrayList) subEntry.getValue();
+                ArrayList adrDyads = new ArrayList();
+                newSubTree.put(kinType, adrDyads);
+                for (Object o : dyads) {
+                    Dyad dy = (Dyad) o;
+                    Dyad newDy = new Dyad(dy);
+                    newDy.addrOrRef = Dyad.ADDR;
+                    adrDyads.add(newDy);
+                }
+            }
+        }
+        return newMap;
+    }
 
     /**  This method builds a string that represents a DyadTMap in a SILKin data (_.silk) file.   */
     public String toSILKString() {

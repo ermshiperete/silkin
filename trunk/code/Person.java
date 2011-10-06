@@ -48,7 +48,7 @@ public class Person {
     int myId = ++id_no;
     public boolean drawn = false; // was this symbol drawn last time?
     String name = "New";
-    String comment = "No Comment";
+    String comment = "";
     String birthYr = "";
     String yobq = "9";
     String deathYr = "";

@@ -31,12 +31,20 @@ public class Learned_DT extends DomainTheory implements Serializable {
         polygamyOK = papa.polygamyOK;
         addressTerms = papa.addressTerms;
         levelsOfRecursion = papa.levelsOfRecursion;
-        theory = new TreeMap();
-        synonyms = new TreeMap();
-        umbrellas = new TreeMap();
+        theory = new TreeMap(papa.theory);
+        synonyms = papa.synonyms;
+        if (synonyms == null) synonyms = new TreeMap();
+        umbrellas = papa.umbrellas;
+        if (umbrellas == null) umbrellas = new TreeMap();
         potUmbrellas = new TreeMap();
-        nonSynonyms = new ArrayList<Object>();
-        nonUmbrellas = new TreeMap();
+        nonSynonyms = papa.nonSynonyms;
+        if (nonSynonyms == null) nonSynonyms = new ArrayList();        
+        nonUmbrellas = papa.nonUmbrellas;
+        if (nonUmbrellas == null) nonUmbrellas = new TreeMap();
+        overlaps = papa.overlaps;        
+        if (overlaps == null) overlaps = new TreeMap();
+        nonOverlaps = papa.nonOverlaps;
+        if (nonOverlaps == null) nonOverlaps = new TreeMap();
         if (!nonTerms.contains("no__term")) {
             nonTerms.add("no__term");
         }
@@ -46,6 +54,31 @@ public class Learned_DT extends DomainTheory implements Serializable {
         wiseGuy.synonyms = papa.synonyms;
         wiseGuy.umbrellas = papa.umbrellas;
         wiseGuy.overlaps = papa.overlaps;
+        // Loop thru Context.LearningHistory. Post all rejected-prop-defs to rejectedDefs
+        TreeMap<String, ArrayList<Context.HistoryItem>> history;
+        history = (addressTerms ? ctxt.learningHistoryAdr : ctxt.learningHistoryRef);
+        if (history != null) {
+            Iterator hIter = history.entrySet().iterator();
+            while (hIter.hasNext()) {
+                Map.Entry<String, ArrayList<Context.HistoryItem>> entry = 
+                        (Map.Entry<String, ArrayList<Context.HistoryItem>>)hIter.next();
+                String kinTerm = entry.getKey();
+                ArrayList<Context.HistoryItem> items = entry.getValue();
+                for (Context.HistoryItem hi : items) {
+                    if (hi instanceof Context.RejectedPropDefPtr && ! hi.rescinded) {
+                        Context.RejectedPropDefPtr reject = (Context.RejectedPropDefPtr)hi;
+                        ProposedDef propDef = new ProposedDef();
+                        // Give this PropDef only enough data to create a match in DT.findKTMatches
+                        propDef.ktd = new KinTermDef(reject.eqcProtoKinTerm);
+                        propDef.ktd.domTh = new DomainTheory(reject.eqcProtoLangName);
+                        if (rejectedDefs.get(kinTerm) == null) {
+                            rejectedDefs.put(kinTerm, new ArrayList<Object>());
+                        }
+                        ((ArrayList<Object>)rejectedDefs.get(kinTerm)).add(propDef);
+                    }  //  end of we-got-a-hit
+                }  //  end of for-loop thru History Items
+            }  //  end of iteration
+        }
     }  //  end of principle constructor
 
     public boolean allDone(int minDyadsPerPCStr, DomainTheory sourceDT) {
@@ -305,8 +338,8 @@ public class Learned_DT extends DomainTheory implements Serializable {
                         if (result) {
                             anotherRound = true;
                         }
-                    } else if (issue instanceof Discriminator) {
-                        Discriminator disc = (Discriminator) issue;
+                    } else if (issue instanceof DataRequest) {
+                        DataRequest disc = (DataRequest) issue;
                         int num = Math.min(3, disc.relatedCB_Ptrs.size());
                         num *= MainPane.NUMBER_OF_EGOS;
                         disc.buildDiscrimDyads(this, sourceDT);
@@ -381,7 +414,7 @@ public class Learned_DT extends DomainTheory implements Serializable {
         Iterator iter = issueList.iterator();
         while (iter.hasNext()) {
             Issue issue = (Issue) iter.next();
-            if (!(issue instanceof Discriminator)) {
+            if (!(issue instanceof DataRequest)) {
                 iter.remove();
             }
         }
@@ -478,7 +511,7 @@ public class Learned_DT extends DomainTheory implements Serializable {
         if (cbPtrs.size() > 0) {
             questions.add("These kin types, not yet seen in your data, may or may not belong in this definition. "
                     + "Please gather some data about these.");
-            Discriminator disc = new Discriminator(compDef.kinTerm, questions, cbPtrs);
+            DataRequest disc = new DataRequest(compDef.kinTerm, questions, cbPtrs);
             issueList.add(disc);
         }
     }  // end of method makeCompDefDiscriminators
@@ -635,6 +668,7 @@ public class Learned_DT extends DomainTheory implements Serializable {
             }  //  end of loop thru aux's base clauses
         }  //  end of auxiliary processing
     }  //  end of method renameAuxPreds
+    
 
     public void retractDef(String kinTerm) {
         //  Retract this proposed definition; it has been disproved.
@@ -925,9 +959,8 @@ public class Learned_DT extends DomainTheory implements Serializable {
             Map.Entry entry1 = (Map.Entry) rndIter.next();
             Integer currentRnd = (Integer) entry1.getKey();
             TreeMap subTree = (TreeMap) entry1.getValue();
-            Iterator subIter = subTree.entrySet().iterator();
-            bigLoop:
-            while (subIter.hasNext()) {
+            Iterator subIter = subTree.entrySet().iterator();            
+ bigLoop:   while (subIter.hasNext()) {
                 Map.Entry entry2 = (Map.Entry) subIter.next();
                 Integer curSubRnd = (Integer) entry2.getKey();
                 if (currentRnd < finalRnd

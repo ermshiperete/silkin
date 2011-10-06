@@ -24,24 +24,24 @@
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="294" max="-2" attributes="0"/>
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="106" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="640" max="-2" attributes="0"/>
                   </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="194" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace pref="115" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="292" max="-2" attributes="0"/>
               <EmptySpace pref="51" max="32767" attributes="0"/>
           </Group>
@@ -70,7 +70,7 @@
           <Properties>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="*** Moving People and Unions&#xa;Click on and drag a person or union symbol to move it. The links will automatically be redrawn. &#xa;If you hold down the SHIFT key and move a union, you will also move the immediate nuclear &#xa;family associated with that union. If you hold down the ALT (Mac COMMAND) key while moving a &#xa;union you will move the entire lineage descended from that union.&#xa;&#xa;*** Deleting relationships&#xa;Drag  a person to either the top (if they are a parent/spouse) or bottom (if they are a child/sibling)&#xa;of a union. If there was a relationship, it will be deleted.&#xa;&#xa;*** Deleting People or Unions&#xa;Hold down the CONTROL (CTRL) key and click on a symbol. This will be deleted along with its &#xa;relationships. BE CAREFUL. Do not delete the person if you only need to delete a relationship &#xa;(see above).&#xa;&#xa;The &apos;Clear All&apos; entry under the File menu deletes all people, unions and relationships.&#xa;NOTE: This is not yet implemented.&#xa;&#xa;*** Entering Data about People and Unions&#xa;Click on a person or union. The symbol should turn blue. You can then fill in the information&#xa;at the top of the window. Information is not recorded unless you change to a different symbol. &#xa;Normally this suggests that the last entry should be followed by clicking on some other person &#xa;or union. &#xa;&#xa;NOTE that the month and day portion of all dates (birth, death, marriage and divorce) are &#xa;converted by SILKin into a standard &quot;medium-length&quot; format (e.g. Feb 29) but you may enter &#xa;them in either that format or as numbers (e.g. 2/29)."/>
+            <Property name="text" type="java.lang.String" value="*** Moving People and Unions&#xa;Click on and drag a person or union symbol to move it. The links will automatically be redrawn. &#xa;If you hold down the SHIFT key and move a union, you will also move the immediate nuclear &#xa;family associated with that union. If you hold down the ALT (Mac COMMAND) key while moving a &#xa;union you will move the entire lineage descended from that union.&#xa;&#xa;*** Deleting relationships&#xa;Drag  a person to either the top (if they are a parent/spouse) or bottom (if they are a child/sibling)&#xa;of a union. If there was a relationship, it will be deleted.&#xa;&#xa;*** Deleting People or Unions&#xa;Hold down the CONTROL (CTRL) key and click on a symbol. This will be deleted along with its &#xa;relationships. BE CAREFUL. Do not delete the person if you only need to delete a relationship &#xa;(see above).&#xa;&#xa;The &apos;Clear All&apos; entry under the File menu deletes all people, unions and relationships.&#xa;&#xa;*** Entering Data about People and Unions&#xa;Click on a person or union. The symbol should turn blue. You can then fill in the information&#xa;at the top of the window. Information is not recorded unless you change to a different symbol. &#xa;Normally this suggests that the last entry should be followed by clicking on some other person &#xa;or union. &#xa;&#xa;NOTE that all dates in SILKin are expressed in &apos;universal format&apos; like 2011-07-21 &#xa;for July 7, 2011.  If you are entering an approximate date, you can enter only the &#xa;Year-Month or just the Year. If you accidentally enter a date in your native format,&#xa;SILKin will try to interpret it; if it cannot you will get an error message. You should&#xa;form the habit of entering dates in Year-Month-Day numeric format."/>
           </Properties>
         </Component>
       </SubComponents>

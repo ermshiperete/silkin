@@ -29,10 +29,6 @@ public class PersonPanel extends javax.swing.JPanel {
         initComponents();
         parent = SIL_Edit.editWindow;
         alterID.setColumns(3);
-        confirmKT.setVisible(false);
-        confirmRKT.setVisible(false);
-        confirmKTAdr.setVisible(false);
-        confirmRKTAdr.setVisible(false);
         alterRefTerm.setEditable(false);
         recipRefTerm.setEditable(false);
         egoChoiceModel = (DefaultComboBoxModel)egoChoiceBox.getModel();
@@ -103,14 +99,10 @@ public class PersonPanel extends javax.swing.JPanel {
         alterRefTerm = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         recipRefTerm = new javax.swing.JTextField();
-        confirmKT = new javax.swing.JCheckBox();
-        confirmRKT = new javax.swing.JCheckBox();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         alterAdrTerm = new javax.swing.JTextField();
         recipAdrTerm = new javax.swing.JTextField();
-        confirmKTAdr = new javax.swing.JCheckBox();
-        confirmRKTAdr = new javax.swing.JCheckBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         personComments = new javax.swing.JTextPane();
         bornYrLabel = new javax.swing.JLabel();
@@ -255,20 +247,6 @@ public class PersonPanel extends javax.swing.JPanel {
             }
         });
 
-        confirmKT.setText("Confirm");
-        confirmKT.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                confirmKTItemStateChanged(evt);
-            }
-        });
-
-        confirmRKT.setText("Confirm");
-        confirmRKT.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                confirmRKTItemStateChanged(evt);
-            }
-        });
-
         jLabel2.setText("Ego addresses Alter:");
 
         jLabel3.setText("Alter addresses Ego:");
@@ -288,10 +266,6 @@ public class PersonPanel extends javax.swing.JPanel {
                 recipAdrTermFocusGained(evt);
             }
         });
-
-        confirmKTAdr.setText("Confirm");
-
-        confirmRKTAdr.setText("Confirm");
 
         jScrollPane1.setViewportView(personComments);
 
@@ -372,12 +346,7 @@ public class PersonPanel extends javax.swing.JPanel {
                             .add(recipRefTerm, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
                             .add(alterAdrTerm, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
                             .add(recipAdrTerm, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(confirmKT)
-                            .add(confirmRKT)
-                            .add(confirmKTAdr)
-                            .add(confirmRKTAdr))))
+                        .add(93, 93, 93)))
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
                         .add(13, 13, 13)
@@ -432,26 +401,21 @@ public class PersonPanel extends javax.swing.JPanel {
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel10)
                     .add(alterRefTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(confirmKT)
                     .add(jLabel12))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                     .add(layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                                .add(jLabel11)
-                                .add(recipRefTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                            .add(confirmRKT))
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(jLabel11)
+                            .add(recipRefTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(jLabel2)
-                            .add(alterAdrTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(confirmKTAdr))
+                            .add(alterAdrTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(jLabel3)
-                            .add(recipAdrTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(confirmRKTAdr)))
+                            .add(recipAdrTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                     .add(jScrollPane1))
                 .addContainerGap())
         );
@@ -510,18 +474,6 @@ public class PersonPanel extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_personDeathYearFocusLost
-
-    private void confirmKTItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_confirmKTItemStateChanged
-        // TODO confirm the system-generated kinTerm
-        // This btn is a flag to allow User to change focus to another person.
-        // If kinTerm is not confirmed or edited, PopUp an error dialog box.
-    }//GEN-LAST:event_confirmKTItemStateChanged
-
-    private void confirmRKTItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_confirmRKTItemStateChanged
-        // TODO confirm the system-generated kinTerm
-        // This btn is a flag to allow User to change focus to another person.
-        // If recip kinTerm is not confirmed or edited, PopUp an error dialog box.
-    }//GEN-LAST:event_confirmRKTItemStateChanged
 
     private void alterRefTermFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_alterRefTermFocusLost
         // TODO add your handling code here:
@@ -614,10 +566,6 @@ public class PersonPanel extends javax.swing.JPanel {
         personBirthYr.setEditable(false);
         personDeathYear.setEditable(false);
         personComments.setEditable(false);
-        confirmKTAdr.setVisible(false);
-        confirmRKTAdr.setVisible(false);
-        confirmKT.setVisible(false);
-        confirmRKT.setVisible(false);
         storing = false;
     }
 
@@ -673,13 +621,16 @@ public class PersonPanel extends javax.swing.JPanel {
             recipAdrTerm.setEditable(false);
         } else if (ind.node != null) {
         // There may be kin terms already recorded
+            Individual ego = Context.current.individualCensus.get(parent.getCurrentEgo());
+            checkForAutoDefs(ind.node, ego);
             fillTextField(ind.node, alterRefTerm, false);
-            fillTextField(ind.node, alterAdrTerm, true);
+            fillTextField(ind.node, alterAdrTerm, parent.chart.distinctAdrTerms);
             TreeMap tmap = parent.ktm.getRow(ind.serialNmbr);
             Node altNode = (Node) tmap.get(parent.getCurrentEgo());
             if (altNode != null) {
+                checkForAutoDefs(altNode, ind);
                 fillTextField(altNode, recipRefTerm, false);
-                fillTextField(altNode, recipAdrTerm, true);
+                fillTextField(altNode, recipAdrTerm, parent.chart.distinctAdrTerms);
             }else {
                 recipRefTerm.setText("");
                 recipAdrTerm.setText("");
@@ -691,10 +642,10 @@ public class PersonPanel extends javax.swing.JPanel {
 
         } else {
         //  No node means not yet connected
-            alterRefTerm.setText("not yet linked to Ego");
-            recipRefTerm.setText("not yet linked to Ego");
-            alterAdrTerm.setText("not yet linked to Ego");
-            recipAdrTerm.setText("not yet linked to Ego");
+            alterRefTerm.setText("Not linked to Ego");
+            recipRefTerm.setText("Not linked to Ego");
+            alterAdrTerm.setText("Not linked to Ego");
+            recipAdrTerm.setText("Not linked to Ego");
             alterRefTerm.setEditable(false);
             recipRefTerm.setEditable(false);
             alterAdrTerm.setEditable(false);
@@ -711,8 +662,81 @@ public class PersonPanel extends javax.swing.JPanel {
             }
         }
         storing = false;
-        // TODO turn on 'confirm' CkBox if kt is generated etc.
     }
+    
+    void checkForAutoDefs(Node nod, Individual ego) {
+        TreeMap<String, ArrayList<Context.CB_Ptr>> map = Context.current.autoDefRef;
+        ArrayList<Context.CB_Ptr> list = map.get(nod.pcString);
+        DomainTheory dt = null;
+        try {
+            dt = Context.current.domTheoryRef();
+        } catch (Exception ex) {  }  //  nothing can go wrong, go wrong, go wrong...
+        applyAutoDef(nod, list, dt, ego);
+        if (Context.current.domTheoryAdrExists() && parent.chart.distinctAdrTerms) {
+            map = Context.current.autoDefAdr;
+            list = map.get(nod.pcString);
+            try {
+                dt = Context.current.domTheoryAdr();
+            } catch (Exception ex) {  }  
+            applyAutoDef(nod, list, dt, ego);
+        }
+    }
+    
+    private void applyAutoDef(Node nod, ArrayList<Context.CB_Ptr> list, 
+            DomainTheory dt, Individual ego) {
+        if (list == null) {
+            return;
+        }
+        Context ctxt = Context.current;
+        Dyad dad = new Dyad(ego);
+        dad.alter = nod.indiv;
+        dad.pcString = nod.pcString;
+        for (Context.CB_Ptr ptr : list) {
+            if (nod.hasKinTerm(ptr.kinTerm)) {
+                continue;  //  no need for auto-def if term is already here
+            }
+            try {
+                KinTermDef ktd = (KinTermDef) dt.theory.get(ptr.kinTerm);
+                ClauseBody cb = (ClauseBody) ktd.expandedDefs.get(ptr.clauseNmbr);
+                if (dt.fit(cb, dad)) {
+                    String clas = (dt.addressTerms ? "address" : "reference");
+                    nod.addTerm(ptr.kinTerm, "primary", clas);
+                    dad.kinTerm = ptr.kinTerm;
+                    dad.level = cb.level;
+                    dad.kinTermType = 0;  // 0 = primary
+                    if (dt.addressTerms) dad.addrOrRef = 1;  //  0 is default
+                    dad.pcStringStructural = ClauseBody.structStr(dad.pcString);
+                    dad.makePath(nod.miniPreds, dad.alter);
+                    dt.dyadsDefined.dyAdd(dad);
+                    TreeMap<String, ArrayList<Context.HistoryItem>> history = 
+                            (dt.addressTerms ? ctxt.learningHistoryAdr : ctxt.learningHistoryRef);
+                    postToLrngHist(history, dad);
+                }
+            } catch (Exception ex) {
+                String msg = "FYI: Exception while trial-fitting an accepted def.\n" + ex;
+                MainPane.displayError(msg, "Internal Error", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
+    
+    private void postToLrngHist(TreeMap<String, ArrayList<Context.HistoryItem>> history, Dyad dad) {
+        ArrayList<Context.HistoryItem> items = history.get(dad.kinTerm);
+        Context.AcceptedDefPtr adp = null;
+        if (items != null) {
+            for (Context.HistoryItem item : items) {
+                if (item instanceof Context.AcceptedDefPtr && ! item.rescinded) {
+                    adp = (Context.AcceptedDefPtr)item;
+                }
+            }
+            if (adp != null) {
+                Integer[] pair = new Integer[2];
+                pair[0] = dad.ego.serialNmbr;
+                pair[1] = dad.alter.serialNmbr;
+                adp.autoDefPairs.add(pair);
+            }
+        }
+    }
+    
 
     void fillTextField(Node nod, String fieldType, boolean addr) {
         JTextField field = null;
@@ -791,9 +815,9 @@ public class PersonPanel extends javax.swing.JPanel {
                 oldTerms = getKinTerms(alterKinTermRefImg);
                 newTerms = getKinTerms(a);
                 updateKinTerms(currEgo, infoPerson, infoPerson.node, oldTerms, newTerms, "Ref");
-                if (!parent.chart.distinctAdrTerms) {
-                    updateKinTerms(currEgo, infoPerson, infoPerson.node, oldTerms, newTerms, "Adr");
-                }
+//                if (!parent.chart.distinctAdrTerms) {  // REMOVED: ADDRESS TERMS NOW IMPLICIT
+//                    updateKinTerms(currEgo, infoPerson, infoPerson.node, oldTerms, newTerms, "Adr");
+//                }
             } // end of User must have edited alterKinTermsRef
             if (parent.chart.distinctAdrTerms) {
                 // Must pick up the term of address, if any
@@ -821,9 +845,9 @@ public class PersonPanel extends javax.swing.JPanel {
                     parent.ktm.addNode(infoPerson.serialNmbr, currEgoNum, recipNode);
                     updateKinTerms(infoPerson, currEgo, recipNode, oldTerms, newTerms, "Ref");
                 }
-                if (!parent.chart.distinctAdrTerms) {
-                    updateKinTerms(infoPerson, currEgo, recipNode, oldTerms, newTerms, "Adr");
-                }  //  end of no-distinct-address-terms
+//                if (!parent.chart.distinctAdrTerms) {  // REMOVED: ADDRESS TERMS NOW IMPLICIT
+//                    updateKinTerms(infoPerson, currEgo, recipNode, oldTerms, newTerms, "Adr");
+//                }  //  end of no-distinct-address-terms
             } //  end of recip-ref-terms-were-edited
             if (parent.chart.distinctAdrTerms) {
                 // Must pick up the reciprocal term of address, if any
@@ -835,9 +859,8 @@ public class PersonPanel extends javax.swing.JPanel {
                 }  //  end of recip-address-terms-were-edited
             }  //  end of distinct-address-terms
         }  //  end of non-ego-has-a-node
-        if (Library.currDataAuthor == null || Library.currDataAuthor.length() == 0) {
-            b = "Name of data author?";
-            Library.currDataAuthor = JOptionPane.showInputDialog(parent, b);
+        while (Library.currDataAuthor == null || Library.currDataAuthor.length() == 0) {
+            Library.currDataAuthor = parent.chart.getCurrentUser();
         }
         infoPerson.dataAuthor = Library.currDataAuthor;
         infoPerson.dataChangeDate = UDate.today();
@@ -845,21 +868,37 @@ public class PersonPanel extends javax.swing.JPanel {
         parent.chart.dirty = true;
         dirty = false;
         storing = false;
-//  DEBUG CODE
-    int ktmSz = Context.current.ktm.numberOfKinTerms(),
-        ktmCells = Context.current.ktm.numberOfCells(),
-        popSz = Context.current.indSerNumGen,
-        refSz = DomainTheory.countLeaves(Context.current.domTheoryRef().dyadsUndefined),
-        adrSz = DomainTheory.countLeaves(Context.current.domTheoryAdr().dyadsUndefined);
-    boolean dyadsBalanced = (refSz == adrSz),
-            ktminBalance = (refSz + adrSz) == (ktmSz - (2 * popSz));
-    if (!dyadsBalanced || !ktminBalance) {
-        System.out.println("Ref dyads: " + refSz + "\tAdr dyads: " + adrSz + "\tktmTerms: " +
-            ktmSz + " - " + (2 * popSz) + " = " + (ktmSz - (2 * popSz)) + "\tktmCells: " + ktmCells);
-        Context.breakpoint();
-        }
-// END DEBUG CODE
+        debugDyads();
     }
+    
+    
+    public static void debugDyads() {
+        if (SIL_Edit.editWindow.chart.recomputingDyads) {
+            return;
+        }
+        try {
+            int ktmSz = Context.current.ktm.numberOfKinTerms(),
+                ktmCells = Context.current.ktm.numberOfCells(),
+                mult = (!Context.current.domTheoryAdrExists() ? 1 : 2),
+                popSz = Context.current.indSerNumGen,
+                refSz = DomainTheory.countLeaves(Context.current.domTheoryRef().dyadsUndefined)
+                    + DomainTheory.countLeaves(Context.current.domTheoryRef().dyadsDefined),
+                adrSz = (!Context.current.domTheoryAdrExists() ? 0
+                    : DomainTheory.countLeaves(Context.current.domTheoryAdr().dyadsUndefined)
+                    + DomainTheory.countLeaves(Context.current.domTheoryAdr().dyadsDefined));
+            boolean ktminBalance = (refSz + adrSz) == (ktmSz - (mult * popSz));
+            if (!ktminBalance) {
+                String msg = "Ref dyads: " + refSz + "\tAdr dyads: " + adrSz + "\tktmTerms: "
+                        + ktmSz + " - " + (mult * popSz) + " = " + (ktmSz - (mult * popSz)) + "\tktmCells: " + ktmCells;
+                MainPane.displayError(msg, "Data Loss Monitoring", JOptionPane.WARNING_MESSAGE);
+                System.out.println(msg);
+                Context.breakpoint();
+            }
+        } catch (Exception ex) {
+            Context.breakpoint();
+        }
+    }
+    
 
     static ArrayList<String> getKinTerms(String s) {
         ArrayList<String> list = new ArrayList<String>();
@@ -896,20 +935,20 @@ public class PersonPanel extends javax.swing.JPanel {
         nod.replaceTerms(newTerms, "primary", (typ.equals("Ref") ? "reference" : "address"));
         try {
             DomainTheory dt = (typ.equals("Ref") ? Context.current.domTheoryRef()
-                    : Context.current.domTheoryAdr());
+                    : Context.current.domTheoryAdr());            
+            for (String term : deletedTerms) {
+                if (dt.dyadsDefined.containsKey(term)) {
+                    dt.dyadsDefined.removeDyad(term, nod.pcString, currEgo, infoPerson, dt);
+                } else {
+                    dt.dyadsUndefined.removeDyad(term, nod.pcString, currEgo, infoPerson, dt);
+                }
+            }
             for (String term : addedTerms) {
                 Dyad newDyad = makeDyad(currEgo, infoPerson, term, nod);
                 if (dt.dyadsDefined.containsKey(term)) {
                     dt.dyadsDefined.dyAddOrUpdate(newDyad);
                 } else {
                     dt.dyadsUndefined.dyAddOrUpdate(newDyad);
-                }
-            }
-            for (String term : deletedTerms) {
-                if (dt.dyadsDefined.containsKey(term)) {
-                    dt.dyadsDefined.removeDyad(term, nod.pcString, currEgo, infoPerson, dt);
-                } else {
-                    dt.dyadsUndefined.removeDyad(term, nod.pcString, currEgo, infoPerson, dt);
                 }
             }
         } catch (Exception exc) {
@@ -1039,6 +1078,8 @@ public class PersonPanel extends javax.swing.JPanel {
         parent.chart.distinctAdrTerms = val;
         alterAdrTerm.setEditable(val);
         recipAdrTerm.setEditable(val);
+        parent.kinTmAdrBtn.setEnabled(val);
+        parent.ltrAdrBtn.setEnabled(val);
     }
 
 
@@ -1049,10 +1090,6 @@ public class PersonPanel extends javax.swing.JPanel {
     private javax.swing.JTextField alterLastName;
     private javax.swing.JTextField alterRefTerm;
     private javax.swing.JLabel bornYrLabel;
-    private javax.swing.JCheckBox confirmKT;
-    private javax.swing.JCheckBox confirmKTAdr;
-    private javax.swing.JCheckBox confirmRKT;
-    private javax.swing.JCheckBox confirmRKTAdr;
     private javax.swing.JTextField dataChgDate;
     private javax.swing.JLabel dataChgDateLabel;
     private javax.swing.JComboBox egoChoiceBox;

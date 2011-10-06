@@ -6,7 +6,7 @@ import java.awt.Point;
 
 public class Node implements Serializable {
 
-    public static final Node self = makeSelfNode();
+    public static final Node self = makeSelfNode(false);
 
     public Individual indiv;
     public String pcString;
@@ -14,10 +14,8 @@ public class Node implements Serializable {
     public ArrayList<Object> miniPreds = new ArrayList<Object>();
     public ArrayList<Object> kinTermsRef = new ArrayList<Object>(),
                             extKinTermsRef = new ArrayList<Object>(),
-                            exceptionsRef = new ArrayList<Object>(),
                             kinTermsAddr = new ArrayList<Object>(),
-                            extKinTermsAddr = new ArrayList<Object>(),
-                            exceptionsAddr = new ArrayList<Object>();
+                            extKinTermsAddr = new ArrayList<Object>();
     public String ktSuffix = "";
     public int appearances = 1;
 
@@ -31,21 +29,21 @@ public class Node implements Serializable {
         copy.miniPreds = miniPreds;
         copy.kinTermsRef = kinTermsRef;
         copy.extKinTermsRef = extKinTermsRef;
-        copy.exceptionsRef = exceptionsRef;
         copy.kinTermsAddr = kinTermsAddr;
         copy.extKinTermsAddr = extKinTermsAddr;
-        copy.exceptionsAddr = exceptionsAddr;
         copy.ktSuffix = ktSuffix;
         copy.appearances = appearances;        
         return copy;
     }
 
-    static Node makeSelfNode() {
+    static Node makeSelfNode(boolean adr) {
         Node selfNode = new Node();
         selfNode.pcString = "";
         selfNode.treelevel = 0;
         selfNode.kinTermsRef.add("Ego");
-        selfNode.kinTermsAddr.add("Ego");
+        if (adr) {
+            selfNode.kinTermsAddr.add("Ego");
+        }        
         return selfNode;
     }
 
@@ -109,10 +107,6 @@ public class Node implements Serializable {
             ktIter = extKinTermsRef().iterator();
             image += makeTagBlock("ER", ktIter);
         }
-        if ((exceptionsRef != null) && (exceptionsRef.size() > 0)) {
-            ktIter = exceptionsRef().iterator();
-            image += makeTagBlock("XR", ktIter);
-        }
         if ((kinTermsAddr != null) && (kinTermsAddr.size() > 0)) {
             ktIter = kinTermsAddr().iterator();
             image += makeTagBlock("PA", ktIter);
@@ -120,10 +114,6 @@ public class Node implements Serializable {
         if ((extKinTermsAddr != null) && (extKinTermsAddr.size() > 0)) {
             ktIter = extKinTermsAddr().iterator();
             image += makeTagBlock("EA", ktIter);
-        }
-        if ((exceptionsAddr != null) && (exceptionsAddr.size() > 0)) {
-            ktIter = exceptionsAddr().iterator();
-            image += makeTagBlock("XA", ktIter);
         }
         return image;
     }  //  end of method writeKinTerms
@@ -134,16 +124,12 @@ public class Node implements Serializable {
                 kinTermsRef = new ArrayList<Object>(terms);
             } else if (type.equals("extended")) {
                 extKinTermsRef = new ArrayList<Object>(terms);
-            } else {
-                exceptionsRef = new ArrayList<Object>(terms);
             }
         } else {
             if (type.equals("primary")) {
                 kinTermsAddr = new ArrayList<Object>(terms);
             } else if (type.equals("extended")) {
                 extKinTermsAddr = new ArrayList<Object>(terms);
-            } else {
-                exceptionsAddr = new ArrayList<Object>(terms);
             }
         }
     }
@@ -151,6 +137,32 @@ public class Node implements Serializable {
     public void addTerms(ArrayList<String> terms, String type, String clas) {
         for (String term : terms) {
             addTerm(term, type, clas);
+        }
+    }
+    
+    public void removeTerm(String term, String typ, String clas) {
+        // Don't search Exceptions -- I'm going to delete them
+        if (clas.equals("reference")) {
+            if (typ.equals("primary")) {
+                if (kinTermsRef != null) {
+                    kinTermsRef.remove(term);
+                }
+            } else if (typ.equals("extended")) {
+                if (extKinTermsRef != null) {
+                    extKinTermsRef.remove(term);
+                }
+            }
+        }
+        if (clas.equals("address")) {
+            if (typ.equals("primary")) {
+                if (kinTermsAddr != null) {
+                    kinTermsAddr.remove(term);
+                }
+            } else if (typ.equals("extended")) {
+                if (extKinTermsAddr != null) {
+                    extKinTermsAddr.remove(term);
+                }
+            }
         }
     }
 
@@ -181,14 +193,6 @@ public class Node implements Serializable {
                     extKinTermsRef.add(term);
                     nmbr++;
                 }
-            } else {
-                if (exceptionsRef == null) {
-                    exceptionsRef = new ArrayList<Object>();
-                }
-                if (! exceptionsRef.contains(term)) {
-                    exceptionsRef.add(term);
-                    nmbr++;
-                }
             }
         } else {
             if (type.equals("primary")) {
@@ -207,14 +211,6 @@ public class Node implements Serializable {
                     extKinTermsAddr.add(term);
                     nmbr++;
                 }
-            } else {
-                if (exceptionsAddr == null) {
-                    exceptionsAddr = new ArrayList<Object>();
-                }
-                if (! exceptionsAddr.contains(term)) {
-                    exceptionsAddr.add(term);
-                    nmbr++;
-                }
             }
         }
         return nmbr;
@@ -225,11 +221,17 @@ public class Node implements Serializable {
     @return	  true if any term are found.  */
     public boolean hasKinTerms() {
         if (kinTermsRef.size() > 0 || extKinTermsRef.size() > 0
-            || kinTermsAddr.size() > 0 || extKinTermsAddr.size() > 0
-            || exceptionsRef.size() > 0 || exceptionsAddr.size() > 0) {
+            || kinTermsAddr.size() > 0 || extKinTermsAddr.size() > 0) {
             return true;
         } else return false;
     }  //  end of method hasKinTerms
+    
+    public boolean hasKinTerm(String kt) {
+        if (kinTermsRef.contains(kt)|| extKinTermsRef.contains(kt)
+            || kinTermsAddr.contains(kt) || extKinTermsAddr.contains(kt)) {
+            return true;
+        } else return false;
+    }
 
     public int nmbrOfKinTerms() {
         ArrayList<String> terms = getKinTerms(true);
@@ -242,10 +244,8 @@ public class Node implements Serializable {
     public void addKinTermsFrom(Node otherNode) {
         kinTermsRef.addAll(otherNode.kinTermsRef());
         extKinTermsRef.addAll(otherNode.extKinTermsRef());
-        exceptionsRef.addAll(otherNode.exceptionsRef());
         kinTermsAddr.addAll(otherNode.kinTermsAddr());
         extKinTermsAddr.addAll(otherNode.extKinTermsAddr());
-        exceptionsAddr.addAll(otherNode.exceptionsAddr());
     }
 
     public boolean sameMiniPreds(Node otherNode) {
@@ -276,11 +276,6 @@ public class Node implements Serializable {
                     terms.add((String)extKinTermsAddr.get(i));
                 }
             }
-            if (exceptionsAddr != null && exceptionsAddr.size() > 0) {
-                for (int i=0; i < exceptionsAddr.size() ; i++) {
-                    terms.add((String)exceptionsAddr.get(i));
-                }
-            }
         }else {
             if (kinTermsRef != null && kinTermsRef.size() > 0) {
                 for (int i=0; i < kinTermsRef.size() ; i++) {
@@ -290,11 +285,6 @@ public class Node implements Serializable {
             if (extKinTermsRef != null && extKinTermsRef.size() > 0) {
                 for (int i=0; i < extKinTermsRef.size() ; i++) {
                     terms.add((String)extKinTermsRef.get(i));
-                }
-            }
-            if (exceptionsRef != null && exceptionsRef.size() > 0) {
-                for (int i=0; i < exceptionsRef.size() ; i++) {
-                    terms.add((String)exceptionsRef.get(i));
                 }
             }
         }
@@ -381,18 +371,6 @@ public class Node implements Serializable {
     }  //  end of method extKinTermsRef
 
     /**
-    Return an ArrayList<Object> of Exceptional kinship terms of reference which is a shallow copy of the list in this Node.
-
-    @return	  an ArrayList<Object> of Strings, each of which is an Exceptional kinship term, or null.
-     */
-    public ArrayList<Object> exceptionsRef() {
-        if (exceptionsRef == null) {
-            return null;
-        }
-        return new ArrayList<Object>(exceptionsRef);
-    }
-
-    /**
     Return an ArrayList<Object> of primary kinship terms of address which is a shallow copy of the list in this Node.
 
     @return	  an ArrayList<Object> of Strings, each of which is a kinship term, or null.
@@ -415,16 +393,4 @@ public class Node implements Serializable {
         }
         return new ArrayList<Object>(extKinTermsAddr);
     }  //  end of method extkinTermsAddr
-
-    /**
-    Return an ArrayList<Object> of exceptional kinship terms of address which is a shallow copy of the list in this Node.
-
-    @return	  an ArrayList<Object> of Strings, each of which is an Exceptional kinship term, or null.
-     */
-    public ArrayList<Object> exceptionsAddr() {
-        if (exceptionsAddr == null) {
-            return null;
-        }
-        return new ArrayList<Object>(exceptionsAddr);
-    }
 }

@@ -8,7 +8,7 @@ import java.io.* ;
 	defining a Kinship System.  This is the level at which 90% of the action takes place in Active Learning.
 	<p>
 	Because so many methods are defined at the Domain Theory level, the code files are broken into 4 classes:  
-	DT_Abstract1, DT_Abstract12, & DomainTheory. 
+	DT_Abstract1, DT_Abstract2, & DomainTheory, plus Learned_DT. 
 
   @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
 */
@@ -909,89 +909,93 @@ public abstract class DT_Abstract2 extends DT_Abstract1  {
 		}  //  end of method listSetIntersectionOfStrings
 	
 	    
-	public void matchDyads() throws JavaSystemException, KSBadHornClauseException, KSNoChainOfRelations2Alter, 
-				KSInternalErrorException, KSConstraintInconsistency, ClassNotFoundException, FileNotFoundException {
-		if (Library.cbIndex == null)  {
-			BufferedReader file = new BufferedReader(new FileReader(Library.libraryDirectory + "ClauseIndex"));
-			Library.cbIndex = new Library.ClauseIndex(file);
-			}
-		if ((dyadsUndefined == null) || (Library.cbIndex.tMap.isEmpty())) return;
-		String fileName = Library.libraryDirectory + languageName, image, kinTerm, langTerm = "";
-		TreeMap ktmLvlTM, cbiLvlTM, setsOfCBsThatMatch;
-		TreeSet langTermMatches, setOfCBs, intersectionOfLangTerms;
-		ArrayList<Object> dyadList, cbiPCList, listOfDyadMatches;
-		Map.Entry ktmEntry, lvlEntry;
-		Iterator ktmIter = dyadsUndefined.entrySet().iterator(), lvlIter, valIter;
-		Integer lvlInt;
-		int dyadCtr = 0, nmbrInvolved, totalCBs;
-		Dyad dad;
-		ClauseBody cb;
-		boolean hdr1 = true, hdr2 = true, hdr3 = true, match_1;
-		try { 
-			PrintWriter outFile1 = new PrintWriter(new BufferedWriter(new FileWriter(fileName + "_1.match")));
-			while (ktmIter.hasNext())  {
-				ktmEntry = (Map.Entry)ktmIter.next();
-				kinTerm = (String)ktmEntry.getKey();
-				dyadCtr = 0;
-				listOfDyadMatches = new ArrayList<Object>();
-				setsOfCBsThatMatch = new TreeMap();
-				lvlIter = ((Collection)((TreeMap)ktmEntry.getValue()).entrySet()).iterator();
-				while (lvlIter.hasNext())  {
-					lvlEntry = (Map.Entry)lvlIter.next();
-					lvlInt = (Integer)lvlEntry.getKey();
-					dyadList = (ArrayList<Object>)lvlEntry.getValue();
-					cbiLvlTM = (TreeMap)Library.cbIndex.tMap.get(lvlInt);
-					for (int i=0; i < dyadList.size(); i++)  {
-						dad = (Dyad)dyadList.get(i);
-						dyadCtr++;
-						langTermMatches = new TreeSet();
-						cbiPCList = (ArrayList<Object>)cbiLvlTM.get(new Integer(dad.pcCounter));
-						valIter = cbiPCList.iterator();
-						while (valIter.hasNext())  {
-							//  Whew!  Thought I'd never get here!  
-							cb = (ClauseBody)valIter.next();
-							if (! kinTerm.equals(cb.ktd.kinTerm))  {  //  no sense matching yourself
-								if (compare2(dad, cb, kinTerm))  {
-									langTerm = cb.ktd.domTh.languageName + ":" + cb.ktd.kinTerm;
-									langTermMatches.add(langTerm);
-									if (setsOfCBsThatMatch.get(langTerm) == null) 
-										setsOfCBsThatMatch.put(langTerm, new TreeSet(cb));
-									setOfCBs = (TreeSet)setsOfCBsThatMatch.get(langTerm);
-									setOfCBs.add(cb);
-								}  //  end of matched-on-comparison#2
-							}  //  end of if not a match on itself
-						}  //  end of loop thru clausebodies in cbIndex for this level & pcCount
-					listOfDyadMatches.add(langTermMatches);
-					}  //  end of loop thru dyadsUndefined for this kinTerm & level
-				}  //  end of loop thru dyadLevels
-				//  Now that all dyadsUndefined and matching cbs for this kinTerm have been found, analyze the results
-				intersectionOfLangTerms = setIntersection(listOfDyadMatches);
-				valIter = intersectionOfLangTerms.iterator();
-				while (valIter.hasNext())  {
-					//  langTerm matched every dyad for this kinTerm
-					langTerm = (String)valIter.next();  
-					if (hdr1)  {
-						hdr1 = false;
-						outFile1.println("kinTerm\t# of dyadsUndefined\tLang:Term\t# CBs\tmatching CBs");
-					}  //  end of writing-file-column-headers
-					outFile1.print(kinTerm  + "\t    " + dyadCtr + "\t" + langTerm);
-					//  Now check to see if all the clauses of LangTerm were involved in the match, or just some
-					setOfCBs = (TreeSet)setsOfCBsThatMatch.get(langTerm);
-					nmbrInvolved = setOfCBs.size();
-					if (nmbrInvolved == 0) totalCBs = -1;
-					else {
-						cb = (ClauseBody)setOfCBs.first();
-						totalCBs = cb.ktd.expandedDefs.size();
-						}  //  end of else-more-than-0
-					outFile1.println("\t" + totalCBs + "\t" + nmbrInvolved);
-				}  // end of loop thru set intersection
-			}  //  end of loop thru all kinTerms in dyadsUndefined
-			outFile1.flush();
-			outFile1.close();
-		} catch(IOException e)  {
-			throw new JavaSystemException(".match File Creation failed:\n" + e);
-		}
-	}  //  end of method matchDyads
+    public void matchDyads() throws JavaSystemException, KSBadHornClauseException, KSNoChainOfRelations2Alter,
+            KSInternalErrorException, KSConstraintInconsistency, ClassNotFoundException, FileNotFoundException {
+        if (Library.cbIndex == null) {
+            BufferedReader file = new BufferedReader(new FileReader(Library.libraryDirectory + "ClauseIndex"));
+            Library.cbIndex = new Library.ClauseIndex(file);
+        }
+        if ((dyadsUndefined == null) || (Library.cbIndex.tMap.isEmpty())) {
+            return;
+        }
+        String fileName = Library.libraryDirectory + languageName, image, kinTerm, langTerm = "";
+        TreeMap cbiLvlTM, setsOfCBsThatMatch;
+        TreeSet langTermMatches, setOfCBs, intersectionOfLangTerms;
+        ArrayList<Object> dyadList, cbiPCList, listOfDyadMatches;
+        Map.Entry ktmEntry, lvlEntry;
+        Iterator ktmIter = dyadsUndefined.entrySet().iterator(), lvlIter, valIter;
+        Integer lvlInt;
+        int dyadCtr = 0, nmbrInvolved, totalCBs;
+        Dyad dad;
+        ClauseBody cb;
+        boolean hdr1 = true;
+        try {
+            PrintWriter outFile1 = new PrintWriter(new BufferedWriter(new FileWriter(fileName + "_1.match")));
+            while (ktmIter.hasNext()) {
+                ktmEntry = (Map.Entry) ktmIter.next();
+                kinTerm = (String) ktmEntry.getKey();
+                dyadCtr = 0;
+                listOfDyadMatches = new ArrayList<Object>();
+                setsOfCBsThatMatch = new TreeMap();
+                lvlIter = ((Collection) ((TreeMap) ktmEntry.getValue()).entrySet()).iterator();
+                while (lvlIter.hasNext()) {
+                    lvlEntry = (Map.Entry) lvlIter.next();
+                    lvlInt = (Integer) lvlEntry.getKey();
+                    dyadList = (ArrayList<Object>) lvlEntry.getValue();
+                    cbiLvlTM = (TreeMap) Library.cbIndex.tMap.get(lvlInt);
+                    for (int i = 0; i < dyadList.size(); i++) {
+                        dad = (Dyad) dyadList.get(i);
+                        dyadCtr++;
+                        langTermMatches = new TreeSet();
+                        cbiPCList = (ArrayList<Object>) cbiLvlTM.get(new Integer(dad.level));
+                        valIter = cbiPCList.iterator();
+                        while (valIter.hasNext()) {
+                            //  Whew!  Thought I'd never get here!  
+                            cb = (ClauseBody) valIter.next();
+                            if (!kinTerm.equals(cb.ktd.kinTerm)) {  //  no sense matching yourself
+                                if (compare2(dad, cb, kinTerm)) {
+                                    langTerm = cb.ktd.domTh.languageName + ":" + cb.ktd.kinTerm;
+                                    langTermMatches.add(langTerm);
+                                    if (setsOfCBsThatMatch.get(langTerm) == null) {
+                                        setsOfCBsThatMatch.put(langTerm, new TreeSet(cb));
+                                    }
+                                    setOfCBs = (TreeSet) setsOfCBsThatMatch.get(langTerm);
+                                    setOfCBs.add(cb);
+                                }  //  end of matched-on-comparison#2
+                            }  //  end of if not a match on itself
+                        }  //  end of loop thru clausebodies in cbIndex for this level & pcCount
+                        listOfDyadMatches.add(langTermMatches);
+                    }  //  end of loop thru dyadsUndefined for this kinTerm & level
+                }  //  end of loop thru dyadLevels
+                //  Now that all dyadsUndefined and matching cbs for this kinTerm have been found, analyze the results
+                intersectionOfLangTerms = setIntersection(listOfDyadMatches);
+                valIter = intersectionOfLangTerms.iterator();
+                while (valIter.hasNext()) {
+                    //  langTerm matched every dyad for this kinTerm
+                    langTerm = (String) valIter.next();
+                    if (hdr1) {
+                        hdr1 = false;
+                        outFile1.println("kinTerm\t# of dyadsUndefined\tLang:Term\t# CBs\tmatching CBs");
+                    }  //  end of writing-file-column-headers
+                    outFile1.print(kinTerm + "\t    " + dyadCtr + "\t" + langTerm);
+                    //  Now check to see if all the clauses of LangTerm were involved in the match, or just some
+                    setOfCBs = (TreeSet) setsOfCBsThatMatch.get(langTerm);
+                    nmbrInvolved = setOfCBs.size();
+                    if (nmbrInvolved == 0) {
+                        totalCBs = -1;
+                    } else {
+                        cb = (ClauseBody) setOfCBs.first();
+                        totalCBs = cb.ktd.expandedDefs.size();
+                    }  //  end of else-more-than-0
+                    outFile1.println("\t" + totalCBs + "\t" + nmbrInvolved);
+                }  // end of loop thru set intersection
+            }  //  end of loop thru all kinTerms in dyadsUndefined
+            outFile1.flush();
+            outFile1.close();
+        } catch (IOException e) {
+            throw new JavaSystemException(".match File Creation failed:\n" + e);
+        }
+    }  //  end of method matchDyads
 
     
         public boolean compare2(Dyad dad, ClauseBody cb, String kinTerm)   throws KSBadHornClauseException, KSNoChainOfRelations2Alter, 

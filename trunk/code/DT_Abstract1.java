@@ -103,6 +103,8 @@ public abstract class DT_Abstract1 implements Serializable {
         }  //  end of loop thru tree2 entries
         return merg;
     }  //  end of method mergeNestedTrees
+
+    //       Class Variables        //
     Context ctxt;           //  Ptr to enclosing Context.
     String languageName;    // name of the language or people group
     String author;		// field worker who devised theory or gathered data
@@ -110,7 +112,8 @@ public abstract class DT_Abstract1 implements Serializable {
     String citation;        // documents source of this domain theory in the literature.
     String filePath;        // pathname to the file which contains this domain theory.
     ArrayList<Object> nonTerms = new ArrayList<Object>();  // predicates that should not be printed.  Not really kinTerms.
-    ArrayList<Object> nonTermFlags = new ArrayList<Object>();  //  These flags on any definition make it non-printing.
+    //  These flags (enclosed in square brackets) on any definition make it non-printing.
+    ArrayList<Object> nonTermFlags = new ArrayList<Object>();
     boolean partial = false;  // 'true' if this is a partial theory, an example
     // of a particular kinship pattern from the literature.
     boolean polygamyOK = true;	// default: true = multiple spice allowed
@@ -118,7 +121,8 @@ public abstract class DT_Abstract1 implements Serializable {
     int levelsOfRecursion = 1;  //  the number of recursive levels to 'unwind' explicitly in an expanded def
     TreeMap theory;             // structure: kinTerm => KinTermDef.
     TreeMap userDefinedProperties;  // A TMap of UDPs, stored here during parsing.  Then moved to Context.
-    DyadTMap dyadsUndefined = new DyadTMap(), dyadsDefined = new DyadTMap();
+    DyadTMap dyadsUndefined = new DyadTMap(),
+             dyadsDefined = new DyadTMap();
     TreeMap synonyms, umbrellas, overlaps, potUmbrellas, nonUmbrellas, nonOverlaps;
     TreeMap<String, ArrayList<Issue>> issuesForUser = new TreeMap<String, ArrayList<Issue>>();
     ArrayList<Object> nonSynonyms;
@@ -265,21 +269,6 @@ public abstract class DT_Abstract1 implements Serializable {
             }  //  end of loop thru UDP's
             file.println("  )");
         }  //  end of there-are-UDPs
-//        if (issuesForUser != null) {
-//            file.println("(issues, ");
-//            Iterator issueIter = issuesForUser.entrySet().iterator();
-//            while (issueIter.hasNext()) {
-//                Map.Entry<String, ArrayList<Issue>> entry =
-//                        (Map.Entry<String, ArrayList<Issue>>) issueIter.next();
-//                String kinTerm = entry.getKey();
-//                file.print("\t(" + kinTerm + ", ");
-//                for (Issue isu : entry.getValue()) {
-//                    file.print("\n\t\t" + isu.toThyString());
-//                }
-//                file.print(")");
-//            } // end of loop thru issues
-//            file.println(")");
-//        } // end of issuesForUser
         Iterator iter = theory.values().iterator();
         file.println("\n\n;;  Kin Term Definitions:");
         file.println(";;\t(Standard Macros are automatically incorporated.)");
@@ -289,6 +278,121 @@ public abstract class DT_Abstract1 implements Serializable {
         file.flush();
         file.close();
     }  //  end of method toThyFile
+
+    public String toSILKString(String bacer) {
+        String spacer = "\t", dblSpacer = "\t\t";
+        String s = bacer + "<domain-theory type=\"" + (addressTerms ? "Adr" : "Ref") + "\">\n";
+        if (citation != null && !citation.isEmpty()) {
+            s += bacer + spacer + "<citation text=\"" + citation + "\"/>\n";
+        }
+        if (nonTerms != null && !nonTerms.isEmpty()) {
+            s += bacer + spacer + "<non-terms>\n";
+            for (Object o : nonTerms) {
+                s += bacer + dblSpacer + "<non-term value=\"" + o + "\"/>\n";
+            }
+            s += bacer + spacer + "</non-terms>\n";
+        }
+        if (nonTermFlags != null && !nonTermFlags.isEmpty()) {
+            s += bacer + spacer + "<non-term-flags>\n";
+            for (Object o : nonTermFlags) {
+                s += bacer + dblSpacer + "<non-term-flag value=\"" + o + "\"/>\n";
+            }
+            s += bacer + spacer + "</non-term-flags>\n";
+        }
+        s += bacer + spacer + "<levels-of-recursion n=\"" + levelsOfRecursion + "\"/>\n";
+        if (theory != null && !theory.isEmpty()) {
+            s += bacer + spacer + "<theory>\n";
+            Iterator iter = theory.values().iterator();
+            while (iter.hasNext()) {
+                KinTermDef ktd = (KinTermDef)iter.next();
+                s += ktd.toSILKString(bacer + dblSpacer, false) + "\n";
+            }
+            s += bacer + spacer + "</theory>\n";
+        }
+        if (synonyms != null && !synonyms.isEmpty()) {
+            s += bacer + spacer + "<synonyms>\n";
+            Iterator iter = synonyms.entrySet().iterator();
+            while (iter.hasNext()) {
+                Map.Entry<String, String> entry = (Map.Entry<String, String>)iter.next();
+                String sub = entry.getKey(), base = entry.getValue();
+                s += bacer + dblSpacer + "<pair subTerm=\"" + sub + "\" baseTerm=\"" + base + "\"/>\n";
+            }
+            s += bacer + spacer + "</synonyms>\n";
+        }
+        if (umbrellas != null && !umbrellas.isEmpty()) {
+            s += bacer + spacer + "<umbrellas>\n";
+            Iterator iter = umbrellas.entrySet().iterator();
+            while (iter.hasNext()) {
+                Map.Entry<String, ArrayList<String>> entry = (Map.Entry<String, ArrayList<String>>)iter.next();
+                String umbTerm = entry.getKey();
+                ArrayList<String> subTerms = entry.getValue();
+                s += bacer + dblSpacer + "<umbrella umbTerm=\"" + umbTerm + "\">\n";
+                for (String subTerm : subTerms) {
+                    s += bacer + dblSpacer + spacer + "<sub-term value=\"" + subTerm + "\"/>\n";
+                }
+                s += bacer + dblSpacer + "</umbrella>\n";
+            }
+            s += bacer + spacer + "</umbrellas>\n";
+        }
+        if (overlaps != null && !overlaps.isEmpty()) {
+            s += bacer + spacer + "<overlaps>\n";
+            Iterator iter = overlaps.entrySet().iterator();
+            while (iter.hasNext()) {
+                Map.Entry<String, ArrayList<String>> entry = (Map.Entry<String, ArrayList<String>>)iter.next();
+                String baseTerm = entry.getKey();
+                ArrayList<String> olapTerms = entry.getValue();
+                s += bacer + dblSpacer + "<overlap baseTerm=\"" + baseTerm + "\">\n";
+                for (String olapTerm : olapTerms) {
+                    s += bacer + dblSpacer + spacer + "<overlap-term value=\"" + olapTerm + "\"/>\n";
+                }
+                s += bacer + dblSpacer + "</overlap>\n";
+            }
+            s += bacer + spacer + "</overlaps>\n";
+        }
+        if (nonSynonyms != null && !nonSynonyms.isEmpty()) {
+            s += bacer + spacer + "<nonSynonyms>\n";
+            for (Object o : nonSynonyms) {
+                String nonPair = (String)o;
+                int slash = nonPair.indexOf("/");
+                String tm1 = nonPair.substring(0, slash);
+                String tm2 = nonPair.substring(slash +1);
+                s += bacer + dblSpacer + "<nonSynonym term1=\"" + tm1 + "\" term2=\"" + tm2 + "\"/>\n";
+            }
+            s += bacer + spacer + "</nonSynonyms>\n";
+        }
+        if (nonOverlaps != null && !nonOverlaps.isEmpty()) {
+            s += bacer + spacer + "<nonOverlaps>\n";
+            Iterator iter = nonOverlaps.entrySet().iterator();
+            while (iter.hasNext()) {
+                Map.Entry<String, ArrayList<String>> entry = (Map.Entry<String, ArrayList<String>>)iter.next();
+                String baseTerm = entry.getKey();
+                ArrayList<String> olapTerms = entry.getValue();
+                s += bacer + dblSpacer + "<nonOverlap baseTerm=\"" + baseTerm + "\">\n";
+                for (String olapTerm : olapTerms) {
+                    s += bacer + dblSpacer + spacer + "<nonOverlap-term value=\"" + olapTerm + "\"/>\n";
+                }
+                s += bacer + dblSpacer + "</nonOverlap>\n";
+            }
+            s += bacer + spacer + "</nonOverlaps>\n";
+        }
+        if (nonUmbrellas != null && !nonUmbrellas.isEmpty()) {
+            s += bacer + spacer + "<nonUmbrellas>\n";
+            Iterator iter = nonUmbrellas.entrySet().iterator();
+            while (iter.hasNext()) {
+                Map.Entry<String, ArrayList<String>> entry = (Map.Entry<String, ArrayList<String>>)iter.next();
+                String umbTerm = entry.getKey();
+                ArrayList<String> subTerms = entry.getValue();
+                s += bacer + dblSpacer + "<nonUmbrella umbTerm=\"" + umbTerm + "\">\n";
+                for (String subTerm : subTerms) {
+                    s += bacer + dblSpacer + spacer + "<sub-term value=\"" + subTerm + "\"/>\n";
+                }
+                s += bacer + dblSpacer + "</nonUmbrella>\n";
+            }
+            s += bacer + spacer + "</nonUmbrellas>\n";
+        }        
+        s += bacer + "</domain-theory>\n";
+        return s;
+    }
 
     public String toString() {
         String partiality = "", polygamy, recursion = "", image = "Kin Term Domain: " + languageName;
@@ -635,9 +739,6 @@ public abstract class DT_Abstract1 implements Serializable {
             egoBag = maleAndFemaleCreatedHeThem();
         }
         Dyad dyad = new Dyad((Individual) egoBag.get(0));
-        dyad.pcCounter = cb.pcCounter;
-        dyad.sCounter = cb.sCounter;
-        dyad.starCounter = cb.starCounter;
         dyad.pcString = cb.pcString;
         dyad.pcStringStructural = cb.pcStringStructural;
         cb.unifyVariables();

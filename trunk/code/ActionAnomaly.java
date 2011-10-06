@@ -10,12 +10,16 @@ import javax.swing.*;
  *
  * Created on June 24, 2011, 3:21:57 PM
  */
-public class ActionAnomaly extends javax.swing.JPanel {
+public class ActionAnomaly extends JPanel {
 
     DecisionFrame papa;
     Anomaly anna;
     int suggNmbr;
-    ArrayList<Object> oddballs;
+    DomainTheory dt;  //  instantiated by DecisionFrame
+    ArrayList<Dyad> oddballs = new ArrayList<Dyad>(), 
+                    dyadsProcessed = new ArrayList<Dyad>();
+    boolean chartEditPending = false;
+    int oldNDX = 0;
 
     /** Creates new form ActionAnomaly */
     public ActionAnomaly() {
@@ -45,16 +49,22 @@ public class ActionAnomaly extends javax.swing.JPanel {
         alterNames = new javax.swing.JLabel();
         noActionBtn = new javax.swing.JRadioButton();
         dyadCorrectBtn = new javax.swing.JRadioButton();
-        dyadWrongBtn = new javax.swing.JRadioButton();
-        correctionByn = new javax.swing.JRadioButton();
+        dyadDeleteBtn = new javax.swing.JRadioButton();
+        editBtn = new javax.swing.JRadioButton();
         correctedKinTerm = new javax.swing.JTextField();
         recordBtn = new javax.swing.JButton();
+        showOnChartBtn = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Action Box: Anomaly"));
 
         oddballLabel.setText("Questionable Dyads");
 
         oddballDyadsCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Ego:  12  Alter:   6   Kin Term:  grandpaw", "Ego:    5  Alter:  14  Kin Term:  grampa" }));
+        oddballDyadsCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                oddballDyadsComboActionPerformed(evt);
+            }
+        });
 
         egoLabel.setText("Ego: ");
 
@@ -69,23 +79,30 @@ public class ActionAnomaly extends javax.swing.JPanel {
         noActionBtn.setText("No Action");
 
         buttonGroup1.add(dyadCorrectBtn);
-        dyadCorrectBtn.setText("This dyad is correct.");
+        dyadCorrectBtn.setText("This dyad is CORRECT.");
 
-        buttonGroup1.add(dyadWrongBtn);
-        dyadWrongBtn.setText("This dyad is wrong.  Delete it.");
+        buttonGroup1.add(dyadDeleteBtn);
+        dyadDeleteBtn.setText("This dyad is wrong.  DELETE it.");
 
-        buttonGroup1.add(correctionByn);
-        correctionByn.setText("Correct the kin term to ");
-        correctionByn.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup1.add(editBtn);
+        editBtn.setText("EDIT the kin term to ");
+        editBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                correctionBynActionPerformed(evt);
+                editBtnActionPerformed(evt);
             }
         });
 
-        recordBtn.setText("Record Decision on This Dyad");
+        recordBtn.setText("RECORD Decision on This Dyad");
         recordBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 recordBtnActionPerformed(evt);
+            }
+        });
+
+        showOnChartBtn.setText("SHOW This Dyad on the Chart");
+        showOnChartBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showOnChartBtnActionPerformed(evt);
             }
         });
 
@@ -96,38 +113,40 @@ public class ActionAnomaly extends javax.swing.JPanel {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                        .add(layout.createSequentialGroup()
-                            .add(dyadCorrectBtn)
-                            .addContainerGap())
-                        .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                            .add(oddballLabel)
-                            .add(144, 144, 144))
-                        .add(layout.createSequentialGroup()
-                            .add(oddballDyadsCombo, 0, 384, Short.MAX_VALUE)
-                            .addContainerGap())
-                        .add(layout.createSequentialGroup()
-                            .add(egoLabel)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                            .add(egoNames)
-                            .addContainerGap(314, Short.MAX_VALUE))
-                        .add(layout.createSequentialGroup()
-                            .add(alterLabel)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(alterNames)
-                            .addContainerGap(313, Short.MAX_VALUE))
-                        .add(layout.createSequentialGroup()
-                            .add(noActionBtn)
-                            .addContainerGap(306, Short.MAX_VALUE))
-                        .add(layout.createSequentialGroup()
-                            .add(correctionByn)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(correctedKinTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 181, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .addContainerGap())
-                        .add(dyadWrongBtn))
+                    .add(layout.createSequentialGroup()
+                        .add(dyadCorrectBtn)
+                        .addContainerGap())
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                        .add(oddballLabel)
+                        .add(144, 144, 144))
+                    .add(layout.createSequentialGroup()
+                        .add(oddballDyadsCombo, 0, 399, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .add(layout.createSequentialGroup()
+                        .add(egoLabel)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(egoNames)
+                        .addContainerGap(329, Short.MAX_VALUE))
+                    .add(layout.createSequentialGroup()
+                        .add(alterLabel)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(alterNames)
+                        .addContainerGap(328, Short.MAX_VALUE))
+                    .add(layout.createSequentialGroup()
+                        .add(noActionBtn)
+                        .addContainerGap(321, Short.MAX_VALUE))
+                    .add(dyadDeleteBtn)
+                    .add(layout.createSequentialGroup()
                         .add(recordBtn)
-                        .addContainerGap())))
+                        .addContainerGap(174, Short.MAX_VALUE))
+                    .add(layout.createSequentialGroup()
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                            .add(showOnChartBtn)
+                            .add(layout.createSequentialGroup()
+                                .add(editBtn)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(correctedKinTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 181, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                        .add(50, 50, 50))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -148,12 +167,14 @@ public class ActionAnomaly extends javax.swing.JPanel {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(dyadCorrectBtn)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(dyadWrongBtn)
+                .add(dyadDeleteBtn)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(correctionByn)
+                    .add(editBtn)
                     .add(correctedKinTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 41, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(showOnChartBtn)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(recordBtn)
                 .addContainerGap())
         );
@@ -163,26 +184,64 @@ public class ActionAnomaly extends javax.swing.JPanel {
         anna = a;
         suggNmbr = nmbr;
         loadOddballs();
+        resetOddballCOmboBox();
         oddballDyadsCombo.setSelectedIndex(0);
         loadNames(0);
     }
 
     void loadOddballs() {
-        oddballs = anna.findOddballs();
+        for (Object o : anna.findOddballs()) {
+            Dyad d = (Dyad)o;
+            oddballs.add(d);
+        }
+    }
+    
+    void resetOddballCOmboBox() {
         String[] dyStrings = new String[oddballs.size()];
         String pad1, pad2;
         for (int i = 0; i < oddballs.size(); i++) {
-            Dyad d = (Dyad) oddballs.get(i);
-            pad1 = makePad(d.ego.serialNmbr);
-            pad2 = makePad(d.alter.serialNmbr);
-            String s = "Ego: " + pad1 + d.ego.serialNmbr;
-            s += "  Alter: " + pad2 + d.alter.serialNmbr;
+            Dyad d = oddballs.get(i);
+            String done = (dyadsProcessed.contains(d) ? "DONE: " : "");
+            String s = done + "Ego: " + d.ego.serialNmbr;
+            s += "  Alter: " + d.alter.serialNmbr;
             s += "  Kin Term: " + d.kinTerm;
             dyStrings[i] = s;
         }
         oddballDyadsCombo.setModel(new DefaultComboBoxModel(dyStrings));
     }
+    
+    void reviewBeforeDyad() {
+        Dyad before = oddballs.get(oldNDX);
+        Dyad after = getDyad(before);
+        // after == null means 'before' has been modified or deleted
+        // otherwise, it is unchanged
+        if (after == null) {
+            dyadsProcessed.add(before);
+        }
+    }
 
+
+    Dyad getDyad(Dyad seed) {
+        DyadTMap[] tmaps = { dt.dyadsUndefined, dt.dyadsDefined};      
+        for (DyadTMap tm : tmaps) {
+            ArrayList<Object> list = null;
+            TreeMap subTree = (TreeMap)tm.get(seed.kinTerm);
+            if (subTree != null) {
+                list = (ArrayList<Object>)subTree.get(seed.pcString);
+            }
+            if (list != null) {
+                for (Object o : list) {
+                    Dyad d = (Dyad)o;
+                    if (d.ego == seed.ego && d.alter == seed.alter) {
+                        return d;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
+    
     String makePad(int num) {
         if (num < 10) {
             return "  ";
@@ -194,7 +253,7 @@ public class ActionAnomaly extends javax.swing.JPanel {
     }
 
     void loadNames(int num) {
-        Dyad d = (Dyad) oddballs.get(num);
+        Dyad d = (Dyad)oddballs.get(num);
         egoNames.setText(d.ego.firstNames + " " + d.ego.surname);
         alterNames.setText(d.alter.firstNames + " " + d.alter.surname);
         correctedKinTerm.setText("");
@@ -203,26 +262,89 @@ public class ActionAnomaly extends javax.swing.JPanel {
     }
 
     private void recordBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recordBtnActionPerformed
-        // TODO add your handling code here:
+        if (chartEditPending) {
+            chartEditPending = false;
+            reviewBeforeDyad();
+            resetOddballCOmboBox();
+            oddballDyadsCombo.setSelectedIndex(oldNDX);
+            oldNDX = 0;
+            return;
+        }
+        Dyad dy = (Dyad)oddballs.get(oddballDyadsCombo.getSelectedIndex());
+        if (editBtn.isSelected()) {            
+            int egoNum = dy.ego.serialNmbr,
+                altNum = dy.alter.serialNmbr;
+            boolean distinct = dt.addressTerms;
+            String oldTerm = dy.kinTerm,
+                   newTerm = correctedKinTerm.getText();
+            Dyad dy2 = new Dyad(dy);
+            dy2.kinTerm = newTerm;
+            dy2.confirmed = true;
+            Context.current.deleteDyad(dt, oldTerm, dy.pcString, egoNum, altNum);
+            Context.current.addDyad(dt, dy2);
+            Context.current.ktm.correctKinTerm(egoNum, altNum, oldTerm, newTerm, distinct);
+            if (!dyadsProcessed.contains(dy)) {
+               dyadsProcessed.add(dy); 
+            }
+            dy.kinTerm = newTerm;
+            resetOddballCOmboBox();
+        }else if (dyadCorrectBtn.isSelected()) {
+            dy.confirmed = true;
+            dy.challenged = false;
+            dyadsProcessed.add(dy);
+            resetOddballCOmboBox();
+        }else if (dyadDeleteBtn.isSelected()) {
+            int egoNum = dy.ego.serialNmbr,
+                altNum = dy.alter.serialNmbr;
+            boolean distinct = dt.addressTerms;
+            Context.current.deleteDyad(dt, dy.kinTerm, dy.pcString, egoNum, altNum);
+            Context.current.ktm.deleteKinTerm(egoNum, altNum, dy.kinTerm, distinct);
+            dyadsProcessed.add(dy);
+            dy.kinTerm = "DELETED";
+            resetOddballCOmboBox();
+        }
+        // Check to see if last oddball has been processed.
+        if (dyadsProcessed.size() == oddballs.size()) {
+            papa.markProcessed(suggNmbr);
+        }
     }//GEN-LAST:event_recordBtnActionPerformed
 
-    private void correctionBynActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_correctionBynActionPerformed
+    private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
         correctedKinTerm.setEditable(true);
-    }//GEN-LAST:event_correctionBynActionPerformed
+    }//GEN-LAST:event_editBtnActionPerformed
+
+    private void oddballDyadsComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oddballDyadsComboActionPerformed
+        int ndx = oddballDyadsCombo.getSelectedIndex();
+        loadNames(ndx);
+    }//GEN-LAST:event_oddballDyadsComboActionPerformed
+
+    private void showOnChartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showOnChartBtnActionPerformed
+        chartEditPending = true;
+        oldNDX = oddballDyadsCombo.getSelectedIndex();
+        Dyad before = oddballs.get(oldNDX);
+        String[] pendingModel = { "After viewing/editing chart, choose action, then 'Record'." };
+        oddballDyadsCombo.setModel(new DefaultComboBoxModel(pendingModel));
+        dyadCorrectBtn.setSelected(true);      
+        SIL_Edit.editWindow.changeEgo(before.ego.serialNmbr);
+        SIL_Edit.editWindow.getPPanel().resetEgoBox(before.ego.serialNmbr);
+        SIL_Edit.editWindow.chart.setAlter(before.alter.serialNmbr);  
+        SIL_Edit.editWindow.toFront();                                     
+    }//GEN-LAST:event_showOnChartBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel alterLabel;
     private javax.swing.JLabel alterNames;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JTextField correctedKinTerm;
-    private javax.swing.JRadioButton correctionByn;
     private javax.swing.JRadioButton dyadCorrectBtn;
-    private javax.swing.JRadioButton dyadWrongBtn;
+    private javax.swing.JRadioButton dyadDeleteBtn;
+    private javax.swing.JRadioButton editBtn;
     private javax.swing.JLabel egoLabel;
     private javax.swing.JLabel egoNames;
     private javax.swing.JRadioButton noActionBtn;
     private javax.swing.JComboBox oddballDyadsCombo;
     private javax.swing.JLabel oddballLabel;
     private javax.swing.JButton recordBtn;
+    private javax.swing.JButton showOnChartBtn;
     // End of variables declaration//GEN-END:variables
 }

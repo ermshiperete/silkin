@@ -35,7 +35,7 @@ import java.io.*;
             if (questions.isEmpty()) return "";
             String qns = bacer + "<questions>\n";
             for (Object o : questions) {
-                qns += bacer + spacer + "<qn>" + o.toString() + "</qn>\n";
+                qns += bacer + spacer + "<qn text=\"" + o.toString() + "\"/>\n";
             }
             qns += bacer + "</questions>";
             return qns;

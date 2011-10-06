@@ -1,9 +1,9 @@
 
-
 import java.util.*;
 import java.text.*;
 import java.io.*;
 import java.awt.*;
+import javax.swing.JOptionPane;
 
 /** 
 Each instance of Context is a 'workspace' in which a particular culture's Kinship System
@@ -29,6 +29,7 @@ public class Context implements Serializable {
             /**	Date this context was initialized.	*/
             createDate;
     public String dateOfLastSuggestion, dateOfLastDataChange;
+    ArrayList<String> dataAuthors = new ArrayList<String>();
     int indSerNumGen = 0, famSerNumGen = 0, maxBaseDefMisFits = 4;
     /**	Name of the language spoken in this culture. It is limited administratively to 28 characters.	*/
     public String languageName;
@@ -43,13 +44,15 @@ public class Context implements Serializable {
     Column = Alter's serialNmbr.  Each cell contains null or a {@link Node} with the kinTerms
     <code>Row</code> (Ego) could use to refer to <code>Column</code> (Alter).  */
     public KinTermMatrix ktm = new KinTermMatrix();
-    /** Index of all {@link Node}s according to their kin type. Used to create
+    /** Index of all {@link Node}str according to their kin type. Used to create
      *  named-data-requests.*/
     public KinTypeIndex kti = new KinTypeIndex();
     Individual currentEgo;
     String editDirectory;
     /**	True if polygamy is accepted in this culture (regardless of whether it has ever happened).	*/
     public boolean polygamyPermit, featuresHaveChanged = false;  //  flag -> true when definition added
+    // These 2 parameters (plus maxNoiseP and ignorableP) control the Learning Algorithm
+    public boolean doBaseCBs = false, doInduction = false;
     /**	Optional extra fields, defined by user.  Stored as a TreeMap of pairs:
     property-name (must begin with '*') -> UserDefinedProperty-object.	*/
     public TreeMap userDefinedProperties;
@@ -60,12 +63,12 @@ public class Context implements Serializable {
     /** The learningHistory (Ref or Adr) is a TreeMap from kinTerm -> ArrayList<HistoryItem>.
      *  Each history item records a User decision on a Suggestion.   */
     public TreeMap<String, ArrayList<HistoryItem>> learningHistoryRef = new TreeMap<String, ArrayList<HistoryItem>>();
-    public TreeMap<String, ArrayList<HistoryItem>> learningHistoryAdr = new TreeMap<String, ArrayList<HistoryItem>>();
+    public TreeMap<String, ArrayList<HistoryItem>> learningHistoryAdr;
     /** The autoDef (Ref or Adr) is a TreeMap from kinType -> ArrayList<kinTerm>.
      *  This indexes by kin type each accepted definition that could apply to that kin type.
      *  It is used to determine if we should attempt to pre-fill the kinTerm field for a new Alter.  */
-    public TreeMap<String, ArrayList<String>> autoDefRef = new TreeMap<String, ArrayList<String>>();
-    public TreeMap<String, ArrayList<String>> autoDefAdr = new TreeMap<String, ArrayList<String>>();
+    public TreeMap<String, ArrayList<CB_Ptr>> autoDefRef = new TreeMap<String, ArrayList<CB_Ptr>>();
+    public TreeMap<String, ArrayList<CB_Ptr>> autoDefAdr;
 
     /* The following fields were added to allow a Context to carry the parameters
      * needed by KAES back to the loadFile method.     */
@@ -140,7 +143,7 @@ public class Context implements Serializable {
     }  //  end of method convertDoubleQuotes
 
     /** Add a Domain Theory to this context.
-
+    
     @param	theory	new theory to be added, covering kinship terms of Reference or Address.
     
     @throws KSInternalErrorException if the new theory will over-write an existing one
@@ -200,6 +203,16 @@ public class Context implements Serializable {
         return domTheoryAdr;
     }  //  end of accessor method domTheoryAdr
 
+    public boolean hasIssues() {
+        if (domTheoryRef != null && !domTheoryRef.issuesForUser.isEmpty()) {
+            return true;
+        }
+        if (domTheoryAdr != null && !domTheoryAdr.issuesForUser.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+    
     public boolean domTheoryAdrLoaded() {
         return domTheoryAdr != null;
     }
@@ -246,45 +259,69 @@ public class Context implements Serializable {
         dt.ctxt = null;
     }  // end of method removeDomainTheory
 
-
     /**Delete all dyads associated with node from the dyadsDefined
      * and dyadsUndefined of the 2 DomainTheories for this context.
      *
      * @param node  The source of any dyads.
      */
     void deleteDyads(Node node, int egoSerial) {
-        if (node == null) return;
+        if (node == null) {
+            return;
+        }
         int alterSerial = node.indiv.serialNmbr;
         String kinType = node.pcString;
         if (domTheoryRef != null) {
             for (Object o : node.kinTermsRef) {
-                String kinTerm = (String)o;
-                deleteDyad(domTheoryRef, kinTerm, kinType, egoSerial, alterSerial);        
+                String kinTerm = (String) o;
+                deleteDyad(domTheoryRef, kinTerm, kinType, egoSerial, alterSerial);
             }
             for (Object o : node.extKinTermsRef) {
-                deleteDyad(domTheoryRef, (String)o, kinType, egoSerial, alterSerial);
-            }
-            for (Object o : node.exceptionsRef) {
-                deleteDyad(domTheoryRef, (String)o, kinType, egoSerial, alterSerial);
+                deleteDyad(domTheoryRef, (String) o, kinType, egoSerial, alterSerial);
             }
         }
         if (domTheoryAdr != null) {
             for (Object o : node.kinTermsAddr) {
-                deleteDyad(domTheoryAdr, (String)o, kinType, egoSerial, alterSerial);
+                deleteDyad(domTheoryAdr, (String) o, kinType, egoSerial, alterSerial);
             }
             for (Object o : node.extKinTermsAddr) {
-                deleteDyad(domTheoryAdr, (String)o, kinType, egoSerial, alterSerial);
-            }
-            for (Object o : node.exceptionsAddr) {
-                deleteDyad(domTheoryAdr, (String)o, kinType, egoSerial, alterSerial);
+                deleteDyad(domTheoryAdr, (String) o, kinType, egoSerial, alterSerial);
             }
         }
+    }
+
+    void addDyad(DomainTheory dt, Dyad d) {
+        DyadTMap tm;
+        if (dt.theory.containsKey(d.kinTerm)) {
+            tm = dt.dyadsDefined;
+        } else {
+            tm = dt.dyadsUndefined;
+        }
+        tm.dyAdd(d);
+    }
+
+    void confirmDyad(DomainTheory dt, Dyad dy1) {
+        DyadTMap tm;
+        if (dt.theory.containsKey(dy1.kinTerm)) {
+            tm = dt.dyadsDefined;
+        } else {
+            tm = dt.dyadsUndefined;
+        }
+        ArrayList<Dyad> lst = tm.findDyadList(dy1);
+        for (Dyad dy2 : lst) {
+            if (dy1.equals(dy2)) {
+                dy2.confirmed = true;
+                dy2.challenged = false;
+                break;
+            }
+        } // if we get here, did not find a match
+        String msg = "Did not find match for dyad: " + dy1;
+        MainPane.displayError(msg, "Internal Error", JOptionPane.ERROR_MESSAGE);
     }
 
     void deleteDyad(DomainTheory dt, String kinTerm, String kinType,
             int egoSerial, int alterSerial) {
         TreeMap kinTypeTree, dyadTMap = dt.dyadsDefined;
-            if (dyadTMap.containsKey(kinTerm)) {
+        if (dyadTMap.containsKey(kinTerm)) {
             kinTypeTree = (TreeMap) dyadTMap.get(kinTerm);
         } else {
             dyadTMap = dt.dyadsUndefined;
@@ -301,12 +338,15 @@ public class Context implements Serializable {
                     break;
                 }
             }  //  if we deleted a singleton, clean up.
-            if (dyads.isEmpty()) kinTypeTree.remove(kinType);
-            if (kinTypeTree.isEmpty()) dyadTMap.remove(kinTerm);
+            if (dyads.isEmpty()) {
+                kinTypeTree.remove(kinType);
+            }
+            if (kinTypeTree.isEmpty()) {
+                dyadTMap.remove(kinTerm);
+            }
         }
     }
 
- 
     public ArrayList<Object> getPair() throws KSInternalErrorException {
         //  return 1 male and 1 female person from IndividualCensus
         ArrayList<Object> pair = new ArrayList<Object>();
@@ -334,7 +374,7 @@ public class Context implements Serializable {
 
     /**
     Add a family (stored by serial number) to this context.
-
+    
     @param	fam		family to be added	*/
     public void addFamily(Family fam) {  // just for type-checking
         familyCensus.add(fam.serialNmbr, fam);
@@ -375,7 +415,7 @@ public class Context implements Serializable {
 
     /**
     Build a string with a brief summary of this context.
-
+    
     @return	a string containing:
     <ul>
     <li>		Lanuguage name
@@ -392,13 +432,13 @@ public class Context implements Serializable {
         }
         image += indSerNumGen + " individuals and " + famSerNumGen + " families registered.\n";
         return image;
-    }  // end of toString method -- short (default)
+    }  // end of description method -- short (default)
 
     /**
     Build a string with a brief summary of this context.
-
+    
     @param	style	a string containing 'theory' or 'census' or both terms
-
+    
     @return	a string containing:
     <ul>
     <li>		Lanuguage name
@@ -441,10 +481,10 @@ public class Context implements Serializable {
             image += "-------End------\n";
         }  // end of if-census-requested
         return image;
-    }  // end of toString method -- long, with optional details
+    }  // end of description method -- long, with optional details
 
     /** Write out a domain theory to a file.
-
+    
     @param	file	name of file to hold a complete theory.
     @param	type	if type = 'address' the Terms of Address are written. Else Terms of Reference.
     
@@ -458,7 +498,7 @@ public class Context implements Serializable {
     }  //  end of method printTheory
 
     /** Write out a domain theory for Terms of Reference to a file.
-
+    
     @param	file	name of file to hold a complete theory.
     
     @throws	an internal error if the chosen domain theory does not exist or can't be written.	*/
@@ -468,7 +508,7 @@ public class Context implements Serializable {
     }  //  end of method printTheory
 
     /** Write to a file a complete census of Families and Individuals for this context.
-
+    
     @param	file	name of file to hold the census. 	*/
     public void printCensus(PrintWriter file) {
         file.print(createDate + "\nContext for " + languageName + " language");
@@ -529,7 +569,7 @@ public class Context implements Serializable {
     
     @param	outFile		a {@link PrintWriter} to write to.
     @param	fileName	direct filename; required extension is '.ged'
-    */
+     */
     public void exportGEDCOM(PrintWriter outFile, String fileName, String choice) {
         // Write out the header, all individual and family records, & then trailer.
         outFile.println("0 HEAD");
@@ -559,13 +599,11 @@ public class Context implements Serializable {
         outFile.println("0 TRLR");
         return;
     }  // end of method exportGEDCOM
+    private String editorParameters = "";
 
-    private String kaesParameters = "";
-
-
-    public void writeSILKFile(File f, String params) throws FileNotFoundException, 
+    public void writeSILKFile(File f, String params) throws FileNotFoundException,
             KSInternalErrorException, KSDateParseException {
-        kaesParameters = params;
+        editorParameters = params;
         writeSILKFile(f);
     }
 
@@ -594,12 +632,12 @@ public class Context implements Serializable {
     @param	f		a file to write to.
      */
     public void writeSILKFile(File f) throws FileNotFoundException, KSInternalErrorException,
-                            KSDateParseException  {
+            KSDateParseException {
         String directory = f.getParent(), path, lang;
         PrintWriter silk = null;
         try {
-            silk = new PrintWriter(f,"UTF-8");
-        }catch(Exception ex) {
+            silk = new PrintWriter(f, "UTF-8");
+        } catch (Exception ex) {
             System.err.println("Encoding 'UTF-8' rejected.");
             System.exit(9);
         }
@@ -609,11 +647,11 @@ public class Context implements Serializable {
         silk.println("<SIL_KinData>");
         writeSILKGuts(silk, directory);
         if (domTheoryRef != null && domTheoryRef.issuesForUser != null
-                && ! domTheoryRef.issuesForUser.isEmpty()) {
+                && !domTheoryRef.issuesForUser.isEmpty()) {
             printSuggestions(silk, domTheoryRef, "Reference");
         }
         if (domTheoryAdr != null && domTheoryAdr.issuesForUser != null
-                && ! domTheoryAdr.issuesForUser.isEmpty()) {
+                && !domTheoryAdr.issuesForUser.isEmpty()) {
             printSuggestions(silk, domTheoryAdr, "Address");
         }
         silk.println("</SIL_KinData>");
@@ -637,36 +675,37 @@ public class Context implements Serializable {
         String path, lang;
         silk.println("<parameters>");
         silk.println("  <language name=\"" + languageName + "\"/>");
+        /*  OLD CODE FOR WRITING .THY FILE(S)
         if (directory != null) {
-            if (domTheoryRef != null) {	//  include this DomThy if present
-                lang = languageName + ".thy";  //  the relative pathname
-                path = directory + "/" + lang; //  the absolute pathname
-                silk.println("  <theory file=\"" + lang + "\"/>");
-                // assure that language name is consistent: all files & file names
-                domTheoryRef.languageName = languageName;
-                domTheoryRef.toThyFile(new PrintWriter(path));
-            }  //  end of domTheoryRef is not null
-            if (domTheoryAdr != null) {	//  include this DomThy if present
-                lang = languageName + "(Adr).thy";
-                path = directory + "/" + lang;
-                silk.println("  <theory file=\"" + lang + "\"/>");
-                domTheoryAdr.languageName = languageName + "(Adr)";
-                domTheoryAdr.toThyFile(new PrintWriter(path));
-            }  //  end of domTheoryAdr is not null
-            if (domTheoryAdr == null && domTheoryRef == null) {  //  if none exists yet
-                //  make a nearly-blank DT of reference terms as a place-holder
-                lang = languageName + ".thy";
-                path = directory + "/" + lang;
-                silk.println("  <theory>" + lang + "</theory>");
-                DomainTheory newDT = new DomainTheory(languageName);
-                domTheoryRef = newDT;
-                newDT.ctxt = this;
-                newDT.filePath = path;
-                newDT.addressTerms = false;
-                newDT.userDefinedProperties = userDefinedProperties;
-                newDT.toThyFile(new PrintWriter(path));
-            }  //  end of both domain theories were null
-        }
+        if (domTheoryRef != null) {	//  include this DomThy if present
+        lang = languageName + ".thy";  //  the relative pathname
+        path = directory + "/" + lang; //  the absolute pathname
+        silk.println("  <theory file=\"" + lang + "\"/>");
+        // assure that language name is consistent: all files & file names
+        domTheoryRef.languageName = languageName;
+        domTheoryRef.toThyFile(new PrintWriter(path));
+        }  //  end of domTheoryRef is not null
+        if (domTheoryAdr != null) {	//  include this DomThy if present
+        lang = languageName + "(Adr).thy";
+        path = directory + "/" + lang;
+        silk.println("  <theory file=\"" + lang + "\"/>");
+        domTheoryAdr.languageName = languageName + "(Adr)";
+        domTheoryAdr.toThyFile(new PrintWriter(path));
+        }  //  end of domTheoryAdr is not null
+        if (domTheoryAdr == null && domTheoryRef == null) {  //  if none exists yet
+        //  make a nearly-blank DT of reference terms as a place-holder
+        lang = languageName + ".thy";
+        path = directory + "/" + lang;
+        silk.println("  <theory>" + lang + "</theory>");
+        DomainTheory newDT = new DomainTheory(languageName);
+        domTheoryRef = newDT;
+        newDT.ctxt = this;
+        newDT.filePath = path;
+        newDT.addressTerms = false;
+        newDT.userDefinedProperties = userDefinedProperties;
+        newDT.toThyFile(new PrintWriter(path));
+        }  //  end of both domain theories were null
+        }   */
         if (comments != null && comments.length() > 1) {
             silk.print("  <comments txt=\"");
             comments = convertDoubleQuotes(comments); // replace doubles with singles, etc.
@@ -674,14 +713,16 @@ public class Context implements Serializable {
             silk.println("\"/>");
         }  //  end of optional comments
         if (createDate != null) {
-            if (! UDate.validXSD(createDate)) {
+            if (!UDate.validXSD(createDate)) {
                 createDate = UDate.convertToXSD(createDate);
             }
             silk.println("  <createDate value=\"" + createDate + "\"/>");
         }  //  end of optional createDate
-        if (Library.currDataAuthor != null && Library.currDataAuthor.length() > 0) {
-            silk.println("  <dataAuthor name=\"" + Library.currDataAuthor + "\"/>");
-        }  //  end of optional createDate
+        silk.println("  <dataAuthors>");
+        for (String auth : dataAuthors) {
+            silk.println("\t<dataAuthor name=\"" + auth + "\"/>");
+        }
+        silk.println("  </dataAuthors>");  //  end of dataAuthors
         if (dateOfLastDataChange != null) {
             silk.println("  <lastDataChangeDate value=\"" + dateOfLastDataChange + "\"/>");
         }
@@ -714,11 +755,17 @@ public class Context implements Serializable {
         if (editDirectory != null) {
             silk.println("  <editDirectory dir=\"" + editDirectory + "\"/>");
         }
-        silk.println(kaesParameters);
+        silk.println(editorParameters);
         if (kti.lastSerial != -1) {
             silk.println("  <lastPersonIndexed>" + kti.lastSerial + "</lastPersonIndexed>");
         }
         silk.println("</editorSettings>\n");
+        if (domTheoryRef != null) {
+            silk.println(domTheoryRef.toSILKString(""));
+        }
+        if (domTheoryAdr != null) {
+            silk.println(domTheoryAdr.toSILKString(""));
+        }        
         silk.println("<individualCensus>");
         for (int i = 0; i < individualCensus.size(); i++) {
             Individual ind = individualCensus.get(i);
@@ -738,25 +785,25 @@ public class Context implements Serializable {
         silk.println("</matrix>");
         silk.println("<dyadsUndefinedRef>");
         if (domTheoryRef != null && domTheoryRef.dyadsUndefined != null) {
-            silk.println(domTheoryRef.dyadsUndefined.toSILKString());
+            silk.print(domTheoryRef.dyadsUndefined.toSILKString());
         }
         silk.println("</dyadsUndefinedRef>");
         silk.println("<dyadsDefinedRef>");
         if (domTheoryRef != null && domTheoryRef.dyadsDefined != null) {
-            silk.println(domTheoryRef.dyadsDefined.toSILKString());
+            silk.print(domTheoryRef.dyadsDefined.toSILKString());
         }
         silk.println("</dyadsDefinedRef>");
         if (domTheoryAdr != null && domTheoryAdr.dyadsUndefined != null) {
             silk.println("<dyadsUndefinedAddr>");
-            silk.println(domTheoryAdr.dyadsUndefined.toSILKString());
+            silk.print(domTheoryAdr.dyadsUndefined.toSILKString());
             silk.println("</dyadsUndefinedAddr>");
         }
         if (domTheoryAdr != null && domTheoryAdr.dyadsDefined != null) {
             silk.println("<dyadsDefinedAddr>");
-            silk.println(domTheoryAdr.dyadsDefined.toSILKString());
+            silk.print(domTheoryAdr.dyadsDefined.toSILKString());
             silk.println("</dyadsDefinedAddr>");
         }
-        if (! kti.isEmpty() && directory != null) {
+        if (!kti.isEmpty() && directory != null) {
             silk.println("\n<kinTypeIndex>");
             silk.println(kti.toSILKString());
             silk.println("</kinTypeIndex>");
@@ -765,26 +812,26 @@ public class Context implements Serializable {
             silk.println("\n<learning-history type=\"Ref\">");
             Iterator iter = learningHistoryRef.entrySet().iterator();
             while (iter.hasNext()) {
-                Map.Entry<String, ArrayList<Context.HistoryItem>> entry =
-                        (Map.Entry<String, ArrayList<Context.HistoryItem>>)iter.next();
+                Map.Entry<String, ArrayList<HistoryItem>> entry =
+                        (Map.Entry<String, ArrayList<HistoryItem>>) iter.next();
                 String kinTerm = entry.getKey();
-                ArrayList<Context.HistoryItem> list = entry.getValue();
+                ArrayList<HistoryItem> list = entry.getValue();
                 silk.println("\t<history kinTerm=\"" + kinTerm + "\">");
                 for (HistoryItem hi : list) {
                     silk.println("\t" + hi.toSILKString());
                 }
                 silk.println("\t</history>");
-            }            
+            }
             silk.println("</learning-history>\n");
         }
-        if (!learningHistoryAdr.isEmpty()) {
+        if (learningHistoryAdr != null && !learningHistoryAdr.isEmpty()) {
             silk.println("\n<learning-history type=\"Adr\">");
             Iterator iter = learningHistoryAdr.entrySet().iterator();
             while (iter.hasNext()) {
-                Map.Entry<String, ArrayList<Context.HistoryItem>> entry =
-                        (Map.Entry<String, ArrayList<Context.HistoryItem>>)iter.next();
+                Map.Entry<String, ArrayList<HistoryItem>> entry =
+                        (Map.Entry<String, ArrayList<HistoryItem>>) iter.next();
                 String kinTerm = entry.getKey();
-                ArrayList<Context.HistoryItem> list = entry.getValue();
+                ArrayList<HistoryItem> list = entry.getValue();
                 silk.println("\t<history kinTerm=\"" + kinTerm + "\">");
                 for (HistoryItem hi : list) {
                     silk.println("\t" + hi.toSILKString());
@@ -794,25 +841,31 @@ public class Context implements Serializable {
             silk.println("</learning-history>\n");
         }
         if (!autoDefRef.isEmpty()) {
-            silk.println("\n<auto-def type=\"Ref\">");
-            Iterator iter = autoDefRef.entrySet().iterator();
-            while (iter.hasNext()) {
-                Map.Entry<String, ArrayList<String>> entry =
-                        (Map.Entry<String, ArrayList<String>>)iter.next();
-                //  FINISH THIS PRINT ROUTINE AND DUP FOR ADR
-            }
-            silk.println("\t</auto-def>");
+            printAutoDefs(silk, "Ref");
         }
-        if (!autoDefAdr.isEmpty()) {
-            silk.println("\n<auto-def type=\"Adr\">");
-            Iterator iter = autoDefAdr.entrySet().iterator();
-            while (iter.hasNext()) {
-
-            }
-            silk.println("\t</auto-def>");
+        if (autoDefAdr != null && !autoDefAdr.isEmpty()) {
+            printAutoDefs(silk, "Adr");
         }
     }
 
+    void printAutoDefs(PrintWriter pw, String typ) {
+        TreeMap<String, ArrayList<CB_Ptr>> autos =
+                (typ.equals("Ref") ? autoDefRef : autoDefAdr);
+        pw.println("<auto-def type=\"" + typ + "\">");
+        Iterator typeIter = autos.entrySet().iterator();
+        while (typeIter.hasNext()) {
+            Map.Entry<String, ArrayList<CB_Ptr>> entry =
+                    (Map.Entry<String, ArrayList<CB_Ptr>>) typeIter.next();
+            String kinType = entry.getKey();
+            ArrayList<CB_Ptr> lst = entry.getValue();
+            pw.println("\t<kinType type=\"" + kinType + "\">");
+            for (CB_Ptr ptr : lst) {
+                pw.println(ptr.toSILKString("\t\t"));
+            }
+            pw.println("\t</kinType>");
+        }
+        pw.println("</auto-def>\n");
+    }
 
     public void printSuggestions(PrintWriter pw, DomainTheory dt, String typ) {
         TreeMap<String, ArrayList<Issue>> suggs = dt.issuesForUser;
@@ -827,9 +880,8 @@ public class Context implements Serializable {
         pw.println("</silkin-issues>");
     }
 
-
     /** Update certain elements of this context from a newer one.
-
+    
     @param	newCtxt		contains new or updated information. 	*/
     public void updateFrom(Context newCtxt) throws KSParsingErrorException,
             JavaSystemException, KSBadHornClauseException,
@@ -871,7 +923,7 @@ public class Context implements Serializable {
     }  //  end of method updateFrom
 
     /** Designate a new Ego (interview subject).
-
+    
     @param	ego		the new person whose data is being gathered (being interviewed). 	*/
     public void changeEgoTo(Individual ego) {
         //  First, store all data for currentEgo
@@ -901,7 +953,7 @@ public class Context implements Serializable {
     Restore this context to a prior state, ELIMINATING all persons and families
     created with serial numbers greater-or-equal-to these.  USE WITH CAUTION.  After this purging,
     the census populations will contain 'nmbrIndivs' individuals and 'nmbrFams' families.
-
+    
     @param	nmbrIndivs	lowest individual serial number to be removed.
     @param	nmbrFams	lowest family serial number to be removed.
     
@@ -987,15 +1039,15 @@ public class Context implements Serializable {
     /** Searches through all persons on this context, seeking one with the target value
     that meets all the constraints.  SEMANTIC NOTE:  If the target value is a list of objects,
     this method considers another list to 'match' if it has the same elements IN ANY ORDER.
-
+    
     @param  arg			  an Argument (MathVariable or Constant) with a target value we want to match.  
     @param	starName	  the name of a UserDefinedPredicate that must hold the target value; must begin with '*'
     @param	personVar	  the variable for the person we seek
     @param	constraints	  holds all known constraints for varName
     @param	badBindings   a TreeMap (perhaps empty) of keys = argNames and Values = ALists of Individuals who shouldn't be chosen
-    @param	starBindings  a list of {@link StarPropertyBinding}s
+    @param	starBindings  a list of {@link StarPropertyBinding}str
     @param	bindings	  all the bindings of variables thus far
-
+    
     @return		an Individual conforming to this set of requirements, or null if none is found.
      */
     public Individual findConformingPerson(Argument arg, String starName, Variable personVar, ConstraintObj constraints,
@@ -1057,15 +1109,15 @@ public class Context implements Serializable {
 
     /** Searches through all persons on this context, seeking one with the target value
     that meets all the constraints.
-
+    
     @param  targetVal   the person (target value) we want to match.  
     @param	starName	the name of a UserDefinedPredicate that must hold the target value; must begin with '*'
     @param	personVar	the variable for the person we seek
     @param	constraints	holds all known constraints for varName
     @param	badBindings   a TreeMap (perhaps empty) of keys = argNames and Values = ALists of Individuals who shouldn't be chosen
-    @param	starBindings  a list of {@link StarPropertyBinding}s
+    @param	starBindings  a list of {@link StarPropertyBinding}str
     @param	bindings	all the bindings of variables thus far
-
+    
     @return		an Individual conforming to this set of requirements, or null if none is found.
      */
     public Individual findConformingPerson(Individual targetVal, String starName, Variable personVar,
@@ -1104,7 +1156,7 @@ public class Context implements Serializable {
     <p>
     When posting dyads (Undefined) created by Example Generation, not all nodes on Ego's relatives document kinship to her;
     some document the kinship of some alternate ego.  Test for that on the node.
-
+    
     @param  ego     the focus person, to whom all others are related in this family tree.  		*/
     public void addDyads(Individual ego) throws KSInternalErrorException {
         TreeMap bioDyads = new TreeMap();
@@ -1246,38 +1298,20 @@ public class Context implements Serializable {
             next.dyad.path.add(curent);
             next.dyad.pcString += pcs;
             if (pcs.equals("Fa") || pcs.equals("Mo")) {
-                next.dyad.pcCounter++;
                 next.dyad.level++;
             } else if (pcs.equals("So") || pcs.equals("Da")) {
-                next.dyad.pcCounter++;
                 next.dyad.level--;
             } else if (pcs.equals("Stso") || pcs.equals("Stda")) {
-                next.dyad.pcCounter++;
-                next.dyad.sCounter++;
                 next.dyad.level--;
-            } else if (pcs.equals("Hu") || pcs.equals("Wi") || pcs.equals("Exwi") || pcs.equals("Exhu")) {
-                next.dyad.sCounter++;
             } else if (pcs.equals("Stfa") || pcs.equals("Stmo")) {
-                next.dyad.pcCounter++;
-                next.dyad.sCounter++;
                 next.dyad.level++;
-            } else if (pcs.equals("Bro") || pcs.equals("Sis")) {
-                next.dyad.pcCounter += 2;
-            } else if (pcs.equals("Hbro") || pcs.equals("Hsis")) {
-                next.dyad.pcCounter += 2;
-                next.dyad.sCounter++;
-            } else if (pcs.equals("Stbro") || pcs.equals("Stsis")) {
-                next.dyad.pcCounter += 2;
-                next.dyad.sCounter += 2;
-            } else if (pcs.indexOf("*") > -1) {
-                next.dyad.starCounter++;
             }
             queue.enQ(next);
         }  //  end of process
     }  //  end of method makeNextDyad
 
     /**   Generate one Dyad for each kinTerm found in any of the six lists on this Individual's Node.
-
+    
     @param	current		 the Individual whose kinTerms we are recording in dyadsUndefined.  
     @param  egoLevel	 the treeLevel assigned to ego in this set of Nodes.  We normalize the treeLevels for use
     in indexing, with ego's level = 0.
@@ -1335,26 +1369,6 @@ public class Context implements Serializable {
                 dt.dyadsUndefined.dyAdd(newDyad);
             }
         }  //  end of loop thru extKinTermsRef 
-        terms = current.node.exceptionsRef();
-        for (int i = 0; i < terms.size(); i++) {
-            newDyad = new Dyad(current.dyad);
-            newDyad.path.remove(0);  //  remove ego from head of the list
-            newDyad.kinTerm = (String) terms.get(i);
-            newDyad.kinTermType = Dyad.EXCEPTION;
-            newDyad.addrOrRef = Dyad.REF;
-            newDyad.level = current.dyad.level - egoLevel;
-            newDyad.alter = current;
-            newDyad.pcStringStructural = structString;
-            if (dt == null) {
-                domTheoryRef = new DomainTheory(this, false, auth);
-            }
-            if (onlyBioLinks) {
-                postBioDyads(newDyad, bioDyads);
-                dt.dyadsUndefined.dyAdd(newDyad);
-            } else if (nonDupStarDyad(newDyad, bioDyads)) {
-                dt.dyadsUndefined.dyAdd(newDyad);
-            }
-        }  //  end of loop thru exceptionsRef 
         terms = current.node.kinTermsAddr();
         dt = domTheoryAdr;
         auth = (domTheoryRef == null ? "" : domTheoryRef.author);
@@ -1397,26 +1411,6 @@ public class Context implements Serializable {
                 dt.dyadsUndefined.dyAdd(newDyad);
             }
         }  //  end of loop thru extKinTermsAddr 
-        terms = current.node.exceptionsAddr();
-        for (int i = 0; i < terms.size(); i++) {
-            newDyad = new Dyad(current.dyad);
-            newDyad.path.remove(0);  //  remove ego from head of the list
-            newDyad.kinTerm = (String) terms.get(i);
-            newDyad.kinTermType = Dyad.EXCEPTION;
-            newDyad.addrOrRef = Dyad.REF;
-            newDyad.level = current.dyad.level - egoLevel;
-            newDyad.alter = current;
-            newDyad.pcStringStructural = structString;
-            if (dt == null) {
-                domTheoryAdr = new DomainTheory(this, true, auth);
-            }
-            if (onlyBioLinks) {
-                postBioDyads(newDyad, bioDyads);
-                dt.dyadsUndefined.dyAdd(newDyad);
-            } else if (nonDupStarDyad(newDyad, bioDyads)) {
-                dt.dyadsUndefined.dyAdd(newDyad);
-            }
-        }  //  end of loop thru exceptionsAddr 
     }  //  end of method generateDyads
 
     void postBioDyads(Dyad newDyad, TreeMap bioDyads) {
@@ -1449,9 +1443,15 @@ public class Context implements Serializable {
     }
 
     public boolean notRejected(Library.KTD_EQC eqc, boolean adr) {
+        if (adr && learningHistoryAdr == null) {
+            learningHistoryAdr = new TreeMap<String, ArrayList<HistoryItem>>();
+        }
         TreeMap<String, ArrayList<HistoryItem>> history =
                 (adr ? learningHistoryAdr : learningHistoryRef);
         ArrayList<HistoryItem> list = history.get(eqc.prototype.kinTerm);
+        if (list == null) {
+            return true;
+        }
         for (HistoryItem hi : list) {
             if (hi instanceof RejectedPropDefPtr) {
                 RejectedPropDefPtr reject = (RejectedPropDefPtr) hi;
@@ -1465,78 +1465,689 @@ public class Context implements Serializable {
         return true;
     }
 
+    public static class CB_Ptr implements Serializable {
 
-    abstract static class HistoryItem {
+        String kinTerm;
+        int clauseNmbr;
+
+        CB_Ptr(String kt, int cn) {
+            kinTerm = kt;
+            clauseNmbr = cn;
+        }
+
+        public String toSILKString(String bacer) {
+            return bacer + "<def kinTerm=\"" + kinTerm
+                    + "\" clause-number=\"" + clauseNmbr + "\"/>";
+        }
+
+        public String toString() {
+            return toSILKString("");
+        }
+    }
+    
+    public static String hornClauseFormatter(String in) {
+        String out = "", linePad,
+               padding = "                                        ";
+        int max = 72, start, end, cut, padPt = 0;
+        ArrayList<String> lines = makeLines(in);
+        for (String line : lines) {
+            start = 0;
+            end = max;
+            padPt = line.indexOf(":-") + 3;  //  look for implication symbol
+            if (padPt == 2) {
+                padPt = line.indexOf("|") + 2;  //  look for "OR"
+                if (padPt == 1) {
+                    padPt = 0;
+                }
+            }
+            if (padPt > 40) padPt = 40;
+            linePad = padding.substring(0, padPt);
+            boolean done = false,
+                    first = true;
+            while (!done) {
+                if (line.substring(start).length() < max + (first ? 0 : padPt)) {
+                    if (! first) {
+                        out += linePad;
+                    }
+                    out += line.substring(start) + "\n";
+                    done = true;
+                } else {
+                    cut = line.substring(start, end).lastIndexOf("),") + 3;
+                    if (cut < 0) {
+                        cut = max;
+                    }
+                    if (first) {
+                        first = false;
+                    } else {
+                        out += linePad;
+                    }
+                    out += line.substring(start, start + cut) + "\n";
+                    start += cut;
+                    end = start + max;
+                }
+            }
+        }
+        return out;
+    }
+    
+    public static ArrayList<String> makeLines(String in) {
+        ArrayList<String> out = new ArrayList<String>();
+        int start = 0, end;
+        boolean done = false;
+        while (!done) {
+            end = in.indexOf("\n", start);
+            if (end == -1) {
+                out.add(in.substring(start));
+                done = true;
+            }else {
+                out.add(in.substring(start, end));
+                start = end +1;
+                if (start >= in.length()) {
+                    done = true;
+                }
+            }
+        }
+        return out;
+    }
+
+    abstract static class HistoryItem implements Serializable {
+
         String kinTerm, date, notes;
+        boolean rescinded = false;
 
         void postToHistory(TreeMap<String, ArrayList<HistoryItem>> history) {
             if (history.get(kinTerm) == null) {
                 history.put(kinTerm, new ArrayList<HistoryItem>());
             }
-            ArrayList<HistoryItem> ktList = (ArrayList<HistoryItem>)history.get(kinTerm);
+            ArrayList<HistoryItem> ktList = (ArrayList<HistoryItem>) history.get(kinTerm);
             ktList.add(this);
-        }
-
-        abstract String toSILKString();
-    }
-
-    /**This inner class represents a pointer to a KinTermDef
-     * that was accepted by the User and added to the .thy file.
-     * 
-     */
-    public static class AcceptedDefPtr extends HistoryItem implements Serializable {
-        
-
-        AcceptedDefPtr(String kt, String dat, String nt) {
-            kinTerm = kt;
-            date = dat;
-            notes = nt;
         }
 
         public String toString() {
             return toSILKString();
         }
 
+        abstract String toSILKString();
+        
+        abstract void unDo(DomainTheory dt);
+        
+        abstract String unDoDescription();
+    }
+
+    /**This inner class represents a pointer to a KinTermDef
+     * that was accepted by the User and added to the domain theory.
+     * 
+     */
+    public static class AcceptedDefPtr extends HistoryItem implements Serializable {
+
+        ArrayList<Integer[]> autoDefPairs = new ArrayList<Integer[]>();
+
+        AcceptedDefPtr(String kt, String dat, String resc, String nt) {
+            kinTerm = kt;
+            date = dat;
+            rescinded = Boolean.parseBoolean(resc);
+            notes = nt;
+        }
+
         public String toSILKString() {
             String img = "\t<accepted-def kinTerm=\"";
-            img += kinTerm + "\" date=\"";
-            img += date + "\" notes=\"" + notes + "\"/>";
+            img += kinTerm + "\" date=\"" + date;
+            img += "\" rescinded=\"" + rescinded;            
+            img += "\" notes=\"" + notes + "\">\n";
+            if (!autoDefPairs.isEmpty()) {
+                img += "\t\t\t<auto-defs>\n";
+                for (Integer[] pair : autoDefPairs) {
+                    img += "\t\t\t\t<pair ego=\"" + pair[0] + "\" alter=\"" + pair[1] + "\"/>\n";
+                }
+                img += "\t\t\t</auto-defs>\n";
+            }
+            img += "\t\t</accepted-def>";
             return img;
         }
-    } // end of inner class AcceptedDefPtr
 
+        public String description(DomainTheory dt) {
+            String img = "ACCEPTED the following definition for " + kinTerm + ":";
+            KinTermDef ktd = (KinTermDef) dt.theory.get(kinTerm);
+            img += "\n" + ktd.toString();
+            return hornClauseFormatter(img);
+        }
+        
+        public void unDo(DomainTheory dt) {
+            KinTermDef ktd = (KinTermDef) dt.theory.remove(kinTerm);
+            rescinded = true;
+            for (Integer[] pair : autoDefPairs) {
+                SIL_Edit.editWindow.removeDef(dt, pair[0], pair[1], kinTerm);
+            }
+            TreeMap<String, ArrayList<CB_Ptr>> autoDef =
+                    (dt.addressTerms ? dt.ctxt.autoDefAdr : dt.ctxt.autoDefRef);
+            for (Object o : ktd.expandedDefs) {
+                ClauseBody cb = (ClauseBody) o;
+                String kinType = cb.pcString;
+                ArrayList<CB_Ptr> ptrList = autoDef.get(kinType);
+                Iterator ptrIter = ptrList.iterator();
+                while (ptrIter.hasNext()) {
+                    CB_Ptr ptr = (CB_Ptr) ptrIter.next();
+                    if (ptr.kinTerm.equals(kinTerm)) {
+                        ptrIter.remove();
+                    }
+                }
+                if (ptrList.isEmpty()) {
+                    autoDef.remove(kinType);
+                }
+            }
+        }
+        
+        
+        public String unDoDescription() {
+            String s = "Withdrew the previously-accepted definition for " + kinTerm;
+            s += ".\nDid NOT REJECT this definition, just rescinded its acceptance.";
+            s += "\n(To reject it, select this Proposed Definition again and click REJECT.)";
+            if (autoDefPairs.size() > 0) {
+                s += "\nRemoved automatically-generated kinterms for these ego/alter pairs:\n";
+                String lead = "";
+                for (Integer[] pair : autoDefPairs) {
+                    s += lead + pair[0] + "/" + pair[1];
+                    lead = ", ";
+                }
+            }
+            return s;            
+        }
+        
+    } // end of inner class AcceptedDefPtr
 
     /**This inner class represents a pointer to a KinTermDef
      * (or EQC of them) that was proposed to User but rejected.
      *
      */
     public static class RejectedPropDefPtr extends HistoryItem implements Serializable {
+
         String sigString, eqcProtoLangName, eqcProtoKinTerm;
 
-        RejectedPropDefPtr(String kt, String dat, String not, String sig,
+        RejectedPropDefPtr(String kt, String dat, String resc, String not, String sig,
                 String protoLang, String protoKT) {
             kinTerm = kt;
             date = dat;
+            rescinded = Boolean.parseBoolean(resc);
             notes = not;
             sigString = sig;
             eqcProtoLangName = protoLang;
             eqcProtoKinTerm = protoKT;
         }
 
-        public String toString() {
-            return toSILKString();
-        }
-
         public String toSILKString() {
             String img = "\t<rejected-def kinTerm=\"";
             img += kinTerm + "\" date=\"" + date;
+            img += "\" rescinded=\"" + rescinded;
             img += "\" notes=\"" + notes + "\" sigString=\"" + sigString;
             img += "\" protoLang=\"" + eqcProtoLangName;
             img += "\" protoKT=\"" + eqcProtoKinTerm + "\"/>";
             return img;
         }
+
+        public String description(KinTermDef ktd) {
+            String img = "REJECTED the following definition for " + kinTerm + ":";
+            img += "\n" + ktd.toString().replace(eqcProtoKinTerm, kinTerm);
+            return hornClauseFormatter(img);
+        }
+        
+        public void unDo(DomainTheory dt) {            
+            rescinded = true;
+        }
+        
+        public String unDoDescription() {
+            String s = "Rescinded the rejection of this definition of " + kinTerm + ".";
+            s += "\nThe definition is now available for new action (acceptance) or";
+            s += "\nyou may take No Action for now.";            
+            return s;            
+        }
+        
     } // end of inner class RejectedPropDefPtr
 
+    /**This inner class documents User's rejection of a proposed Synonym pair
+     * 
+     */
+    public static class RejectedSynonym extends HistoryItem implements Serializable {
 
+        String synTerm;
+
+        RejectedSynonym(String kt, String dat, String resc, String comments, String st) {
+            kinTerm = kt;
+            date = dat;
+            rescinded = Boolean.parseBoolean(resc);
+            notes = comments;
+            synTerm = st;
+        }
+
+        public String toSILKString() {
+            String img = "\t<rejected-synonym primary=\"";
+            img += kinTerm + "\" date=\"" + date;
+            img += "\" rescinded=\"" + rescinded;
+            img += "\" notes=\"" + notes + "\" synonym=\"" + synTerm + "\"/>";
+            return img;
+        }
+
+        public String description() {
+            return "REJECTED " + synTerm + " as a synonym for the primary term "
+                    + kinTerm + ".";
+        }
+        
+        public void unDo(DomainTheory dt) {            
+            rescinded = true;
+            ArrayList<Object> rejects = dt.nonSynonyms;
+            String pair, term1, term2;
+            if (kinTerm.compareTo(synTerm) < 0) {
+                term1 = kinTerm;
+                term2 = synTerm;
+            }else {
+                term2 = kinTerm;
+                term1 = synTerm;
+            }
+            pair = term1 + "/" + term2;
+            rejects.remove(pair);            
+        }
+        
+        public String unDoDescription() {
+            String s = "Rescinded the rejection of " + synTerm + 
+                    " as a synonym for the primary term " + kinTerm + ".";
+            s += "\nThis suggestion is now available for new action (acceptance) or";
+            s += "\nyou may take No Action for now.";             
+            return s;            
+        }
+        
+    }  //  end of Inner class RejectedSynonym
+
+    /**This inner class documents User's acceptance of a proposed Synonym pair
+     * 
+     */
+    public static class AcceptedSynonym extends HistoryItem implements Serializable {
+
+        String synTerm;
+
+        AcceptedSynonym(String kt, String dat, String resc, String comments, String st) {
+            kinTerm = kt;
+            date = dat;
+            rescinded = Boolean.parseBoolean(resc);
+            notes = comments;
+            synTerm = st;
+        }
+
+        public String toSILKString() {
+            String img = "\t<accepted-synonym primary=\"";
+            img += kinTerm + "\" date=\"" + date;
+            img += "\" rescinded=\"" + rescinded;
+            img += "\" notes=\"" + notes + "\" synonym=\"" + synTerm + "\"/>";
+            return img;
+        }
+
+        public String description() {
+            return "ACCEPTED " + synTerm + " as a synonym for the primary term "
+                    + kinTerm + ".";
+        }
+        
+        public void unDo(DomainTheory dt) {        
+            rescinded = true;
+            String oldPrimary = (String)dt.synonyms.get(synTerm);
+            if (oldPrimary.equals(kinTerm)) {
+                dt.synonyms.remove(synTerm);
+            }
+        }
+        
+        public String unDoDescription() {
+            String s = "Rescinded the acceptance of " + synTerm + 
+                    " as a synonym for the primary term " + kinTerm + ".";
+            s += "\nThis suggestion is now available for new action (rejection) or";
+            s += "\nyou may take No Action for now.";  
+            return s;            
+        }
+        
+    }  //  end of Inner class AcceptedSynonym
+
+    /**This inner class documents User's rejection of a proposed Umbrella
+     * 
+     */
+    public static class RejectedUmbrella extends HistoryItem implements Serializable {
+
+        ArrayList<String> subTerms;
+
+        RejectedUmbrella(String kt, String dat, String resc, String comments, ArrayList<String> st) {
+            kinTerm = kt;
+            date = dat;
+            rescinded = Boolean.parseBoolean(resc);
+            notes = comments;
+            subTerms = st;
+        }
+
+        public String toSILKString() {
+            String img = "\t<rejected-umbrella umbTerm=\"";
+            img += kinTerm + "\" date=\"" + date;
+            img += "\" rescinded=\"" + rescinded;
+            img += "\" notes=\"" + notes + "\">";
+            img += "<\t\t<original-sub-terms>\n";
+            for (String tm : subTerms) {
+                img += "\t\t\t<sub-term value=\"" + tm + "\"/>";
+            }
+            img += "<\t\t</original-sub-terms>\n";
+            img += "\t<rejected-umbrella>\n";
+            return img;
+        }
+
+        public String description() {
+            String img = "REJECTED " + kinTerm + " as an umbrella term covering:\n";
+            String leader = "";
+            for (String s : subTerms) {
+                img += leader + s;
+                leader = ", ";
+            }
+            return img;
+        }
+        
+        public void unDo(DomainTheory dt) {       
+            rescinded = true;
+            ArrayList<Object> lst = (ArrayList<Object>)dt.nonUmbrellas.get(kinTerm);
+            for (String st : subTerms) {
+                lst.remove(st);
+            }
+            if (lst.isEmpty()) {
+                dt.nonUmbrellas.remove(kinTerm);
+            }
+        }
+        
+        public String unDoDescription() {
+            String img ="Rescinded the rejection of " + kinTerm + 
+                    " as an umbrella term covering:\n";
+            String leader = "";
+            for (String s : subTerms) {
+                img += leader + s;
+                leader = ", ";
+            }
+            img += "\nThis suggestion is now available for new action (acceptance) or";
+            img += "\nyou may take No Action for now.";             
+            return img;            
+        }
+        
+    }  //  end of Inner class RejectedUmbrella
+
+    /**This inner class documents User's acceptance of a proposed Umbrella
+     * 
+     */
+    public static class AcceptedUmbrella extends HistoryItem implements Serializable {
+        //  Original subterms were as proposed by the UmbrellaCandidate. 
+        //  Edited subterms are as approved by User.
+        //  Added subterms are memebers of edited subterms that were new additions to the
+        //  umbrella as stored on the DomainTheory.
+
+        ArrayList<String> origSubTerms, editedSubTerms, addedSubTerms;
+
+        AcceptedUmbrella(String kt, String dat, String resc, String comments,
+                ArrayList<String> ost, ArrayList<String> est) {
+            kinTerm = kt;
+            date = dat;
+            rescinded = Boolean.parseBoolean(resc);
+            notes = comments;
+            origSubTerms = ost;
+            editedSubTerms = est;
+        }
+
+        public String toSILKString() {
+            String img = "\t<accepted-umbrella umbTerm=\"";
+            img += kinTerm + "\" date=\"" + date;
+            img += "\" rescinded=\"" + rescinded;
+            img += "\" notes=\"" + notes + "\">\n";
+            img += "\t\t<original-sub-terms>\n";
+            for (String tm : origSubTerms) {
+                img += "\t\t\t<sub-term value=\"" + tm + "\"/>\n";
+            }
+            img += "\t\t</original-sub-terms>\n";
+            img += "\t\t<edited-sub-terms>\n";
+            for (String tm : editedSubTerms) {
+                img += "\t\t\t<sub-term value=\"" + tm + "\"/>\n";
+            }
+            img += "\t\t</edited-sub-terms>\n";
+            if (addedSubTerms != null & !addedSubTerms.isEmpty()) {
+                img += "\t\t<added-sub-terms>\n";
+                for (String tm : addedSubTerms) {
+                    img += "\t\t\t<sub-term value=\"" + tm + "\"/>\n";
+                }
+                img += "\t\t</added-sub-terms>\n";
+            }
+            img += "\t</accepted-umbrella>\n";
+            return img;
+        }
+
+        public String description() {
+            String img = "ACCEPTED " + kinTerm + " as an umbrella term covering:\n";
+            String leader = "";
+            for (String s : editedSubTerms) {
+                img += leader + s;
+                leader = ", ";
+            }
+            if (addedSubTerms != null & !addedSubTerms.isEmpty()) {
+                img += "\nThe following were new additions to the Umbrella's coverage:\n";
+                leader = "";
+                for (String s : addedSubTerms) {
+                    img += leader + s;
+                    leader = ", ";
+                }
+            }else {
+                img += "\nAll these sub-terms were previously known.";
+            }
+            return img;
+        }
+        
+        public void unDo(DomainTheory dt) {
+            rescinded = true;
+            ArrayList<Object> lst = (ArrayList<Object>)dt.umbrellas.get(kinTerm);
+            for (String st : editedSubTerms) {
+                lst.remove(st);
+            }
+            if (lst.isEmpty()) {
+                dt.umbrellas.remove(kinTerm);
+            }
+        }
+        
+        public String unDoDescription() {
+            String img = "Rescinded the acceptance of " + kinTerm + 
+                    " as an umbrella term covering:\n";
+            String leader = "";
+            for (String s : editedSubTerms) {
+                img += leader + s;
+                leader = ", ";
+            }
+            img += "\nThis suggestion is now available for new action (rejection) or";
+            img += "\nyou may take No Action for now.";             
+            return img;             
+        }
+        
+    }  //  end of Inner class AcceptedUmbrella
+
+    /**This inner class documents User's conversion of a proposed Umbrella
+     * into one or more Synonyms
+     * 
+     */
+    public static class UmbrellaIntoSyns extends HistoryItem implements Serializable {
+
+        ArrayList<String> subTerms, synTerms;
+        String keyTerm;
+
+        UmbrellaIntoSyns(String kt, String dat, String resc, String comments, ArrayList<String> subs,
+                ArrayList<String> syns, String newKey) {
+            kinTerm = kt;
+            date = dat;
+            rescinded = Boolean.parseBoolean(resc);
+            notes = comments;
+            subTerms = subs;
+            synTerms = syns;
+            keyTerm = newKey;
+        }
+
+        public String toSILKString() {
+            String img = "\t<umbrella-into-synonyms umbTerm=\"";
+            img += kinTerm + "\" date=\"" + date;
+            img += "\" rescinded=\"" + rescinded;
+            img += "\" newKey=\"" + keyTerm;
+            img += "\" notes=\"" + notes + "\">\n";
+            if (subTerms != null && !subTerms.isEmpty()) {
+                img += "\t\t<sub-terms>\n";
+                for (String tm : subTerms) {
+                    img += "\t\t\t<sub-term value=\"" + tm + "\"/>";
+                }
+                img += "\t\t</sub-terms>\n";
+            }
+            if (synTerms != null && !synTerms.isEmpty()) {
+                img += "\t\t<syn-terms>\n";
+                for (String tm : synTerms) {
+                    img += "\t\t\t<syn-term value=\"" + tm + "\"/>";
+                }
+                img += "\t\t</syn-terms>\n";
+            }
+            img += "\t\t</umbrella-into-synonyms>";
+            return img;
+        }
+        
+        public String description() {
+            String plural = (synTerms.size() > 1 ? "s are:\n" : " is: ");
+            String img = "Changed proposed umbrella term (" + kinTerm + ") into synonyms.\n";
+            img += "Primary term is " + keyTerm + ". Synonym" + plural;
+            String leader = "";
+            for (String s : synTerms) {
+                img += leader + s;
+                leader = ", ";
+            }
+           return img;
+        }
+        
+        public void unDo(DomainTheory dt) {
+            rescinded = true;
+            // It is possible that a particular term might be proposed as a synonym
+            // more than once. Since any synonym can have only one primary term,
+            // if we accepted TWO ProposedSynonyms, only the 2nd one would still be
+            // recorded (it replaces the 1st). Therefore, we should check that the
+            // currently-recorded synonym is the one we want to rescind. 
+            for (String syn : synTerms) {
+                String oldPrimary = (String)dt.synonyms.get(syn);
+                if (oldPrimary.equals(keyTerm)) {
+                    dt.synonyms.remove(syn);
+                }                
+            }
+        }
+        
+        public String unDoDescription() {
+            String plural = (synTerms.size() > 1 ? "s are:\n" : " is: ");
+            String str = "Rescinded the conversion of proposed umbrella term (" 
+                    + kinTerm + ") into synonyms.\n";
+            str += "Primary term is " + keyTerm + ". Synonym" + plural;
+            String leader = "";
+            for (String s : synTerms) {
+                str += leader + s;
+                leader = ", ";
+            }
+            return str;            
+        }
+        
+    }  //  end of Inner class UmbrellaIntoSyns
+
+    /**This inner class documents User's acceptance of a proposed Overlap
+     * 
+     */
+    public static class AcceptedOverlap extends HistoryItem implements Serializable {
+
+        String otherTerm;
+
+        AcceptedOverlap(String kt, String dat, String resc, String comments, String ot) {
+            kinTerm = kt;
+            date = dat;
+            rescinded = Boolean.parseBoolean(resc);
+            notes = comments;
+            otherTerm = ot;
+        }
+
+        public String toSILKString() {
+            String img = "\t<accepted-overlap term1=\"";
+            img += kinTerm + "\" date=\"" + date;
+            img += "\" rescinded=\"" + rescinded;
+            img += "\" notes=\"" + notes + "\" term2=\"" + otherTerm + "\"/>";
+            return img;
+        }
+        
+        public String description() {
+            return "ACCEPTED an overlap of " + kinTerm + " and " + otherTerm + ".";
+        }
+        
+        public void unDo(DomainTheory dt) {
+            rescinded = true;
+            ArrayList<Object> lst = (ArrayList<Object>)dt.overlaps.get(kinTerm);
+            lst.remove(otherTerm);            
+            if (lst.isEmpty()) {
+                dt.overlaps.remove(kinTerm);
+            }
+            // Remove the inverse also
+            lst = (ArrayList<Object>)dt.overlaps.get(otherTerm);
+            lst.remove(kinTerm);            
+            if (lst.isEmpty()) {
+                dt.overlaps.remove(otherTerm);
+            }
+        }
+        
+        public String unDoDescription() {
+            String img = "Rescinded the acceptance of an overlap in the coverage of\n" + kinTerm + 
+                    " and " + otherTerm + ".";            
+            img += "\nThis suggestion is now available for new action (rejection) or";
+            img += "\nyou may take No Action for now.";             
+            return img;            
+        }
+        
+    }  //  end of Inner class AcceptedOverlap
+
+    /**This inner class documents User's rejection of a proposed Overlap
+     * 
+     */
+    public static class RejectedOverlap extends HistoryItem implements Serializable {
+
+        String otherTerm;
+
+        RejectedOverlap(String kt, String dat, String resc, String comments, String ot) {
+            kinTerm = kt;
+            date = dat;
+            rescinded = Boolean.parseBoolean(resc);
+            notes = comments;
+            otherTerm = ot;
+        }
+
+        public String toSILKString() {
+            String img = "\t<rejected-overlap term1=\"";
+            img += kinTerm + "\" date=\"" + date;
+            img += "\" rescinded=\"" + rescinded;
+            img += "\" notes=\"" + notes + "\" term2=\"" + otherTerm + "\"/>";
+            return img;
+        }
+        
+        public String description() {
+            return "REJECTED an overlap of " + kinTerm + " and " + otherTerm + ".";
+        }
+        
+        public void unDo(DomainTheory dt) {
+            rescinded = true;
+            ArrayList<Object> lst = (ArrayList<Object>)dt.nonOverlaps.get(kinTerm);
+            lst.remove(otherTerm);            
+            if (lst.isEmpty()) {
+                dt.nonOverlaps.remove(kinTerm);
+            }
+            // Remove the inverse also
+            lst = (ArrayList<Object>)dt.nonOverlaps.get(otherTerm);
+            lst.remove(kinTerm);            
+            if (lst.isEmpty()) {
+                dt.nonOverlaps.remove(otherTerm);
+            }
+        }
+        
+        public String unDoDescription() {
+            String img = "Rescinded the rejection of an overlap in the coverage of\n" + kinTerm + 
+                    " and " + otherTerm + ".";            
+            img += "\nThis suggestion is now available for new action (acceptance) or";
+            img += "\nyou may take No Action for now.";             
+            return img;            
+        }
+        
+    }  //  end of Inner class RejectedOverlap
 } // end of public class Context
 

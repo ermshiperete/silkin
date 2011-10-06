@@ -12,7 +12,9 @@ public class HelpWindow extends JFrame {
 
     public static final int START = 0,
                             CHART = 1,
-                            EDIT = 2;
+                            EDIT = 2,
+                            SUGGEST = 3,
+                            PREFS = 4;
 
     public static int visiblePanel = START;
 
@@ -31,12 +33,11 @@ public class HelpWindow extends JFrame {
     }
 
     public void prepComponents() {
-        if (visiblePanel == START) helpStartUp.setVisible(true);
-        else helpStartUp.setVisible(false);
-        if (visiblePanel == CHART) chartHelp.setVisible(true);
-        else chartHelp.setVisible(false);
-        if (visiblePanel == EDIT) editHelp.setVisible(true);
-        else editHelp.setVisible(false);
+        helpStartUp.setVisible(visiblePanel == START);
+        chartHelp.setVisible(visiblePanel == CHART);
+        editHelp.setVisible(visiblePanel == EDIT);
+        suggHelp.setVisible(visiblePanel == SUGGEST);
+        prefsHelp.setVisible(visiblePanel == PREFS);
     }
 
     /** This method is called from within the constructor to
@@ -47,6 +48,8 @@ public class HelpWindow extends JFrame {
         helpStartUp = new HelpStartUpPanel();
         chartHelp = new HelpDrawChartsPanel();
         editHelp = new HelpEditChartsPanel();
+        suggHelp = new HelpSuggestionsPanel();
+        prefsHelp = new HelpEditPrefsPanel();
         jMenuBar1 = new JMenuBar();
         fileMenu = new JMenu();
         jMenuItem1 = new JMenuItem();
@@ -104,25 +107,21 @@ public class HelpWindow extends JFrame {
         topicMenu.add(jMenuItem4);
         topicMenu.add(jSeparator1);
 
-        jMenuItem6.setText("Getting New Suggestions");
-        jMenuItem6.setEnabled(false);
+        jMenuItem6.setText("Suggestions");
         jMenuItem6.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
+                suggestionAction(evt);
             }
         });
         topicMenu.add(jMenuItem6);
-        jMenuItem6.setEnabled(false);
 
-        jMenuItem7.setText("Acting on Suggestions");
-        jMenuItem7.setEnabled(false);
+        jMenuItem7.setText("Preferences");
         jMenuItem7.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
+                prefsAction(evt);
             }
         });
         topicMenu.add(jMenuItem7);
-        jMenuItem7.setEnabled(false);
 
         jMenuBar1.add(topicMenu);
 
@@ -136,12 +135,16 @@ public class HelpWindow extends JFrame {
 				.add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
 					.add(org.jdesktop.layout.GroupLayout.LEADING, helpStartUp, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.add(org.jdesktop.layout.GroupLayout.LEADING, chartHelp, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.add(org.jdesktop.layout.GroupLayout.LEADING, suggHelp, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.add(org.jdesktop.layout.GroupLayout.LEADING, prefsHelp, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.add(org.jdesktop.layout.GroupLayout.LEADING, editHelp)).addContainerGap(53, Short.MAX_VALUE)));
          layout.setVerticalGroup(
                 layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 	.add(layout.createSequentialGroup().addContainerGap()
                 		.add(helpStartUp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).add(18, 18, 18)
-                			.add(chartHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                			.add(chartHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).add(18, 18, 18)
+                			.add(suggHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).add(18, 18, 18)
+                			.add(prefsHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 				.add(18, 18, 18).add(editHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 368, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 					.addContainerGap(38, Short.MAX_VALUE)));
         pack();
@@ -166,16 +169,14 @@ public class HelpWindow extends JFrame {
         prepComponents();
     }
 
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    private void suggestionAction(java.awt.event.ActionEvent evt) {
+        visiblePanel = SUGGEST;
+        prepComponents();
     }
 
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    private void prefsAction(java.awt.event.ActionEvent evt) {
+        visiblePanel = PREFS;
+        prepComponents();
     }
 
     /**
@@ -204,6 +205,8 @@ public class HelpWindow extends JFrame {
     private HelpStartUpPanel helpStartUp;
     private HelpDrawChartsPanel chartHelp;
     private HelpEditChartsPanel editHelp;
+    private HelpEditPrefsPanel prefsHelp;
+    private HelpSuggestionsPanel suggHelp;
     // End of variables declaration
 
 }

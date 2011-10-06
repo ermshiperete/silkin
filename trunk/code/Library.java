@@ -1435,7 +1435,7 @@ public class Library {
         String toSILKString(String bacer) {
             String dblSpacer = "\t\t";
             String s = bacer + "<kin-term-context>\n ";
-            s += ktd.toSILKString(bacer + "\t");
+            s += ktd.toSILKString(bacer + "\t", true);
             s += bacer + "</kin-term-context>\n ";
             return s;
         }

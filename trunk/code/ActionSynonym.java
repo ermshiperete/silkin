@@ -1,8 +1,7 @@
 import javax.swing.*;
-import java.awt.event.*;
 import java.util.*;
 
-/** This class creates the Action Box for a Proposed Definition in the
+/** This class creates the Action Box for a Proposed Synonym in the
  * {@link DecisionFrame} whenever the suggestion chosen by User is a
  * ProposedDef.
  *
@@ -14,16 +13,18 @@ public class ActionSynonym extends javax.swing.JPanel {
 
     // Logical variable declarations. GUI declarations at end of file.
     DecisionFrame papa;
+    TreeMap<String, ArrayList<Context.HistoryItem>> learningHistory;
     SynonymCandidate syn;
     int suggNmbr;
-
+    boolean switchTerms = false;
+    DomainTheory dt = null;  // set externally by DecisionFrame
 
     /** Creates new form ActionSynonym */
     public ActionSynonym() {
         initComponents();
     }
 
-     /** Creates new form ActionPropDef */
+     /** Creates new form ActionSynonym */
     public ActionSynonym(DecisionFrame frame) {
         initComponents();
         papa = frame;
@@ -137,6 +138,11 @@ public class ActionSynonym extends javax.swing.JPanel {
     public void load(SynonymCandidate sc, int nmbr) {
         syn = sc;
         suggNmbr = nmbr;
+        if (dt.addressTerms) {
+            learningHistory = dt.ctxt.learningHistoryAdr;
+        }else {
+            learningHistory = dt.ctxt.learningHistoryRef;
+        }
         // make drop-down menu of primary term
         primaryTermComboBox.setModel(new DefaultComboBoxModel(new String[]
                 { syn.kinTerm, syn.otherTerm() }));
@@ -148,19 +154,53 @@ public class ActionSynonym extends javax.swing.JPanel {
 
 
     private void rejectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rejectBtnActionPerformed
-        // TODO add your handling code here:
+        // No action; the button serves as a switch
     }//GEN-LAST:event_rejectBtnActionPerformed
 
     private void acceptBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acceptBtnActionPerformed
-        // TODO add your handling code here:
+        // No action; the button serves as a switch
     }//GEN-LAST:event_acceptBtnActionPerformed
 
     private void primaryTermComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_primaryTermComboBoxActionPerformed
-        // TODO add your handling code here:
+        switchTerms = primaryTermComboBox.getSelectedIndex() == 1;
+        
     }//GEN-LAST:event_primaryTermComboBoxActionPerformed
 
     private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
-        // TODO add your handling code here:
+        Context.HistoryItem item;
+        if (acceptBtn.isSelected()) {
+            item = new Context.AcceptedSynonym(syn.kinTerm,
+                    UDate.today(), "false",
+                    FamilyPanel.convertBannedCharacters(notesTextPane.getText()),
+                    syn.otherTerm());
+            if (switchTerms) {
+                syn.kinTerm = syn.otherTerm();                
+            }
+            if (dt.synonyms == null) {
+                dt.synonyms = new TreeMap<String, String>();
+            }
+            dt.synonyms.put(syn.otherTerm(), syn.kinTerm);
+        }else if (rejectBtn.isSelected()) {
+            String pair, term1, term2, other = syn.otherTerm();
+            item = new Context.RejectedSynonym(syn.kinTerm,
+                    UDate.today(), "false",
+                    FamilyPanel.convertBannedCharacters(notesTextPane.getText()),
+                    other);
+            if (syn.kinTerm.compareTo(other) < 0) {
+                term1 = syn.kinTerm;
+                term2 = other;
+            }else {
+                term2 = syn.kinTerm;
+                term1 = other;
+            }
+            pair = term1 + "/" + term2;
+            if (dt.nonSynonyms ==  null) {
+                dt.nonSynonyms = new ArrayList<Object>();
+            }
+            dt.nonSynonyms.add(pair);
+        }else return;
+        item.postToHistory(learningHistory);
+        papa.markProcessed(suggNmbr);
     }//GEN-LAST:event_doneButtonActionPerformed
 
 

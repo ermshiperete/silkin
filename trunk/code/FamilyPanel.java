@@ -290,7 +290,7 @@ public class FamilyPanel extends JPanel {
 //  DATA CAPTURE STRATEGY
 //  This panel's 'dirty bit' records whether any data has been entered on the
 //  panel but not yet stored on the Family/Marriage object.
-//  The KinEditPanel's dirty bit, by contrast, records whether any objects
+//  The ChartPanel's dirty bit, by contrast, records whether any objects
 //  have been updated but not yet saved to disk.
 //  The panel dirty bit is turned on whenever an editable field gains the
 //  focus. If that field later loses the focus, a data store is triggered.
@@ -377,7 +377,7 @@ public class FamilyPanel extends JPanel {
         famEndYear.setText(fam.getDivorceYr());
         familyID.setText(String.valueOf(fam.serialNmbr));
         dataChgDate.setText(fam.dataChangeDate);
-        String  EOL = KinEditPanel.EOL,
+        String  EOL = ChartPanel.EOL,
                 kidList = "", name;
         if (fam.husband == null) name = "";
         else name = fam.husband.name + " <" + fam.husband.serialNmbr + ">";

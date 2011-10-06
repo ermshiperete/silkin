@@ -10,7 +10,7 @@ import java.io.*;
   @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
 */
 public class Dyad  implements Serializable, Comparable  {
-    static final int  PRIMARY = 0, EXTENDED = 1, EXCEPTION = 2, REF = 0, ADDR = 1;  
+    static final int  PRIMARY = 0, EXTENDED = 1, REF = 0, ADDR = 1;  
     
 
     /**  Level means the generation of Alter in Ego's family tree.  0 = Ego's level; 1 = Ego's parents' level,
@@ -18,14 +18,13 @@ public class Dyad  implements Serializable, Comparable  {
         and {@link Variable}, or as <code>level</code> in {@link ClauseBody}.  */
     public int level = 0;
     
-    /**  <code>pcCounter</code>, <code>starCounter</code> and <code>sCounter</code> have the same meaning as 
-        their counterparts in {@link ClauseBody}.  */    
-    public int pcCounter = 0, sCounter = 0, starCounter = 0;
+    //  The 3 counters deleted 2011-09-12.
+    //  public int pcCounter = 0, sCounter = 0, starCounter = 0;
     
     /**  <code>kinTerm</code> is the name of the relationship between Ego and Alter.  */    
     public String kinTerm;
     
-    /**  <code>kinTermType</code> is PRIMARY (0), EXTENDED(1), or EXCEPTION (2).  
+    /**  <code>kinTermType</code> is PRIMARY (0), or EXTENDED(1).  
 		Code of 7 indicates a dyad created by special request of the Learner.  */    
     public int kinTermType;
     
@@ -70,10 +69,8 @@ public class Dyad  implements Serializable, Comparable  {
         ego = model.ego;  
         alter = model.alter;
         level = model.level;
-        pcCounter = model.pcCounter;
-        sCounter = model.sCounter;
-        starCounter = model.starCounter;
         kinTerm = model.kinTerm;
+        kinTermType = model.kinTermType;
         addrOrRef = model.addrOrRef;
         path = new ArrayList<Object>(model.path);
         pcString = new String(model.pcString);
@@ -84,9 +81,12 @@ public class Dyad  implements Serializable, Comparable  {
     public String toSILKString() {
         String result = "<dyad ";
         result += toSILKGuts();
-        result += "counters=\"" + pcCounter + ", " + sCounter + ", " + starCounter + "\" ";
-        result += "confirmed=\"" + confirmed + "\" ";
-        result += "challenged=\"" + challenged + "\" ";
+        if (confirmed) {
+        result += "confirmed=\"true\" ";
+        }
+        if (challenged) {
+        result += "challenged=\"true\" ";
+        }
         result += "/>\n";
         return result;
     }  //  end of method toSILKString
@@ -127,6 +127,19 @@ public class Dyad  implements Serializable, Comparable  {
 		return "<dyad: #" + alter.serialNmbr + " is " + kinTerm + " of #" + ego.serialNmbr 
 				+ " (" + ego.gender + ") - " + pcString + ": lvl " + level + codes + ">";
 		}  //  end of overriding method toString
+    
+    public boolean equals(Object o) {
+        if (o instanceof Dyad) {
+            Dyad d = (Dyad)o;
+            boolean bEgo = d.ego == ego;
+            boolean bAlter = d.alter == alter;
+            boolean bKT = d.kinTerm.equals(kinTerm);
+            boolean bAdr = d.addrOrRef == addrOrRef;
+            boolean bPath = d.path.equals(path);
+            if (bEgo && bAlter && bKT && bAdr && bPath) return true;
+        }
+        return false;
+    }
     
 	/** Provide a method of comparing 2 Dyads for use in TreeMaps and TreeSets.
 	*/

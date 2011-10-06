@@ -196,6 +196,7 @@ public class ClauseBody implements Serializable, Comparator {
                 display += ", ";
             }
         }
+        display += ".\n";
         if (flags.size() > 0) {
             Iterator flagIter = flags.iterator();
             while (flagIter.hasNext()) {
@@ -228,7 +229,7 @@ public class ClauseBody implements Serializable, Comparator {
             }
             path += "]";
         }  //  end of if-expansion-path-is-not-empty
-        return flagList + display + path + ".";
+        return flagList + display + path;
     }  // end of over-riding toString method
 
     /** Create a string representing this Horn Clause, in strict Prolog syntax.
@@ -281,7 +282,7 @@ public class ClauseBody implements Serializable, Comparator {
     }
 
     String toSILKString(String bacer) {
-        String s = bacer + "<clause>\n", 
+        String s = bacer + "<clause level=\"" + level + "\">\n", 
                dblSpace = "\t\t";
         if (pcString != null && !pcString.isEmpty()) {
             s += bacer + "\t" + "<pc-string>" + pcString + "</pc-string>\n";
@@ -1055,37 +1056,37 @@ public class ClauseBody implements Serializable, Comparator {
         String pcStr = null;
         int oldEgo = SIL_Edit.editWindow.getCurrentEgo();
         SIL_Edit.editWindow.setCurrentEgo(ego.serialNmbr);
-        boolean oldIndexBool = KinEditPanel.doIndexes;
-        KinEditPanel.doIndexes = false;
+        boolean oldIndexBool = ChartPanel.doIndexes;
+        ChartPanel.doIndexes = false;
         Family fam = ego.birthFamily;
         if (fam != null) {
-            resetNodes(ego);
-            KinEditPanel.createNode(ego, fam, "child");
+            resetNodes(ego, SIL_Edit.editWindow.chart.distinctAdrTerms);
+            ChartPanel.createNode(ego, fam, "child");
             if (alter.node != null) {
                 pcStr = alter.node.pcString;
             }
         } // if we reached Alter and gave her a PC String, we're done
         if (pcStr != null && pcStr.length() > 0) {
             SIL_Edit.editWindow.setCurrentEgo(oldEgo);
-            KinEditPanel.doIndexes = oldIndexBool;
+            ChartPanel.doIndexes = oldIndexBool;
             return pcStr;
         }
         // else, try again with Ego's marriages
         for (Object o : ego.marriages) {
             fam = (Family) o;
-            resetNodes(ego);
-            KinEditPanel.createNode(ego, fam, "spouse");
+            resetNodes(ego, SIL_Edit.editWindow.chart.distinctAdrTerms);
+            ChartPanel.createNode(ego, fam, "spouse");
             if (alter.node != null) {
                 pcStr = alter.node.pcString;
                 if (pcStr != null && pcStr.length() > 0) {
                     SIL_Edit.editWindow.setCurrentEgo(oldEgo);
-                    KinEditPanel.doIndexes = oldIndexBool;
+                    ChartPanel.doIndexes = oldIndexBool;
                     return pcStr;
                 }
             }
         } // if no hits in marriages either: Error!
         SIL_Edit.editWindow.setCurrentEgo(oldEgo);
-        KinEditPanel.doIndexes = oldIndexBool;
+        ChartPanel.doIndexes = oldIndexBool;
         String msg = "While making a PC String for " + ktd.domTh.languageName;
         msg += ", " + ktd.kinTerm + ": " + seqNmbr;
         msg += ",\nfound no logical path from Ego to Alter.";
@@ -1094,13 +1095,13 @@ public class ClauseBody implements Serializable, Comparator {
         throw new KSInternalErrorException(msg);
     }
 
-    public void resetNodes(Individual ego) {
+    public void resetNodes(Individual ego, boolean adr) {
         ArrayList<Individual> pop = ktd.domTh.ctxt.individualCensus;
         for (Individual ind : pop) {
             ind.node = new Node();
             ind.seenB4 = 0;
         }
-        ego.node = Node.makeSelfNode();
+        ego.node = Node.makeSelfNode(adr);
     }
 
 

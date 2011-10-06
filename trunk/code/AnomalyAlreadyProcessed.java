@@ -7,9 +7,9 @@
  *
  * @author gary
  */
-public class ActionAlreadyProcessed extends javax.swing.JPanel {
-
-    public ActionAlreadyProcessed() {
+public class AnomalyAlreadyProcessed extends javax.swing.JPanel {
+    
+    public AnomalyAlreadyProcessed() {
         initComponents();
     }
 
@@ -18,11 +18,11 @@ public class ActionAlreadyProcessed extends javax.swing.JPanel {
         jTextArea1 = new javax.swing.JTextArea();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Already Processed"));
-        setPreferredSize(new java.awt.Dimension(425, 300));
+        setPreferredSize(new java.awt.Dimension(425, 300));  
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
-        jTextArea1.setText("You have already processed this suggestion. \nYou do not need to take any further action.\n\nIn a future version of SILKin, you will have the ability \nto retract the action previously taken on this suggestion. \n\nBut that feature is not yet implemented.");
+        setDisplay("dyads");
         jScrollPane1.setViewportView(jTextArea1);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
@@ -41,6 +41,18 @@ public class ActionAlreadyProcessed extends javax.swing.JPanel {
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }
+    
+    void setDisplay(String text) {
+        jTextArea1.setText("You have already processed these " + text + "\nindividually. To change the action taken on one of them," 
+                + "\ngo to the chart and edit it there. \n\nRepeat that for as many dyads as you need to.");        
+    }
+    
+    void addToDisplay(String moreText) {
+        String newTxt = jTextArea1.getText() + "\n" + moreText;
+        jTextArea1.setText(newTxt);
+    }
+    
+    
 
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
