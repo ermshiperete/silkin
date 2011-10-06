@@ -1,0 +1,76 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "hht://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Editing Preferences in SILKin</title>
+</head>
+
+<body>
+<a name="intro"></a>
+<h3> Preferences Control Learning and Other Behavior</h3>
+<p>Editing Preferences for a particular context controls the <span style="font-style: italic">Learning Module</span> -- the part of SILKin that makes Suggestions. For more information about the Learning Module and how SILKin makes Suggestions, see <a href="Suggs.html">Help - Suggestions</a>. The bottom two parameters in this window control the behavior of the 'Tab' key when entering data for a Person.
+</p>
+<p>Once you have set the preferences, they are saved in the SILK file and apply only to that file. If you create a new context (i.e. a different language or project), you must set its Preferences seperately.
+</p>
+<p>You can experiment with these parameters. For example: after you gather 
+a fair number of dyads you click on "Get New Suggestions" and get just a
+few proposed definitions for your kin terms. You wonder if you would have
+gotten more (or better) suggestions with different learning parameters. So
+you change a few parameters and then click 'Get New Suggestions' again.
+If you like the results, you can leave the new parameter settings alone and
+work with this set of Suggestions. If you don't like the result, you can put the settings back where they were and click "Get New Suggestions" again. This will recreate the original set of Suggestions.
+</p>
+<a name="ignore"></a>
+<h3> The Ignorable Percentage </h3>
+<p>This parameter controls how many dyads SILKin can ignore as "probable errors" when fitting your data to a definition found in the system Library. If you set this to 5% (the default value), then if 95% of your data matches a Library pattern and 5% does not match, SILKin will suggest the Library definition may be correct in your context. SILKin will not ask you to correct the 5% that don't match; it will just ignore them.
+</p>
+<p>If you set the Ignorable Percentage very low, then it will take a <span style="font-style: italic">lot</span> of correct dyads to overcome just a few erroneous dyads. This will stop SILKin from making Suggestions until you have gathered a lot of dyads; this could waste your efforts.
+</p>
+<p>If you set the Ignorable Percentage very high, then SILKin might ignore a substantial number of dyads in proposing a definition. And those mis-fit
+dyads could be correctly indicating that the Library definition is not a good fit. SILKin could be too quick to make Suggestions. 
+</p>
+<a name="max"></a>
+<h3> The Maximum Percentage </h3>
+<p>This parameter controls how quickly SILKin may suggest that some of your
+dyads are wrong and should be corrected. If you set this to 25% (the default value) SILKin will never assume that a group of dyads are wrong if they constitute 25% or more of your data for that kin term. For example: if 80% of your data fits a Library pattern, the 20% misfits are too many to ignore. But SILKin will consider pointing out the 20% and asking you to verify their accuracy. If you verify (confirm) a particular dyad as correct, SILKin will never question it again (so be sure before you confirm).
+</p>
+<p>If you set Max Percentage very low, then in the early stages of data 
+gathering a few erroneous dyads could stop SILKin from proposing the 
+correct definition; they will be too high a percentage of your data to be
+challenged. This will slow down SILKin's search for a definition and slow
+down the discovery of legitimate errors.
+</p>
+<p>If you set Max Percentage very high, then it will be very quick to challenge your dyads (even correct ones) based on partial matches to Library patterns. This could waste your time confirming data that is correct.
+</p>
+<a name="sub"></a>
+<h3>Sub-Pattern Matches</h3>
+<p>By default, this parameter is set to 'false' (<span style="font-style: italic">i.e.</span> no check-mark). When you first begin gathering dyads, you are hoping that your data will match some definitions in the Library perfectly. If that happens, then it may be useful to read about the culture whose definition also fits your context. You may gain insights about your own target culture (context) by comparing it to the Library context that contributed a definition.
+</p>
+<p>If you have gathered a lot of dyads for a particular kin term and SILKin has not found any matches for that kin term with Library definitions, then perhaps your context has a unique pattern. But it is also possible that in your context the definition of your kin term is a combination of some definitions that can be found in the Library. (Perhaps your context has the concept of 'sibling' but the Library only has patterns for 'brother' or 'sister.') 
+</p>
+<p>When Sub-Pattern Matches is 'true' SILKin will try to 'piece together' a definition of your kin term using components of definitions in the Library. This is often successful. <span style="font-style: italic">However</span> the pieced-together definition may be just what you need, or it may be a cumbersome monstrosity.
+</p>
+<p>You should not permanently check this box until you believe you have some unique kin terms in your context that do not match any definition in the Library. Of course, you can experiment with this parameter; see what happens if you check it and then "Get New Suggestions." If you don't like what you get, un-check it and recreate the original Suggestions.
+</p>
+<a name="induce"></a>
+<h3>Pure Induction</h3>
+<p>By default, this parameter is set to 'false' (<span style="font-style: italic">i.e.</span> no check-mark). Sometimes SILKin cannot find an exact match between the data in your context and a Library definition, and can't even piece one together using components of Library definitions. If this parameter is checked, SILKin will try one last strategy: it will construct a definition from your data. This is a desperate measure, and often results in an unneccesarily complex definition. 
+</p>
+<p>A definition produced by Pure Induction might be unusable by iteslf, but it could show you your data in a new form (<span style="font-style: italic">i.e.</span> Horn Clauses). That new view may give you some ideas or insights. 
+</p>
+<p>Generally you should not permanently check this parameter until you have given up
+on all the other learning strategies SILKin employs. (But you can always experiment.)
+</p>
+<a name="poly"></a>
+<h3>Polygamy</h3>
+<p>A few Library definitions only work with multiple spouses (<span style="font-style: italic">e.g.</span> co-wife). If you know that polygamy is recognized in your context, checking this paramenter can help SILKin look for suitable definitions. It will not restrict SILKin's search to <span style="font-style: italic">only</span> polygamous definitions, but it will allow them.
+</p>
+<a name="capture"></a>
+<h3>Surname & Birth Date Capture</h3>
+<p>When you click on a person in the chart (making them Alter), SILKin initially places your cursor in the first blank field you 'normally' fill in. If the 'Birth Date Normally Captured' box is checked, SILKin will include the birth year field in the group you normally complete; otherwise, SILKin will skip over that field. The same is true for the 'Surname is Normally Captured' box.
+</p>
+<p>You should set these parameters to suit your customary behavior. You can always tab or click into a field that you do not normally complete.
+</p>
+</body>
+</html>

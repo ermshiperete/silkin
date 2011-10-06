@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "hht://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Getting Started in SILKin</title>
+</head>
+
+<body>
+<a name="screen"></a>
+<h3> Data Gathering Screen</h3>
+<p>The <span style="font-style: italic">Upper Panel</span> on the screen is for displaying information about persons and families in the charts below. The <span style="font-style: italic">Lower Panel</span> is where you draw family tree charts (genealogies). In these help screens, we will refer to the upper panel
+as the <span style="font-style: italic">Data Panel</span> and the lower panel as the <span style="font-style: italic">Chart</span>.
+</p>
+<a name="begin"></a>
+<p>To begin a new project, click on the chart where you would like to draw 
+the first person. A menu will appear; choose a male, female or 
+union (marriage). To cancel the menu without making a choice, click somewhere outside the menu boundaries. <span style="font-weight: bold">NOTE:</span> The menu choices to insert an existing person do not work yet.
+</p>
+<p>The first time you create a person or union in a new project, a pop-up box will appear asking the <span style="font-style: italic">Name of Your Project</span>. Normally, if you are studying the XYZ people you will name your project 'XYZ.' 
+</p>
+<p>After naming your project, you will be asked to identify yourself. The name you enter will be recorded as the 'data author' for your entries. This is handy when more than one person works on a project, or if you share your data with a colleague.
+</p>
+<p>After naming the project and yourself, you will then be allowed to finish creating your first chart symbol.
+</p>
+<p>When you create a project named 'XYZ' we will refer to this as the XYZ <span style="font-style: italic">Context</span>. The context includes all the people and unions (marriages), the kin terms of reference and kin terms of address in the local language, and (eventually) the logical definitions of all the kin terms. All the data for your XYZ context will be stored in a file named 'XYZ.silk'.
+</p>
+
+<a name="create"></a>
+<h3> Opening or Creating a Context</h3>
+<p>To create a new context, simply start creating the genealogical chart as <a href="#begin"> described above</a>. Periodically, and at the end of your session, you should save your data. The File Menu has 'Save' and 'Save As' options similar to other software programs. Use 'Save As' to change the file name or location.
+</p>
+<p>
+Your data is saved in SILK files with an extension '.silk'; this
+format uses a slightly modified version of XML, (e<span style="font-weight: bold">X</span>tended <span style="font-weight: bold">M</span>arkup <span style="font-weight: bold">L</span>anguage). 
+Because of these modifications, SILK files cannot be viewed directly.
+However, if you use your browser's 'File > Open File' command to "open" a SILK file, you will see a Summary of the file, including progress statistics. This summary is also displayed when you "Act on Suggestions."
+</p>
+<p>
+You should be very careful not to modify SILK files; this could corrupt the 
+files and make them unusable in SILKin.
+</p>
+<p>To continue working on a project you previously started, in the File Menu select 'Open' and navigate to the folder where your SILK file is stored. The suggested (and default) location is the 'Context Under Construction' folder in the 'Library' folder in the 'SILKin' folder. As soon as the file loads, you will be asked to 'log in' by selecting your name from the menu of data authors who have contributed to this project. If this is the first time you have worked on this SILK file, you can add your name to the menu. Everything you do on the chart will be linked to your name as 'Data Author.'
+</p>
+<p>If you created a SILK file with the Nairobi pre-release version of SILKin, your data is stored in a 'Pre-XML' format. You can update your data using the File menu's 'Open Pre-XML' command. Once you have opened it, you can edit it or add to it normally. When you Save it (or 'Save As') it will be saved in the new format. (You do not have the option to continue using the old format.) Thereafter, open your file with the File - Open command.
+</p>
+<p> Clicking 'Save As' creates a new SILK file with the same language name but a different file name. When you click 'Get New Suggestions' the suggestions will be stored in a file with the same base name as your SILK file, but the extension will be ".html" instead of ".silk". (The SILK file will be in the Library folder "Context Under Construction" and the HTML file will be in the Library folder "Suggestions.")
+</p>
+
+<a name="add"></a>
+<h3> Adding People and Unions</h3>
+<p>Gathering data about the genealogies and kin terms of a people group is mostly a matter of building a family tree chart and filling in the kin terms. 
+</p>
+<p>After you have created one or more people, you can create marriages (unions). To place someone in a union, drag and drop (or "pick and plop") them onto it. If you drop them onto the <span style="font-weight: bold">top</span> of a union, they are added as a spouse. If you drop them onto the <span style="font-weight: bold">bottom</span> of a union, they are added as children. As soon as they are added, a line appears linking them to the union. If you add someone to a union incorrectly, you can remove them by "re-dropping" them on the union. So... drop them once to add them to the union; drop them a second time to remove them.
+</p>
+
+<a name="detail"></a>
+<h3> Data Panel: Ego and Alter</h3>
+<p>Whenever you click on a person or union, the upper display panel will
+display their data. When creating a new person, you should always enter a name and the kin terms of reference in the Data Panel for that person. Entering dates of birth/death or comments is useful but optional. A few fields are generated by the system (e.g. a person's or union's ID number) and cannot be altered.
+</p>
+<p>The person whose data is displayed is called "Alter." In the upper right 
+of the display is a box labeled "Current Ego." The kinship term of reference that Ego calls Alter is recorded in the first text field near the bottom of the display. The reciprocal term that Alter calls Ego is recorded in the second field. 
+</p>
+<p>When viewing the details about a union, the husband, wife and 
+children are listed in text fields. You cannot edit these; the correct way
+to add or delete persons to a union is described <a href="#add">  above</a>; you do it graphically by dragging and dropping. 
+</p>
+<a name="terms"></a>
+<h3> Terms of Reference or Address</h3>
+<p>In many cultures, the terms of reference and terms of address are the same. The third and fourth fields hold the term of address and its reciprocal. By default these terms are the same, and the system fills them in. You cannot edit those fields ordinarily. However, if you check the menu item "Distinct Terms of Address" in the Context menu, then these fields will <span style="font-style: italic">not</span>  be filled automatically -- you must enter the terms of address manually. 
+</p>
+<a name="dyads"></a>
+<h3> Dyads</h3>
+<p>Each kin term represents a "dyad" - the basic data you need to learn a kinship system. As you create persons and unions and fill in the kin terms, the system is capturing the dyads for analysis. The system is also capturing the genealogical data in the family tree charts. 
+</p>
+</body>
+</html>
