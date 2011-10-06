@@ -31,7 +31,6 @@ import java.util.*;
 public class SIL_Edit extends JFrame {
 
     static SIL_Edit editWindow;
-    static HelpWindow helpWindow;
     static DecisionFrame decisionFrame;
     static final int REF = 0, ADR = 1;
     /** minDyadsPerPCStr is the threshold for trying to learn a definition. <br />
@@ -900,41 +899,6 @@ public class SIL_Edit extends JFrame {
         }
     }
 
-    private void helpGetStartedItemActionPerformed(ActionEvent evt) {
-        HelpWindow.visiblePanel = HelpWindow.START;
-        if (helpWindow == null) {
-            helpWindow = new HelpWindow();
-        }
-        helpWindow.display();
-    }
-
-    private void helpDrawChartsItemActionPerformed(ActionEvent evt) {
-        HelpWindow.visiblePanel = HelpWindow.CHART;
-        if (helpWindow == null) {
-            helpWindow = new HelpWindow();
-        }
-        helpWindow.display();
-    }
-
-    private void helpEditPersonsItemActionPerformed(ActionEvent evt) {
-        HelpWindow.visiblePanel = HelpWindow.EDIT;
-        if (helpWindow == null) {
-            helpWindow = new HelpWindow();
-        }
-        helpWindow.display();
-    }
-
-    private void helpNewSuggestionsItemActionPerformed(ActionEvent evt) {
-        // TODO Create help text
-    }
-
-    private void helpProcessSuggestionsItemActionPerformed(ActionEvent evt) {
-        // TODO Create help text
-    }
-
-    private void helpProgressStatsItemActionPerformed(ActionEvent evt) {
-        // TODO Create help text
-    }
 
     /**
      * @param args the command line arguments
