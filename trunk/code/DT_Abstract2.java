@@ -10,7 +10,7 @@ import java.io.* ;
 	Because so many methods are defined at the Domain Theory level, the code files are broken into 4 classes:  
 	DT_Abstract1, DT_Abstract2, & DomainTheory, plus Learned_DT. 
 
-  @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+  @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 public abstract class DT_Abstract2 extends DT_Abstract1  {
 	

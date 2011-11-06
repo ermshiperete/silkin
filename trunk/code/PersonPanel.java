@@ -20,7 +20,7 @@ import javax.swing.event.*;
  * valid data is entered. Then the person's record is updated and we proceed to
  * let user choose a new infoPerson to display/edit.
  *
- * @author Gary Morris, University of Pennsylvania
+ * @author Gary Morris, Northern Virginia Community College
  */
 public class PersonPanel extends javax.swing.JPanel {
 
@@ -582,10 +582,10 @@ public class PersonPanel extends javax.swing.JPanel {
         personDeathYear.setText("YYYY");
         dataChgDate.setText("entry date");
         personComments.setText("");
-        alterRefTerm.setText("kin term");
-        recipRefTerm.setText("reciprocal kin term");
-        alterAdrTerm.setText("kin term of address");
-        recipAdrTerm.setText("reciprocal kin term of address");
+        alterRefTerm.setText("kin_term");
+        recipRefTerm.setText("reciprocal_kin_term");
+        alterAdrTerm.setText("kin_term_of_address");
+        recipAdrTerm.setText("reciprocal_kin_term_of_address");
         storing = false;
     }
 
@@ -672,7 +672,8 @@ public class PersonPanel extends javax.swing.JPanel {
             dt = Context.current.domTheoryRef();
         } catch (Exception ex) {  }  //  nothing can go wrong, go wrong, go wrong...
         applyAutoDef(nod, list, dt, ego);
-        if (Context.current.domTheoryAdrExists() && parent.chart.distinctAdrTerms) {
+        if (Context.current.domTheoryAdrExists() && parent.chart.distinctAdrTerms
+                && Context.current.autoDefAdr != null) {
             map = Context.current.autoDefAdr;
             list = map.get(nod.pcString);
             try {
@@ -761,6 +762,87 @@ public class PersonPanel extends javax.swing.JPanel {
             field.setText(newText);
         }
     }
+    
+    public String sanitizeName(String nam) {
+        return nam.replace("\"", "'").replace('<', '[').replace('>', ']').trim();
+    }
+    
+    public String sanitizeKinTerms(String k, String typ) throws KSParsingErrorException {
+        String sanitized = k.replace('-', '_').replace("\"", "'")
+                .replace('<', '[').replace('>', ']').trim();
+        ArrayList<String> badChars = new ArrayList<String>(), 
+                goodChars = new ArrayList<String>();
+        if (k.indexOf("-") > -1) {
+            badChars.add("-");
+            goodChars.add("_");
+        }
+        if (k.indexOf("\"") > -1) {
+            badChars.add("dbl-quote");
+            goodChars.add("single-quote");
+        }
+        if (k.indexOf("<") > -1) {
+            badChars.add("<");
+            goodChars.add("[");
+        }
+        if (k.indexOf(">") > -1) {
+            badChars.add(">");
+            goodChars.add("]");
+        }
+        String msg, pl;
+        if (!badChars.isEmpty()) {
+            pl = (badChars.size() > 1 ? "s" : "");
+            msg = "Illegal character" + pl + " detected:";
+            for (int i=0; i < badChars.size(); i++) {
+                msg += "\n'" + badChars.get(i) + "' replaced by '" + goodChars.get(i) + "'";
+            }
+            msg += "\n in '" + typ + "'";
+            JOptionPane.showMessageDialog(parent, msg, 
+                    "Restrictions on Kin Term Characters", 
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+        if (!allBlanksPrecededByCommas(sanitized)) {
+            msg = "In '" + typ + "'\n";
+            msg += "Kin terms may not contain embedded blanks. If you intended\n";
+            msg += "to separate multiple terms, use a comma to separate. If a single\n";
+            msg += "term has multiple components, join them with an underscore.";
+            JOptionPane.showMessageDialog(parent, msg, 
+                    "Restrictions on Kin Term Characters", 
+                    JOptionPane.ERROR_MESSAGE);
+            throw new KSParsingErrorException("Must remove blanks from kin term");
+        }
+        char[] letters = sanitized.toCharArray();
+        ArrayList<Character> baddies = new ArrayList<Character>();
+        for (char ch : letters) {
+            if (!Character.isJavaIdentifierPart(ch) && ch != ',' && ch != ' ') {
+                baddies.add(ch);
+            }
+        }
+        if (!baddies.isEmpty()) {
+            pl = (baddies.size() > 1 ? "s" : "");
+            msg = "Illegal character" + pl + " detected: " + baddies;
+            msg += "\n in '" + typ + "'";
+            JOptionPane.showMessageDialog(parent, msg, 
+                    "Restrictions on Kin Term Characters", 
+                    JOptionPane.ERROR_MESSAGE);
+            throw new KSParsingErrorException("Must replace illegal characters");
+        }        
+        return sanitized;
+    }
+    
+    boolean allBlanksPrecededByCommas(String s) {
+        s = s.trim();
+        int bl = s.indexOf(" "), start;
+        if (bl == -1) return true;
+        while(bl > -1) {
+            if (s.charAt(bl -1) != ',' && s.charAt(bl -1) != ' ') {
+                return false;
+            }
+            start = bl +1;
+            bl = s.indexOf(" ", start);
+        }
+        return true;
+    }
+    
 
     void storeInfo(Individual infoPerson) 
             throws KSParsingErrorException, JavaSystemException,
@@ -769,16 +851,15 @@ public class PersonPanel extends javax.swing.JPanel {
 	if (! dirty) return;  //  No changes have been made
         storing = true;
         String a, b, c;
-        int nmbr, currEgoNum = parent.getCurrentEgo();
-        Dyad newDyad;
+        int currEgoNum = parent.getCurrentEgo();
         Individual currEgo =
                     Context.current.individualCensus.get(currEgoNum);
-        a = alterFirstNames.getText().trim()
-            + " " + alterLastName.getText().trim();
-        if (! infoPerson.name.equals(a)) {
-            infoPerson.name = a;
-            infoPerson.surname = alterLastName.getText().trim();
-            infoPerson.firstNames = alterFirstNames.getText().trim();
+        a = sanitizeName(alterFirstNames.getText());
+        b = sanitizeName(alterLastName.getText());
+        if (! infoPerson.name.equals(a + " " + b)) {
+            infoPerson.name = a + " " + b;
+            infoPerson.surname = b;
+            infoPerson.firstNames = a;
             parent.chart.dirty = true;            
         }
         if (! infoPerson.deleted) updateEgoNames(infoPerson);
@@ -810,28 +891,25 @@ public class PersonPanel extends javax.swing.JPanel {
         //  The comments field is handled by a DocumentListner
         ArrayList<String> oldTerms, newTerms;
         if (infoPerson.node != null && infoPerson.serialNmbr != currEgoNum) {
-            a = alterRefTerm.getText();
-            if (!a.trim().equals(alterKinTermRefImg.trim())) { // alterKinTermRefImg = before User editing
+            a = sanitizeKinTerms(alterRefTerm.getText(), "Ego Refers to Alter");
+            if (!a.equals(alterKinTermRefImg.trim())) { // alterKinTermRefImg = before User editing
                 oldTerms = getKinTerms(alterKinTermRefImg);
                 newTerms = getKinTerms(a);
                 updateKinTerms(currEgo, infoPerson, infoPerson.node, oldTerms, newTerms, "Ref");
-//                if (!parent.chart.distinctAdrTerms) {  // REMOVED: ADDRESS TERMS NOW IMPLICIT
-//                    updateKinTerms(currEgo, infoPerson, infoPerson.node, oldTerms, newTerms, "Adr");
-//                }
             } // end of User must have edited alterKinTermsRef
             if (parent.chart.distinctAdrTerms) {
                 // Must pick up the term of address, if any
-                a = alterAdrTerm.getText();
-                if (!a.trim().equals(alterKinTermAdrImg.trim())) {
+                a = sanitizeKinTerms(alterAdrTerm.getText(), "Ego Addresses Alter");
+                if (!a.equals(alterKinTermAdrImg.trim())) {
                     oldTerms = getKinTerms(alterKinTermAdrImg);
                     newTerms = getKinTerms(a);
                     updateKinTerms(currEgo, infoPerson, infoPerson.node, oldTerms, newTerms, "Adr");
                 }
             }  // end of there-were-distinct-address-terms
-            a = recipRefTerm.getText();
+            a = sanitizeKinTerms(recipRefTerm.getText(), "Alter Refers to Ego");
             TreeMap tmap = parent.ktm.getRow(infoPerson.serialNmbr);
             Node recipNode = (Node) tmap.get(currEgoNum);
-            if (!a.trim().equals(recipKinTermRefImg.trim())) {
+            if (!a.equals(recipKinTermRefImg.trim())) {
                 oldTerms = getKinTerms(recipKinTermRefImg);
                 newTerms = getKinTerms(a);
                 if (recipNode != null) {
@@ -845,19 +923,16 @@ public class PersonPanel extends javax.swing.JPanel {
                     parent.ktm.addNode(infoPerson.serialNmbr, currEgoNum, recipNode);
                     updateKinTerms(infoPerson, currEgo, recipNode, oldTerms, newTerms, "Ref");
                 }
-//                if (!parent.chart.distinctAdrTerms) {  // REMOVED: ADDRESS TERMS NOW IMPLICIT
-//                    updateKinTerms(infoPerson, currEgo, recipNode, oldTerms, newTerms, "Adr");
-//                }  //  end of no-distinct-address-terms
             } //  end of recip-ref-terms-were-edited
             if (parent.chart.distinctAdrTerms) {
                 // Must pick up the reciprocal term of address, if any
-                a = recipAdrTerm.getText();
-                if (!a.trim().equals(recipKinTermAdrImg.trim())) {
+                a = sanitizeKinTerms(recipAdrTerm.getText(), "Alter Addresses Ego");
+                if (!a.equals(recipKinTermAdrImg.trim())) {
                     oldTerms = getKinTerms(recipKinTermAdrImg);
                     newTerms = getKinTerms(a);
                     updateKinTerms(infoPerson, currEgo, recipNode, oldTerms, newTerms, "Adr");
                 }  //  end of recip-address-terms-were-edited
-            }  //  end of distinct-address-terms
+            }  //  end of distinct-address-terms           
         }  //  end of non-ego-has-a-node
         while (Library.currDataAuthor == null || Library.currDataAuthor.length() == 0) {
             Library.currDataAuthor = parent.chart.getCurrentUser();
@@ -872,48 +947,33 @@ public class PersonPanel extends javax.swing.JPanel {
     }
     
     
-    public static void debugDyads() {
-        if (SIL_Edit.editWindow.chart.recomputingDyads) {
-            return;
-        }
-        try {
-            int ktmSz = Context.current.ktm.numberOfKinTerms(),
-                ktmCells = Context.current.ktm.numberOfCells(),
-                mult = (!Context.current.domTheoryAdrExists() ? 1 : 2),
-                popSz = Context.current.indSerNumGen,
-                refSz = DomainTheory.countLeaves(Context.current.domTheoryRef().dyadsUndefined)
-                    + DomainTheory.countLeaves(Context.current.domTheoryRef().dyadsDefined),
-                adrSz = (!Context.current.domTheoryAdrExists() ? 0
-                    : DomainTheory.countLeaves(Context.current.domTheoryAdr().dyadsUndefined)
-                    + DomainTheory.countLeaves(Context.current.domTheoryAdr().dyadsDefined));
-            boolean ktminBalance = (refSz + adrSz) == (ktmSz - (mult * popSz));
-            if (!ktminBalance) {
-                String msg = "Ref dyads: " + refSz + "\tAdr dyads: " + adrSz + "\tktmTerms: "
-                        + ktmSz + " - " + (mult * popSz) + " = " + (ktmSz - (mult * popSz)) + "\tktmCells: " + ktmCells;
-                MainPane.displayError(msg, "Data Loss Monitoring", JOptionPane.WARNING_MESSAGE);
-                System.out.println(msg);
-                Context.breakpoint();
-            }
-        } catch (Exception ex) {
-            Context.breakpoint();
-        }
-    }
-    
-
     static ArrayList<String> getKinTerms(String s) {
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list1 = new ArrayList<String>(),
+                          list2 = new ArrayList<String>();
         s = s.trim();
         int comma = s.indexOf(","), start = 0, stop;
         while(comma > 0) {
             stop = (comma > 0 ? comma : s.length());
-            list.add(s.substring(start, stop));
+            list1.add(s.substring(start, stop));
             start = stop +2;
             comma = s.indexOf(",", start);
         }
         if ((s.length() - start) > 0) {
-            list.add(s.substring(start, s.length()));
+            list1.add(s.substring(start, s.length()));
+        }  
+        //  Now check for duplicates
+        for (String str : list1) {
+            if (!list2.contains(str)) {
+                list2.add(str);
+            }
         }
-        return list;
+        if (list1.size() != list2.size()) {
+            String msg = "Removed duplicates from your entry\n'" + s + "'.";
+            JOptionPane.showMessageDialog(SIL_Edit.editWindow, msg, 
+                    "Restrictions on Kin Term Characters", 
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        return list2;
     }
 
     
@@ -1035,6 +1095,162 @@ public class PersonPanel extends javax.swing.JPanel {
         return pcString;
     }
 
+    public static void debugDyads() {
+        if (SIL_Edit.editWindow.chart.recomputingDyads) {
+            return;
+        }
+        if (ktMatrixInBalance(false)) {
+            return;
+        }
+        fillMatrixFromDyads();
+        if (ktMatrixInBalance(false)) {
+            System.err.println("Unbalanced data fixed by filling from Dyads.");
+            return;
+        }
+        fillDyadsFromMatrix();
+        if (ktMatrixInBalance(true)) {
+            System.err.println("Unbalanced data fixed by cross-filling from Dyads and Matrix.");
+        }
+    }
+    
+    static boolean ktMatrixInBalance(boolean giveUp) {
+        int ktmSz = 0, ktmCells = 0, mult = 0, popSz = 0, refSz = 0, adrSz = 0;
+        try {
+            ktmSz = Context.current.ktm.numberOfKinTerms();
+            ktmCells = Context.current.ktm.numberOfCells();
+            mult = (Context.current.domTheoryAdrExists() ? 2 : 1);
+            popSz = Context.current.indSerNumGen;
+            refSz = DomainTheory.countLeaves(Context.current.domTheoryRef().dyadsUndefined)
+                    + DomainTheory.countLeaves(Context.current.domTheoryRef().dyadsDefined);
+            adrSz = (!Context.current.domTheoryAdrExists() ? 0
+                    : DomainTheory.countLeaves(Context.current.domTheoryAdr().dyadsUndefined)
+                    + DomainTheory.countLeaves(Context.current.domTheoryAdr().dyadsDefined));
+        } catch (Exception exc) {
+        }
+        boolean ktminBalance = (refSz + adrSz) == (ktmSz - (mult * popSz));
+        if (!ktminBalance && giveUp) {
+            String msg = "Ref dyads: " + refSz + "\tAdr dyads: " + adrSz + "\tktmTerms: "
+                    + ktmSz + " - " + (mult * popSz) + " = " + (ktmSz - (mult * popSz)) + "\tktmCells: " + ktmCells;
+            MainPane.displayError(msg, "Data Loss Monitoring", JOptionPane.WARNING_MESSAGE);
+            System.out.println(msg);
+            Context.breakpoint();
+            return false;
+        }else {
+            return ktminBalance;
+        }
+    }
+    
+    static ArrayList<DyadTMap> gatherDTMs() {
+        ArrayList<DyadTMap> dyadTMs = new ArrayList<DyadTMap>();
+        Context ctxt = Context.current;
+        try {
+            if (ctxt.domTheoryRefExists()) {
+                if (ctxt.domTheoryRef().dyadsUndefined != null) {
+                    dyadTMs.add(ctxt.domTheoryRef().dyadsUndefined);
+                }
+                if (ctxt.domTheoryRef().dyadsDefined != null) {
+                    dyadTMs.add(ctxt.domTheoryRef().dyadsDefined);
+                }
+            }
+            if (ctxt.domTheoryAdrExists()) {
+                if (ctxt.domTheoryAdr().dyadsUndefined != null) {
+                    dyadTMs.add(ctxt.domTheoryAdr().dyadsUndefined);
+                }
+                if (ctxt.domTheoryAdr().dyadsDefined != null) {
+                    dyadTMs.add(ctxt.domTheoryAdr().dyadsDefined);
+                }
+            }
+        } catch (Exception exc) {
+        }
+        return dyadTMs;
+    }
+    
+    static void fillMatrixFromDyads() {
+        ArrayList<DyadTMap> dyadTMs = gatherDTMs();
+        KinTermMatrix ktm = Context.current.ktm;
+        for (DyadTMap tm : dyadTMs) {
+            Iterator tmIter = tm.entrySet().iterator();
+            while (tmIter.hasNext()) {
+                Map.Entry entry1 = (Map.Entry) tmIter.next();
+                String kinTerm = (String) entry1.getKey();
+                TreeMap typMap = (TreeMap) entry1.getValue();
+                Iterator typIter = typMap.values().iterator();
+                while (typIter.hasNext()) {
+                    ArrayList<Object> dyads = (ArrayList<Object>) typIter.next();
+                    for (int i = 0; i < dyads.size(); i++) {
+                        Dyad dy = (Dyad) dyads.get(i);
+                        Node nod = ktm.getCell(dy.ego, dy.alter);
+                        if (nod != null) {
+                            String clas = (dy.addrOrRef == 0 ? "reference" : "address");
+                            nod.addTerm(kinTerm, "primary", clas);  // addTerm cks for duplicates
+                        } else {
+                            try {
+                                nod = new Node(dy, Context.current);
+                                int egoInt = dy.ego.serialNmbr,
+                                    altInt = dy.alter.serialNmbr;
+                                ktm.addNode(egoInt, altInt, nod);
+                            }catch(KSInternalErrorException exc) {                                
+                            }                            
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    static void fillDyadsFromMatrix() {
+        DyadTMap duR = null, ddR = null, duA = null, ddA = null;
+        Context ctxt = Context.current;
+        try {
+            if (ctxt.domTheoryRefExists()) {
+                duR = ctxt.domTheoryRef().dyadsUndefined;
+                ddR = ctxt.domTheoryRef().dyadsDefined;
+            }
+            if (ctxt.domTheoryAdrExists()) {
+                duA = ctxt.domTheoryAdr().dyadsUndefined;
+                ddA = ctxt.domTheoryAdr().dyadsDefined;
+            }
+        } catch (Exception e) {
+        }
+        Iterator egoIter = ctxt.ktm.matrix.entrySet().iterator();
+        while (egoIter.hasNext()) {
+            Map.Entry entry1 = (Map.Entry) egoIter.next();
+            Integer egoInt = (Integer) entry1.getKey();
+            TreeMap row = (TreeMap) entry1.getValue();
+            Iterator rowIter = row.entrySet().iterator();
+            while (rowIter.hasNext()) {
+                Map.Entry entry2 = (Map.Entry) rowIter.next();
+                Integer altInt = (Integer) entry2.getKey();
+                Node n = (Node) entry2.getValue();
+                if (!egoInt.equals(altInt)) {  //  don't include self-nodes
+                    Individual ego = ctxt.individualCensus.get(egoInt);
+                    for (Dyad dy : Dyad.makeDyads(n, ego)) {
+                        try {
+                            if (dy.addrOrRef == 0) {  // Ref DyadTMaps are always
+                                if (ctxt.domTheoryRef().theory.containsKey(dy.kinTerm)) {
+                                    ddR.dyAdd(dy);
+                                } else {
+                                    duR.dyAdd(dy);
+                                }
+                            } else {
+                                if (ctxt.domTheoryAdr().theory.containsKey(dy.kinTerm)) {
+                                    ddA.dyAdd(dy);
+                                } else {
+                                    duA.dyAdd(dy);
+                                }
+                            }
+                        } catch (Exception exc) {
+                            MainPane.displayError(exc.toString(),
+                                    "While reloading dyads from KinTerm Matrix",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+
     void clearEgoBox() {
         egoChoiceBox.removeAllItems();
     }
@@ -1080,6 +1296,8 @@ public class PersonPanel extends javax.swing.JPanel {
         recipAdrTerm.setEditable(val);
         parent.kinTmAdrBtn.setEnabled(val);
         parent.ltrAdrBtn.setEnabled(val);
+        parent.setDistinctAdrMenuItemSelected(val);
+        Library.setStubAdrFileExists(Context.current.languageName, val);
     }
 
 

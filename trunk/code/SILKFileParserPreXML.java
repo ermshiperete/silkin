@@ -13,7 +13,7 @@ When constructed with a {@link Tokenizer}, this SILKFileParserPreXML will constr
 from the tokens found in the <code>Tokenizer's</code> input file.
 </p>
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class SILKFileParserPreXML extends Parser {
 
@@ -1323,8 +1323,8 @@ public class SILKFileParserPreXML extends Parser {
     }
 
     /*
-    Birth -> "<getDateOfBirth>", string, "</getDateOfBirth>".  //  must be parsable as a date, or blank.
-    First: [flag: "<getDateOfBirth>"]	 Follow: [flag: "<dateOfDeath>"]
+    Birth -> "<dateOfBirth>", string, "</dateOfBirth>".  //  must be parsable as a date, or blank.
+    First: [flag: "<dateOfBirth>"]	 Follow: [flag: "<dateOfDeath>"]
      */
     void parseBirth(Individual ind) throws KSParsingErrorException {
         current = scanner.readToken();  //  consume the flag, which must be "<getDateOfBirth>"
@@ -1337,13 +1337,13 @@ public class SILKFileParserPreXML extends Parser {
         }
         if (current.token.equals("string")) {
             if (current.lexeme.length() > 0) {
-                Date bDay;
+                Date bDay = null;
                 try {
                     bDay = UDate.parse(current.lexeme);
                 } catch (KSDateParseException pe) {
                     error("parseBirth unable to parse " + current.lexeme + " as a date.");
                 }
-                ind.setDateOfBirth(current.lexeme);
+                ind.setDateOfBirth(UDate.formatAsXSD(bDay));
             }  //  end of found-a-string
         } else {
             error("parseBirth seeking flag '</dateOfBirth>' or a string.");
@@ -1369,13 +1369,13 @@ public class SILKFileParserPreXML extends Parser {
         }
         if (current.token.equals("string")) {
             if (current.lexeme.length() > 0 && !current.lexeme.equals("null")) {
-                Date bDay;
+                Date dDay = null;
                 try {
-                    bDay = UDate.parse(current.lexeme);
+                    dDay = UDate.parse(current.lexeme);
                 } catch (KSDateParseException pe) {
                     error("parseDeath unable to parse " + current.lexeme + " as a date.");
                 }
-                ind.setDateOfDeath(current.lexeme);
+                ind.setDateOfDeath(UDate.formatAsXSD(dDay));
             }  //  end of found-a-string
         } else {
             error("parseDeath seeking flag '</dateOfDeath>' or a string.");
@@ -1402,13 +1402,13 @@ public class SILKFileParserPreXML extends Parser {
         }
         if (current.token.equals("string")) {
             if (current.lexeme.length() > 0) {
-                Date bDay;
+                Date bDay = null;
                 try {
                     bDay = UDate.parse(current.lexeme);
                 } catch (KSDateParseException pe) {
                     error("parseDataChg unable to parse " + current.lexeme + " as a date.");
                 }
-                dcDate = current.lexeme;
+                dcDate = UDate.formatAsXSD(bDay);
             }  //  end of found-a-string
         } else {
             error("parseDataChg seeking flag '</dataChangeDate>' or a string.");
@@ -1841,13 +1841,13 @@ public class SILKFileParserPreXML extends Parser {
         } else if (current.lexeme.length() == 0) {
             fam.setMarriageDate("");
         } else {
-            Date day;
+            Date day = null;
             try {
                 day = UDate.parse(current.lexeme);
             } catch (KSDateParseException pe) {
                 error("parseBirth unable to parse " + current.lexeme + " as a date.");
             }
-            fam.setMarriageDate(current.lexeme);
+            fam.setMarriageDate(UDate.formatAsXSD(day));
         }  //  date successfully found
         current = scanner.readToken();  //  consume the flag, which must be "</marriageDate>"
         if (!current.lexeme.equals("</marriageDate>")) {
@@ -1879,13 +1879,13 @@ public class SILKFileParserPreXML extends Parser {
     void parseNullOrString(Family fam) throws KSParsingErrorException {
         current = scanner.readToken();  //  consume next
         if (current.token.equals("string") && current.lexeme.length() > 4) {
-            Date day;
+            Date day = null;
             try {
                 day = UDate.parse(current.lexeme);
             } catch (KSDateParseException pe) {
                 error("parseNullOrString unable to parse " + current.lexeme + " as a date.");
             }
-            fam.setDivorceDate(current.lexeme);
+            fam.setDivorceDate(UDate.formatAsXSD(day));
         } else if (current.token.equals("symbol") && current.lexeme.equals("null")) {
             fam.setDivorceDate(null);
         } else if (current.token.equals("string") && current.lexeme.equals("")) {
@@ -2874,7 +2874,7 @@ public class SILKFileParserPreXML extends Parser {
             error("parseLiteral seeking tag '<literal>'. ");
         }
         String predName = readTaggedString("predicate", "parseLiteral");
-        PredCategory cat = determinePrimitive(predName);
+        PredCategory cat = determinePrimitive(predName, dTheory);
         Predicate pred = new Predicate(predName, cat);
         Literal lit = new Literal(pred);
         current = scanner.readToken(); // must be start tag of arg-list

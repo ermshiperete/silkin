@@ -11,7 +11,7 @@ import java.beans.*;
 The UDPEditor is a window that displays a {@link UserDefinedProperty}'s fields for  editing.
 It is an extension of KSJInternalFrame because I want this to appear in the View menu.
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 	
 	public class UDPEditor extends KSJInternalFrame  {

@@ -5,7 +5,7 @@
 
 /**
  *
- * @author  Gary Morris, University of Pennsylvania		garymorris2245@verizon.net
+ * @author  Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 
 import java.util.*;

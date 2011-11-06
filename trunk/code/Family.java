@@ -12,7 +12,7 @@ Each Family is either an actual Family in the culture under study, or is
 a hypothetical Family created to illustrate the kinship terms of a particular domain theory. 
 In the Kinship system, societies are composed only of Families and {@link Individual}s.
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class Family extends Marriage implements Serializable {
 

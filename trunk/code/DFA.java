@@ -24,7 +24,7 @@ import java.util.* ;
 	<li>  there MUST be a final space at end of each line.	 </li>
 	</ul> </p>
   
-  @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+  @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 public class DFA	{
 	ArrayList<Object> table;

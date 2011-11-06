@@ -9,7 +9,7 @@ defining a Kinship System.  This is the level at which 90% of the action takes p
 Because so many methods are defined at the Domain Theory level, the code files are broken into 4 classes:  
 DT_Abstract1, DT_Abstract2, DomainTheory & Learned_DT. 
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class DomainTheory extends DT_Abstract2 {
 
@@ -518,6 +518,9 @@ public class DomainTheory extends DT_Abstract2 {
     public void detectSynonymsAndUmbrellas(String kinTerm, TreeMap prePos, TreeMap preNeg, int maxNoise)
             throws KSInternalErrorException {
         //  First, exclude any pcString supported only by challenged dyads
+//        if (kinTerm.equals("daddy") || kinTerm.equals("dad")) {
+//            Context.breakpoint();
+//        }
         TreeMap pos = new TreeMap(prePos),
                 neg = new TreeMap(preNeg);
         ArrayList<Object> filteredKTermDys = new ArrayList<Object>(),
@@ -659,6 +662,9 @@ public class DomainTheory extends DT_Abstract2 {
                     && !synAlreadyPosted(kinTerm, term)
                     && !synRejected(kinTerm, term)) {
                 proposeSynonymToUser(kinTerm, term, kinTermPCStrings, ktermDys, otherTermDys, typ);
+            } else if (equivalentLists(kinTermPCStrings, otherTermPCStrings)
+                    && synAlreadyPosted(kinTerm, term)) {
+                return;
             } else if (!(nonUmbrellas.get(kinTerm) != null && ((ArrayList<Object>) nonUmbrellas.get(kinTerm)).contains(term))
                     && !umbAlreadyPosted(kinTerm, term)
                     && isSupersetOf(kinTermPCStrings, otherTermPCStrings)) {

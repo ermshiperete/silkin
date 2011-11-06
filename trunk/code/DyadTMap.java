@@ -13,7 +13,7 @@ items added to the TreeMap (only {@link Dyad}s allowed) and stores them indexed 
  * (specifically on pcString). So all the 'uncle' dyads are indexed under
  * 'FaBro' or 'MoBro'. Etc.
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class DyadTMap extends TreeMap implements Serializable {
 

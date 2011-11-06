@@ -9,7 +9,7 @@ The Oracle class is strictly for testing; it is not part of the deliverable syst
 This class's static variables hold information about the Leave-One-Out test.  Its instance variables 
 have some of the 'answers' for the test of any one language.
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class Oracle implements Serializable {
 

@@ -19,7 +19,7 @@ exceptions trigger the instantiation of the Error Log and posting to it.  The Er
 problems encountered and recommended solutions.  Therefore, all methods that post to it must provide enough information
 about the problem for the User to know what specific action to take much later when the log is reviewed.
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class MainPane extends JFrame implements ActionListener {
 

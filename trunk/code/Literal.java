@@ -1,4 +1,4 @@
-import java.util.* ;
+import java.util.* ;  
 import java.text.* ;
 import java.io.* ;
 
@@ -8,7 +8,7 @@ import java.io.* ;
 	Because so many methods are defined at the Literal level, the code files are broken into 3 classes:  LiteralAbstract1, 
 	LiteralAbstract2, and this one. 
 
-  @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+  @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 public class Literal extends LiteralAbstract2  {
 	
@@ -16,7 +16,7 @@ public class Literal extends LiteralAbstract2  {
 	public Literal()  { super(); 	}  // end of zero-arg constructor
 
 
-// We expect literals with 1 or more arguments (although allowCreation is a 0-arg predicate).
+// We expect literals with 1 or more arguments (although allowCreation is a 0-arg predicate). 
 		
 	/** Standard constructor with just the predicate supplied.
 	
@@ -559,7 +559,7 @@ public class Literal extends LiteralAbstract2  {
 		ConstraintObj constraintsCopy;
 		for (int i=0; i < constraints.negated.size(); i++) {
 			cb = (ClauseBody)constraints.negated.get(i);
-			constraintsCopy = new ConstraintObj(constraints);
+			constraintsCopy = new ConstraintObj(constraints); 
 			constraintsCopy.negated = new ArrayList<Object>();  //  to prevent infinite recursion
 			//  Any restrictions on variables induced by a negated clause should apply only to a
 			//  "deep copy" of the args found in the main clausebody, not the main args themselves.

@@ -11,7 +11,7 @@ import java.text.* ;
  NOTE:  When specifying the SIZE of a matrix, use 1-based measure.  When specifying the LOCATION of a cell,
  use 0-based addresses (analogous to arrays).
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class DoubleMatrix implements Serializable  {
 

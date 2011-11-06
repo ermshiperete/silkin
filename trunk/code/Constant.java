@@ -4,7 +4,7 @@ import java.util.*;
 /** If a symbol, string, or boolean value appears as an argument in a literal, it is a Constant.  The UserDefinedProperty
 feature may employ constants.  The {@link Parser} can parse them.
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class Constant extends Argument implements Symbol {
 

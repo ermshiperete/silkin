@@ -10,7 +10,7 @@
  *
  * All methods are static.
  *
- * @author Gary Morris, University of Pennsylvania
+ * @author Gary Morris, Northern Virginia Community College
  */
 
 

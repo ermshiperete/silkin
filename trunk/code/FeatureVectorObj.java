@@ -14,7 +14,7 @@ A FeatureVectorObj implements a mixed-type vector of integers, reals, and lists.
 these vector elements define the high-level characteristics of a {@link DomainTheory}. This vector will be used to
 compare any two <code>DomainTheories</code> and compute their similarity.
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class FeatureVectorObj implements Serializable {
 

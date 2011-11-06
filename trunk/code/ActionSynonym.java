@@ -5,7 +5,7 @@ import java.util.*;
  * {@link DecisionFrame} whenever the suggestion chosen by User is a
  * ProposedDef.
  *
- * @author  Gary Morris, University of Pennsylvania		garymorris2245@verizon.net
+ * @author  Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  *
  * Created on Feb 23, 2011, 3:21:57 PM
  */
@@ -201,6 +201,7 @@ public class ActionSynonym extends javax.swing.JPanel {
         }else return;
         item.postToHistory(learningHistory);
         papa.markProcessed(suggNmbr);
+        papa.reset();
     }//GEN-LAST:event_doneButtonActionPerformed
 
 

@@ -5,7 +5,7 @@
 	<p>
 	This extension of Linus is intended	to allow parsing from a string.
   
-  @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+  @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 
 public class LinusFromString extends Linus {

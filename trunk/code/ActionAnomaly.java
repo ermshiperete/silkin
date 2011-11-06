@@ -6,7 +6,7 @@ import javax.swing.*;
  * {@link DecisionFrame} whenever the suggestion chosen by User is an
  * Anomaly.
  *
- * @author  Gary Morris, University of Pennsylvania		garymorris2245@verizon.net
+ * @author  Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  *
  * Created on June 24, 2011, 3:21:57 PM
  */
@@ -184,19 +184,20 @@ public class ActionAnomaly extends JPanel {
         anna = a;
         suggNmbr = nmbr;
         loadOddballs();
-        resetOddballCOmboBox();
+        resetOddballComboBox();
         oddballDyadsCombo.setSelectedIndex(0);
         loadNames(0);
     }
 
     void loadOddballs() {
+        oddballs.clear();
         for (Object o : anna.findOddballs()) {
             Dyad d = (Dyad)o;
             oddballs.add(d);
         }
     }
     
-    void resetOddballCOmboBox() {
+    void resetOddballComboBox() {
         String[] dyStrings = new String[oddballs.size()];
         String pad1, pad2;
         for (int i = 0; i < oddballs.size(); i++) {
@@ -265,7 +266,7 @@ public class ActionAnomaly extends JPanel {
         if (chartEditPending) {
             chartEditPending = false;
             reviewBeforeDyad();
-            resetOddballCOmboBox();
+            resetOddballComboBox();
             oddballDyadsCombo.setSelectedIndex(oldNDX);
             oldNDX = 0;
             return;
@@ -287,12 +288,12 @@ public class ActionAnomaly extends JPanel {
                dyadsProcessed.add(dy); 
             }
             dy.kinTerm = newTerm;
-            resetOddballCOmboBox();
+            resetOddballComboBox();
         }else if (dyadCorrectBtn.isSelected()) {
             dy.confirmed = true;
             dy.challenged = false;
             dyadsProcessed.add(dy);
-            resetOddballCOmboBox();
+            resetOddballComboBox();
         }else if (dyadDeleteBtn.isSelected()) {
             int egoNum = dy.ego.serialNmbr,
                 altNum = dy.alter.serialNmbr;
@@ -301,11 +302,12 @@ public class ActionAnomaly extends JPanel {
             Context.current.ktm.deleteKinTerm(egoNum, altNum, dy.kinTerm, distinct);
             dyadsProcessed.add(dy);
             dy.kinTerm = "DELETED";
-            resetOddballCOmboBox();
+            resetOddballComboBox();
         }
         // Check to see if last oddball has been processed.
         if (dyadsProcessed.size() == oddballs.size()) {
             papa.markProcessed(suggNmbr);
+            papa.reset();
         }
     }//GEN-LAST:event_recordBtnActionPerformed
 

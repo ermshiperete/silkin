@@ -6,7 +6,7 @@ import java.io.* ;
   A Counter is just an int wrapped in an object, with convenience methods for incrementing
   and decrementing. 
   
-  @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+  @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 public class Counter implements Serializable  {
 	private int total = 0;

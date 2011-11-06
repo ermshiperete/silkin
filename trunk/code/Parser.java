@@ -12,7 +12,7 @@ in {@link DomainTheoryGrammar}.
 When constructed with a {@link Tokenizer}, a Parser will construct a Kinship domain theory
 from the tokens found in the <code>Tokenizer's</code> input file.
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class Parser {
 
@@ -54,7 +54,7 @@ public class Parser {
     @return		either {@link PrimitiveCategory} (a built-in predicate the Kinship system understands)
     or {@link CulturalCategory} (a kinship term in the language of the target culture).
      */
-    public PredCategory determinePrimitive(String symbol) {
+    public static PredCategory determinePrimitive(String symbol, DomainTheory dt) {
         // Identify the 19 Primitive Predicates as special
         // Also consider userDefinedProperties and Math predicates as primitive predicates
         if ((symbol.equals("father")) || (symbol.equals("mother")) || (symbol.equals("son"))
@@ -64,8 +64,8 @@ public class Parser {
                 || (symbol.equals("not")) || (symbol.equals("equal")) || (symbol.equals("parent"))
                 || (symbol.equals("child")) || (symbol.equals("spouse"))
                 || (symbol.equals("allowCreation")) || (symbol.equals("gender"))
-                || (dTheory != null && dTheory.userDefinedProperties != null
-                    && dTheory.userDefinedProperties.containsKey(symbol))) {
+                || (dt != null && dt.userDefinedProperties != null
+                    && dt.userDefinedProperties.containsKey(symbol))) {
             return new PrimitiveCategory();
         } //  Treat the Math predicates as a special kind of Primitive
         else if ((symbol.equals("lessThan")) || (symbol.equals("greaterThan"))
@@ -867,7 +867,7 @@ public class Parser {
 
     public void parseStandardMacros(DomainTheory dt) throws KSParsingErrorException {
         //  NOTE:   This version of parseStandardMacros is meant to be called with a DomainTheory
-        //			that that needs just the Std Macros added to it's theory.
+        //	    that needs just the Std Macros added to it's theory.
         if (cachedStdMacros != null) {  //  no need to parse again
             for (int i = 0; i < cachedStdMacros.size(); i++) {
                 KinTermDef macro = new KinTermDef((KinTermDef) cachedStdMacros.get(i));
@@ -1167,7 +1167,7 @@ public class Parser {
             error("parseClauseHead seeking 'symbol'.");
         }
         pred = new Predicate(current.lexeme);
-        pred.category = determinePrimitive(current.lexeme);
+        pred.category = determinePrimitive(current.lexeme, dTheory);
         current = scanner.readToken();  // consume next, which must be a leftParen
         if (!current.token.equals("leftParen")) {
             error("parseClauseHead seeking 'leftParen'.");
@@ -1405,7 +1405,7 @@ public class Parser {
             error("parseLiteral seeking symbol or starName.");
         }
         Predicate pred = new Predicate(current.lexeme);
-        pred.category = determinePrimitive(current.lexeme);
+        pred.category = determinePrimitive(current.lexeme, dTheory);
         current = scanner.readToken();  // consume next, which must be a leftParen
         if (!current.token.equals("leftParen")) {
             error("parseLiteral seeking leftParen.");
@@ -1447,7 +1447,7 @@ public class Parser {
             scanner.readToken();  // consume the starName
             Literal innerLit;
             Predicate pred = new Predicate(current.lexeme);
-            pred.category = determinePrimitive(current.lexeme);
+            pred.category = determinePrimitive(current.lexeme, dTheory);
             current = scanner.readToken();  // consume next, which must be a leftParen
             if (!current.token.equals("leftParen")) {
                 error("parseLiteral seeking leftParen.");
@@ -1505,7 +1505,7 @@ public class Parser {
         if (peek.token.equals("leftParen")) {
             scanner.readToken();  // consume the leftParen
             Predicate pred = new Predicate(current.lexeme);
-            pred.category = determinePrimitive(current.lexeme);
+            pred.category = determinePrimitive(current.lexeme, dTheory);
             Literal nestedLit = new Literal(pred);
             parseArgNest(nestedLit);
             current = scanner.readToken();  // consume next, which must be a rightParen

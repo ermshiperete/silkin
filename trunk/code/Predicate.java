@@ -10,7 +10,7 @@ import java.util.*;
 	<p>
 	the three predicates are <code>grandfather, parent,</code> and <code>father.</code>
   
-  @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+  @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 public class Predicate	implements Symbol, Serializable  {
 	private static final TreeMap primitiveNames = new TreeMap();

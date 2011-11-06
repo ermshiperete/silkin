@@ -6,7 +6,7 @@ begin with a capitol letter; that convention is NOT enforced.  This sub-class of
 is for arguments that will be bound to numbers, booleans, or strings, not Individuals.
 In Example-Generation, constraints on the value of this variable are stored in its fields.
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class MathVariable extends Variable {
 

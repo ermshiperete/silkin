@@ -3,7 +3,7 @@
  * {@link DecisionFrame} whenever the suggestion chosen by User is a
  * Data Request.
  *
- * @author  Gary Morris, University of Pennsylvania		garymorris2245@verizon.net
+ * @author  Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  *
  * Created on June 24, 2011, 3:21:57 PM
  */
@@ -138,6 +138,7 @@ public class ActionDataRequest extends javax.swing.JPanel {
         }else {
             papa.markUnProcessed(suggNmbr);
         }
+        papa.reset();
     }//GEN-LAST:event_doneBtnActionPerformed
 
     private void chartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartBtnActionPerformed

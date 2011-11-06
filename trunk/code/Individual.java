@@ -10,7 +10,7 @@ import java.awt.Point;
   Individuals are born into {@link Family}s and participate in them via marriages.
   In the Kinship system, societies are composed only of Families and Individuals.
   
-   @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+   @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 public class Individual extends Person implements Serializable  {
     /**	A unique, system-assigned ID for this individual. May not be changed once assigned. */

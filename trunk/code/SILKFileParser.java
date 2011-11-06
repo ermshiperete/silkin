@@ -14,7 +14,7 @@ When constructed with a {@link Tokenizer}, this SILKFileParserPreXML will constr
 from the tokens found in the <code>Tokenizer's</code> input file.
 </p>
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 public class SILKFileParser extends Parser {
 
@@ -2574,7 +2574,52 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             ktd.eqcSigStruct = readTagEnclosedText("eqcSigStruct", "parseKinTermDef");
             current = scanner.lookAhead();
         }
-        if (current.lexeme.indexOf("<comments") == 0) {  // optional comments
+        if (current.lexeme.equals("<gloss>")) {
+            ktd.gloss = new Gloss();
+            scanner.readToken();  //  consume the start tag
+            current = scanner.lookAhead();  //  at least 1 element required.
+            if (!current.lexeme.startsWith("<element")) {
+                error("parseKinTermDef seeking tag '<element>' in a <gloss> block.");
+            }
+            while (current.lexeme.startsWith("<element")) {
+                ktd.gloss.elements.add(readOneAttribute("element", "text", "parseKinTermDef"));
+                current = scanner.lookAhead();
+            }
+            if (current.lexeme.equals("<where>")) {
+                scanner.readToken();  //  consume the start tag
+                current = scanner.lookAhead();
+                if (!current.lexeme.startsWith("<cultural-pred")) {   //  at least 1 cultural-pred required.
+                    error("parseKinTermDef seeking tag '<cultural-pred>' in a <where> block.");
+                }
+                while (current.lexeme.startsWith("<cultural-pred")) {
+                    String cPred = readOneAttribute("cultural-pred", "kinTerm", "parseKinTermDef");
+                    current = scanner.lookAhead();
+                    if (!current.lexeme.startsWith("<element")) {  //  at least 1 element required.
+                        error("parseKinTermDef seeking tag '<element>' in a <cultural-pred> block.");
+                    }
+                    while (current.lexeme.startsWith("<element")) {
+                        ktd.gloss.addCulturalPred(cPred, readOneAttribute("element", "text", "parseKinTermDef"));
+                        current = scanner.lookAhead();
+                    }
+                    if (!current.lexeme.equals("</cultural-pred>")) {
+                        error("parseKinTermDef seeking end tag '</cultural-pred>'.");
+                    }
+                    scanner.readToken();  //  consume the end tag                    
+                    current = scanner.lookAhead();
+                }
+                if (!current.lexeme.equals("</where>")) {
+                    error("parseKinTermDef seeking end tag '</where>'.");
+                }
+                scanner.readToken();  //  consume the end tag
+                current = scanner.lookAhead(); 
+            }
+            if (!current.lexeme.equals("</gloss>")) {  //  end of gloss block required.
+                error("parseKinTermDef seeking end tag '</gloss>'.");
+            }
+            scanner.readToken();  //  consume the end tag
+            current = scanner.lookAhead();            
+        }
+        if (current.lexeme.startsWith("<comments")) {  // optional comments
             ktd.comments = readOneAttribute("comments", "text", "parseKinTermDef");
             current = scanner.lookAhead();
         }
@@ -2706,7 +2751,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             error("parseLiteral seeking tag '<literal>'. ");
         }
         String predName = readTagEnclosedText("predicate", "parseLiteral");
-        PredCategory cat = determinePrimitive(predName);
+        PredCategory cat = determinePrimitive(predName, dTheory);
         Predicate pred = new Predicate(predName, cat);
         Literal lit = new Literal(pred);
         current = scanner.readToken(); // must be start tag of arg-list
@@ -3240,13 +3285,13 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         sc.pcStringsCovered = new ArrayList<Object>();
         readStringSet(sc.pcStringsCovered, "pc-strings-covered", "parseSynonym");
         current = scanner.readToken();
-        if (! current.lexeme.equals("<kin-term-dyads>")) {
-            error("parseSynonym seeking tag '<kin-term-dyads>'");
+        if (! current.lexeme.equals("<kinTerm-dyads>")) {
+            error("parseSynonym seeking tag '<kinTerm-dyads>'");
         }
         sc.ktermDyads = parseDyadAList();
         current = scanner.readToken();
-        if (! current.lexeme.equals("</kin-term-dyads>")) {
-            error("parseSynonym seeking tag '</kin-term-dyads>'");
+        if (! current.lexeme.equals("</kinTerm-dyads>")) {
+            error("parseSynonym seeking tag '</kinTerm-dyads>'");
         }
         current = scanner.readToken();
         if (! current.lexeme.equals("<other-term-dyads>")) {

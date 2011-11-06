@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
  * In a future version, this index might be implemented as a database call.
  * For now, to make additions efficient, we implement this as a nested TreeMap:
  * kinType => egoSerial# => AList of AlterSerial#s
-@author		Gary Morris, University of Pennsylvania		garymorris2245@verizon.net
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class KinTypeIndex implements Serializable {
 

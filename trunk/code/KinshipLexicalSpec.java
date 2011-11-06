@@ -48,6 +48,6 @@
 28 var WhiteSpace 28 LeftAngle -99 RightParen -99 Comma -99 EqualSign -99 RightCurly -99
 29 percent Any -99
   </p>
-  @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+  @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 public class KinshipLexicalSpec  { }

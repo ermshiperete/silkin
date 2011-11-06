@@ -25,7 +25,7 @@ following Java built-in types (where 'xx{}' means 'a list objects of type of xx'
 <li> individual{}
 </ul>
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class UserDefinedProperty implements Serializable {
 

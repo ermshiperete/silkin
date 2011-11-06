@@ -3,7 +3,7 @@
 /**	This class is the principal class of the SILKin program. It is designed to learn
 kinship terminology for a new culture from a collection of {@link Dyad} objects.
 
-Author:	Gary Morris, University of Pennsylvania
+Author:	Gary Morris, Northern Virginia Community College
 
 Dates:  Begun in 2002. 
 Dissertation based on this system accepted 2008.

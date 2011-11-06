@@ -14,7 +14,7 @@ The miViewMe field, when non-null, holds a pointer to this frame's entry in a "V
 This class handles the tidying up of the View menu when a window is closed, and the Listener which
 brings this window to the top when it is chosen from the View menu. </p>
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 public class KSJInternalFrame extends JInternalFrame 
              implements InternalFrameListener, ActionListener {

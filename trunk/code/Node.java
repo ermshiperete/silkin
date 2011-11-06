@@ -20,6 +20,177 @@ public class Node implements Serializable {
     public int appearances = 1;
 
     public Node() { }
+    
+    public Node(Dyad d, Context ctxt) throws KSInternalErrorException  {
+        indiv = d.alter;
+        pcString = d.pcString;
+        if (d.addrOrRef == 0) {  //  terms of reference
+            if (d.kinTermType == 0) {
+                kinTermsRef.add(d.kinTermType);
+            }else {
+                extKinTermsRef.add(d.kinTermType);
+            }
+        }else {  //  must be term of address
+            if (d.kinTermType == 0) {
+                kinTermsAddr.add(d.kinTermType);
+            }else {
+                extKinTermsAddr.add(d.kinTermType);
+            }
+        }
+        treelevel = d.level;
+        miniPreds = makeMiniPreds(d, ctxt);
+    }
+    
+    public ArrayList<Object>  makeMiniPreds(Dyad dy, Context ctxt) 
+            throws KSInternalErrorException {
+        ArrayList<Object> minis = new ArrayList<Object> ();
+        ArrayList<Individual> path = new ArrayList<Individual>();
+        Individual prior = dy.ego;
+        for (Object o : dy.path) {
+            if (o instanceof Individual) {
+                path.add((Individual)o);
+            }else {
+                Integer i = (Integer)o;
+                path.add(ctxt.individualCensus.get(i));
+            }
+        }
+        path.add(dy.alter);
+        for (Individual current : path) {
+            String mini = findRelationship(current, prior);
+            minis.add(mini);
+        }
+        return minis;
+    }
+    
+    public String findRelationship(Individual alt, Individual ego)
+            throws KSInternalErrorException {
+        String pred = null, 
+               args = "(#" + ego.serialNmbr + ",#" + alt.serialNmbr + ")";
+        if (ego.birthFamily != null) {
+            if (alt == ego.birthFamily.husband) {
+                return "Fa" + args;
+            } else if (alt == ego.birthFamily.wife) {
+                return "Mo" + args;
+            } else {
+                for (int k = 0; k < ego.birthFamily.children.size(); k++) {
+                    Individual kid = (Individual) ego.birthFamily.children.get(k);
+                    if (kid == alt) {
+                        pred = (kid.gender.equals("M") ? "Bro" : "Sis");
+                        return pred + args;
+                    }
+                }
+            }
+        }  //  end of looking in birthFam for usual relationships
+        for (int m = 0; m < ego.marriages.size(); m++) {
+            Family fam = (Family) ego.marriages.get(m);
+            if (alt == fam.wife) {
+                return "Wi" + args;
+            } else if (alt == fam.husband) {
+                return "Hu" + args;
+            }
+            for (int k = 0; k < fam.children.size(); k++) {
+                Individual kid = (Individual) fam.children.get(k);
+                if (kid == alt) {
+                    pred = (kid.gender.equals("M") ? "So" : "Da");
+                    return pred + args;
+                }
+            }
+        }  //  end of looking in marriages for usual relationships
+        for (int m = 0; m < ego.marriages.size(); m++) {
+            Family fam = (Family) ego.marriages.get(m);
+            ArrayList<Family> otherFams = new ArrayList<Family>();
+            if (ego == fam.husband && fam.wife != null
+                    && fam.wife.marriages.size() > 1) {
+                for (int f = 0; f < fam.wife.marriages.size(); f++) {
+                    Family stepFam = (Family) fam.wife.marriages.get(f);
+                    if (fam != stepFam) {
+                        otherFams.add(stepFam);
+                    }
+                }
+            }else if (ego == fam.wife && fam.husband != null
+                    && fam.husband.marriages.size() > 1) {
+                for (int f = 0; f < fam.husband.marriages.size(); f++) {
+                    Family stepFam = (Family) fam.husband.marriages.get(f);
+                    if (fam != stepFam) {
+                        otherFams.add(stepFam);
+                    }
+                }
+            }
+            for (Family stepFam : otherFams) {
+                for (int k = 0; k < stepFam.children.size(); k++) {
+                    Individual kid = (Individual) stepFam.children.get(k);
+                    if (kid == alt) {
+                        pred = (kid.gender.equals("M") ? "Stso" : "Stda");
+                        return pred + args;
+                    }
+                }
+            }
+        }  //  end of looking for stepKids
+        // SIGH!  Guess I'll have to look for the REALLY weird relations
+        if (ego.birthFamily != null) {
+            Family fam = ego.birthFamily;
+            Individual mom = fam.wife, dad = fam.husband;
+            ArrayList<Family> otherFams = new ArrayList<Family>(),
+                    stillOtherFams = new ArrayList<Family>();
+            if (mom != null && mom.marriages.size() > 1) {
+                for (int m=0; m < mom.marriages.size(); m++) {
+                    Family f = (Family)mom.marriages.get(m);
+                    if (f != fam) {
+                        otherFams.add(f);
+                        if (f.husband != null && f.husband.marriages.size() > 1) {
+                            for (int sof=0; sof < f.husband.marriages.size(); sof++) {
+                                Family stillOther = (Family)f.husband.marriages.get(sof);
+                                if (stillOther != f) {
+                                    stillOtherFams.add(stillOther);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (dad != null && dad.marriages.size() > 1) {
+                for (int m=0; m < dad.marriages.size(); m++) {
+                    Family f = (Family)dad.marriages.get(m);
+                    if (f != fam) {
+                        otherFams.add(f);
+                        if (f.wife != null && f.wife.marriages.size() > 1) {
+                            for (int sof=0; sof < f.wife.marriages.size(); sof++) {
+                                Family stillOther = (Family)f.wife.marriages.get(sof);
+                                if (stillOther != f) {
+                                    stillOtherFams.add(stillOther);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            for (Family stepFam : otherFams) {
+                if (alt == stepFam.husband) {
+                    return "Stfa" + args;
+                }else if (alt == stepFam.wife) {
+                    return "Stmo" + args;
+                }                
+                for (int k = 0; k < stepFam.children.size(); k++) {
+                    Individual kid = (Individual) stepFam.children.get(k);
+                    if (kid == alt) {
+                        pred = (kid.gender.equals("M") ? "Hbro" : "Hsis");
+                        return pred + args;
+                    }
+                }
+            }
+            for (Family so : stillOtherFams) {
+                for (int k = 0; k < so.children.size(); k++) {
+                    Individual kid = (Individual) so.children.get(k);
+                    if (kid == alt) {
+                        pred = (kid.gender.equals("M") ? "Stbro" : "Stsis");
+                        return pred + args;
+                    }
+                }
+            }
+        }
+        throw new KSInternalErrorException("Cannot find relational predicate: ????" + args);
+    }
+    
 
     public Node clone() {
         Node copy = new Node();

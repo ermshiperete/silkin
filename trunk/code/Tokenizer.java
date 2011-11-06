@@ -11,7 +11,7 @@ If the state = -99, then a completed token is accepted (type is read from the st
 <code>tokenAccepted</code> field).  Otherwise, go to the next state and repeat.
 If the search of all cells in a row fails to get a "true" -- that signals an ERROR.
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class Tokenizer {
 

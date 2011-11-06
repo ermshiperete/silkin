@@ -8,7 +8,7 @@ import java.text.*;
 definition of the (predicate in the ClauseHead of the) kinship term.
 Multiple clause bodies comprise a disjunctive definition.
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class ClauseBody implements Serializable, Comparator {
 
@@ -280,6 +280,17 @@ public class ClauseBody implements Serializable, Comparator {
         s += "\n" + bacer + "</clause>\n";
         return s;
     }
+    
+    String toSimpleHornClause() {
+        String hornClaws = "";
+        int last = body.size() - 1;
+        for (int i = 0; i < last; i++) {
+            Literal lit = (Literal) body.get(i);
+            hornClaws += lit + ", ";
+        }
+        Literal lit = (Literal) body.get(last);        
+        return hornClaws += lit + ".\t";
+    }
 
     String toSILKString(String bacer) {
         String s = bacer + "<clause level=\"" + level + "\">\n", 
@@ -435,7 +446,7 @@ public class ClauseBody implements Serializable, Comparator {
     }  //  end of method postToBaseSigString
 
     public void sortSigString() throws KSInternalErrorException {
-        if (pcString == null || pcString.length() < 2) {
+        if (pcString == null || pcString.length() < 1) {
             throw new KSInternalErrorException("WARNING: Base clause " + ktd.domTh.languageName
                     + ":" + ktd.kinTerm + ":" + seqNmbr + " has no non-duplicative expansions.  Remove or fix it.");
         }

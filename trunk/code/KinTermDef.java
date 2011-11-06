@@ -5,6 +5,7 @@ import java.io.*;
 public class KinTermDef	 implements Serializable, Comparable  {
 	Literal clauseHead;	// by convention, this is:  <kinTerm>(Alter, Ego)
 	String kinTerm, eqcSigExact, eqcSigStruct, comments;
+        Gloss gloss;
 	ArrayList<Object> definitions,	// an ArrayList<Object> of ClauseBodies
 			  expandedDefs,	// an ArrayList<Object> of ClauseBodies containing only primitive predicates
 			  flags;  //  ArrayList<Object> of flags (strings) found between angle-brackets within the kinTerm string
@@ -12,6 +13,16 @@ public class KinTermDef	 implements Serializable, Comparable  {
 	Predicate headPred;
 	DomainTheory domTh;  //  Ptr to the enclosing Domain Theory
 	boolean composed = false;
+        static String[] constraintSymbols = makeConstraintSymbols();
+        
+        static String[] makeConstraintSymbols() {
+            String[] constraints = {"male", "female", "elder", "younger",
+                   "equal", "not", "divorced", "dead", "gender", "contains",
+                    "lessThan", "greaterThan", "lessOrEql", "greaterOrEql"};
+        Arrays.sort(constraints);
+        return  constraints;
+        }
+        
 	
 /*  This zero-arg constructor is for use ONLY by Serialization  */
 	KinTermDef()	{
@@ -428,69 +439,311 @@ public class KinTermDef	 implements Serializable, Comparable  {
         }
         
         
-        public String toSILKString(String bacer, boolean writeDT) {
-            String spacer = "\t", dblSpacer = "\t\t";
-            String kt = (writeDT ? "" : " term=\"" + kinTerm + "\"");
-            String s = bacer + "<kin-term-def" + kt + ">\n", langName = null;
-            s += bacer + spacer + "<head>" + kinTerm + "</head>\n";
-            if (eqcSigExact != null) {
-                s += bacer + spacer + "<eqcSigExact>" + eqcSigExact + "</eqcSigExact>\n";
-            }
-            if (eqcSigStruct != null) {
-                s += bacer + spacer + "<eqcSigStruct>" + eqcSigStruct + "</eqcSigStruct>\n";
-            }
-            if (comments != null && ! comments.isEmpty()) {
-                s += bacer + spacer + "<comments text=\"" + comments + "\"/>\n";
-            }
-            if (writeDT) {
-                s += bacer + spacer + "<domain-theory>\n";
-                s += bacer + dblSpacer + "<language name=\"" + domTh.languageName + "\"/>\n";
-                if (domTh.polygamyOK) {
-                    s += bacer + dblSpacer + "<polygamyOK />\n";
-                }
-                if (domTh.author != null && domTh.author.length() > 0) {
-                    s += bacer + dblSpacer + "<author name=\"" + sanitize(domTh.author) + "\"/>\n";
-                }
-                s += bacer + dblSpacer + "<create-date value=\"" + domTh.createDate + "\"/>\n";
-                if (domTh.citation != null && domTh.citation.length() > 0) {
-                    s += bacer + dblSpacer + "<citation txt=\"" + sanitize(domTh.citation) + "\"/>\n";
-                }
-                s += bacer + spacer + "</domain-theory>\n";
-            }
-            if (definitions == null || definitions.isEmpty()) {
-                try {
-                    langName = domTh.languageName;
-                    String fileName = Library.libraryDirectory + "Domain Theory Files/" + langName + ".thy";
-                    Parser parzer = new Parser(new Tokenizer(Library.getDFA(), new Linus(fileName)));
-                    KinTermDef ktdIn = parzer.parseKinTerm(kinTerm, false);
-                    definitions = ktdIn.definitions;
-                } catch (Exception exc) {
-                    String msg = "<!-- Disk read error prevented finding definition.";
-                    msg += "\nKinTermDef = " + langName + ":" + kinTerm;
-                    msg += "\nReport this bug! -->";
-                    JOptionPane.showMessageDialog(null, msg, "Internal Error", JOptionPane.ERROR_MESSAGE);
-                    MainPane.activity.log.append(msg);
-                    System.err.println(msg);
-                    s += msg;
-                }
-            } // end of definitions-was-empty
-            if (!definitions.isEmpty()) {
-                s += bacer + spacer + "<definitions>\n";
-                for (int i = 0; i < definitions.size(); i++) {
-                    s += ((ClauseBody) definitions.get(i)).toSILKString(bacer + dblSpacer);
-                }
-                s += bacer + spacer + "</definitions>\n";
-            }
-            if (!expandedDefs.isEmpty()) {
-                s += bacer + spacer + "<expandedDefs>\n";
-                for (int i = 0; i < expandedDefs.size(); i++) {
-                    s += ((ClauseBody) expandedDefs.get(i)).toSILKString(bacer + dblSpacer);
-                }
-                s += bacer + spacer + "</expandedDefs>\n";
-            }
-            s += bacer + "</kin-term-def>";
-            return s;
+    public String toSILKString(String bacer, boolean writeDT) {
+        String spacer = "\t", dblSpacer = "\t\t";
+        String kt = (writeDT ? "" : " term=\"" + kinTerm + "\"");
+        String s = bacer + "<kin-term-def" + kt + ">\n", langName = null;
+        s += bacer + spacer + "<head>" + kinTerm + "</head>\n";
+        if (eqcSigExact != null) {
+            s += bacer + spacer + "<eqcSigExact>" + eqcSigExact + "</eqcSigExact>\n";
         }
+        if (eqcSigStruct != null) {
+            s += bacer + spacer + "<eqcSigStruct>" + eqcSigStruct + "</eqcSigStruct>\n";
+        }
+        if (gloss == null && eqcSigExact != null) {
+            gloss = gloss();
+        }
+        if (gloss != null) {
+            s += gloss.toSILKString(bacer + spacer);
+        }
+        if (comments != null && !comments.isEmpty()) {
+            s += bacer + spacer + "<comments text=\"" + comments + "\"/>\n";
+        }
+        if (writeDT) {
+            s += bacer + spacer + "<domain-theory>\n";
+            s += bacer + dblSpacer + "<language name=\"" + domTh.languageName + "\"/>\n";
+            if (domTh.polygamyOK) {
+                s += bacer + dblSpacer + "<polygamyOK />\n";
+            }
+            if (domTh.author != null && domTh.author.length() > 0) {
+                s += bacer + dblSpacer + "<author name=\"" + sanitize(domTh.author) + "\"/>\n";
+            }
+            s += bacer + dblSpacer + "<create-date value=\"" + domTh.createDate + "\"/>\n";
+            if (domTh.citation != null && domTh.citation.length() > 0) {
+                s += bacer + dblSpacer + "<citation txt=\"" + sanitize(domTh.citation) + "\"/>\n";
+            }
+            s += bacer + spacer + "</domain-theory>\n";
+        }
+        if (definitions == null || definitions.isEmpty()) {
+            try {
+                langName = domTh.languageName;
+                String fileName = Library.libraryDirectory + "Domain Theory Files/" + langName + ".thy";
+                Parser parzer = new Parser(new Tokenizer(Library.getDFA(), new Linus(fileName)));
+                KinTermDef ktdIn = parzer.parseKinTerm(kinTerm, false);
+                definitions = ktdIn.definitions;
+            } catch (Exception exc) {
+                String msg = "<!-- Disk read error prevented finding definition.";
+                msg += "\nKinTermDef = " + langName + ":" + kinTerm;
+                msg += "\nReport this bug! -->";
+                JOptionPane.showMessageDialog(null, msg, "Internal Error", JOptionPane.ERROR_MESSAGE);
+                MainPane.activity.log.append(msg);
+                System.err.println(msg);
+                s += msg;
+            }
+        } // end of definitions-was-empty
+        if (!definitions.isEmpty()) {
+            s += bacer + spacer + "<definitions>\n";
+            for (int i = 0; i < definitions.size(); i++) {
+                s += ((ClauseBody) definitions.get(i)).toSILKString(bacer + dblSpacer);
+            }
+            s += bacer + spacer + "</definitions>\n";
+        }
+        if (!expandedDefs.isEmpty()) {
+            s += bacer + spacer + "<expandedDefs>\n";
+            for (int i = 0; i < expandedDefs.size(); i++) {
+                s += ((ClauseBody) expandedDefs.get(i)).toSILKString(bacer + dblSpacer);
+            }
+            s += bacer + spacer + "</expandedDefs>\n";
+        }
+        s += bacer + "</kin-term-def>";
+        return s;
+    }
+     
+    Gloss gloss() {
+        if (!expandedDefs.isEmpty()) {
+            ClauseBody sample = (ClauseBody)expandedDefs.get(0);
+            if (sample.expansionPath != null && !sample.expansionPath.isEmpty()) {
+                return smartGloss();
+            }
+        }
+        return dumbGloss();
+    }
+        
+    /** When a complete KinTermDef is available, for each base clause we generate:
+     *      - a simple gloss of the kin types _OR_
+     *      - a Horn Clause representation of the base clause with constraints 
+     *        and cultural predicates PLUS glosses and footnotes for each cultural
+     *        predicate appearing.
+     * 
+     * @return  an English representation of the kin type or Horn clause plus glosses 
+     *          of any cultural kin terms used in the definition.
+     */Gloss smartGloss() {
+        Gloss glos = new Gloss();
+        ArrayList<String> cumCulturalPreds = new ArrayList<String>();
+        for (int i=0; i < definitions.size(); i++) {
+            ClauseBody cb = (ClauseBody) definitions.get(i);
+            ArrayList<String> predicates = pluckPredicates(cb);
+            ArrayList<String> culturalPreds = getCulturalPreds(predicates);
+            ArrayList<String> pcStrings = getKinTypes(i);
+            if (hasNoConstraints(predicates) && culturalPreds.isEmpty()) {
+                for (String s : pcStrings) {
+                        glos.elements.add(glossify(s));
+                    }                
+            }else {
+                glos.elements.add(cb.toSimpleHornClause());
+            }
+            for (String cPred : culturalPreds) {  // union set of cPreds
+                if (!cumCulturalPreds.contains(cPred)) {
+                    cumCulturalPreds.add(cPred);
+                }
+            }
+        }  //  end of loop thru all base clauses
+        if (!cumCulturalPreds.isEmpty()) {
+//            cumCulturalPreds = alphabetize(cumCulturalPreds);  //  Parser.parseKinTerm reads file in order
+            String langName = null;
+            try {
+                langName = domTh.languageName;  //  Library domTheory where def was found
+                String fileName = Library.libraryDirectory + "Domain Theory Files/" + langName + ".thy";
+                for (String cPred : cumCulturalPreds) {
+                    Parser parzer = new Parser(new Tokenizer(Library.getDFA(), new Linus(fileName)));
+                    KinTermDef culturalKTD = parzer.parseKinTerm(cPred, false);
+                    ArrayList pcStringList = decodeString(culturalKTD.eqcSigExact);
+                    for (Object o : pcStringList) {
+                        glos.addCulturalPred(cPred, glossify((String)o));
+                    }                    
+                }
+                glos.addCitation(domTh.citation);                
+            } catch (Exception exc) {
+                String msg = "<!-- Disk read error prevented finding definition:\n" + exc;
+                msg += "\nKinTermDef = " + langName + ":" + kinTerm;
+                msg += "\nReport this bug! -->";
+                JOptionPane.showMessageDialog(null, msg, "Internal Error", JOptionPane.ERROR_MESSAGE);
+                MainPane.activity.log.append(msg);
+                System.err.println(msg);
+                glos.elements.add(msg);
+            }
+        }  // end of optional 'WHERE' section defining cultural predicates used in def.  
+        return glos;
+    }
+     
+    ArrayList<String> getCulturalPreds(ArrayList<String> predicates) {
+        ArrayList<String> cPreds = new ArrayList<String>();
+        for (String pred : predicates) {
+            if (!DomainTheory.primitiveCodes.containsKey(pred)) {
+                cPreds.add(pred);
+            }
+        }        
+        return cPreds;
+    }
+    
+    ArrayList<String> alphabetize(ArrayList<String> input) {
+        TreeMap<String, String> sorter = new TreeMap<String,String>();
+        for (String s : input) {
+            sorter.put(s,s);
+        }
+        return new ArrayList<String>(sorter.keySet());
+    }
+        
+        
+    ArrayList<String> getKinTypes(int seqNmbr) {
+        ArrayList<String> result = new ArrayList<String>();
+        for (int k=0; k < expandedDefs.size(); k++) {
+            ClauseBody expDef = (ClauseBody)expandedDefs.get(k);
+            String path = (String)expDef.expansionPath.get(0);
+            int colon = path.indexOf(":");
+            int baseCB = Integer.parseInt(path.substring(colon +1));
+            if (baseCB == seqNmbr) {
+                result.add(expDef.pcString);
+            }
+        }
+        return result;
+    }
+     
+    ArrayList<String> pluckPredicates(ClauseBody cb) {
+        ArrayList<String> preds = new ArrayList<String>();
+        for (int i = 0; i < cb.body.size(); i++) {
+            Literal lit = (Literal) cb.body.get(i);
+            if (!preds.contains(lit.predicate.name)) {
+                preds.add(lit.predicate.name);
+            }
+        }
+        return preds;
+    }
+    
+           
+    /** Whenever an internally-generated KinTermDef is not available, this method
+     *  can construct a serviceable gloss from the information contained in the
+     *  SILK file representation of a KTD.
+     * 
+     * @return an English representation of the kin type
+     */Gloss dumbGloss() {
+        Gloss glos = new Gloss();
+         ArrayList<String> predicates = pluckAllPredicates();
+        if (hasNoConstraints(predicates)) {
+            ArrayList pcStringList = decodeString(eqcSigExact); 
+            for (Object o : pcStringList) {
+                glos.elements.add(glossify((String)o));
+            }
+        } else {
+            String head0 = headPred.name + "(Alter,Ego) :- ";
+            String head2 = "                    |  ";
+            int st = Math.max(0,head2.length() - head0.length());
+            head2 = head2.substring(st);
+            for (Object o : definitions) {
+                ClauseBody cb = (ClauseBody)o;
+                glos.elements.add(head0 + cb.toSimpleHornClause());
+                head0 = head2;
+            }
+        }
+        return glos;
+    }
+     
+    String glossify(String pcString) {
+        String gloz = "";
+        ArrayList<String> symbols = explodePCSymbols(pcString);
+        int last = symbols.size() - 1;
+        for (int i = 0; i < last; i++) {
+            String symbol = (String) symbols.get(i);
+            gloz += decodePCSymbol(symbol) + "'s ";
+        }
+        gloz += decodePCSymbol((String) symbols.get(last));
+        return gloz;
+    }
+    
+    ArrayList<String> pluckAllPredicates() {
+        ArrayList<String> preds = new ArrayList<String>();
+        for (Object o : definitions) {
+            ClauseBody cb = (ClauseBody) o;
+            for (int i = 0; i < cb.body.size(); i++) {
+                Literal lit = (Literal) cb.body.get(i);
+                if (!preds.contains(lit.predicate.name)) {
+                    preds.add(lit.predicate.name);
+                }
+            }
+        }
+        return preds;
+    }
+    
+    static boolean hasNoConstraints(ArrayList<String> symbols) {
+        for (String s : symbols) {
+            if (Arrays.binarySearch(constraintSymbols, s) > -1) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    static ArrayList<String> explodePCSymbols(String pcString) {
+        ArrayList<String> symbols = new ArrayList<String>();
+        char ch;
+        int cap = 0;
+        for (int i = 1; i < pcString.length(); i++) {
+            ch = pcString.charAt(i);
+            if (Character.isUpperCase(ch) || ch == '*') {
+                String symbol = pcString.substring(cap, i);
+                symbols.add(symbol);
+                cap = i;
+            }  //  end of processing completed symbol
+        }  //  end of loop thru the symbols
+        symbols.add(pcString.substring(cap));
+        return symbols;        
+    }
+    
+        
+    static String decodePCSymbol(String symbol) {
+        if (symbol.equals("Fa")) {
+            return "father";
+        } else if (symbol.equals("Mo")) {
+            return "mother";
+        } else if (symbol.equals("Bro")) {
+            return "brother";
+        } else if (symbol.equals("Sis")) {
+            return "sister";
+        } else if (symbol.equals("P")) {
+            return "parent";
+        } else if (symbol.equals("C")) {
+            return "child";
+        } else if (symbol.equals("Hu")) {
+            return "husband";
+        } else if (symbol.equals("Wi")) {
+            return "wife";
+        } else if (symbol.equals("Sp")) {
+            return "spouse";
+        } else if (symbol.equals("So")) {
+            return "son";
+        } else if (symbol.equals("Da")) {
+            return "daughter";
+        } else if (symbol.equals("Sib")) {
+            return "sibling";
+        } else if (symbol.equals("Hbro")) {
+            return "half-brother";
+        } else if (symbol.equals("Hsis")) {
+            return "half-sister";
+        } else if (symbol.equals("Stbro")) {
+            return "stepbrother";
+        } else if (symbol.equals("Stsis")) {
+            return "stepsister";
+        } else if (symbol.equals("Stfa")) {
+            return "stepfather";
+        } else if (symbol.equals("Stmo")) {
+            return "stepmother";
+        } else if (symbol.equals("Stso")) {
+            return "stepson";
+        } else if (symbol.equals("Stda")) {
+            return "stepdaughter";
+        }
+        return "unknownSymbol";
+    }
 
         static String sanitize(String input) {
             return FamilyPanel.convertBannedCharacters(input);
@@ -623,7 +876,7 @@ public class KinTermDef	 implements Serializable, Comparable  {
     
     public boolean reciprocal(int[] lvlsFound)  {
         //	Returns true if for every n in lvlsFound, -n also is present.
-		//	At least 1 n ‚â† 0 is required.
+		//	At least 1 n ‚Äö√¢‚Ä† 0 is required.
 		TreeSet tset = new TreeSet();
         for (int i=0; i < lvlsFound.length; i++)  
             tset.add(new Integer(lvlsFound[i]));

@@ -5,7 +5,7 @@ import java.io.*;
 create a data stream to be read, 1 line at a time, when <code>makeLine</code> is called.  
 Linus tracks the file's current line number in a member variable.	
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class Linus {
 

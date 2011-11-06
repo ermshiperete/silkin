@@ -7,7 +7,7 @@ import java.util.* ;
 	information is stored on each variable that constrains the kind of Individual who 
 	could be bound to this Variable.
   
-  @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+  @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 public class Variable extends Argument {  
 	public static final String stdVarType = "Variable";

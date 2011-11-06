@@ -6,10 +6,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**This class defines the window in which Help Files are displayed.
  *
- * @author  Gary Morris, University of Pennsylvania		garymorris2245@verizon.net
+ * @author  Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  *
  * Created on Sept 16, 2011
  */
@@ -86,6 +87,9 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
         HyperlinkEvent evt = stack.get(++stackPtr);
         helpTextPane.fireHyperlinkUpdate(evt);
         topTitle.setText(titleStack.get(stackPtr)); 
+        if (stackPtr >= stack.size() - 1) {
+            backBtn.setEnabled(false);
+        }
         fwdBtn.setEnabled(true);
     }
     
@@ -100,7 +104,8 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
         topTitle.setText(titleStack.get(stackPtr));
         if (stackPtr == 0) {
             fwdBtn.setEnabled(false);
-        }        
+        }
+        backBtn.setEnabled(true);
     }
     
     boolean backable() {
@@ -118,8 +123,10 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
                     backBtn.setEnabled(true);
                     fwdBtn.setEnabled(false);
                     stackPtr = 0;
-                    topTitle.setText("             ");
-                    titleStack.add(0, "             ");
+                    String pth = event.getURL().getFile(),
+                           ttl = findTitle(pth);
+                    topTitle.setText(ttl);
+                    titleStack.add(0, ttl);
                 }else {
                     updateStack = true;
                 }
@@ -132,6 +139,15 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
                 MainPane.displayError(msg, "Internal Problem", JOptionPane.ERROR_MESSAGE);
             }            
         }
+    }
+    
+    String findTitle(String path) {
+        for (int i=0; i < pathNames.length; i++) {
+            if (pathNames[i].equals(path)) {
+                return titles[i];
+            }
+        }
+        return "             ";
     }
     
   

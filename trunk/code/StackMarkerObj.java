@@ -6,7 +6,7 @@ import java.util.* ;
 	used in the 'expand' methods to keep track of the number of levels of recursion that have
 	alreaday been expanded.
   
-  @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+  @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 public class StackMarkerObj extends Argument {  
 	public static final String stdSMType = "StackMarkerObj";

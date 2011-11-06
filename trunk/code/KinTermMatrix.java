@@ -23,7 +23,7 @@ A KinTermMatrix has 2 associated indexes of kinTerms, for Reference terms and te
 For every kinTerm that has been recorded in a matrix, its index entry has a list of all the Egos 
 who have a kin of that type, and for each one has a list of Alters whom Ego calls by that kinTerm.
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class KinTermMatrix implements Serializable {
 

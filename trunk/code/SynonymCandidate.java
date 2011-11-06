@@ -1,6 +1,6 @@
 /**
  *
- * @author 	Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+ * @author 	Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 
 import java.util.*;
@@ -78,12 +78,12 @@ public class SynonymCandidate extends Issue {
                 pw.print(", " + pcStringsCovered.get(i));
             }
             pw.println(" </pc-strings-covered>");
-            pw.println(dblSpacer + "<kin-term-dyads>");
+            pw.println(dblSpacer + "<kinTerm-dyads>");
             for (int i=0; i < ktermDyads.size(); i++) {
                 Dyad d = (Dyad)ktermDyads.get(i);
                 pw.println(d.toXML(dblSpacer + spacer));
             }
-            pw.println(dblSpacer + "</kin-term-dyads>");
+            pw.println(dblSpacer + "</kinTerm-dyads>");
             pw.println(dblSpacer + "<other-term-dyads>");
             for (int i=0; i < otherTermDyads.size(); i++) {
                 Dyad d = (Dyad)otherTermDyads.get(i);

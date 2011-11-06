@@ -1,7 +1,7 @@
 
 /**
  *
- * @author 	Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+ * @author 	Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 import java.util.*;
 import java.io.*;

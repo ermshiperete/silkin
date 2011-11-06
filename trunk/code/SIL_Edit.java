@@ -11,7 +11,7 @@
  * individuals and to provide the kinship terms used among relatives on that
  * tree.
  *
- * @author Gary Morris, University of Pennsylvania
+ * @author Gary Morris, Northern Virginia Community College
  */
 
 
@@ -33,11 +33,7 @@ public class SIL_Edit extends JFrame {
     static SIL_Edit editWindow;
     static DecisionFrame decisionFrame;
     static final int REF = 0, ADR = 1;
-    /** minDyadsPerPCStr is the threshold for trying to learn a definition. <br />
-     * DN is the Desired Number of dyads for any one data request (Discriminator).
-     * */
-    static final int minDyadsPerPCStr = 1,
-               DN = 2 * minDyadsPerPCStr;
+    static final int minDyadsPerPCStr = 2;
     static ArrayList<ArrayList<Integer>> namedDyadList = null;
     static boolean helpScreenOnStartUp = true;
 
@@ -601,7 +597,7 @@ public class SIL_Edit extends JFrame {
     private void editPrefsItemActionPerformed(ActionEvent evt) {
         if (chart.saveFile == null) {
             String msg3 = "You must edit the Preferences for a particular context (SILK file).";
-            msg3 += "First open a context (or create & save one), then set it's preferences.";
+            msg3 += "First OPEN a context (or create & SAVE one), then set it's preferences.";
             JOptionPane.showMessageDialog(this, msg3, "Cannot Perform Your Command", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -687,7 +683,16 @@ public class SIL_Edit extends JFrame {
         chart.setKTmLabel("LetterAdr");
     }
     
+    public void setDistinctAdrMenuItemSelected(boolean val) {
+        resettingDistinctAdrItem = true;
+        distinctAdrItem.setSelected(val);        
+        resettingDistinctAdrItem = false;
+    }
+    
+    private boolean resettingDistinctAdrItem = false;
+    
     private void distinctAdrItemActionPerformed(ActionEvent evt) {
+        if (resettingDistinctAdrItem) return;
         if (distinctAdrItem.isSelected()) {
             String msg = "Do you want to copy all the reference terms you have\n"
                     + "gathered to date as terms of address also?";

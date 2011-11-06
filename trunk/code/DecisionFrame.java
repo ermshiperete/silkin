@@ -7,7 +7,7 @@
  * tailored to that type of suggestion. Each Action Box contains the code to
  * implement any actions taken. This DecisionFrame is just a container.
  *
- * @author  Gary Morris, University of Pennsylvania		garymorris2245@verizon.net
+ * @author  Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  *
  * Created on Feb 24, 2011
  */
@@ -31,6 +31,7 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
     static final int REF = 0, ADR = 1;
     DomainTheory dt;
     File htmlFile = null;
+    boolean updating = false;
 
     public DecisionFrame() {
         initComponents();
@@ -60,6 +61,7 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
         actionOverlap.dt = dt;
         actionAnomaly.dt = dt;
         doneOrUNDO.dt = dt;
+        DomainTheory.current = dt;
     }
 
     /** This method is called from within the constructor to
@@ -205,6 +207,7 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
     }
     
     public void markProcessed(int suggNmbr) {
+        updating = true;
         DefaultComboBoxModel model = (DefaultComboBoxModel)suggestionComboBox.getModel();
         String listing = (String)model.getElementAt(suggNmbr +1);
         Issue sugg = suggestions.get(suggNmbr);
@@ -212,17 +215,20 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
         int dot = listing.indexOf(".") +1;
         String newListing = listing.substring(0,dot) + " DONE:" + listing.substring(dot);
         model.removeElementAt(suggNmbr +1);
+        updating = false;
         model.insertElementAt(newListing, suggNmbr +1);
         SIL_Edit.editWindow.chart.dirty = true;
     }
     
     public void markUnProcessed(int suggNmbr) {
+        updating = true;
         DefaultComboBoxModel model = (DefaultComboBoxModel)suggestionComboBox.getModel();
         String listing = (String)model.getElementAt(suggNmbr +1);
         Issue sugg = suggestions.get(suggNmbr);
         sugg.processed = false;
         String newListing = listing.replace(" DONE:", "");
         model.removeElementAt(suggNmbr +1);
+        updating = false;
         model.insertElementAt(newListing, suggNmbr +1);
         SIL_Edit.editWindow.chart.dirty = true;
     }
@@ -234,6 +240,7 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
 
     void suggestionBoxActionPerformed() {
         // slot 0 in combo box is the "Pick a Suggestion" item
+        if (updating) return;
         int index = suggestionComboBox.getSelectedIndex();
         Issue sugg = suggestions.get(0);
         URL newLoc;

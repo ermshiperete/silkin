@@ -17,7 +17,7 @@ one language (Context).  It can rapidly switch between clauses or KinTerms.
 There can be more than one LibBrowser active at one time, and they can be re-sized so that 2 or more
 LibBrowsers are visible at one time (for comparisons).  
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 public class LibBrowser extends KSJInternalFrame   {
     public static int serialNmbr = 1;

@@ -15,7 +15,7 @@ which launched this picker.
 <p>
 It is an extension of KSJInternalFrame so it will appear in the View menu.
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 	
 	public class PersonPicker extends KSJInternalFrame  {

@@ -15,7 +15,7 @@ import java.io.*;
  * reserved. See his complete copyright statement and terms of re-use in
  * e.g. KinshipEditor.java in this package.
  *
- * @author Gary Morris, University of Pennsylvania
+ * @author Gary Morris, Northern Virginia Community College
  */
 public class ChartPanel extends JPanel implements MouseInputListener {
     // class variables
@@ -363,9 +363,9 @@ public class ChartPanel extends JPanel implements MouseInputListener {
     }  //  end of Check when 1st person/union created
 
     void displayError(Exception pe) {
-        System.out.println("Date format error: " + pe.getMessage());
+        System.out.println("Data entry error: " + pe.getMessage());
         JOptionPane.showMessageDialog(this, pe.getMessage(),
-                "Invalid date", JOptionPane.ERROR_MESSAGE);
+                "Invalid data", JOptionPane.ERROR_MESSAGE);
     }
 
     void personMenu_MouseExit(Event event) {
@@ -828,8 +828,8 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                             // If not, then this is ix's new node (maybe null).
                             if (ix.node == null && newNode != null) {
                                 ix.node = newNode;
-                                showInfo(ix);
                             }
+                            showInfo(ix);
                             dirty = true;
                         } else {  // ix is already a spouse in fx. This is a deletion request.
                             px.setLocation(lastPersonLoc);
@@ -844,6 +844,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                                 repaint();
                                 return;
                             }
+                            showInfo(ix);
                             dirty = true;
                         }
                     } else if (b.contains(selectLine.toP.x, selectLine.toP.y)) {
@@ -888,8 +889,8 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                             // If not, then this is ix's new node (maybe null).
                             if (ix.node == null && newNode != null) {
                                 ix.node = newNode;
-                                showInfo(ix);
                             }
+                            showInfo(ix);
                             dirty = true;
                         } else {  //  Removing a child
                             px.setLocation(lastPersonLoc);
@@ -904,6 +905,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                                 repaint();
                                 return;
                             }
+                            showInfo(ix);
                             dirty = true;
                         }
                     }
@@ -1013,9 +1015,8 @@ public class ChartPanel extends JPanel implements MouseInputListener {
     public static Node createNode(Individual ind, Family fam, String role)
             throws KSInternalErrorException {
         Node node = null, oldNode = ind.node;
-        Individual mate, kid, shortestPathPerson = findShortestPath(ind, fam);
-        String miniCB, pred, arg0, arg1;
-        PersonPanel.debugDyads();
+        Individual mate,mateMate, kid, shortestPathPerson = findShortestPath(ind, fam);
+        String miniCB, pred, arg0 = "#" + ind.serialNmbr, arg1;
         if (shortestPathPerson == ind) {
             // ind is already connected to Ego by the shortest path
             if (role.equals("spouse")) {
@@ -1025,7 +1026,8 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                     for (Object o : mate.marriages) {
                         Family mar = (Family) o;
                         if (mar != fam) {
-                            propogateNodes(ind, mate, mar, "spouse");
+                            mateMate = (mate == mar.husband ? mar.wife : mar.husband);
+                            propogateNodes(mate, mateMate, mar, "spouse");
                         }
                     }
                 }
@@ -1070,6 +1072,26 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                         node.setLevel(mate.node.getLevel());
                         node.miniPreds.addAll(mate.node.miniPreds);
                     } //  end of cases-1-or-2
+                    miniCB = pred + "(" + arg0 + "," + arg1 + ")";
+                    node.miniPreds.add(miniCB);
+                    makePCString2(node);
+                    // Now propogate to ind's parents. Spouse was shortestPath, 
+                    // and ergo his kids have nodes. But her parents may or may not.
+                    if (ind.birthFamily != null) {
+                        Family bFam = ind.birthFamily;
+                        if (bFam.husband != null) {
+                            propogateNodes(ind, bFam.husband, bFam, "child");
+                        }
+                        if (bFam.wife != null) {
+                            propogateNodes(ind, bFam.wife, bFam, "child");
+                        }
+                        for (Object k : bFam.children) {
+                            kid = (Individual) k;
+                            if (kid != ind) {
+                                propogateNodes(ind, kid, bFam, "child");
+                            }
+                        }
+                    }
                     // end of spouse-of-short-path-person
                 } else { // role equals "child"
                     Individual par = shortestPathPerson;
@@ -1105,6 +1127,23 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                         node.setLevel(par.node.getLevel() - 1);
                         node.miniPreds.addAll(par.node.miniPreds);
                     }
+                    miniCB = pred + "(" + arg0 + "," + arg1 + ")";
+                    node.miniPreds.add(miniCB);
+                    makePCString2(node);
+                    // Now propagate to ind's spouse & kids. Ind's parent was the
+                    // shortPath, so neither parents nor siblings need nodes. But her
+                    // spouse and kids might.
+                    for (Object o : ind.marriages) {
+                        Family m = (Family) o;
+                        mate = (m.husband == ind ? m.wife : m.husband);
+                        if (mate != null) {
+                            propogateNodes(ind, mate, m, "spouse");
+                        }
+                        for (Object k : m.children) {
+                            kid = (Individual) k;
+                            propogateNodes(ind, kid, m, "parent");
+                        }
+                    }  // end of ind-has-marriages
                 } // end of child-of-short-path-person
             } else { // short-path must be a child in fam
                 kid = shortestPathPerson;
@@ -1117,11 +1156,55 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 }
                 arg1 = "#" + kid.serialNmbr;
                 node.miniPreds.addAll(kid.node.miniPreds);
-            }
-            arg0 = "#" + ind.serialNmbr;
-            miniCB = pred + "(" + arg0 + "," + arg1 + ")";
-            node.miniPreds.add(miniCB);
-            makePCString2(node);
+                miniCB = pred + "(" + arg0 + "," + arg1 + ")";
+                node.miniPreds.add(miniCB);
+                makePCString2(node);
+                if (role.equals("spouse")) {
+                    // ind's spouse and kids have nodes, but her other marriages
+                    // and her birthFam may need them
+                    for (Object o : ind.marriages) {
+                        Family m = (Family) o;
+                        if (fam != m) {
+                            mate = (m.husband == ind ? m.wife : m.husband);
+                            if (mate != null) {
+                                propogateNodes(ind, mate, m, "spouse");
+                            }
+                            for (Object k : m.children) {
+                                kid = (Individual) k;
+                                propogateNodes(ind, kid, m, "parent");
+                            }
+                        }
+                    }
+                    if (ind.birthFamily != null) {
+                        Family bFam = ind.birthFamily;
+                        if (bFam.husband != null) {
+                            propogateNodes(ind, bFam.husband, bFam, "child");
+                        }
+                        if (bFam.wife != null) {
+                            propogateNodes(ind, bFam.wife, bFam, "child");
+                        }
+                        for (Object k : bFam.children) {
+                            kid = (Individual) k;
+                            if (kid != ind) {
+                                propogateNodes(ind, kid, bFam, "sibling");
+                            }
+                        }
+                    }
+                }else {  // ind's role is sibling of short-path
+                    // ind's birthFam all have nodes. Her spice & kids may need them.
+                    for (Object o : ind.marriages) {
+                        Family m = (Family) o;
+                        mate = (m.husband == ind ? m.wife : m.husband);
+                        if (mate != null) {
+                            propogateNodes(ind, mate, m, "spouse");
+                        }
+                        for (Object k : m.children) {
+                            kid = (Individual) k;
+                            propogateNodes(ind, kid, m, "parent");
+                        }
+                    }
+                }
+            }          
         } // end of a member of fam had shortest path to Ego
         if (ind.starLinks != null) {
             //  ind must have miniPreds to pass along to star-linked people
@@ -1146,7 +1229,6 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             Individual ego = Context.current.individualCensus.get(parent.getCurrentEgo());
             parent.getPPanel().checkForAutoDefs(node, ego);
         }
-        PersonPanel.debugDyads();
         return node;
     }
 
@@ -1368,11 +1450,11 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         }
         // The first time we see someone, propagate even if they have a node. They may be
         // connected to someone who doesn't. But second time around, stop here.
-        if (toPerson.seenB4 > 1 && toPerson.node != null && toPerson.node.miniPreds.size() > 0
+        if (toPerson.seenB4 > 1 && toPerson.node != null && toPerson.node.miniPreds != null 
+                && fromPerson.node != null && fromPerson.node.miniPreds != null && toPerson.node.miniPreds.size() > 0
                 && (toPerson.node.miniPreds.size() <= fromPerson.node.miniPreds.size() + 1)) {
             return;
         }
-        PersonPanel.debugDyads();
         String role = null;
         if (relat.equals("spouse") || relat.equals("child")) {
             role = "spouse";
@@ -1453,7 +1535,6 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 }
             }
         }
-        PersonPanel.debugDyads();
     }
 
     /** Remove this person from fam, then modify/remove all nodes
@@ -1639,8 +1720,9 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         }
         try {
             parent.storeInfo();
-        } catch (Exception e) {
-            // Nothing can go wrong, go wrong, go wrong....
+        } catch (Exception pe) {
+                displayError(pe);
+                return;
         }
         Context currCtxt = Library.contextUnderConstruction;
         Individual currEgo = currCtxt.individualCensus.get(parent.getCurrentEgo());
@@ -2008,7 +2090,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
 
     String getCurrentUser() throws KSInternalErrorException {
         int size = Context.current.dataAuthors.size(),
-             repeats = -1;
+                repeats = -1;
         String[] authors = new String[size + 1];
         for (int i = 0; i < size; i++) {
             authors[i] = Context.current.dataAuthors.get(i);
@@ -2021,21 +2103,30 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 JOptionPane.PLAIN_MESSAGE, null,
                 authors, authors[0]);
         if (author == null) {
-            Context.current.editable = false;
-            throw new KSInternalErrorException("Failure to capture current User's identity.");
+            author = System.getProperty("user.name");
+            String msg = "Will register current data author as '" + author + "'.";
+            JOptionPane.showMessageDialog(parent, msg);
+            if (!Context.current.dataAuthors.contains(author)) {
+                Context.current.dataAuthors.add(author);
+            }
         }
         while (author.equals("Add a New User")) {
             repeats++;
             String rep = (repeats == 0 ? "\n" : "\n -- CAREFULLY --\n"),
-                   msg = "Please enter your name" + rep + "as it should appear in the User List.",
-                   title = author;
+                    msg = "Please enter your name" + rep + "as it should appear in the User List.",
+                    title = author;
             author = JOptionPane.showInputDialog(parent,
                     msg, title, JOptionPane.PLAIN_MESSAGE);
-            while (author.isEmpty() || author.length() < 3) {
-                String badAuth = (author.isEmpty() ? "A blank " : "'" + author + "' ");
+            while (author == null || author.isEmpty() || author.length() < 3) {
+                String badAuth = (author == null || author.isEmpty() ? "That " : "'" + author + "' ");
                 msg = badAuth + "is not a valid entry. Enter at least\n 3 non-blank characters (e.g. your initials).";
                 author = JOptionPane.showInputDialog(parent,
                         msg, title, JOptionPane.PLAIN_MESSAGE);
+                if (repeats++ > 2 && (author == null || author.isEmpty() || author.length() < 3)) {
+                    author = System.getProperty("user.name");
+                    msg = "Will register current data author as '" + author + "'.";
+                    JOptionPane.showMessageDialog(parent, msg);
+                }
             }
             Object[] options = {"Use '" + author + "'", "Try Again"};
             msg = "Display your name as '" + author + "'?";
@@ -2049,11 +2140,17 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             if (ch == JOptionPane.NO_OPTION) {
                 author = "Add a New User";
             } else if (ch == JOptionPane.CANCEL_OPTION) {
-                Context.current.editable = false;
-                throw new KSInternalErrorException("Failure to capture current User's identity.");
+                author = System.getProperty("user.name");
+                msg = "Will register current data author as '" + author + "'.";
+                JOptionPane.showMessageDialog(parent, msg);
+                if (!Context.current.dataAuthors.contains(author)) {
+                    Context.current.dataAuthors.add(author);
+                }
             } else {
-                Context.current.dataAuthors.add(author);
-                return getCurrentUser();
+                if (!Context.current.dataAuthors.contains(author)) {
+                    Context.current.dataAuthors.add(author);
+                }
+                return author;
             }
         }
         return author;

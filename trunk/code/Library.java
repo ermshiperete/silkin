@@ -10,7 +10,7 @@ Contexts are stored & accessed by language-name.
 <p>
 There is only one Library.  All methods and fields are static.
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class Library {
 
@@ -663,6 +663,11 @@ public class Library {
         }  //  end of loop thru stubs contents
         return sorted;
     }  //  end of static method stubSort
+    
+    public static void setStubAdrFileExists(String name, boolean val) {
+        ContextStub cs = retrieveOrCreateStub(name);
+        cs.adrThyExists = val;
+    }
 
     /** Write out the Library's ArrayList<ContextStub> (stubs) to disk.  */
     public static void writeStubFile() throws JavaSystemException {
@@ -1117,7 +1122,7 @@ public class Library {
     /** The Library's <code>KTD_Coder</code> class holds a numeric code (serial number) for this KTD in the
     language, plus the exactSignature for this KTD.
 
-    @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+    @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
      */
     static class KTD_Coder implements Serializable {
 
@@ -1166,7 +1171,7 @@ public class Library {
     Instances of KTD_EQC are stored on the Library's <code>ktSigTree</code>, indexed by signature strings.
     They are important for the Active Learning routines.
 
-    @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+    @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
      */
     static class KTD_EQC implements Comparable, Serializable {
 
@@ -1576,7 +1581,7 @@ public class Library {
 
     /** The Library's <code>ClauseCounts</code> class is a TreeMap with structure: LangName:kinTerm => Counter[] (cumulative counts of string length).
 
-    @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+    @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
      */
     static class ClauseCounts extends TreeMap {
 
@@ -1663,7 +1668,7 @@ public class Library {
     (only {@link CB_Ptr}s or {@link CB_EQC}s allowed) which are stored in the leaves of the tree.
     It also has methods which facilitate writing a ClauseIndex to disk and reading it back into RAM.
 
-    @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+    @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
      */
     static class ClauseIndex implements Serializable {
 

@@ -5,7 +5,7 @@ import javax.swing.*;
  * {@link DecisionFrame} whenever the suggestion chosen by User is an
  * OverlapCandidate.
  *
- * @author  Gary Morris, University of Pennsylvania		garymorris2245@verizon.net
+ * @author  Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  *
  * Created on June 24, 2011, 3:21:57 PM
  */

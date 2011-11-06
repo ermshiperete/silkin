@@ -12,7 +12,7 @@ import java.beans.*;
 The PersonEditor is a window that displays an {@link Individual}'s fields for editing.
 It is an extension of KSJInternalFrame so it will appear in the View menu.
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class PersonEditor extends KSJInternalFrame implements ListSelectionListener {
 

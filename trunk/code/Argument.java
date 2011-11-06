@@ -6,7 +6,7 @@ import java.util.*;
 /**  This superclass is the parent of all classes that are legal arguments of a predicate
 	 in the Kinship system.  
   
-  @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+  @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 public abstract class Argument  implements Serializable, Comparator    {
 	public String argType, valueType, argName = "";

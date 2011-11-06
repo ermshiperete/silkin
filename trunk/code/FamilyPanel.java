@@ -20,7 +20,7 @@ import java.text.*;
  * valid data is entered. Then the person's record is updated and we proceed to
  * let user choose a new infoPerson to display/edit.
  *
- * @author Gary Morris, University of Pennsylvania
+ * @author Gary Morris, Northern Virginia Community College
  */
 public class FamilyPanel extends JPanel {
 

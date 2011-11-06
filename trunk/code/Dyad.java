@@ -7,7 +7,7 @@ import java.io.*;
     all the information we need about any particular dyad in order to compare it with other dyads or with
     library definitions.  
  
-  @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+  @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 public class Dyad  implements Serializable, Comparable  {
     static final int  PRIMARY = 0, EXTENDED = 1, REF = 0, ADDR = 1;  
@@ -75,6 +75,53 @@ public class Dyad  implements Serializable, Comparable  {
         path = new ArrayList<Object>(model.path);
         pcString = new String(model.pcString);
         pcStringStructural = new String(model.pcStringStructural);
+    }
+    
+    public static ArrayList<Dyad> makeDyads(Node nod, Individual egoo) {
+        ArrayList<Dyad> list = new ArrayList<Dyad>();
+        Dyad model = new Dyad();
+        model.ego = egoo;
+        model.alter = nod.indiv;
+        model.level = nod.getLevel();
+        model.kinTermType = 0;
+        model.pcString = nod.pcString;
+        try {
+            model.pcStringStructural = ClauseBody.structStr(nod.pcString);
+        } catch (Exception exc) {
+        }
+        model.makePath(nod.miniPreds, model.alter);
+        //  All above data is the same for all dyads
+        for (Object o : nod.kinTermsRef) {
+            String term = (String)o;
+            Dyad newDy = new Dyad(model);
+            newDy.kinTerm = term;
+            newDy.addrOrRef = 0;
+            list.add(newDy);
+        }
+        for (Object o : nod.extKinTermsRef) {
+            String term = (String)o;
+            Dyad newDy = new Dyad(model);
+            newDy.kinTerm = term;
+            newDy.addrOrRef = 0;
+            newDy.kinTermType = 1;
+            list.add(newDy);
+        }
+        for (Object o : nod.kinTermsAddr) {
+            String term = (String)o;
+            Dyad newDy = new Dyad(model);
+            newDy.kinTerm = term;
+            newDy.addrOrRef = 1;
+            list.add(newDy);
+        }
+        for (Object o : nod.extKinTermsAddr) {
+            String term = (String)o;
+            Dyad newDy = new Dyad(model);
+            newDy.kinTerm = term;
+            newDy.addrOrRef = 1;
+            newDy.kinTermType = 1;
+            list.add(newDy);
+        }        
+        return list;
     }
     
 	    /**  This method builds a string that represents a Dyad in a SILKin data (_.silk) file.   */

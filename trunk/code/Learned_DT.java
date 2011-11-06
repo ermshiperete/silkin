@@ -8,7 +8,7 @@ import java.text.*;
 A Learned_DT is just a special kind of DomainTheory -- one that is learned, like a ConstextUnderConstruction. 
 It holds records of test results for Leave-One-Out testing.
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class Learned_DT extends DomainTheory implements Serializable {
 

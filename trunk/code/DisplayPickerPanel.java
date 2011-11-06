@@ -30,7 +30,7 @@ User may (optionally) choose a particular expanded clause from the 'Choose an Ex
 <p>
 
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 public class DisplayPickerPanel extends JPanel  {
     //  Instance variables that capture selections in this picker window.

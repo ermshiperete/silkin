@@ -5,7 +5,7 @@
  * parsing of a SILK file. It stores the serial number of <code>indiv</code>
  * until we can later insert a pointer to the actual person.
  *
- *   @author	Gary Morris, University of Pennsylvania     garymorris2245@verizon.net
+ *   @author	Gary Morris, Northern Virginia Community College     garymorris2245@verizon.net
  */
 public class TempNode extends Node {
     int indNmbr;

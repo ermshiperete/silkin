@@ -10,7 +10,7 @@ is under construction or examination.  Each contains its own population of
 {@link Family} and {@link Individual} objects, domain theories, etc.
 Class-level (static) fields act as global variables.
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class Context implements Serializable {
 
@@ -73,7 +73,7 @@ public class Context implements Serializable {
      * needed by KAES back to the loadFile method.     */
     public Point origin;
     public Dimension area;
-    public int infoPerson, infoMarriage, labelChoice, ktLabelChoice, maxNoiseP, ignorableP;
+    public int infoPerson, infoMarriage, labelChoice, ktLabelChoice, maxNoiseP = 25, ignorableP = 5;
     public boolean editable, distinctAdrTerms;
 
     /** This zero-arg constructor is for use by Serialization ONLY.  */
@@ -674,37 +674,6 @@ public class Context implements Serializable {
         String path, lang;
         silk.println("<parameters>");
         silk.println("  <language name=\"" + languageName + "\"/>");
-        /*  OLD CODE FOR WRITING .THY FILE(S)
-        if (directory != null) {
-        if (domTheoryRef != null) {	//  include this DomThy if present
-        lang = languageName + ".thy";  //  the relative pathname
-        path = directory + "/" + lang; //  the absolute pathname
-        silk.println("  <theory file=\"" + lang + "\"/>");
-        // assure that language name is consistent: all files & file names
-        domTheoryRef.languageName = languageName;
-        domTheoryRef.toThyFile(new PrintWriter(path));
-        }  //  end of domTheoryRef is not null
-        if (domTheoryAdr != null) {	//  include this DomThy if present
-        lang = languageName + "(Adr).thy";
-        path = directory + "/" + lang;
-        silk.println("  <theory file=\"" + lang + "\"/>");
-        domTheoryAdr.languageName = languageName + "(Adr)";
-        domTheoryAdr.toThyFile(new PrintWriter(path));
-        }  //  end of domTheoryAdr is not null
-        if (domTheoryAdr == null && domTheoryRef == null) {  //  if none exists yet
-        //  make a nearly-blank DT of reference terms as a place-holder
-        lang = languageName + ".thy";
-        path = directory + "/" + lang;
-        silk.println("  <theory>" + lang + "</theory>");
-        DomainTheory newDT = new DomainTheory(languageName);
-        domTheoryRef = newDT;
-        newDT.ctxt = this;
-        newDT.filePath = path;
-        newDT.addressTerms = false;
-        newDT.userDefinedProperties = userDefinedProperties;
-        newDT.toThyFile(new PrintWriter(path));
-        }  //  end of both domain theories were null
-        }   */
         if (comments != null && comments.length() > 1) {
             silk.print("  <comments txt=\"");
             comments = convertDoubleQuotes(comments); // replace doubles with singles, etc.
@@ -1614,8 +1583,9 @@ public class Context implements Serializable {
         public void unDo(DomainTheory dt) {
             KinTermDef ktd = (KinTermDef) dt.theory.remove(kinTerm);
             rescinded = true;
+            SIL_Edit win = SIL_Edit.editWindow;
             for (Integer[] pair : autoDefPairs) {
-                SIL_Edit.editWindow.removeDef(dt, pair[0], pair[1], kinTerm);
+                win.removeDef(dt, pair[0], pair[1], kinTerm);
             }
             TreeMap<String, ArrayList<CB_Ptr>> autoDef =
                     (dt.addressTerms ? dt.ctxt.autoDefAdr : dt.ctxt.autoDefRef);
@@ -1634,6 +1604,8 @@ public class Context implements Serializable {
                     autoDef.remove(kinType);
                 }
             }
+            win.showInfo(win.infoPerson);
+            win.chart.repaint();
         }
         
         

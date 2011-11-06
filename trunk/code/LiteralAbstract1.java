@@ -11,7 +11,7 @@ import java.io.* ;
 	Because so many methods are defined at the Literal level, the code files are broken into 3 classes:  this one, 
 	LiteralAbstract2, and Literal. 
   
-  @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+  @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 public abstract class LiteralAbstract1 extends Argument  {
 	private static int serializer = 31;

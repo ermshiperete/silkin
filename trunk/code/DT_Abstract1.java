@@ -9,7 +9,7 @@ defining a Kinship System.  This is the level at which 90% of the action takes p
 Because so many methods are defined at the Domain Theory level, the code files are broken into 4 classes:  
 DT_Abstract1, DT_Abstract12, & DomainTheory. 
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public abstract class DT_Abstract1 implements Serializable {
 

@@ -1,7 +1,7 @@
 /**  This class defines the math operator <code>Contains</code>.  It's an instantiated subclass
 	 of the abstract class {@link MathOperator}.  
 	   
-  @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+  @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 
 

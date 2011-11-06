@@ -5,7 +5,7 @@ import java.io.*;
 /** A KinTermExample represents one example of the correct use of a particular kinTerm in a culture.
 	A list of these objects is returned by the <code>exampleListOf</code> method of class {@link KinTermMatrix}.
   
-  @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+  @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 public class KinTermExample  implements Serializable  {
 	/** The serial number of ego. */

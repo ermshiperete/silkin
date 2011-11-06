@@ -5,7 +5,7 @@ import java.util.*;
 /**  This abstract class defines math operators.  Its instantiated subclasses 
 	 contain a single method 'compare' which performs their operation.
   
-  @author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+  @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
 public abstract class MathOperator {
 	String opName;

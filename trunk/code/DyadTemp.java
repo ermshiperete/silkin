@@ -6,7 +6,7 @@ import java.util.ArrayList;
  *  parser is certain that the IndividualCensus and Family Census are populated,
  *  it can then build real Dyads wherever needed.
  *
- * @author Gary Morris  University of Pennsylvania
+ * @author Gary Morris  Northern Virginia Community College
  */
 public class DyadTemp extends Dyad {
 

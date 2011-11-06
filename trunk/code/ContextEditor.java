@@ -15,7 +15,7 @@ It is an extension of KSJInternalFrame because I want this to appear in the View
 The ContextEditor can only display one context - the current <code>Library.contextUnderConstruction</code>.  
 Often there will be only one; if there are more, the User must choose one to be his current focus, then edit it.</p>
 
-@author		Gary Morris, University of Pennsylvania		morris@seas.upenn.edu
+@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
 public class ContextEditor extends KSJInternalFrame implements ItemListener {
 
