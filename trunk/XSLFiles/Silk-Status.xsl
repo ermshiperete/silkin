@@ -560,12 +560,13 @@
                   select="@kinTerm"/></i>. That definition is as
             follows: </p>
          <blockquote>
-            <xsl:for-each select="basis//clause">
+            <xsl:apply-templates select="basis/kin-term-def/gloss"/>
+            <!-- <xsl:for-each select="basis//clause">
                <xsl:if test="position() != 1"> or </xsl:if>
                <xsl:call-template name="generate-gloss">
                   <xsl:with-param name="literals" select="literal"/>
                </xsl:call-template>
-            </xsl:for-each>
+            </xsl:for-each> -->
          </blockquote>
 
          <xsl:if test="anomaly-type='falseNeg'">
