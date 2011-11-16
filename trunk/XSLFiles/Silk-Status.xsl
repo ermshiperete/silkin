@@ -234,6 +234,18 @@
                <xsl:value-of select="count(silkin-issues/anomaly)"/>
             </td>
          </tr>
+         <tr valign="top">
+            <td>&#160;&#160;&#160;Overlapping terms:</td>
+            <td>
+               <xsl:value-of select="count(silkin-issues/overlap)"/>
+            </td>
+         </tr>
+         <tr valign="top">
+            <td>&#160;&#160;&#160;Data requests:</td>
+            <td>
+               <xsl:value-of select="count(silkin-issues/data-request)"/>
+            </td>
+         </tr>
       </table>
    </xsl:template>
 
