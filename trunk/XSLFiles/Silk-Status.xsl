@@ -21,7 +21,7 @@
                <xsl:value-of select="$title"/>
             </title>
          </head>
-         <body>
+         <body style="font-family:Arial Unicode MS">
             <hr/>
             <xsl:apply-templates select="parameters"/>
             <hr/>
@@ -297,6 +297,31 @@
       <xsl:apply-templates/>
    </xsl:template>
 
+   <xsl:template match="gloss">
+      <ul>
+         <xsl:for-each select="element">
+            <li>
+               <xsl:value-of select="@text"/>
+               <xsl:if test="following-sibling::element"> or </xsl:if>
+            </li>
+         </xsl:for-each>
+      </ul>
+      <xsl:if test="where">
+         <p>where</p>
+         <ul>
+            <xsl:for-each select="where/cultural-pred">
+               <li>
+                  <i><xsl:value-of select="@kinTerm"/></i> = 
+                  <xsl:for-each select="element">
+                     <xsl:value-of select="@text"/>
+                     <xsl:if test="following-sibling::element"> or </xsl:if>
+                  </xsl:for-each>
+               </li>
+            </xsl:for-each>
+         </ul>
+      </xsl:if>
+
+   </xsl:template>
    <xsl:template match="proposed-def">
       <xsl:variable name="number"
          select="count(preceding-sibling::*)+1"/>
@@ -318,23 +343,26 @@
          </xsl:for-each>). In these languages, the term is defined as
          follows: </p>
       <blockquote>
+         <xsl:apply-templates select="kin-term-def/gloss"/>
+         <!-- 
          <xsl:for-each select="kin-term-eqc/prototype//clause">
             <xsl:if test="position() != 1"> or </xsl:if>
             <xsl:call-template name="generate-gloss">
                <xsl:with-param name="literals" select="literal"/>
             </xsl:call-template>
          </xsl:for-each>
+         -->
       </blockquote>
       <p>Consider each of the following questions in turn:</p>
       <ol>
-         <xsl:for-each select="kin-term-eqc/prototype//clause">
-            <xsl:variable name="def">
+         <xsl:for-each select="kin-term-def/gloss/element">
+            <!-- <xsl:variable name="def">
                <xsl:call-template name="generate-gloss">
                   <xsl:with-param name="literals" select="literal"/>
                </xsl:call-template>
-            </xsl:variable>
+            </xsl:variable> -->
             <li>Can you think of a relationship that matches
-                  "<xsl:value-of select="$def"/>", but is not called <i>
+                  "<xsl:value-of select="@text"/>", but is not called <i>
                   <xsl:value-of select="$term"/>
                </i>? </li>
          </xsl:for-each>
