@@ -411,7 +411,7 @@
       <dl>
          <dd><i>
                <xsl:value-of select="@kinTerm"/>
-            </i>&#160; (<xsl:apply-templates select="kin-term-dyads"
+            </i>&#160; (<xsl:apply-templates select="kinTerm-dyads"
             />) </dd>
          <dd><i>
                <xsl:value-of select="other-term"/>
