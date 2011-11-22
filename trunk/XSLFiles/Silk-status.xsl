@@ -565,9 +565,8 @@
             <xsl:value-of select="@kinTerm"/>
          </i> (<xsl:apply-templates mode="label" select="."/>)</h3>
       <xsl:if
-         test="(basis-type='definition' or basis-type='clause')
-         and anomaly-type!='nearMiss' ">
-         <p>There is definition in the library of known kinship
+         test="(basis-type='definition' or basis-type='clause')">
+         <p>There is a definition in the library of known kinship
             systems that looks like a close fit for <i><xsl:value-of
                   select="@kinTerm"/></i>. That definition is as
             follows: </p>
@@ -582,25 +581,33 @@
          </blockquote>
 
          <xsl:if test="anomaly-type='falseNeg'">
-            <p>However, there are one or more dyads that fit the above
-               definition but have not been labeled as
+            <p>All of the dyads labelled as 
+               <i><xsl:value-of select="@kinTerm"/></i> fit the above
+               definition. However, there are one or more dyads that fit 
+               and are not  labeled as
                      <i><xsl:value-of select="@kinTerm"/></i>;
-                  <xsl:apply-templates select="misfits">
-                  <xsl:with-param name="with-term"
-                     >yes</xsl:with-param>
-               </xsl:apply-templates>
+                  <xsl:apply-templates select="misfits"/>.
             </p>
          </xsl:if>
          <xsl:if test="anomaly-type='falsePos'">
-            <!-- Is this right? -->
             <p>However, there are one or more dyads that have been
                labeled as <i><xsl:value-of select="@kinTerm"/></i>
                that do not fit the above definition;
-                  <xsl:apply-templates select="misfits"/>
+                  <xsl:apply-templates select="misfits"/>.
+            </p>
+         </xsl:if>
+         <xsl:if test="anomaly-type='nearMiss'">
+            <p>However, there are a few dyads that are preventing a
+               perfect fit with the above definition. Either they use the
+               term and don't fit the definition, or they fit the
+               definition but don't use the term;
+               <xsl:apply-templates select="misfits">
+                  <xsl:with-param name="with-term">yes</xsl:with-param>
+               </xsl:apply-templates>.
             </p>
          </xsl:if>
          <p>Go back to the genealogy editor and double check that
-            these dyads are entered correctly.</p>
+            these specific dyads are entered correctly.</p>
          <p>Options:</p>
          <ul>
             <li>If any of these dyads has the wrong kin term assigned
@@ -619,10 +626,6 @@
       </xsl:if>
       <xsl:if test="basis-type='contradiction'">
          <p>The explanation for a contradiction has not yet been
-            implemented.</p>
-      </xsl:if>
-      <xsl:if test="anomaly-type='nearMiss'">
-         <p>The explanation for near misses has not yet been
             implemented.</p>
       </xsl:if>
    </xsl:template>
