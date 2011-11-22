@@ -641,11 +641,16 @@
       <ol>
          <xsl:for-each select="named-dyad | kin-type-dyad">
             <li>
-               <p>The needed dyad is <i><xsl:call-template
-                        name="generate-gloss">
-                        <xsl:with-param name="literals"
-                           select="clause/literal"/>
-                     </xsl:call-template></i>. <xsl:if
+               <p>The needed dyad is formally specified as the
+                  following path or relationships from Ego to Alter:
+               </p>
+               <blockquote>
+                  <ul>
+                     <li><xsl:value-of
+                        select="substring-after(gloss/element/@text, ':-')"/></li>
+                  </ul>
+               </blockquote>
+               <p><xsl:if
                      test="self::named-dyad"> Please go to the
                      genealogy editor and set Ego to person
                         #<xsl:value-of select="ego-serial"/> and Alter
