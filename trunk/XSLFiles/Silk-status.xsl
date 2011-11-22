@@ -606,23 +606,32 @@
                </xsl:apply-templates>.
             </p>
          </xsl:if>
-         <p>Go back to the genealogy editor and double check that
-            these specific dyads are entered correctly.</p>
-         <p>Options:</p>
+         <p>The action box for anomalies allows you to review each of
+            these dyads and act accordingly. Select each of the dyads
+            in turn from the dropdown list, and click the 
+            radio button for the appropriate action:</p>
          <ul>
-            <li>If any of these dyads has the wrong kin term assigned
-               or the term is misspelled, use the genealogy editor to
-               correct the term.</li>
-            <li>If any of these cases involves a synonym or a regional
-               variant, use the genealogy editor to add the primary
-               term to the record for the dyad.</li>
-            <li>If any of these dyads is indeed correct as it stands
-               (indicating that the identified definition is not quite
-               right for the term), select the Confirm option for each
-               dyad that is correct. This will cause the system to
-               stop trying to fit this particular definition.</li>
-            <li>If you are not sure, you can do nothing for now.</li>
+            <li>If you are not sure, you may select "No Action" and do 
+            nothing for now.</li>
+            <li>If the dyad is correct as it stands, select "This dyad
+               is CORRECT". This will cause the system to 
+               stop trying to fit this particular definition and to no
+               longer doubt this dyad in the future.</li>
+            <li>If the dyad is completely wrong, you may simply select
+            "This dyad is wrong; DELETE it" to remove it from the genealogy chart.</li>
+            <li>If the dyad has the wrong kin term assigned
+               or the term is misspelled, select "EDIT the kin term
+               to" and type the correct term into the text box.</li>
+            <li>If the problem involves a synonym or a regional
+               variant, and you want to have multiple terms assigned
+               to the dyad, click on the button for "SHOW This Dyad on
+               the Chart" to open the genealogy editor with
+               this dyad already selected and edit as needed.</li>
          </ul>
+         <p>After selecting one of the
+            radio buttons, click the button for "RECORD Decision on
+            This Dyad"  before
+            moving to the next dyad.</p>
       </xsl:if>
       <xsl:if test="basis-type='contradiction'">
          <p>The explanation for a contradiction has not yet been
