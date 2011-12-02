@@ -273,7 +273,7 @@ public class Person {
                     out = out + st.nextToken().substring(0, 1);
                 }
             } else {
-                out = "No Name";
+                out = "<" + (myId -1) + ">";
             }
         } else if (nameLabel == LAST) {
             if (st.hasMoreTokens()) {
@@ -285,7 +285,7 @@ public class Person {
                 }
                 out += " " + out1;
             } else {
-                out = "No Name";
+                out = "<" + (myId -1) + ">";
             }
         } else if (nameLabel == INITIALS) {
             if (st.hasMoreTokens()) {
@@ -294,12 +294,12 @@ public class Person {
                     out += st.nextToken().substring(0, 1);
                 }
             } else {
-                out = "No Name";
+                out = "<" + (myId -1) + ">";
             }
         } else if (nameLabel == WHOLE) {
             out = name;
-            if (out.equals("")) {
-                out = "No Name";
+            if (out.equals("") || out.equals(" ")) {
+                out = "<" + (myId -1) + ">";
             }
         }
         Individual ind = (Individual) this;

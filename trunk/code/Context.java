@@ -647,10 +647,12 @@ public class Context implements Serializable {
         writeSILKGuts(silk, directory);
         if (domTheoryRef != null && domTheoryRef.issuesForUser != null
                 && !domTheoryRef.issuesForUser.isEmpty()) {
+            DomainTheory.current = domTheoryRef;
             printSuggestions(silk, domTheoryRef, "Reference");
         }
         if (domTheoryAdr != null && domTheoryAdr.issuesForUser != null
                 && !domTheoryAdr.issuesForUser.isEmpty()) {
+            DomainTheory.current = domTheoryAdr;
             printSuggestions(silk, domTheoryAdr, "Address");
         }
         silk.println("</SIL_KinData>");

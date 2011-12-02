@@ -31,7 +31,7 @@ public class MainPane extends JFrame implements ActionListener {
     public static JDesktopPane desktop;
     public static MainPane topPane;
     public static int testSerialNmbr;
-    public static int buildNmbr = 04;
+    public static int buildNmbr = 11;
     public static int NUMBER_OF_EGOS = 4;
     public static boolean fill_In_Flag = false;
     private JMenuBar menuBar = new JMenuBar();
@@ -599,14 +599,10 @@ public class MainPane extends JFrame implements ActionListener {
                     if (!dir.isDirectory()) {
                         throw new JavaSystemException("Selected file is not a directory.");
                     }
-                    int doFVs = JOptionPane.showConfirmDialog(null, "Compute Feature Vectors?");
-                    int keep = JOptionPane.showConfirmDialog(null, "Keep Contexts Active?");
-                    int overWrite = JOptionPane.showConfirmDialog(null, "Allow Over-Write of Existing DTs?");
-                    if (overWrite == JOptionPane.YES_OPTION) {
-                        Library.allowOverWrites = true;
-                    } else {
-                        Library.allowOverWrites = false;
-                    }
+                    int doFVs = JOptionPane.showConfirmDialog(this, "Compute Feature Vectors?");
+                    int keep = JOptionPane.showConfirmDialog(this, "Keep Contexts Active?");
+                    int overWrite = JOptionPane.showConfirmDialog(this, "Allow Over-Write of Existing DTs?");
+                    Library.allowOverWrites = (overWrite == JOptionPane.YES_OPTION);
                     currDomTheoryDir = dir;
                     if (doFVs == JOptionPane.YES_OPTION && FeatureVectorObj.el_1_distn == null) {
                         Library.resetDistributions();
@@ -618,6 +614,7 @@ public class MainPane extends JFrame implements ActionListener {
                         if (fName.indexOf(".") != 0) {
                             Library.loadNewDomTh(file);
                             dt = DomainTheory.current;
+                            Context.current = dt.ctxt;
                             Context.simulation = false;
                             dt.ctxt.simDataGen = false;
                             if (keep == JOptionPane.NO_OPTION) {
@@ -859,9 +856,9 @@ public class MainPane extends JFrame implements ActionListener {
             int minK, maxK;
             float penalty;
             try {
-                String minKStr = JOptionPane.showInputDialog("Enter Smallest Number of Clusters"),
-                        maxKStr = JOptionPane.showInputDialog("Enter Largest Number of Clusters"),
-                        penaltyStr = JOptionPane.showInputDialog("Enter Penalty Percentage (a whole number)");
+                String minKStr = JOptionPane.showInputDialog(this, "Enter Smallest Number of Clusters"),
+                        maxKStr = JOptionPane.showInputDialog(this, "Enter Largest Number of Clusters"),
+                        penaltyStr = JOptionPane.showInputDialog(this, "Enter Penalty Percentage (a whole number)");
                 minK = Integer.parseInt(minKStr);
                 maxK = Integer.parseInt(maxKStr);
                 penalty = Float.parseFloat(penaltyStr) / 100f;
@@ -900,9 +897,9 @@ public class MainPane extends JFrame implements ActionListener {
             return;
             }catch(Exception exc) { System.out.println("You messed up!\n" + exc); }
              */ try {
-                String startStr = JOptionPane.showInputDialog("Start with what Language number?"),
-                        endStr = JOptionPane.showInputDialog("End with what Language number (inclusive)?"),
-                        tag = JOptionPane.showInputDialog("Suffix for this segment");
+                String startStr = JOptionPane.showInputDialog(this, "Start with what Language number?"),
+                        endStr = JOptionPane.showInputDialog(this, "End with what Language number (inclusive)?"),
+                        tag = JOptionPane.showInputDialog(this, "Suffix for this segment");
                 int start = Integer.parseInt(startStr),
                         end = Integer.parseInt(endStr);
                 if (Library.predEncodings == null) {
@@ -926,13 +923,13 @@ public class MainPane extends JFrame implements ActionListener {
         else if (e.getActionCommand().equals("Merge Indexes")) {
             String[] suffixes = new String[10];
             int index = 0;
-            String suffix = JOptionPane.showInputDialog("What was the 1st Suffix used?  (Hit 'return' to cancel.)");
+            String suffix = JOptionPane.showInputDialog(this, "What was the 1st Suffix used?  (Hit 'return' to cancel.)");
             if (suffix.equals("")) {
                 return;
             }
             suffixes[index++] = suffix;
             while (!suffix.equals("")) {
-                suffix = JOptionPane.showInputDialog("What was the next Suffix used?  (Hit 'return' to end.)");
+                suffix = JOptionPane.showInputDialog(this, "What was the next Suffix used?  (Hit 'return' to end.)");
                 suffixes[index++] = suffix;
             }  // end of suffix-gathering loop
             index--;

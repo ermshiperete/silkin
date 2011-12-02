@@ -602,7 +602,7 @@ public class PersonPanel extends javax.swing.JPanel {
         personBirthYr.setText(ind.getBirthYr());
         personDeathYear.setText(ind.getDeathYr());
         dataChgDate.setText(ind.dataChangeDate);
-        personComments.setText(ind.comment);
+        personComments.setText(restoreLineBreaks(ind.comment));
         alterFirstNames.setEditable(true);
         alterLastName.setEditable(true);
         personBirthMM.setEditable(true);
@@ -662,6 +662,10 @@ public class PersonPanel extends javax.swing.JPanel {
             }
         }
         storing = false;
+    }
+    
+    static String restoreLineBreaks(String in) {        
+        return in.replace("$$br$$", "\n");
     }
     
     void checkForAutoDefs(Node nod, Individual ego) {
@@ -848,7 +852,7 @@ public class PersonPanel extends javax.swing.JPanel {
             throws KSParsingErrorException, JavaSystemException,
 		   KSBadHornClauseException, KSInternalErrorException,
                    KSConstraintInconsistency, KSDateParseException {
-	if (! dirty) return;  //  No changes have been made
+//	if (! dirty) return;  //  No changes have been made
         storing = true;
         String a, b, c;
         int currEgoNum = parent.getCurrentEgo();

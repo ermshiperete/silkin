@@ -3641,7 +3641,7 @@ public class DomainTheory extends DT_Abstract2 {
         theory.put(ktd.kinTerm, ktd);  //  recursive ktd must be in theory for expansion of itself & its users
         Context.current = ctxt;
         boolean oldSDG = ctxt.simDataGen;
-        ctxt.simDataGen = true;	//	Made 'true' 12/5/07  I suspect a prior activity -- testing will tell.
+        ctxt.simDataGen = true;	
         ktd.assureExamplesGenerated(ctxt.getPair());
         ktd.makeSigStrings();
         ctxt.simDataGen = oldSDG;

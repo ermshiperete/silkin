@@ -72,8 +72,21 @@ public class UmbrellaCandidate extends Issue {
         public void toSILKFile(PrintWriter pw) {
             String spacer = "\t", dblSpacer = "\t\t";
             pw.println(spacer + "<umbrella kinTerm=\"" + kinTerm + "\">");
+            Gloss glos;
             if (processed) {
                 pw.println(dblSpacer + "<processed>true</processed>");
+            }
+            if (pcStringsCovered != null && !pcStringsCovered.isEmpty()) {
+                glos = new Gloss();
+                pw.print(dblSpacer + "<pc-strings-covered> ");
+                pw.print(pcStringsCovered.get(0));
+                glos.elements.add(KinTermDef.glossify((String)pcStringsCovered.get(0)));
+                for (int i=1; i < pcStringsCovered.size(); i++) {
+                    pw.print(", " + pcStringsCovered.get(i));
+                    glos.elements.add(KinTermDef.glossify((String)pcStringsCovered.get(i)));
+                }
+                pw.println(" </pc-strings-covered>");                
+                pw.print(glos.toSILKString(dblSpacer));
             }
             pw.println(dblSpacer + "<sub-terms>");
             Iterator subTmIter = subTerms.entrySet().iterator();
@@ -85,11 +98,15 @@ public class UmbrellaCandidate extends Issue {
                 pw.println(dblSpacer + dblSpacer + "<sub-kin-term>" + subKinTm + "</sub-kin-term>");
                 pw.print(dblSpacer + dblSpacer + "<pc-strings-covered> ");
                 ArrayList<Object> stringsCovered = (ArrayList<Object>)supportList.get(0);
+                glos = new Gloss();
                 pw.print(stringsCovered.get(0));
+                glos.elements.add(KinTermDef.glossify((String)stringsCovered.get(0)));
                 for (int i=1; i < stringsCovered.size(); i++) {
                     pw.print(", " + stringsCovered.get(i));
+                    glos.elements.add(KinTermDef.glossify((String)stringsCovered.get(i)));
                 }
                 pw.println(" </pc-strings-covered>");
+                pw.print(glos.toSILKString(dblSpacer + dblSpacer));
                 pw.println(dblSpacer + dblSpacer + "<dyads-covered>");
                 ArrayList<Object> dyadsCovered = (ArrayList<Object>)supportList.get(1);
                 for (int i=0; i < dyadsCovered.size(); i++) {

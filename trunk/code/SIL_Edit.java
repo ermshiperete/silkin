@@ -75,7 +75,7 @@ public class SIL_Edit extends JFrame {
         newContextItem = new JMenuItem();
         newLiBrowserItem = new JMenuItem();
         loadItem = new JMenuItem();
-        loadItemPreXML = new JMenuItem();
+//        loadItemPreXML = new JMenuItem();
         exportSubMenu = new JMenu();
         exportGEDCOMItem = new JMenuItem();
         exportKAESItem = new JMenuItem();
@@ -156,16 +156,16 @@ public class SIL_Edit extends JFrame {
         });
         fileMenu.add(loadItem);
 
-        loadItemPreXML.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.CTRL_MASK));
-        loadItemPreXML.setText("Open Pre-XML");
-        loadItemPreXML.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent evt) {
-                loadItemPreXMLActionPerformed(evt);
-            }
-        });
-        loadItemPreXML.setVisible(true);
-        fileMenu.add(loadItemPreXML);
+//        loadItemPreXML.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.CTRL_MASK));
+//        loadItemPreXML.setText("Open Pre-XML");
+//        loadItemPreXML.addActionListener(new ActionListener() {
+//
+//            public void actionPerformed(ActionEvent evt) {
+//                loadItemPreXMLActionPerformed(evt);
+//            }
+//        });
+//        loadItemPreXML.setVisible(true);
+//        fileMenu.add(loadItemPreXML);
 
         exportSubMenu.setText("Export");
         exportDefinitionsItem.setText("Definitions");
@@ -413,22 +413,22 @@ public class SIL_Edit extends JFrame {
         });
         contextMenu.add(editableItem);
 
-        testKeyItem = new JMenuItem("Keyboard Test");
-        testKeyItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                keyTestItemActionPerformed(evt);
-            }
-        });
-        contextMenu.add(testKeyItem);
-
-        testUnicodeItem = new JMenuItem("Unicode Test");
-        testUnicodeItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                unicodeTestItemActionPerformed(evt);
-            }
-        });
-        contextMenu.add(testUnicodeItem);
-
+//        testKeyItem = new JMenuItem("Keyboard Test");
+//        testKeyItem.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent evt) {
+//                keyTestItemActionPerformed(evt);
+//            }
+//        });
+//        contextMenu.add(testKeyItem);
+//
+//        testUnicodeItem = new JMenuItem("Unicode Test");
+//        testUnicodeItem.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent evt) {
+//                unicodeTestItemActionPerformed(evt);
+//            }
+//        });
+//        contextMenu.add(testUnicodeItem);
+//
         // Above 2 items to be removed after PC testing
 
         contextMenu.add(jSeparator1);
@@ -626,7 +626,7 @@ public class SIL_Edit extends JFrame {
     }
 
     private void adminSILKinItemActionPerformed(ActionEvent evt) {
-        String pwd = JOptionPane.showInputDialog("Enter Administrator Password");
+        String pwd = JOptionPane.showInputDialog(editWindow, "Enter Administrator Password");
         if (pwd.equals(Library.PASSWORD)) {
             Library.currentActivity = Library.ADMIN;
             if (SILKin.mainPane == null) {
@@ -814,11 +814,10 @@ public class SIL_Edit extends JFrame {
             }
             chart.saveSILKinFile();
             File suggsDataFile = chart.saveFile;
-            String styleFilePath = suggsDataFile.getParent();
-            styleFilePath += "/silk-status.xsl";
+            String styleFilePath = Library.libraryDirectory + "Suggestions/silk-status.xsl";
             File stylesheet = new File(styleFilePath);
             if (! stylesheet.exists()) {
-                String msg = "Cannot find file 'silk-status.xsl' in same directory as SILK file.";
+                String msg = "Cannot find file 'silk-status.xsl' in Suggestions folder.";
                 MainPane.displayError(msg, "Can't Get Suggestions", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -1332,7 +1331,7 @@ public class SIL_Edit extends JFrame {
     private JRadioButtonMenuItem ltrRefBtn;
     private JRadioButtonMenuItem lastNameBtn;
     private JMenuItem loadItem;
-    private JMenuItem loadItemPreXML;
+//    private JMenuItem loadItemPreXML;
     private ButtonGroup nameButtonGroup;
     private JMenuItem newContextItem;
     private JMenuItem newLiBrowserItem;
@@ -1344,8 +1343,8 @@ public class SIL_Edit extends JFrame {
     public JMenuItem returnToSuggsItem;
     private JMenuItem saveAsItem;
     private JMenuItem saveItem;
-    private JMenuItem testKeyItem;
-    private JMenuItem testUnicodeItem;
+//    private JMenuItem testKeyItem;
+//    private JMenuItem testUnicodeItem;
     private JRadioButtonMenuItem wholeNameBtn;
     // End of variables declaration
 }

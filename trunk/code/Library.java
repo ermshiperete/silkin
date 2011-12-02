@@ -1215,10 +1215,17 @@ public class Library {
             s += bacer + spacer + "<prototype>\n" + prototype.toSILKString(bacer + dblSpacer);
             s += bacer + spacer + "</prototype>\n";
             s += bacer + spacer + "<members>\n";
-            int limit = Math.min(3, members.size());
-            for (int i = 0; i < limit; i++) {
+            ArrayList<KTD_Ptr> prunedList = new ArrayList<KTD_Ptr>();
+            for (int i = 0; i < members.size(); i++) {
                 KTD_Ptr kptr = (KTD_Ptr) members.get(i);
-                s += kptr.toSILKString(bacer + dblSpacer);
+                if (kptr.compareTo(prototype) != 0) {
+                    prunedList.add(kptr);
+                }
+            }
+            int n = 0, limit = Math.min(3, prunedList.size());
+            for (KTD_Ptr k : prunedList) {
+                s += k.toSILKString(bacer + dblSpacer);
+                if (++n >= limit) break;
             }
             s += bacer + spacer + "</members>\n";
             String s2 = "";
@@ -1565,7 +1572,8 @@ public class Library {
             }
         }  //  end of static method clearCacheDTs
 
-        /**  Provide a method of comparing 2 KTD_Ptrs for use in TreeMaps and TreeSets.	*/
+        /**  Provide a method of comparing 2 KTD_Ptrs for use in TreeMaps and TreeSets.	
+              Returning a 0 means 'equal.'*/
         public int compareTo(Object obj) throws ClassCastException {
             if (obj == null) {
                 return -1;
@@ -2078,6 +2086,8 @@ public class Library {
         String languageName, kinTerm, compactXP;
         int cbSeqNmbr;
         boolean posHitVal = false;
+        ArrayList<Integer[]> namedPairs = new ArrayList<Integer[]>();
+        Gloss gloss;
         CB_EQC cbEQC;
         ClauseBody clause;
 
@@ -2160,9 +2170,9 @@ public class Library {
             return curlySet.toString();
         }  //  end of method toString
 
-        // Called only by a Discriminator's SILKFile method
-        public String toSILKString() {
-            String s = "";
+        // Called only by a DataRequest's SILKFile method
+        public String toSILKString(String bacer) {
+            String s = bacer;
             ClauseBody cb = null;
             try {
                 cb = getClause();
@@ -2172,82 +2182,99 @@ public class Library {
                 JOptionPane.showMessageDialog(null, msg, "SILKin Internal Error",
                         JOptionPane.ERROR_MESSAGE);
                 MainPane.activity.log.append(msg + "\n\n");
-                s += "\t<error> \"" + msg + "\" </error>";
+                s += "<error> \"" + msg + "\" </error>";
                 return s;
             }
             String targetKinType, output = "";
             if (cbEQC != null && cbEQC.pcString != null) {
                 targetKinType = cbEQC.pcString;
-            }else if (cb != null && cb.pcString != null) {
+            } else if (cb != null && cb.pcString != null) {
                 targetKinType = cb.pcString;
-            }else {
+            } else {
                 String msg = "While printing a CB_Ptr to SILK File, did not find PCString.";
                 msg += "\nContinuing on with Suggestion file creation, but THIS ELEMENT is damaged.";
                 JOptionPane.showMessageDialog(null, msg, "SILKin Internal Error",
                         JOptionPane.ERROR_MESSAGE);
                 MainPane.activity.log.append(msg + "\n\n");
-                s += "\t<error> \"" + msg + "\" </error>";
+                s += "<error> \"" + msg + "\" </error>";
                 return s;
             }
             KinTypeIndex kti = contextUnderConstruction.kti;
-            String[] container = {output};
             boolean needOne = true;
-            int priorSize = 0;
-            ArrayList<Integer[]> candidates = kti.getList(targetKinType);
-            if (candidates != null && ! candidates.isEmpty()) {
-                needOne = tryCandSILK(0, candidates, targetKinType, cb, container);
-                priorSize = candidates.size();
-            } // end of there were candidates
-            if (needOne) {
-                kti.updateIndex(contextUnderConstruction);
+            ArrayList<Integer[]> candidates;
+            if (!namedPairs.isEmpty()) {
+                needOne = false;
+                candidates = namedPairs;
+            } else {
                 candidates = kti.getList(targetKinType);
-                if (candidates != null && ! candidates.isEmpty()) {
-                    needOne = tryCandSILK(priorSize, candidates, targetKinType,
-                            cb, container);
+                if (needOne && candidates != null && !candidates.isEmpty()) {
+                    needOne = tryCandSILK(0, candidates, targetKinType, cb);
                 } // end of there were candidates
-            } // If we still need more by this point, make kin-type-dyad
-            if (needOne) {
-                output = "\t<kin-type-dyad>";
-                output += "\t\t<pc-string>" + targetKinType + "</pc-string>";
-                output += cb.toSILKString("\t\t");
-                output += "\t</kin-type-dyad>";
-            } else { // we have some candidates
-                for (Integer[] pair : candidates) {
-                    output += "\t<named-dyad>\n";
-                    output += "\t\t<ego-serial>" + pair[0] + "</ego-serial>";
-                    output += "\t\t<alter-serial>" + pair[1] + "</alter-serial>";
-                    output += "\t\t<pc-string>" + targetKinType + "</pc-string>";
-                    output += cb.toSILKString("\t\t");
-                    output += "\t</named-dyad>\n";
+                if (needOne) {
+                    kti.updateIndex(contextUnderConstruction);
+                    candidates = kti.getList(targetKinType);
+                    if (candidates != null && !candidates.isEmpty()) {
+                        needOne = tryCandSILK(0, candidates, targetKinType, cb);
+                    } // end of there were candidates
+                } // If we still need more by this point, make kin-type-dyad
+                if (needOne) {
+                    output = bacer + "<kin-type-dyad>\n";
+                    output += gloss(cb, bacer + "\t");
+                    if (cb.pcString == null || cb.pcString.equals("")) {
+                        cb.pcString = targetKinType;
+                    }
+                    output += cb.toSILKString(bacer + "\t");
+                    output += bacer + "</kin-type-dyad>";
+                }
+            }
+            if (!needOne) { // we have some candidates
+                int end = Math.min(2, candidates.size());
+                for (int i = 0; i < end; i++) {
+                    Integer[] pair = candidates.get(i);
+                    output += bacer + "<named-dyad>\n";
+                    if (gloss != null) {
+                        output += gloss.toSILKString(bacer + "\t");
+                    }else {
+                        output += gloss(cb, bacer + "\t");
+                    }
+                    output += bacer + "\t<ego-serial>" + pair[0] + "</ego-serial>\n";
+                    output += bacer + "\t<alter-serial>" + pair[1] + "</alter-serial>\n";
+                    output += bacer + "\t<pc-string>" + targetKinType + "</pc-string>\n";
+                    output += cb.toSILKString(bacer + "\t");
+                    output += bacer + "</named-dyad>";
                 }
             } // end of have-some-candidates
             return output;
         }
+        
+        static String gloss(ClauseBody cb, String bacer) {
+            Predicate pred = new Predicate("required_relationship");
+            Variable arg0 = new Variable("Alter"),arg1 = new Variable("Ego");
+            Literal head = new Literal(pred, arg0, arg1);
+            KinTermDef ktd = new KinTermDef(head, cb);
+            ktd.headPred = pred;
+            ktd.domTh = DomainTheory.current;
+            return ktd.gloss().toSILKString(bacer);
+        }
 
         boolean tryCandSILK(int start, ArrayList<Integer[]> candidates,
-                String targetKinType, ClauseBody cb, String[] s) {
+                String targetKinType, ClauseBody cb) {
             boolean needMore = true;
             int pairsFound = 0;
             ArrayList<Individual> census = contextUnderConstruction.individualCensus;
-            for (int i = start; i < candidates.size(); i++) {
-                Integer[] pair = candidates.get(i);
+            Iterator pairIter = candidates.iterator();
+            while (pairIter.hasNext()) {
+                Integer[] pair = (Integer[])pairIter.next();
                 Individual ego = census.get(pair[0]),
                         alter = census.get(pair[1]);
                 if (goodFit(ego, alter, cb)) {
-                    String msg = "\t<named-dyad>";
-                    msg += "\t\t<ego-serial> " + pair[0] + " </ego-serial>";
-                    msg += "\t\t<alter-serial> " + pair[1] + " </alter-serial>";
-                    msg += "\t\t<pc-string> \"" + targetKinType + "\" </pc-string>";
-                    msg += "\t\t<clause>";
-                    msg += cb.toString();
-                    msg += "\t\t</clause>";
-                    msg += "\t</named-dyad>";
-                    s[0] += msg;
                     needMore = false;
                     if (++pairsFound > 1) {
                         break;  // make up to 2 requests
                     }
-                } // end of goodFit == true
+                }else {  // remove all bad fits
+                    pairIter.remove();
+                }
             } // end of loop thru candidates
             return needMore;
         }

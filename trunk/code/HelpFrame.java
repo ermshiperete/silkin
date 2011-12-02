@@ -288,6 +288,8 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             detailDisplayItem = new JMenuItem();
             refAdrItem = new JMenuItem();
             dyadsItem = new JMenuItem();
+            reservedItem = new JMenuItem();
+            commentsItem = new JMenuItem();
             datesItem = new JMenuItem();
             egoAlterItem = new JMenuItem();
             labelItem = new JMenuItem();
@@ -363,7 +365,25 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
                 }
             });
             startSubMenu.add(dyadsItem);
+            
+            reservedItem.setText("Reserved Words & Characters");
+            reservedItem.addActionListener(new ActionListener() {
 
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(START, "reserved");
+                }
+            });
+            startSubMenu.add(reservedItem);
+            
+            commentsItem.setText("Restrictions on Names & Comments");
+            commentsItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(START, "comments");
+                }
+            });
+            startSubMenu.add(commentsItem);
+            
 // Draw/Edit Charts SubMenu       
             chartSubMenu.setText("Drawing and Editing Charts");
             add(chartSubMenu);
@@ -542,6 +562,8 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
         private JMenuItem detailDisplayItem;
         private JMenuItem refAdrItem;
         private JMenuItem dyadsItem;
+        private JMenuItem reservedItem;
+        private JMenuItem commentsItem;       
         private JMenuItem datesItem;
         private JMenuItem egoAlterItem;
         private JMenuItem labelItem;

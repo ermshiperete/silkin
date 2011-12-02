@@ -76,9 +76,65 @@ to add or delete persons to a union is described <a href="#add">  above</a>; you
 </p>
 <p>The purpose of dyads, of course, is to record <span style="font-style: italic">what kin term belongs to each set of kin types</span>. You will enter kin terms in the Data Panel's boxes for each Alter relative to the current Ego. Every time you select a new Ego, you can enter a whole new set of kin terms for all the Alters.
 </p>
-<p>Not every relationship (kin type) has a kin term in every language. In English, for example, there is no kin term for your son's wife's mother's sister. But there may be a kin term in some other language. It is useful to identify the relationships that have no kin term; this sets 'boundaries' for the kinship system. <span style="font-weight: bold">SILKin</span> has a special symbol -- 'no__term' -- that means &quot;there is no kin term&quot;. (Notice the two consecutive underscores between 'no' and 'term'.) When the system sees the 'no__term' symbol, it knows that no correct definition for a kin term will include this relationship. This helps the Learning Module to rule out incorrect candidate definitions.
+<p>Not every relationship (kin type) has a kin term in every language. In English, for example, there is no kin term for your son's wife's mother's sister. But there may be a kin term in some other language. It is useful to identify the relationships that have no kin term; this sets 'boundaries' for the kinship system. <span style="font-weight: bold">SILKin</span> has a special symbol -- 'no__term' -- that means &quot;there is no kin term&quot;. (Notice the two consecutive underscores.) When the system sees the 'no__term' symbol, it knows that no correct definition for a kin term will include this relationship. This helps the Learning Module to rule out incorrect candidate definitions.
 </p>
 <p>The 'no__term' symbol has another practical use; it limits the amount of data you must enter. Because 'no__term' means &quot;there is no term&quot; then an empty data field can be interpreted as &quot;the User has not yet made an entry here.&quot; So you can enter enough kin terms to give the Learning Module solid data, without entering every possible kin term for every possible relationship. Likewise, you don't have to enter 'no__term' in every data field where it could go. Just enter enough of them at the boundaries so the Learning Module can figure out where the boundaries are.
+</p>
+<a name="reserved"></a>
+<h3> Reserved Words and Illegal Characters in Kin Terms</h3>
+<p>Kin terms can be composed of the following:
+<ul>
+<li>letters of the Western or any other alphabet.</li>
+<li>digits 0-9 (but a digit may not be the first character).</li>
+<li>an underscore (&quot;_&quot;).</li>
+<li>a left-square-bracket (&quot;[&quot;) or right-square-bracket (&quot;]&quot;).</li>
+<li>a left-curly-brace (&quot;{&quot;) or right-curly-brace (&quot;}&quot;).</li>
+<li>any &quot;combining mark&quot; in a non-Western alphabet*</li>
+<li>any &quot;non-spacing mark&quot; in a non-Western alphabet*</li>
+</ul>
+* This restriction is quoted from the Java language manual. We do not expect that &quot;combining marks&quot; 
+will be a problem. If further details are needed, contact your Anthropology Coordinator.
+</p>
+<p>In addition to the above rules, certain terms are reserved in SILKin; you may not use them as kin terms.
+<ul>
+<li>father, mother, parent, child, </li>
+<li>husband, wife, spouse,</li>
+<li>son, daughter, male, female,</li>
+<li>elder, younger, equal, not, </li>
+<li>divorced, dead, gender, </li>
+<li>lessThan, greaterThan, lessOrEql, </li>
+<li>greaterOrEql, contains, allowCreation, </li>
+<li>sibling, siblings, brother, sister, </li>
+<li>half_brother, half_sister,</li>
+<li>step_brother, step_sister,</li>
+<li>parents, step_father, step_mother, spice, </li>
+<li>children, step_son, step_daughter.</li>
+</ul>
+</p>
+<p><span style="font-weight: bold">Examples of LEGAL kin terms:</span>
+<ul>
+<li>daughter_in_law</li>
+<li>ὁράω</li>
+<li>parallel_cousin[aux]25</li>
+</ul>
+</p>
+<p><span style="font-weight: bold">Examples of ILLEGAL kin terms:</span>
+<ul>
+<li>2nd_cousin (may not start with a digit)</li>
+<li>brother&lt;younger&gt;  (may not use angle-brackets)</li>
+<li>father-in-law (may not use hyphens)</li>
+<li>third cousin (may not use spaces)</li>
+<li>father_'prime&quot; (cannot use single or double quotes)</li>
+</ul>
+</p>
+<a name="comments"></a>
+<h3> Use Almost Anything in Names and Comments</h3>
+<p>Please note, the above restrictions apply only to <span style="font-style: italic">kin terms</span>. The names of persons, the comments fields for person and families, etc. are free of all such restrictions except three:  
+<ol>
+<li>Names and comments may not use double-quote marks.</li>
+<li>Names and comments may not use angle-brackets ('&lt;' and '&gt;').</li>
+<li>Names may not have newline (carriage return) characters. (Comments may.)</li>
+</ol>
 </p>
 </body>
 </html>

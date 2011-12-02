@@ -3,7 +3,7 @@
  * Suggestions. It always displays a drop-down menu of suggestions, a
  * Details box, and an Action Box.
  *
- * When the User selects a suggestion in the menu, an Action Boxes is displayed
+ * When the User selects a suggestion in the menu, an Action Box is displayed
  * tailored to that type of suggestion. Each Action Box contains the code to
  * implement any actions taken. This DecisionFrame is just a container.
  *
@@ -13,6 +13,7 @@
  */
 
 import javax.swing.*;
+import javax.swing.text.*;
 import javax.swing.event .*;
 import java.util.*;
 import java.awt.*;
@@ -77,8 +78,7 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
         detailsScrollPane = new JScrollPane();
         jLabel1.setText("Details");
         jLabel1.setAlignmentX(0.5f);
-        //  New Code
-        detailsPane = new JEditorPane();
+        detailsPane = new JTextPane();
         detailsPane.setEditable(false);
         detailsPane.addHyperlinkListener(this);
         URL detailsURL = null;
@@ -349,7 +349,7 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
     private JPanel rightPanel;
     private JComboBox suggestionComboBox;
     private DefaultComboBoxModel suggComboModel;
-    private JEditorPane detailsPane;
+    private JTextPane detailsPane;
 
     // This class resets SIL_Edit's Context menu before closing
     private class CloseListener extends WindowAdapter {

@@ -289,7 +289,7 @@ public class ClauseBody implements Serializable, Comparator {
             hornClaws += lit + ", ";
         }
         Literal lit = (Literal) body.get(last);        
-        return hornClaws += lit + ".\t";
+        return hornClaws + lit + ". ";
     }
 
     String toSILKString(String bacer) {
@@ -785,14 +785,14 @@ public class ClauseBody implements Serializable, Comparator {
         }
         seq = seqNmbr;
 //  END OF CLAUSE COUNTER
-  if (ktd.kinTerm.equals("hagaah")) Context.breakpoint();
+//  if (ktd.kinTerm.equals("hagaah")) Context.breakpoint();
 //  else Context.breakFlag = false;
         //  distanceLimit is enforced only during simDataGen for Leave-One-Out
         //  Since nearly all PC_String components are 2 or 3 characters, we let
         //  (floor(half the length of the PC_String)) -1 = a rough metric of relationship distance
         try {
             int stringDist = 0,
-                    pcStrLength = (pcString == null ? 0 : pcString.length());
+                pcStrLength = (pcString == null ? 0 : pcString.length());
             if (hypo.simDataGen) {
                 stringDist = Math.min(Math.max((pcStrLength / 2) - 1, 0), Library.ClauseCounts.maxDist);
             }
@@ -1075,6 +1075,9 @@ public class ClauseBody implements Serializable, Comparator {
             ChartPanel.createNode(ego, fam, "child");
             if (alter.node != null) {
                 pcStr = alter.node.pcString;
+                if (genderOfAlter.equals("?")) {
+                    pcStr = neuterAlter(pcStr);
+                }
             }
         } // if we reached Alter and gave her a PC String, we're done
         if (pcStr != null && pcStr.length() > 0) {
@@ -1089,6 +1092,9 @@ public class ClauseBody implements Serializable, Comparator {
             ChartPanel.createNode(ego, fam, "spouse");
             if (alter.node != null) {
                 pcStr = alter.node.pcString;
+                if (genderOfAlter.equals("?")) {
+                    pcStr = neuterAlter(pcStr);
+                }
                 if (pcStr != null && pcStr.length() > 0) {
                     SIL_Edit.editWindow.setCurrentEgo(oldEgo);
                     ChartPanel.doIndexes = oldIndexBool;
@@ -1114,6 +1120,20 @@ public class ClauseBody implements Serializable, Comparator {
         }
         ego.node = Node.makeSelfNode(adr);
     }
+    
+    String neuterAlter(String pcStr) {
+        String neutered = pcStr;
+        ArrayList pcStringList = ktd.decodeString(pcStr);
+        String lastSymbol = (String)pcStringList.remove(pcStringList.size() -1);
+        try {
+           pcStringList.add(generify(lastSymbol));
+           neutered = "";
+           for (Object o : pcStringList) {
+               neutered += o;
+           }
+        }catch(Exception exc) {  } // won't happen
+        return neutered;
+    }
 
 
     public boolean knownNeuter() {
@@ -1121,6 +1141,7 @@ public class ClauseBody implements Serializable, Comparator {
         //  for (int i=0; i < ktd.flags.size(); i++)
         //  	if (ktd.domTh.nonTermFlags.contains(ktd.flags.get(i))) return true;
         if ((ktd.kinTerm.equals("buchu") && seqNmbr == 3)
+                || ktd.kinTerm.equals("sibling")
                 || (ktd.kinTerm.equals("juai_co") && seqNmbr == 152)
                 || (ktd.kinTerm.equals("juai_yo") && seqNmbr == 152)) {
             return true;

@@ -565,7 +565,6 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         g.translate(originX, originY);
         Rectangle myRect = getBounds();
         myRect.setLocation(-originX, -originY);
-
         paint0(g, myRect);
     }
 
@@ -1075,6 +1074,9 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                     miniCB = pred + "(" + arg0 + "," + arg1 + ")";
                     node.miniPreds.add(miniCB);
                     makePCString2(node);
+                    // Attach this node to ind so it can propagate. 
+                    // Ind's original node is saved.
+                    ind.node = node;
                     // Now propogate to ind's parents. Spouse was shortestPath, 
                     // and ergo his kids have nodes. But her parents may or may not.
                     if (ind.birthFamily != null) {
@@ -1130,6 +1132,9 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                     miniCB = pred + "(" + arg0 + "," + arg1 + ")";
                     node.miniPreds.add(miniCB);
                     makePCString2(node);
+                    // Attach this node to ind so it can propagate. 
+                    // Ind's original node is saved.
+                    ind.node = node;
                     // Now propagate to ind's spouse & kids. Ind's parent was the
                     // shortPath, so neither parents nor siblings need nodes. But her
                     // spouse and kids might.
@@ -1159,6 +1164,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 miniCB = pred + "(" + arg0 + "," + arg1 + ")";
                 node.miniPreds.add(miniCB);
                 makePCString2(node);
+                ind.node = node;
                 if (role.equals("spouse")) {
                     // ind's spouse and kids have nodes, but her other marriages
                     // and her birthFam may need them
@@ -1225,10 +1231,11 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             Integer[] pair = {parent.getCurrentEgo(), ind.serialNmbr};
             Context.current.kti.addPair(node.pcString, pair);
         }
-        if (node != null) {
+        if (node != null && Context.current == Library.contextUnderConstruction) {
             Individual ego = Context.current.individualCensus.get(parent.getCurrentEgo());
             parent.getPPanel().checkForAutoDefs(node, ego);
         }
+        ind.node = oldNode;
         return node;
     }
 

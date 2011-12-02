@@ -35,7 +35,7 @@ public class DataRequest extends Issue {
             }
 //            pw.println(questionsToSILKString(dblSpacer));
             for (Library.CB_Ptr ptr : relatedCB_Ptrs) {
-                pw.println(dblSpacer + spacer + ptr.toSILKString());
+                pw.println(ptr.toSILKString(dblSpacer));
             }
             pw.println(spacer + "</data-request>");
         }

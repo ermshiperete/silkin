@@ -366,9 +366,9 @@ public class FamilyPanel extends JPanel {
         storing = false;
     }
 
-   void showInfo(Family fam) {
-       storing = true;
-       famComments.setText(fam.comment);
+    void showInfo(Family fam) {
+        storing = true;
+        famComments.setText(PersonPanel.restoreLineBreaks(fam.comment));
         famStartDD.setText(fam.getMarriageDD());
         famEndDD.setText(fam.getDivorceDD());
         famStartMM.setText(fam.getMarriageMM());
@@ -377,41 +377,90 @@ public class FamilyPanel extends JPanel {
         famEndYear.setText(fam.getDivorceYr());
         familyID.setText(String.valueOf(fam.serialNmbr));
         dataChgDate.setText(fam.dataChangeDate);
-        String  EOL = ChartPanel.EOL,
-                kidList = "", name;
-        if (fam.husband == null) name = "";
-        else name = fam.husband.name + " <" + fam.husband.serialNmbr + ">";
+        String EOL = ChartPanel.EOL,
+               kidList = "", name;
+        if (fam.husband == null) { name = "";
+        } else { name = fam.husband.name + " <" + fam.husband.serialNmbr + ">";  }
         husbandName.setText(name);
-        if (fam.wife == null) name = "";
-        else name = fam.wife.name + " <" + fam.wife.serialNmbr + ">";
+        if (fam.wife == null) {  name = "";
+        } else { name = fam.wife.name + " <" + fam.wife.serialNmbr + ">"; }
         wifeName.setText(name);
-        ArrayList<Object> sortList = sortOnBirthOrder(fam.children);
-        for (int i=0; i < sortList.size(); i++) {
-            Individual kid = (Individual)sortList.get(i);
-            if (i > 0) kidList += EOL;
-            kidList += kid.name + " <" + kid.serialNmbr + ">";
+        ArrayList<Individual> sortList = sortOnBirthOrder(fam.children);
+        for (int i = 0; i < sortList.size(); i++) {
+            Individual kid = sortList.get(i);
+            if (i > 0) { kidList += EOL; }
+            kidList += kid.name + " <" + kid.serialNmbr + ">   " + kid.getDateOfBirth();
         }
         childList.setText(kidList);
         int reason = 0;
-        if (fam.reason.equals("Death")) reason = 1;
-        else if (fam.reason.equals("Divorce")) reason = 2;
-        else if (fam.reason.equals("Other")) reason = 3;
+        if (fam.reason.equals("Death")) { reason = 1;
+        } else if (fam.reason.equals("Divorce")) { reason = 2;
+        } else if (fam.reason.equals("Other")) { reason = 3;
+        }
         reasonBox.setSelectedIndex(reason);
         storing = false;
-   }
+    }
 
-    ArrayList<Object> sortOnBirthOrder(ArrayList<Object> kids) {
-        TreeMap<Integer, Individual> sorTree = new TreeMap<Integer, Individual>();
-        int actualOrder;
+//    ArrayList<Object> sortOnBirthOrder2(ArrayList<Object> kids) {
+//        TreeMap<Integer, Individual> sorTree = new TreeMap<Integer, Individual>();
+//        int actualOrder;
+//        for (Object o : kids) {
+//            Individual kid = (Individual)o;
+//            actualOrder = (kid.birthYr.equals("") ?
+//                kid.serialNmbr :
+//                Integer.parseInt(kid.birthYr));
+//            Integer birthYr = new Integer(actualOrder);
+//            sorTree.put(birthYr, kid);
+//        }
+//        return new ArrayList<Object>(sorTree.values());
+//    }
+
+    ArrayList<Individual> sortOnBirthOrder(ArrayList<Object> kids) {
+//  1  If all children have a birth date, display in birth order (eldest first)
+//  2  If 0 or 1 have a birth date, display in serial number order.
+//  3  If 2+ have birth dates, but not all children, first display the children
+//     with birth dates, eldest first. Then display the other children in serial number
+//     order.
+        ArrayList<Individual> undated = new ArrayList<Individual>(),
+                dated = new ArrayList<Individual>();
         for (Object o : kids) {
-            Individual kid = (Individual)o;
-            actualOrder = (kid.birthYr.equals("") ?
-                kid.serialNmbr :
-                Integer.parseInt(kid.birthYr));
-            Integer birthYr = new Integer(actualOrder);
-            sorTree.put(birthYr, kid);
+            Individual kid = (Individual) o;
+            undated.add(kid);
+            boolean validBDate = false;
+            try {
+                validBDate = UDate.valiDate(kid.getBirthYr(), kid.getBirthMM(),
+                        kid.getBirthDD(), kid, false);
+            } catch (Exception exc) {
+            } // if error, leave it false
+            if (!kid.birthYr.equals("") && validBDate) {
+                dated.add(kid);
+            }
+        }  // Now undated has all, and dated has kids with valid birthdates.
+        if (dated.size() > 1) {
+            for (Individual kid : dated) {
+                undated.remove(kid);
+            }
+        } else {  //  0 or 1 kid has birthdate
+            dated.clear();
         }
-        return new ArrayList<Object>(sorTree.values());
+        TreeMap<String, ArrayList<Individual>> sorTree = new TreeMap<String, ArrayList<Individual>>();
+        for (Individual kid : dated) {
+            String bday = kid.getDateOfBirth();
+            if (sorTree.get(bday) == null) {
+                sorTree.put(bday, new ArrayList<Individual>());
+            }
+            sorTree.get(bday).add(kid);
+        }
+        dated = new ArrayList<Individual>();
+        for (ArrayList<Individual> lst : sorTree.values()) {
+            dated.addAll(lst);
+        }  //  Now dated holds all kids with birth dates, eldest first
+        TreeMap<Integer, Individual> sorTree2 = new TreeMap<Integer, Individual>();
+        for (Individual kid : undated) {
+            sorTree2.put(kid.serialNmbr, kid);
+        }
+        dated.addAll(sorTree2.values());
+        return dated;
     }
 
     void storeInfo(Family infoMarriage) throws KSParsingErrorException,
@@ -458,7 +507,7 @@ public class FamilyPanel extends JPanel {
     // convert dbl-quotes to singles, ampersand to 'and',
     // and angle-brackets to squares.
         String clean = s.replace("\"", "'");
-        clean = clean.replace("\n", "  ");
+        clean = clean.replace("\n", "$$br$$");
         clean = clean.replace("\r", "  ");
         clean = clean.replace("<", "[");
         clean = clean.replace(">", "]");

@@ -2,28 +2,73 @@ import javax.swing.JOptionPane;
 import java.util.* ;
 import java.io.*;
 
-public class KinTermDef	 implements Serializable, Comparable  {
-	Literal clauseHead;	// by convention, this is:  <kinTerm>(Alter, Ego)
-	String kinTerm, eqcSigExact, eqcSigStruct, comments;
-        Gloss gloss;
-	ArrayList<Object> definitions,	// an ArrayList<Object> of ClauseBodies
-			  expandedDefs,	// an ArrayList<Object> of ClauseBodies containing only primitive predicates
-			  flags;  //  ArrayList<Object> of flags (strings) found between angle-brackets within the kinTerm string
-	TreeMap exactEQCs, structEQCs;  //  the exact & structural EQCs to which this KTD's clauses belong
-	Predicate headPred;
-	DomainTheory domTh;  //  Ptr to the enclosing Domain Theory
-	boolean composed = false;
-        static String[] constraintSymbols = makeConstraintSymbols();
-        
-        static String[] makeConstraintSymbols() {
-            String[] constraints = {"male", "female", "elder", "younger",
-                   "equal", "not", "divorced", "dead", "gender", "contains",
-                    "lessThan", "greaterThan", "lessOrEql", "greaterOrEql"};
+public class KinTermDef implements Serializable, Comparable {
+
+    Literal clauseHead;	// by convention, this is:  <kinTerm>(Alter, Ego)
+    String kinTerm, eqcSigExact, eqcSigStruct, comments;
+    Gloss gloss;
+    ArrayList<Object> definitions, // an ArrayList<Object> of ClauseBodies
+            expandedDefs, // an ArrayList<Object> of ClauseBodies containing only primitive predicates
+            flags;  //  ArrayList<Object> of flags (strings) found between angle-brackets within the kinTerm string
+    TreeMap exactEQCs, structEQCs;  //  the exact & structural EQCs to which this KTD's clauses belong
+    Predicate headPred;
+    DomainTheory domTh;  //  Ptr to the enclosing Domain Theory
+    boolean composed = false;
+    static String[] constraintSymbols = makeConstraintSymbols();
+    //  A list of all primitive predicates that are constraints
+    static String[] makeConstraintSymbols() {
+        String[] constraints = {"elder", "younger", "divorced", "dead", "gender", 
+            "contains", "lessThan", "greaterThan", "lessOrEql", "greaterOrEql"};
         Arrays.sort(constraints);
-        return  constraints;
+        return constraints;
+    }
+    static String[] standardMacros = {"brother", "children", "half_brother", "half_sister", 
+        "parents", "sibling", "siblings", "sister", "spice", "step_brother", "step_daughter", 
+        "step_father", "step_mother", "step_sister", "step_son" };
+    
+    static TreeMap<String, String> pcSymbolDecoder = makePCSymbolDecoder();
+    //  Key = a PCString symbol
+    //  Value = the gloss of the symbol.
+    static TreeMap<String, String> makePCSymbolDecoder() {
+        TreeMap<String, String> decoder = new TreeMap<String, String>();
+        decoder.put("Fa", "father");
+        decoder.put("Mo", "mother");
+        decoder.put("Bro", "brother");
+        decoder.put("Sis", "sister");
+        decoder.put("P", "parent");
+        decoder.put("C", "child");
+        decoder.put("Hu", "husband");
+        decoder.put("Wi", "wife");
+        decoder.put("S", "spouse");
+        decoder.put("So", "son");
+        decoder.put("Da", "daughter");
+        decoder.put("Sib", "sibling");
+        decoder.put("Hbro", "half-brother");
+        decoder.put("Hsis", "half-sister");
+        decoder.put("Stbro", "step-brother");
+        decoder.put("Stsis", "step-sister");
+        decoder.put("Stfa", "stepfather");
+        decoder.put("Stmo", "stepmother");
+        decoder.put("Stso", "stepson");
+        decoder.put("Stda", "stepdaughter");        
+        return decoder;
+    }
+
+    static void decoderTreeInsert(String key, String val0,
+            TreeMap<String, ArrayList<String>> tree) {
+        ArrayList<String> list = new ArrayList<String>();
+        list.add(val0);
+        tree.put(key, list);
+    }
+    
+    static void decoderTreeAdd(String key, String[] vals,
+            TreeMap<String, ArrayList<String>> tree) {
+        for (String s : vals) {
+            tree.get(key).add(s);
         }
-        
-	
+    }
+    
+
 /*  This zero-arg constructor is for use ONLY by Serialization  */
 	KinTermDef()	{
 		definitions = new ArrayList<Object>();
@@ -388,30 +433,32 @@ public class KinTermDef	 implements Serializable, Comparable  {
             return ch + allDefs;
         }  // end of toString method with a single string + 2 booleans
         
-        
-        public String toThyString()	throws KSInternalErrorException  {
-            int nmbrDefs = definitions.size();
-            String allDefs = " :- ", expDefs =  "", pad = " ", flagList = "";
-            String ch = clauseHead.toString();
-            for (int j=2; j < ch.length(); j++)
-                pad += " ";
-            for (int i = 0; i < nmbrDefs; i++)  {
-                allDefs += ((ClauseBody)definitions.get(i)).toThyString() + "\n";  
-                if (i < (nmbrDefs - 1))	
-                    allDefs += pad + "  |  ";
-            }  // end of for-all-definitions
-            String eqcStr = (eqcSigExact == null  ? "" : "{\"" + eqcSigExact + "\"}\n");
-            if (comments != null && !comments.isEmpty()) {
-                eqcStr += "\"" + comments + "\"\n";
+    public String toThyString() throws KSInternalErrorException {
+        int nmbrDefs = definitions.size();
+        String allDefs = " :- ", expDefs = "", pad = " ", flagList = "";
+        String ch = clauseHead.toString();
+        for (int j = 2; j < ch.length(); j++) {
+            pad += " ";
+        }
+        for (int i = 0; i < nmbrDefs; i++) {
+            allDefs += ((ClauseBody) definitions.get(i)).toThyString() + "\n";
+            if (i < (nmbrDefs - 1)) {
+                allDefs += pad + "  |  ";
             }
-            nmbrDefs = expandedDefs.size();
-            for (int i = 0; i < nmbrDefs; i++)  
-				expDefs += ((ClauseBody)expandedDefs.get(i)).toThyString() + "\n";  
-            return ch + allDefs + eqcStr + expDefs;
-        }  // end of toThyString method
+        }  // end of for-all-definitions
+        String eqcStr = (eqcSigExact == null ? "" : "{\"" + eqcSigExact + "\"}\n");
+        if (comments != null && !comments.isEmpty()) {
+            eqcStr += "\"" + comments + "\"\n";
+        }
+        nmbrDefs = expandedDefs.size();
+        for (int i = 0; i < nmbrDefs; i++) {
+            expDefs += ((ClauseBody) expandedDefs.get(i)).toThyString() + "\n";
+        }
+        return ch + allDefs + eqcStr + expDefs;
+    }  // end of toThyString method
 
-        public String toXML(String bacer) {
-            String spacer = "\t", dblSpacer = "\t\t";
+    public String toXML(String bacer) {
+        String spacer = "\t", dblSpacer = "\t\t";
             String s = bacer + "<kin-term-def>\n", langName = null;
             s += bacer + spacer + "<head>" + kinTerm + "</head>\n";
             if (definitions == null || definitions.isEmpty()) {
@@ -441,7 +488,9 @@ public class KinTermDef	 implements Serializable, Comparable  {
         
     public String toSILKString(String bacer, boolean writeDT) {
         String spacer = "\t", dblSpacer = "\t\t";
-        String kt = (writeDT ? "" : " term=\"" + kinTerm + "\"");
+        String ktad = (Arrays.binarySearch(standardMacros, kinTerm) > -1 ? 
+                " non-term=\"yes\"" : "");
+        String kt = (writeDT ? " term=\"" + kinTerm + "\"" : ktad);
         String s = bacer + "<kin-term-def" + kt + ">\n", langName = null;
         s += bacer + spacer + "<head>" + kinTerm + "</head>\n";
         if (eqcSigExact != null) {
@@ -450,7 +499,7 @@ public class KinTermDef	 implements Serializable, Comparable  {
         if (eqcSigStruct != null) {
             s += bacer + spacer + "<eqcSigStruct>" + eqcSigStruct + "</eqcSigStruct>\n";
         }
-        if (gloss == null && eqcSigExact != null) {
+        if (gloss == null) { 
             gloss = gloss();
         }
         if (gloss != null) {
@@ -460,7 +509,7 @@ public class KinTermDef	 implements Serializable, Comparable  {
             s += bacer + spacer + "<comments text=\"" + comments + "\"/>\n";
         }
         if (writeDT) {
-            s += bacer + spacer + "<domain-theory>\n";
+            s += bacer + spacer + "<ktd-domain-theory>\n";
             s += bacer + dblSpacer + "<language name=\"" + domTh.languageName + "\"/>\n";
             if (domTh.polygamyOK) {
                 s += bacer + dblSpacer + "<polygamyOK />\n";
@@ -472,7 +521,7 @@ public class KinTermDef	 implements Serializable, Comparable  {
             if (domTh.citation != null && domTh.citation.length() > 0) {
                 s += bacer + dblSpacer + "<citation txt=\"" + sanitize(domTh.citation) + "\"/>\n";
             }
-            s += bacer + spacer + "</domain-theory>\n";
+            s += bacer + spacer + "</ktd-domain-theory>\n";
         }
         if (definitions == null || definitions.isEmpty()) {
             try {
@@ -626,37 +675,64 @@ public class KinTermDef	 implements Serializable, Comparable  {
      *  SILK file representation of a KTD.
      * 
      * @return an English representation of the kin type
-     */Gloss dumbGloss() {
+     */
+    Gloss dumbGloss() {
+        ensureEqcSigExact();
         Gloss glos = new Gloss();
-         ArrayList<String> predicates = pluckAllPredicates();
+        ArrayList<String> predicates = pluckAllPredicates();
         if (hasNoConstraints(predicates)) {
-            ArrayList pcStringList = decodeString(eqcSigExact); 
+            // Easiest way to gloss is from eqcSigExact. Make a temp copy of this ktd
+            // and compute its eqcSigExact, & use it to produce this gloss.
+            ArrayList pcStringList = decodeString(eqcSigExact);
             for (Object o : pcStringList) {
-                glos.elements.add(glossify((String)o));
+                glos.elements.add(glossify((String) o));
             }
         } else {
-            String head0 = headPred.name + "(Alter,Ego) :- ";
-            String head2 = "                    |  ";
-            int st = Math.max(0,head2.length() - head0.length());
-            head2 = head2.substring(st);
             for (Object o : definitions) {
-                ClauseBody cb = (ClauseBody)o;
-                glos.elements.add(head0 + cb.toSimpleHornClause());
-                head0 = head2;
+                ClauseBody cb = (ClauseBody) o;
+                glos.elements.add(cb.toSimpleHornClause());
             }
         }
         return glos;
     }
+    
+    
+    void ensureEqcSigExact() {
+        if (eqcSigExact == null || eqcSigExact.isEmpty()) {
+            eqcSigExact = "";
+            Context permCtxt = domTh.ctxt,
+                    tempCtxt = new Context(domTh);
+            DomainTheory.current = domTh;
+            try {
+                KinTermDef tempKTD = new KinTermDef(this);
+                tempKTD.expandClauses(tempCtxt);
+                tempKTD.domTh = domTh;
+                ArrayList<Object> egoBag = new ArrayList<Object>();
+                for (Object o : tempKTD.expandedDefs) {
+                    ClauseBody cb = (ClauseBody) o;
+                    cb.ktd = tempKTD;
+                    cb.generateExamples(tempCtxt, egoBag, null, null);
+                }
+                tempKTD.makeSigStrings();
+                eqcSigExact = tempKTD.eqcSigExact;
+            } catch (Exception exc) {  // ignore failures, leave empty
+                System.err.println("While computing eqcSigEact for a gloss:\n" + exc);
+            }
+            Context.current = permCtxt;
+            domTh.ctxt = permCtxt;
+        }
+    }
+    
      
-    String glossify(String pcString) {
+    static String glossify(String pcString) {
         String gloz = "";
         ArrayList<String> symbols = explodePCSymbols(pcString);
         int last = symbols.size() - 1;
         for (int i = 0; i < last; i++) {
             String symbol = (String) symbols.get(i);
-            gloz += decodePCSymbol(symbol) + "'s ";
+            gloz += pcSymbolDecoder.get(symbol) + "'s ";
         }
-        gloz += decodePCSymbol((String) symbols.get(last));
+        gloz += pcSymbolDecoder.get((String) symbols.get(last));
         return gloz;
     }
     
@@ -669,11 +745,21 @@ public class KinTermDef	 implements Serializable, Comparable  {
                 if (!preds.contains(lit.predicate.name)) {
                     preds.add(lit.predicate.name);
                 }
+                if (lit.predicate.name.equals("not")) {
+                    for (Object obj : lit.args) {
+                        if (obj instanceof Literal) {
+                            Literal innerLit = (Literal) obj;
+                            if (!preds.contains(innerLit.predicate.name)) {
+                                preds.add(innerLit.predicate.name);
+                            }
+                        }
+                    }
+                }
             }
         }
         return preds;
     }
-    
+
     static boolean hasNoConstraints(ArrayList<String> symbols) {
         for (String s : symbols) {
             if (Arrays.binarySearch(constraintSymbols, s) > -1) {
@@ -682,6 +768,7 @@ public class KinTermDef	 implements Serializable, Comparable  {
         }
         return true;
     }
+    
     
     static ArrayList<String> explodePCSymbols(String pcString) {
         ArrayList<String> symbols = new ArrayList<String>();
@@ -697,52 +784,6 @@ public class KinTermDef	 implements Serializable, Comparable  {
         }  //  end of loop thru the symbols
         symbols.add(pcString.substring(cap));
         return symbols;        
-    }
-    
-        
-    static String decodePCSymbol(String symbol) {
-        if (symbol.equals("Fa")) {
-            return "father";
-        } else if (symbol.equals("Mo")) {
-            return "mother";
-        } else if (symbol.equals("Bro")) {
-            return "brother";
-        } else if (symbol.equals("Sis")) {
-            return "sister";
-        } else if (symbol.equals("P")) {
-            return "parent";
-        } else if (symbol.equals("C")) {
-            return "child";
-        } else if (symbol.equals("Hu")) {
-            return "husband";
-        } else if (symbol.equals("Wi")) {
-            return "wife";
-        } else if (symbol.equals("Sp")) {
-            return "spouse";
-        } else if (symbol.equals("So")) {
-            return "son";
-        } else if (symbol.equals("Da")) {
-            return "daughter";
-        } else if (symbol.equals("Sib")) {
-            return "sibling";
-        } else if (symbol.equals("Hbro")) {
-            return "half-brother";
-        } else if (symbol.equals("Hsis")) {
-            return "half-sister";
-        } else if (symbol.equals("Stbro")) {
-            return "stepbrother";
-        } else if (symbol.equals("Stsis")) {
-            return "stepsister";
-        } else if (symbol.equals("Stfa")) {
-            return "stepfather";
-        } else if (symbol.equals("Stmo")) {
-            return "stepmother";
-        } else if (symbol.equals("Stso")) {
-            return "stepson";
-        } else if (symbol.equals("Stda")) {
-            return "stepdaughter";
-        }
-        return "unknownSymbol";
     }
 
         static String sanitize(String input) {
@@ -975,7 +1016,9 @@ public class KinTermDef	 implements Serializable, Comparable  {
 		int serial = 0;
 		while (cbIter.hasNext())  {
 			cb = (ClauseBody)cbIter.next();
-//     if (ctxt.languageName.equals("Trobriand") && kinTerm.equals("ina") && cb.seqNmbr == 2) Context.breakpoint();
+//     if (ctxt.languageName.equals("Cogui") && kinTerm.equals("augui")) {
+//         Context.breakpoint();
+//     }
 			cb.generateExamples(ctxt, egoBag, null, orca);
 			if (cb.duplicative && ! ctxt.simDataGen) {
 				cbIter.remove();
@@ -989,15 +1032,17 @@ public class KinTermDef	 implements Serializable, Comparable  {
     fields computed during generation.
     
     @param	egoBag		contains at least 1 male and 1 female {@link Individual} who can serve as Ego in definitions.
-    */
-    public void assureExamplesGenerated(ArrayList<Object> egoBag) 
-        throws KSBadHornClauseException, KSInternalErrorException, KSConstraintInconsistency, ClassNotFoundException  {
+     */
+    public void assureExamplesGenerated(ArrayList<Object> egoBag)
+            throws KSBadHornClauseException, KSInternalErrorException, KSConstraintInconsistency, ClassNotFoundException {
         boolean needAnEgo = false;
-        ClauseBody cb ;
-        if (expandedDefs == null || expandedDefs.isEmpty()) expandClauses(Context.current);
-        for (int i=0; i < expandedDefs.size(); i++)  { 
-            cb = (ClauseBody)expandedDefs.get(i);  //  See if computed by generation
-            if ((cb.pcCounter + cb.sCounter + cb.starCounter) == 0)  {  // need to generate examples
+        ClauseBody cb;
+        if (expandedDefs == null || expandedDefs.isEmpty()) {
+            expandClauses(Context.current);
+        }
+        for (int i = 0; i < expandedDefs.size(); i++) {
+            cb = (ClauseBody) expandedDefs.get(i);  //  See if computed by generation
+            if ((cb.pcCounter + cb.sCounter + cb.starCounter) == 0) {  // need to generate examples
                 needAnEgo = true;
                 break;  //  finding one is enough; stop the loop
             }  //  end of need to generate examples
@@ -1005,10 +1050,10 @@ public class KinTermDef	 implements Serializable, Comparable  {
         if (needAnEgo) {
             generateExamples(Context.current, egoBag, null);
             domTh.ctxt.saveState = true;
-			}
-	}  //  end of method assureExamplesGenerated
-        
-	
+        }
+    }  //  end of method assureExamplesGenerated
+    
+
     public ArrayList<Object> makeFlags()  {
         ArrayList<Object> flagList = new ArrayList<Object>();
         int start = 0, left, right;

@@ -422,7 +422,7 @@ public class SILKFileParser extends Parser {
         if (current.lexeme.equals("<theory>")) {
             scanner.readToken();  //  consume '<theory>'
             current = scanner.lookAhead();  // peek at next tag
-            while (current.lexeme.indexOf("<kin-term-def term=") == 0) {
+            while (current.lexeme.startsWith("<kin-term-def")) {
                 scanner.readToken();  //  consume start tag
                 dt.addTerm(parseKinTermDef());
                 current = scanner.lookAhead();
@@ -2492,7 +2492,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             propDef.processed = readTaggedBoolean("processed", "parsePropDef");
         }
         current = scanner.readToken(); // must be start tag of KinTermDef
-        if (!current.lexeme.equals("<kin-term-def>")) {
+        if (!current.lexeme.startsWith("<kin-term-def")) {
             error("parsePropDef seeking tag '<kin-term-def>'. ");
         }
         propDef.ktd = parseKinTermDef();
@@ -2557,7 +2557,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
     }
 
     /* KinTermDef -> "<kin-term-def>", "<head>", symbol, "</head>", EqcSigExact,
-                      EqcSigStruct, Definitions, ExpandedDefs, "</kin-term-def>".
+                      EqcSigStruct, Gloss, Definitions, ExpandedDefs, "</kin-term-def>".
 	 First: [<kin-term-def>]
  	 Follow: [<questions>]
 	*/
@@ -2575,61 +2575,21 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             current = scanner.lookAhead();
         }
         if (current.lexeme.equals("<gloss>")) {
-            ktd.gloss = new Gloss();
-            scanner.readToken();  //  consume the start tag
-            current = scanner.lookAhead();  //  at least 1 element required.
-            if (!current.lexeme.startsWith("<element")) {
-                error("parseKinTermDef seeking tag '<element>' in a <gloss> block.");
-            }
-            while (current.lexeme.startsWith("<element")) {
-                ktd.gloss.elements.add(readOneAttribute("element", "text", "parseKinTermDef"));
-                current = scanner.lookAhead();
-            }
-            if (current.lexeme.equals("<where>")) {
-                scanner.readToken();  //  consume the start tag
-                current = scanner.lookAhead();
-                if (!current.lexeme.startsWith("<cultural-pred")) {   //  at least 1 cultural-pred required.
-                    error("parseKinTermDef seeking tag '<cultural-pred>' in a <where> block.");
-                }
-                while (current.lexeme.startsWith("<cultural-pred")) {
-                    String cPred = readOneAttribute("cultural-pred", "kinTerm", "parseKinTermDef");
-                    current = scanner.lookAhead();
-                    if (!current.lexeme.startsWith("<element")) {  //  at least 1 element required.
-                        error("parseKinTermDef seeking tag '<element>' in a <cultural-pred> block.");
-                    }
-                    while (current.lexeme.startsWith("<element")) {
-                        ktd.gloss.addCulturalPred(cPred, readOneAttribute("element", "text", "parseKinTermDef"));
-                        current = scanner.lookAhead();
-                    }
-                    if (!current.lexeme.equals("</cultural-pred>")) {
-                        error("parseKinTermDef seeking end tag '</cultural-pred>'.");
-                    }
-                    scanner.readToken();  //  consume the end tag                    
-                    current = scanner.lookAhead();
-                }
-                if (!current.lexeme.equals("</where>")) {
-                    error("parseKinTermDef seeking end tag '</where>'.");
-                }
-                scanner.readToken();  //  consume the end tag
-                current = scanner.lookAhead(); 
-            }
-            if (!current.lexeme.equals("</gloss>")) {  //  end of gloss block required.
-                error("parseKinTermDef seeking end tag '</gloss>'.");
-            }
-            scanner.readToken();  //  consume the end tag
-            current = scanner.lookAhead();            
+            ktd.gloss = parseGloss();                       
         }
         if (current.lexeme.startsWith("<comments")) {  // optional comments
             ktd.comments = readOneAttribute("comments", "text", "parseKinTermDef");
             current = scanner.lookAhead();
         }
         current = scanner.lookAhead(); //  check for <domain-theory> tag
-        if (current.lexeme.equals("<domain-theory>")) {
+        //  Element name changed to ktd-domaint-theory on 11-17-11. TEMPORARILY allow both names
+        if (current.lexeme.equals("<domain-theory>") || current.lexeme.equals("<ktd-domain-theory>")) {
             scanner.readToken(); // consume <domain-theory> tag
             ktd.domTh = parseDT_Highlights();
             current = scanner.readToken(); // must be </domain-theory> tag
-            if (!current.lexeme.equals("</domain-theory>")) {
-                error("parseKinTermDef seeking tag '</domain-theory>'. ");
+            if (!(current.lexeme.equals("</domain-theory>") || current.lexeme.equals("</ktd-domain-theory>"))) {
+                // TEMPORARILY allow both names
+                error("parseKinTermDef seeking tag '</ktd-domain-theory>'. ");
             }
             ktd.domTh.addTerm(ktd);
         }
@@ -2643,6 +2603,53 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             error("parseKinTermDef seeking tag '</kin-term-def>'. ");
         }
         return ktd;
+    }
+    
+    Gloss parseGloss() throws KSParsingErrorException {
+        Gloss gloz = new Gloss();
+        scanner.readToken();  //  consume the start tag
+        current = scanner.lookAhead();  //  at least 1 element required.
+        if (!current.lexeme.startsWith("<element")) {
+            error("parseKinTermDef seeking tag '<element>' in a <gloss> block.");
+        }
+        while (current.lexeme.startsWith("<element")) {
+            gloz.elements.add(readOneAttribute("element", "text", "parseKinTermDef"));
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.equals("<where>")) {
+            scanner.readToken();  //  consume the start tag
+            current = scanner.lookAhead();
+            if (!current.lexeme.startsWith("<cultural-pred")) {   //  at least 1 cultural-pred required.
+                error("parseKinTermDef seeking tag '<cultural-pred>' in a <where> block.");
+            }
+            while (current.lexeme.startsWith("<cultural-pred")) {
+                String cPred = readOneAttribute("cultural-pred", "kinTerm", "parseKinTermDef");
+                current = scanner.lookAhead();
+                if (!current.lexeme.startsWith("<element")) {  //  at least 1 element required.
+                    error("parseKinTermDef seeking tag '<element>' in a <cultural-pred> block.");
+                }
+                while (current.lexeme.startsWith("<element")) {
+                    gloz.addCulturalPred(cPred, readOneAttribute("element", "text", "parseKinTermDef"));
+                    current = scanner.lookAhead();
+                }
+                if (!current.lexeme.equals("</cultural-pred>")) {
+                    error("parseKinTermDef seeking end tag '</cultural-pred>'.");
+                }
+                scanner.readToken();  //  consume the end tag                    
+                current = scanner.lookAhead();
+            }
+            if (!current.lexeme.equals("</where>")) {
+                error("parseKinTermDef seeking end tag '</where>'.");
+            }
+            scanner.readToken();  //  consume the end tag
+            current = scanner.lookAhead();
+        }
+        if (!current.lexeme.equals("</gloss>")) {  //  end of gloss block required.
+            error("parseKinTermDef seeking end tag '</gloss>'.");
+        }
+        scanner.readToken();  //  consume the end tag
+        current = scanner.lookAhead();
+        return gloz;
     }
 
     /* Definitions -> "<definitions>", ClauseBody, ClauseBodies, "</definitions>".
@@ -2690,7 +2697,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
 	*/
     ClauseBody parseClauseBody() throws KSParsingErrorException {
         current = scanner.lookAhead(); // must be start tag of clause
-        if (current.lexeme.indexOf("<clause") != 0) {
+        if (!current.lexeme.startsWith("<clause")) {
             error("parseClauseBody seeking tag '<clause>'. ");
         }
         ClauseBody cb = new ClauseBody();
@@ -3053,10 +3060,10 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         current = scanner.lookAhead();
         if (current.lexeme.equals("<barriers />")) {
             scanner.readToken(); // consume token, but do nothing
-        }else if (current.lexeme.equals("<kin-term-def>")) {
+        }else if (current.lexeme.startsWith("<kin-term-def")) {
             scanner.readToken();
             anna.basis.add(parseKinTermDef());
-        }else if (current.lexeme.equals("<kin-term-def>")) {
+        }else if (current.lexeme.startsWith("<clause")) {
             anna.basis.add(parseClauseBody());
         }else {
             error("parseAnomaly seeking tag '<barriers />', a ClauseBody, or a KinTermDef.");
@@ -3092,7 +3099,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         addToIssues(issues, anna);
     }
 
-    /*DataRequest ->  "<data-request kinTerm=", string. ">", DataRequest, "</data-request>", Issues.
+    /*DataRequest ->  "<data-request kinTerm=", string. ">", CB_Ptrs, "</data-request>", Issues.
          First: [<data-request]
  	 Follow: [<proposed-def, <anomaly, <data-request, <overlap, <synonym, <umbrella, </silkin-issues>]
 	*/
@@ -3101,28 +3108,28 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         scanner.readToken(); // consume the start tag
         int start = current.lexeme.indexOf("\"") +1,
             stop = current.lexeme.indexOf("\"", start);
-        DataRequest dis = new DataRequest();
-        dis.kinTerm = current.lexeme.substring(start, stop);
+        DataRequest dr = new DataRequest();
+        dr.kinTerm = current.lexeme.substring(start, stop);
         current = scanner.lookAhead(); // may be start tag of optional <processed> block
         if (current.lexeme.equals("<processed>")) {
-            dis.processed = readTaggedBoolean("processed", "parseDataRequest");
+            dr.processed = readTaggedBoolean("processed", "parseDataRequest");
         }
         current = scanner.lookAhead();
         if (current.lexeme.equals("<questions>")) {
             current = scanner.readToken(); // consume the start tag
-            parseQuestions(dis);
+            parseQuestions(dr);
             scanner.readToken(); // consume the </questions> tag
         }
-        dis.relatedCB_Ptrs = parseCB_Ptrs();
+        dr.relatedCB_Ptrs = parseCB_Ptrs();
         current = scanner.lookAhead();
-        if (current.lexeme.indexOf("<request-date") == 0) {
+        if (current.lexeme.startsWith("<request-date")) {
             scanner.readToken();
         }
         current = scanner.readToken();
         if (! current.lexeme.equals("</data-request>")) {
             error("parseDataRequest seeking tag '</data-request>'");
         }
-        addToIssues(issues, dis);
+        addToIssues(issues, dr);
     }
 
 
@@ -3134,12 +3141,19 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             errMsg += "\nSkipping this damaged Data Request.";
             MainPane.displayError(errMsg, "SILKin Internal Error", JOptionPane.ERROR_MESSAGE);
             theList.addAll(parseCB_Ptrs());
-        }else if (current.lexeme.equals("<kin-type-dyad>")) {
+        } else if (current.lexeme.equals("<kin-type-dyad>")) {
             scanner.readToken(); // consume the start tag
+            current = scanner.lookAhead();
             Library.CB_Ptr ptr = new Library.CB_Ptr();
+            if (current.lexeme.startsWith("<gloss")) {
+                ptr.gloss = parseGloss();  
+            }
             ptr.cbEQC = new Library.CB_EQC();
-            ptr.cbEQC.pcString = readTagEnclosedText("pc-string", "parseCB_Ptrs");
             ptr.clause = parseClauseBody();
+            try {
+                ptr.cbEQC.pcString = ptr.getClause().pcString;
+            } catch (Exception exc) {
+            }  // No failure possible here.
             current = scanner.readToken();
             if (!current.lexeme.equals("</kin-type-dyad>")) {
                 error("parseCB_Ptrs seeking tag '</kin-type-dyad>'");
@@ -3148,10 +3162,15 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             theList.addAll(parseCB_Ptrs());
         }else if (current.lexeme.equals("<named-dyad>")) {
             scanner.readToken(); // consume the start tag
-            // ignore the next 2 blocks
-            readTaggedInteger("ego-serial", "parseCB_Ptrs");
-            readTaggedInteger("alter-serial", "parseCB_Ptrs");
             Library.CB_Ptr ptr = new Library.CB_Ptr();
+            current = scanner.lookAhead();
+            if (current.lexeme.equals("<gloss>")) {
+                ptr.gloss = parseGloss();
+            }
+            int eg = readTaggedInteger("ego-serial", "parseCB_Ptrs");
+            int alt = readTaggedInteger("alter-serial", "parseCB_Ptrs");
+            Integer[] pair = {eg, alt };
+            ptr.namedPairs.add(pair);
             ptr.cbEQC = new Library.CB_EQC();
             ptr.cbEQC.pcString = readTagEnclosedText("pc-string", "parseCB_Ptrs");
             ptr.clause = parseClauseBody();
@@ -3161,7 +3180,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             }
             theList.add(ptr);
             theList.addAll(parseCB_Ptrs());
-        }else if (current.lexeme.indexOf("<request-date") == 0) {
+        }else if (current.lexeme.startsWith("<request-date")) {
             return theList;
         }else if (current.lexeme.equals("</data-request>")) {
             return theList;
@@ -3327,6 +3346,14 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         current = scanner.lookAhead(); // may be start tag of optional <processed> block
         if (current.lexeme.equals("<processed>")) {
             uc.processed = readTaggedBoolean("processed", "parseUmbrella");
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.equals("<pc-strings-covered>")) {
+            readStringSet(uc.pcStringsCovered, "pc-strings-covered", "parseUmbrella");
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.equals("<gloss>")) {
+            parseGloss();  // Throwaway. Recomputed on the fly.
         }
         current = scanner.readToken();
         if (! current.lexeme.equals("<sub-terms>")) {
@@ -3336,7 +3363,6 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         if (! current.lexeme.equals("<sub-term>")) {
             error("parseUmbrella seeking tag '<sub-term>'");
         }
-
         while (current.lexeme.equals("<sub-term>")) {
             parseSubTerm(uc.subTerms);
         }
@@ -3362,7 +3388,11 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         ArrayList<Object> stringsCovered = new ArrayList<Object>();
         supportList.add(stringsCovered);
         readStringSet(stringsCovered, "pc-strings-covered", "parseSubTerm");
-        current = scanner.readToken();
+        current = scanner.lookAhead();
+        if (current.lexeme.equals("<gloss>")) {
+            parseGloss();  // Throwaway. Recomputed on the fly.
+        }        
+        current = scanner.readToken();        
         if (! current.lexeme.equals("<dyads-covered>")) {
             error("parseSubTerm seeking tag '<dyads-covered>'");
         }
