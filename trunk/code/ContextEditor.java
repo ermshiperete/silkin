@@ -123,18 +123,18 @@ public class ContextEditor extends KSJInternalFrame implements ItemListener {
             dtRefEdit.setActionCommand("edit dtRef");
             dtRefEdit.addActionListener(listener);
             dtRefBtnBox.add(dtRefEdit);
-            JButton dtRefDelete = new JButton("Delete Theory");
-            dtRefDelete.setActionCommand("dtRef delete");
-            dtRefDelete.addActionListener(listener);
-            dtRefBtnBox.add(dtRefDelete);
+//            JButton dtRefDelete = new JButton("Delete Theory");
+//            dtRefDelete.setActionCommand("dtRef delete");
+//            dtRefDelete.addActionListener(listener);
+//            dtRefBtnBox.add(dtRefDelete);
         } //  end of if-dt-exists
         else {  //  if does not exist
             JLabel dtRefNone = new JLabel("< None >");
             dtRefBtnBox.add(dtRefNone);
-            JButton dtRefAdd = new JButton("Add Theory");
-            dtRefAdd.setActionCommand("dtRef add");
-            dtRefAdd.addActionListener(listener);
-            dtRefBtnBox.add(dtRefAdd);
+//            JButton dtRefAdd = new JButton("Add Theory");
+//            dtRefAdd.setActionCommand("dtRef add");
+//            dtRefAdd.addActionListener(listener);
+//            dtRefBtnBox.add(dtRefAdd);
         }  //  end of does-not-exist
         domThs.add(dtRefBtnBox);
 
@@ -148,18 +148,18 @@ public class ContextEditor extends KSJInternalFrame implements ItemListener {
             dtAddrEdit.setActionCommand("edit dtAddr");
             dtAddrEdit.addActionListener(listener);
             dtAddrBtnBox.add(dtAddrEdit);
-            JButton dtAddrViewList = new JButton("Delete Theory");
-            dtAddrViewList.setActionCommand("dtAddr delete");
-            dtAddrViewList.addActionListener(listener);
-            dtAddrBtnBox.add(dtAddrViewList);
+//            JButton dtAddrViewList = new JButton("Delete Theory");
+//            dtAddrViewList.setActionCommand("dtAddr delete");
+//            dtAddrViewList.addActionListener(listener);
+//            dtAddrBtnBox.add(dtAddrViewList);
         } //  end of if-dt-exists
         else {  //  if does not exist
             JLabel dtAddrNone = new JLabel("< None >");
             dtAddrBtnBox.add(dtAddrNone);
-            JButton dtAddrAdd = new JButton("Add Theory");
-            dtAddrAdd.setActionCommand("dtAddr add");
-            dtAddrAdd.addActionListener(listener);
-            dtAddrBtnBox.add(dtAddrAdd);
+//            JButton dtAddrAdd = new JButton("Add Theory");
+//            dtAddrAdd.setActionCommand("dtAddr add");
+//            dtAddrAdd.addActionListener(listener);
+//            dtAddrBtnBox.add(dtAddrAdd);
         }  //  end of does-not-exist
         domThs.add(dtAddrBtnBox);
         // End of the left hand portion
@@ -229,8 +229,8 @@ public class ContextEditor extends KSJInternalFrame implements ItemListener {
             noDistinct.setSelected(true);
         }
         ButtonGroup distinctBtns = new ButtonGroup();
-        distinctBtns.add(yesPoly);
-        distinctBtns.add(noPoly);
+        distinctBtns.add(yesDistinct);
+        distinctBtns.add(noDistinct);
         distinctBox.add(distinctLabelA);
         distinctBox.add(distinctLabelB);
         distinctBox.add(yesDistinct);
@@ -492,18 +492,28 @@ public class ContextEditor extends KSJInternalFrame implements ItemListener {
             if (e.getActionCommand().equals("polygamy yes")) {
                 ctxt.saveState = true;
                 ctxt.polygamyPermit = true;
+                SIL_Edit.editWindow.chart.dirty = true;
             }
             if (e.getActionCommand().equals("polygamy no")) {
                 ctxt.saveState = true;
                 ctxt.polygamyPermit = false;
+                SIL_Edit.editWindow.chart.dirty = true;
             }
             if (e.getActionCommand().equals("distinct yes")) {
                 ctxt.saveState = true;
                 ctxt.distinctAdrTerms = true;
+                SIL_Edit.editWindow.setDistinctAdrMenuItemSelected(true);
+                SIL_Edit.editWindow.distinctAdrItemActionPerformed(null);
+                SIL_Edit.editWindow.chart.dirty = true;
+                MainPane.topPane.setVisible(true);
             }
             if (e.getActionCommand().equals("distinct no")) {
                 ctxt.saveState = true;
                 ctxt.distinctAdrTerms = false;
+                SIL_Edit.editWindow.setDistinctAdrMenuItemSelected(false);
+                SIL_Edit.editWindow.distinctAdrItemActionPerformed(null);
+                SIL_Edit.editWindow.chart.dirty = true;
+                MainPane.topPane.setVisible(true);
             }
             if (e.getActionCommand().equals("edit matrix")) {
                 // TODO Allow edit of KinTermMatrix
@@ -593,42 +603,42 @@ public class ContextEditor extends KSJInternalFrame implements ItemListener {
 
             //  THE NEXT 6 COMMANDS ARE NOT IMPLEMENTED
             //  They'll be done after learning methods have been implemented
-            if (e.getActionCommand().equals("dtRef add")) {
-                ctxt.saveState = true;
-                JOptionPane.showMessageDialog(ed, "The function 'Add Terms of Reference' is not yet available.",
-                        "Action Not Availabe",
-                        JOptionPane.INFORMATION_MESSAGE);
-            }
+//            if (e.getActionCommand().equals("dtRef add")) {
+//                ctxt.saveState = true;
+//                JOptionPane.showMessageDialog(ed, "The function 'Add Terms of Reference' is not yet available.",
+//                        "Action Not Availabe",
+//                        JOptionPane.INFORMATION_MESSAGE);
+//            }
             if (e.getActionCommand().equals("edit dtRef")) {
                 ctxt.saveState = true;
                 JOptionPane.showMessageDialog(ed, "The function 'Edit Terms of Reference' is not yet available.",
                         "Action Not Availabe",
                         JOptionPane.INFORMATION_MESSAGE);
             }
-            if (e.getActionCommand().equals("dtRef delete")) {
-                ctxt.saveState = true;
-                JOptionPane.showMessageDialog(ed, "The function 'Delete Terms of Reference' is not yet available.",
-                        "Action Not Availabe",
-                        JOptionPane.INFORMATION_MESSAGE);
-            }
-            if (e.getActionCommand().equals("dtAddr add")) {
-                ctxt.saveState = true;
-                JOptionPane.showMessageDialog(ed, "The function 'Add Terms of Address' is not yet available.",
-                        "Action Not Availabe",
-                        JOptionPane.INFORMATION_MESSAGE);
-            }
+//            if (e.getActionCommand().equals("dtRef delete")) {
+//                ctxt.saveState = true;
+//                JOptionPane.showMessageDialog(ed, "The function 'Delete Terms of Reference' is not yet available.",
+//                        "Action Not Availabe",
+//                        JOptionPane.INFORMATION_MESSAGE);
+//            }
+//            if (e.getActionCommand().equals("dtAddr add")) {
+//                ctxt.saveState = true;
+//                JOptionPane.showMessageDialog(ed, "The function 'Add Terms of Address' is not yet available.",
+//                        "Action Not Availabe",
+//                        JOptionPane.INFORMATION_MESSAGE);
+//            }
             if (e.getActionCommand().equals("edit dtAddr")) {
                 ctxt.saveState = true;
                 JOptionPane.showMessageDialog(ed, "The function 'Edit Terms of Address' is not yet available.",
                         "Action Not Availabe",
                         JOptionPane.INFORMATION_MESSAGE);
             }
-            if (e.getActionCommand().equals("dtAddr delete")) {
-                ctxt.saveState = true;
-                JOptionPane.showMessageDialog(ed, "The function 'Delete Terms of Address' is not yet available.",
-                        "Action Not Availabe",
-                        JOptionPane.INFORMATION_MESSAGE);
-            }
+//            if (e.getActionCommand().equals("dtAddr delete")) {
+//                ctxt.saveState = true;
+//                JOptionPane.showMessageDialog(ed, "The function 'Delete Terms of Address' is not yet available.",
+//                        "Action Not Availabe",
+//                        JOptionPane.INFORMATION_MESSAGE);
+//            }
 
         }  //  end of ActionListerner method actionPerformed
     }  //  end of inner class CEListener

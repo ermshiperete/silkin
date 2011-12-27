@@ -594,7 +594,7 @@ public class SIL_Edit extends JFrame {
         System.exit(0);
     }
 
-    private void editPrefsItemActionPerformed(ActionEvent evt) {
+    public void editPrefsItemActionPerformed(ActionEvent evt) {
         if (chart.saveFile == null) {
             String msg3 = "You must edit the Preferences for a particular context (SILK file).";
             msg3 += "First OPEN a context (or create & SAVE one), then set it's preferences.";
@@ -613,6 +613,7 @@ public class SIL_Edit extends JFrame {
         }else {
             MainPane.topPane.editCUC();
             MainPane.topPane.menuAdmin.setEnabled(false);
+            MainPane.topPane.enableAdvancedMenuItems(false);
             MainPane.topPane.setVisible(true);
         }
     }
@@ -635,6 +636,7 @@ public class SIL_Edit extends JFrame {
                 MainPane.topPane.setVisible(true);
             }
             MainPane.topPane.menuAdmin.setEnabled(true);
+            MainPane.topPane.enableAdvancedMenuItems(true);
         }else {
             JOptionPane.showMessageDialog(this,
                 "Try again. Or contact \nTom Woodward for authorization",
@@ -691,7 +693,7 @@ public class SIL_Edit extends JFrame {
     
     private boolean resettingDistinctAdrItem = false;
     
-    private void distinctAdrItemActionPerformed(ActionEvent evt) {
+    public void distinctAdrItemActionPerformed(ActionEvent evt) {
         if (resettingDistinctAdrItem) return;
         if (distinctAdrItem.isSelected()) {
             String msg = "Do you want to copy all the reference terms you have\n"

@@ -28,6 +28,8 @@ public class MainPane extends JFrame implements ActionListener {
             openFamilyEditors = new ArrayList<Object>();
     public static ContextEditor curr_CUC_Editor;
     static JMenu menuView;
+    public JMenu menuFileAdd2Library;
+    public JMenuItem miFileOpenSILK, miFileDelete, miFileDeleteContext, miFileSaveContext;
     public static JDesktopPane desktop;
     public static MainPane topPane;
     public static int testSerialNmbr;
@@ -122,33 +124,35 @@ public class MainPane extends JFrame implements ActionListener {
         menuView = new JMenu("View");
         menuView.setMnemonic(KeyEvent.VK_V);
         menuAdmin = new JMenu("Admin");
-        JMenu menuHelp = new JMenu("Help");
+        JMenu menuHelp = new HelpFrame.HMenu();
+        menuHelp.setText("Help");
         menuHelp.setMnemonic(KeyEvent.VK_H);
+        HelpFrame.help = new HelpFrame();
 
-        JMenu menuFileNew = new JMenu("New");
-        JMenuItem miFileNewBrowser = menuFileNew.add("Library Browser");
+//        JMenu menuFileNew = new JMenu("New");
+        JMenuItem miFileNewBrowser = menuFile.add("New Library Browser");
         miFileNewBrowser.setActionCommand("new browser");
         miFileNewBrowser.addActionListener(this);
-        JMenuItem miFileNewContext = menuFileNew.add("Context (Language)");
-        miFileNewContext.setActionCommand("new context");
-        miFileNewContext.addActionListener(this);
-        JMenuItem miFileNewSuggest = menuFileNew.add("Suggestions");
-        miFileNewSuggest.setEnabled(false);
-        menuFile.add(menuFileNew);
+//        JMenuItem miFileNewContext = menuFileNew.add("Context (Language)");
+//        miFileNewContext.setActionCommand("new context");
+//        miFileNewContext.addActionListener(this);
+//        miFileNewSuggest = menuFileNew.add("Suggestions");
+//        miFileNewSuggest.setEnabled(false);
+//        menuFile.add(menuFileNew);
 
         JMenuItem miFileClose = menuFile.add("Close Window");
         miFileClose.setActionCommand("close window");
         miFileClose.addActionListener(this);
 
-        JMenuItem miFileOpenSKE = menuFile.add("Open KinEdit File");
-        miFileOpenSKE.setActionCommand("open kinedit");
-        miFileOpenSKE.addActionListener(this);
+        miFileOpenSILK = menuFile.add("Open SILK File");
+        miFileOpenSILK.setActionCommand("open silk");
+        miFileOpenSILK.addActionListener(this);
 
         JMenuItem miFileOpenContext = menuFile.add("Open Context");
         miFileOpenContext.setActionCommand("open context");
         miFileOpenContext.addActionListener(this);
 
-        JMenu menuFileAdd2Library = new JMenu("Add to Library...");
+        menuFileAdd2Library = new JMenu("Add to Library...");
         JMenuItem miFileAdd2LibraryDT = menuFileAdd2Library.add("Domain Theory");
         miFileAdd2LibraryDT.setActionCommand("add domain theory");
         miFileAdd2LibraryDT.addActionListener(this);
@@ -161,17 +165,17 @@ public class MainPane extends JFrame implements ActionListener {
         miFileAdd2LibraryGEDCOM.setEnabled(false);
         menuFile.add(menuFileAdd2Library);
 
-        JMenuItem miFileDelete = menuFile.add("Delete From Library...");
+        miFileDelete = menuFile.add("Delete From Library...");
         miFileDelete.setActionCommand("delete from library");
         miFileDelete.addActionListener(this);
 
-        JMenuItem miFileDeleteContext = menuFile.add("Delete Context");
+        miFileDeleteContext = menuFile.add("Delete Context");
         miFileDeleteContext.setActionCommand("delete context");
         miFileDeleteContext.addActionListener(this);
 
         menuFile.addSeparator();
 
-        JMenuItem miFileSaveContext = menuFile.add("Save Context");
+        miFileSaveContext = menuFile.add("Save Context");
         miFileSaveContext.setActionCommand("save context");
         miFileSaveContext.addActionListener(this);
         JMenuItem miFileSaveContextAs = menuFile.add("Save Context As...");
@@ -264,9 +268,16 @@ public class MainPane extends JFrame implements ActionListener {
             menuAdmin.setEnabled(false);
         }
         menuBar.validate();
-
     }  //  end of method createMenu
 
+    
+    public void enableAdvancedMenuItems(boolean bool) {
+        menuFileAdd2Library.setEnabled(bool);
+        miFileDelete.setEnabled(bool);
+        miFileDeleteContext.setEnabled(bool);
+    }
+    
+    
     //  Method required to implement ActionListener interface
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("new browser")) {
@@ -297,7 +308,7 @@ public class MainPane extends JFrame implements ActionListener {
             }
             changeActivity(Library.DATA_GATHERING);
         } //  end of action-is-new-context
-        else if (e.getActionCommand().equals("open kinedit")) {
+        else if (e.getActionCommand().equals("open silk")) {
             if (fc == null) {
                 fc = new JFileChooser();
             }
@@ -321,6 +332,10 @@ public class MainPane extends JFrame implements ActionListener {
             frame.doDefaultCloseAction();
         } //  end of action-is-close-window
         else if (e.getActionCommand().equals("exit")) {
+            if (SIL_Edit.editWindow != null
+                    && SIL_Edit.editWindow.chart.dirty) {
+                SIL_Edit.editWindow.chart.doWantToSave();
+            }
             System.exit(0);
         } else if (e.getActionCommand().equals("delete from library")) {
             //  First, let User choose what to language to delete.
@@ -752,8 +767,9 @@ public class MainPane extends JFrame implements ActionListener {
             changeActivity(Library.DATA_GATHERING);
         } //  end of action-is-delete-context
         else if (e.getActionCommand().equals("save context")) {
-            //  FINISH ME !!!  
-            try {
+            if (SIL_Edit.editWindow != null) {
+                SIL_Edit.editWindow.chart.saveSILKinFile();
+            }else try {
                 Library.saveUserContext(currentFrame, false);
             } catch (Exception ex) {
                 activity.log.append("While saving a context, " + ex + "\n\n");
@@ -761,8 +777,9 @@ public class MainPane extends JFrame implements ActionListener {
             changeActivity(Library.DATA_GATHERING);
         } //  end of action-is-save-context
         else if (e.getActionCommand().equals("save context as")) {
-            //  FINISH ME !!!  
-            try {
+            if (SIL_Edit.editWindow != null) {
+                SIL_Edit.editWindow.chart.saveAsFile();
+            }else try {
                 Library.saveUserContext(currentFrame, true);
             } catch (Exception ex) {
                 activity.log.append("While saving a context, " + ex + "\n\n");
@@ -833,10 +850,15 @@ public class MainPane extends JFrame implements ActionListener {
             //  DomTh.writeThyFile() is all set to go.
         } //  end of action-is-export-domain-theory
         else if (e.getActionCommand().equals("edit prefs")) {
-            //  FINISH ME !!!  Do the process right here (as soon as you figure out what the prefs ARE)
-            //  try {  SOMETHING!!
-            //  }catch (Exception ex)  {
-            //      System.out.println("While editing prefs, " + ex);  }
+            if (SIL_Edit.editWindow != null) {
+                SIL_Edit.editWindow.editPrefsItemActionPerformed(null);
+            }else {
+                String msg = "You may only edit Prefs for a Context Under Construction." 
+                        + "\nThere currently is none.";
+                JOptionPane.showMessageDialog(desktop, msg, "Invalid Command",
+                        JOptionPane.ERROR_MESSAGE);
+                activity.log.append(msg + "\n\n");
+            }
         } //  end of action-is-edit-prefs
         else if (e.getActionCommand().equals("edit user context")) {
             editCUC();
