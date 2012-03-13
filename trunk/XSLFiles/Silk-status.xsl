@@ -659,7 +659,7 @@
                <blockquote>
                   <ul>
                      <li><xsl:value-of
-                        select="substring-after(gloss/element/@text, ':-')"/></li>
+                        select="gloss/element/@text"/></li>
                   </ul>
                </blockquote>
                <p><xsl:if
