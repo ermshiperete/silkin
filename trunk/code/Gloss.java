@@ -36,9 +36,13 @@ public class Gloss implements Serializable  {
     }
     
     public String toSILKString(String bacer) {
+        if (elements.isEmpty()) {
+            return "";
+        }
         String s = bacer + "<gloss>\n" , spacer = "\t";
         for (String el : elements) {
-            s += bacer + spacer + "<element text=\"" + el + "\"/>\n";
+            s += bacer + spacer + "<element text=\"" + 
+                    FamilyPanel.convertBannedCharacters(el) + "\"/>\n";
         }
         if (culturalPreds != null) {
             s += bacer + spacer + "<where>\n" ;
@@ -49,7 +53,8 @@ public class Gloss implements Serializable  {
                 s += bacer + spacer + spacer + "<cultural-pred kinTerm=\"" 
                         + entry.getKey() + "\">\n";
                 for (String el : entry.getValue()) {
-                    s += bacer + spacer + spacer + spacer + "<element text=\"" + el + "\"/>\n";
+                    s += bacer + spacer + spacer + spacer + "<element text=\"" 
+                            + FamilyPanel.convertBannedCharacters(el)  + "\"/>\n";
                 }
                 s += bacer + spacer + spacer + "</cultural-pred>\n";
             }  //  end of loop thru culturalPreds  
@@ -67,6 +72,18 @@ public class Gloss implements Serializable  {
         }
         ArrayList<String> els = culturalPreds.get(cPred);
         els.add(el);
+    }
+    
+    public void addCulturalPred(String cPred, Gloss glozz) {
+        if (culturalPreds == null) {
+            culturalPreds = new TreeMap<String, ArrayList<String>>();
+        }
+        if (culturalPreds.get(cPred) == null) {
+            culturalPreds.put(cPred, new ArrayList<String>());
+        }
+        ArrayList<String> els = culturalPreds.get(cPred);
+        els.addAll(glozz.elements);
+        
     }
     
     public void addCitation(String cite) {

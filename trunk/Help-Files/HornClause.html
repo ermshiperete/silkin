@@ -1,0 +1,391 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "hht://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        </META>
+        <title>Editing Definitions in Horn Clause Format</title>
+    </head>     
+    <body>
+        <a name="layout"></a> 
+        <h3>General Layout of the Theory Editor Window</h3>
+        <p>
+            This page explains how to edit definitions in SILKin. When a SILK file has been opened in SILKin, choosing 'Edit  >  Edit Context'
+            will open a Context Editor window. Near the bottom of the context editor is a box containing the Kinship System Domain Theories
+            (i.e. definitions). If your target language does not have separate Terms of Address, there will only be a theory for Terms of
+            Reference. If you click on an 'Edit Theory' button, it will open a theory editor for that set of definitions.
+        </p>
+        <p>
+            In the theory editor window you may edit the Primary Author and the citation of any publication containing further information about
+            your work. Or these fields may remain blank if you like. Below these are a profusion of buttons and menus that allow you to view and 
+            edit definitions of kin terms, or <a href="#edit-comments">edit related comments</a>.
+            <ul>
+                <li>A drop-down menu of 'Kin Terms &amp; Edits In Progress' contains all the kin terms that have been seen so far.
+                    They are grouped into 3 categories:
+                    <ol>
+                        <li><span style="font-weight: bold">Edits In Progress</span> From the time you start editing a definition until you finally
+                            either delete the edit or accept the definition, that kin term will be in this section. If you choose an edit in progress from
+                            this section, you will be able to resume your editing where you left off in a prior session.</li>
+                        <li><span style="font-weight: bold">Defined Local Terms</span> All kin terms in the local language for which you have accepted a 
+                            definition will appear in this section. If you choose a defined term from this section, it will be displayed in the editing
+                            window so you can view it, but the 'Display is editable' check box will be un-checked (to prevent unintentional changes). 
+                            If you wish to revise an accepted definition, you can click the 'editable' box and then edit it. (That will move this kin term
+                            into the edits-in-progress section until you complete your editing.) </li>
+                        <li><span style="font-weight: bold">Undefined Local Terms</span> All other kin terms that appear in the data. If you choose a 
+                            kin term from this section, you can craft a definition from scratch. If you create, validate, and accept the definition, then
+                            this kin term will be moved into the 'Defined' section. </li>
+                    </ol>
+                </li>
+                <li>A drop-down menu of '<span style="font-weight: bold">Auxiliary Terms</span>.' This menu is empty at first, but you define any 
+                    auxiliary terms here. Auxiliaries are explained <a href="#auxiliaries">below.</a></li>
+                <li>Below these two drop-down menus is a text field. This is where definition are displayed and/or edited. If a definition is display-only, 
+                    the 'Display is editable' check box will be un-checked (to prevent unintentional changes). If you check that box, then you may edit
+                    the text in this area. </li>
+                <li>A drop-down menu of '<span style="font-weight: bold">Pre-Defined Terms</span>' contains all the relationship terms (or <span style="font-style: italic">predicates</span>)
+                    that SILKin understands automatically. This is a fairly long list, with the most frequently used terms at the top of the list. When this menu is open, 
+                    you can type the first few letters of a term and the list will scroll to that term. </li>
+                <li>The '<span style="font-weight: bold">Insert</span>' button next to the 'Pre-Defined Terms' will insert the selected term from that menu into the editing area.</li>
+                <li>The '<span style="font-weight: bold">Period</span>' button will place a period at the end of a clause, and perform some other functions described 
+                    <a href="#variable-generation">below.</a> </li>
+                <li>The '<span style="font-weight: bold">Insert</span>' button next to the 'Defined Local Terms' will insert the selected local term into the editing area.</li>
+                <li>A drop-down menu of '<span style="font-weight: bold">Defined Local Terms</span>' contains all the kin terms in the local language that have accepted definitions. Once a definition
+                    is accepted for a local term, it can be used in other definitions as a <span style="font-style: italic">predicate</span>. 
+                </li>                    
+            </ul>
+            The remaining four buttons and two check boxes are explained <a href="#bottom-buttons">below.</a> Before discussing them, we must describe carefully the
+            things we will be editing: Horn Clauses.
+        </p>
+        <a name="tutorial"></a> 
+        <h3> What Is A Horn Clause? </h3>
+        <p>There are several ways you could express the definition of a kin term. Let's use the English term 'aunt' as an example. 
+            <ol type="A">
+                <li>You could draw a family tree diagram of Ego and all the people Ego calls 'aunt'. That would look like the
+                    charts we draw in SILKin. </li>
+                <li>You could use a gloss -- kin terms to describe the chain of linking kinsmen between Ego and Alter -- for each type of aunt.
+                    That would look like this:
+                    <ul>
+                        <li>mother's sister</li>
+                        <li>mother's brother's wife</li>
+                        <li>father's sister</li>
+                        <li>father's brother's wife</li>
+                    </ul>                    
+                </li>
+                <li>You could write a sequence of <span style="font-style: italic">relations</span> that express the kinship between two
+                    people, using <span style="font-style: italic">variables</span> to represent each person. That would look like this:
+                    <ol>
+                        <li>mother(B, Ego), sister(Alter, B).</li>
+                        <li>mother(B, Ego), brother(C, B), wife(Alter, C).</li>
+                        <li>father(B, Ego), sister(Alter, B).</li>
+                        <li>father(B, Ego), brother(C, B), wife(Alter, C).</li>
+                    </ol>           
+                </li>
+            </ol>
+            A gloss is certainly the most compact expression of a definition. But the series of relations is only slightly less compact. When these 
+            series are written according a simple set of rules, they are called <span style="font-style: italic">Horn Clauses</span>. A Horn Clause has
+            several nice properties:
+            <ul>
+                <li>It specifies precisely who is related to whom in which way. Even in a very complex definition, there is never any ambiguity.</li>
+                <li>It allows for <span style="font-style: italic">constraints</span> to be specified precisely. For instance, if seniority were
+                    part of the definition, we could write 'elder(Alter, Ego)' to specify that the kin term only applies if Alter is older than
+                    Ego. </li>
+                <li>It can express any definition, no matter how complex, without any footnotes or other explanations.</li>
+                <li>A computer can easily understand and manipulate Horn Clauses. SILKin stores definitions
+                    in the form of Horn Clauses. Whenever desired, SILKin can produce a chart or a gloss from a Horn Clause (although they may
+                    not be able to display all the information in a Horn Clause, like seniority).</li>
+            </ul>
+        </p>
+        <a name="rules"></a>  
+        <h3> Rules For Writing Horn Clauses </h3>
+        <p>Writing Horn Clauses is fairly simple. Each way a person can qualify for the kin term is expressed in a separate clause.
+            In our example above, there are four different ways one can qualify as an 'aunt' in English, so there are four clauses. Each clause is independent
+            of the others. The variable &quot;B&quot; may represent one particular person in one clause, and someone else in another clause.            
+        </p>
+        <p>
+            The components of a Horn Clause, the individual relations, are called <span style="font-style: italic">literals</span> by mathematicians
+            and computer geeks. A literal has a <span style="font-style: italic">predicate</span> that names the relation, followed by the 
+            <span style="font-style: italic">arguments</span> in parentheses. In our second example above -- the literal 'mother(B, Ego), brother(C, B), wife(Alter, C).'
+            -- the predicates are 'mother', 'brother', and 'wife'. The predicate 'mother' has two arguments: 'B' and 'Ego'. A literal consists of one predicate
+            and its arguments enclosed in parentheses. Multiple arguments are separated by commas. Multiple literals are also separated by commas. 
+            Notice that predicates and arguments are not alike:
+            <ul>
+                <li>A predicate always starts with a lower-case letter. </li>
+                <li>Predicates must be understood by the computer, so they must come from the list of 'Pre-Defined Terms' or 'Defined Local Terms'.</li>
+                <li>An argument always begins with a capital letter. Arguments are also called <span style="font-style: italic">variables</span>. </li>
+                <li>Two arguments (variables) are required in every clause: Ego and Alter. Other than that, arguments may be anything we like. By 
+                    tradition, the series of capital letters are used for arguments: B, C, D, F, G, H, etc. In SILKin we don't use 'A' or 'E' to
+                    avoid any confusion with Alter and Ego. </li>
+                <li>Most of the Pre-Defined Terms (predicates like 'mother') require two arguments. For example: the literal 'mother(B, Ego)' specifies that B is the mother of Ego.
+                    If you use the 'mother' predicate but only write one argument (e.g. 'mother(B)') this is a syntax error. </li>
+                <li>A few predicates take only one argument: 'dead(C)' or 'female(F)'. </li>
+                <li>The names of predicates must consist of letters, numbers, underscores ('_') and square brackets ('[' and ']'). The Pre-Defined Terms all
+                    follow this rule (e.g. 'half_brother'). When devising names for local kin terms, you must follow this rule also.
+                </li>
+            </ul>
+        </p>
+        <p>When there are multiple literals in a clause, they are separated by commas. There is a period after the final literal.             
+        </p>
+        <p>When there are multiple clauses in a definition (e.g. 'aunt' above has four clauses), the first clause is preceded by a literal that represents what is being defined:
+            for example 'aunt(Alter, Ego)' and a special symbol ':-' that means &quot;is defined as.&quot;  All clauses after the first one are preceded by the
+            special symbol '|' that means &quot;OR&quot;. To illustrate these rules, here is how the formal definition of English 'aunt' is written in Horn Clauses:            
+        </p>
+        <pre>
+   aunt(Alter, Ego) :- mother(B, Ego), sister(Alter, B).
+                    |  mother(B, Ego), brother(C, B), wife(Alter, C).
+                    |  father(B, Ego), sister(Alter, B).
+                    |  father(B, Ego), brother(C, B), wife(Alter, C).
+        </pre>
+        <p>
+            Once we get used to Horn Clauses, we can read a clause like a sentence, or read multiple clauses like a paragraph. Here is how we would
+            read the 'paragraph' above that defines the concept of English 'aunt.' 
+            <pre>
+Alter is the aunt of Ego if:
+    B is mother of Ego, and Alter is sister of B.
+OR  B is mother of Ego, C is brother of B, and Alter is wife of C.
+OR  B is father of Ego, and Alter is sister of B.
+OR  B is father of Ego, C is brother of B, and Alter is wife of C. </pre>
+        </p>
+        <p>There is one more rule for writing Horn Clauses: there must be a chain of relations leading from Ego to Alter. For example, in the second clause
+            of our 'aunt' definition we say that B is the mother of Ego, and C is the brother of B, and Alter is the wife of C. 'B' and 'C' are the two 
+            linking kinsmen between Ego and Alter. If the chain of linking kinsmen is broken (e.g. by misspelling a variable) then the definition is invalid
+            and SILKin will reject it.             
+        </p>
+        <p>Here are some examples of <span style="font-weight: bold">incorrect clauses</span>:
+            <ul>
+                <li><code>mother(B, Ego), sister(Alter, B),</code> <br/>The clause does not end with a period.</li>
+                <li><code>father(B, Ego), Sister(Alter, B).</code> <br/>The predicate 'sister' is misspelled. All predicates must begin with a lower-case letter.</li>
+                <li><code>mother(B, Ego), brother(c, B), wife(Alter, C).</code> <br/>The variable 'c' is lower-case. All variables must begin with a capital  
+                    letter. Also, since variable names are case-sensitive, SILKin will say there is no chain of relations between Ego and Alter because
+                    'c' and 'C' are not the same. </li>
+                <li><code>mother(B, Ego), sister(Alter).</code> <br/>The predicate 'sister' requires two arguments.</li>
+                <li><code>father(B Ego)  sister(Alter,B).</code> <br/>The arguments in the first literal are not separated by commas. Also, the two literals
+                    are not separated by commas. </li>
+            </ul></p>
+        
+        <a name="pre-defined-terms"></a>
+        <h3> Pre-Defined Terms Available For Use in Definitions</h3>
+        <p>
+            You need only a few basic relations to build a genealogical chart. You can tie all the people and families together using just parent-child and 
+            spouse relations. If we also use the relations to specify the gender of Alter, we need just 6 basic relations, or predicates:
+            <ul>
+                <li>father, mother, son, daughter, husband, wife</li>
+            </ul>
+            For convenience, SILKin pre-defines other commonly-used, gender-specific kin terms:
+            <ul>
+                <li>brother, sister, half_brother, half_sister, step_brother, step_sister</li>
+                <li>step_mother, step_father, step_son, step_daughter</li>
+            </ul>
+            SILKin also provides constraint predicates that allow you to express restrictions on the applicability of a clause. If a kin term in the
+            local language means &quot;younger brother&quot; then we need predicates like 'elder' or 'younger' to express the restriction. So SILKin
+            provides several constraint predicates:
+             <ul>
+                <li>male, female, gender, dead, divorced, elder, younger</li>
+                <li>equal, not, contains, greaterThan, lessThan, greaterOrEql, lessOrEql</li>
+            </ul>
+            Sometimes it is easier to use a gender-neutral predicate in a definition, so SILKin pre-defines these:
+            <ul>
+                <li>parent, child, spouse, sibling</li>
+                <li>parents, children, spice, siblings, </li>
+            </ul>
+            It may seem curious that SILKin provides both 'child' and 'children' for use in definitions, but there is a reason. If we have a definition
+            where the gender of one person is constrained to be the same as another's, we could use two clauses to record this: one for the male case and
+            another for the female case. It is always OK to use that simple approach. But some may prefer the compactness of using a single clause. If,
+            for example, the kin term means &quot;same-sex sibling&quot; we might write <code>
+                sibling(Alter, Ego), gender(B, Ego), gender(B, Alter).
+            </code>
+            That clause would make the definition clear to a human reader, but if we asked SILKin to draw a chart of this kin term, it would draw a single
+            diagram where Ego is male (or female) and Ego's sibling has the same gender. But to be really precise, SILKin should draw 
+            <span style="font-style: italic">two</span> examples: one for male and another for female, to make it clear the definition works for both genders.
+            When SILKin sees a plural gender-neutral predicate (e.g. siblings or spice), it knows that when creating examples or drawing charts it must
+            generate <span style="font-style: italic">both</span> cases. So the best way to write &quot;same-sex sibling&quot; would be:<code>
+                siblings(Alter, Ego), gender(B, Ego), gender(B, Alter).
+            </code>
+            That is the same as writing two clauses, one with a male Ego and one with a female Ego. See the next two sections for other examples of how to use
+            gender-neutral predicates and a good rule-of-thumb.
+        </p>
+        <a name="auxiliaries"></a>
+        <h3> Auxiliary Terms</h3>
+        <p>
+            Auxiliary terms are another potential convenience. You do not need to define or use any auxiliaries, but you may if you wish. Auxiliaries provide
+            a way to define a <span style="font-style: italic">concept</span> in the local language that does not correspond to a single kin term. 
+        </p>
+        <p>
+            For example: perhaps the local language includes the concept of 'cross cousin' but has separate terms for male cross cousin and female cross cousin.
+            It would be convenient to define the cross cousin concept as it is used in the local language (there are many different interpretations around the
+            world), then plug that concept into definitions wherever needed. Because there is no kin term for 'cross cousin' we need an auxiliary term.
+        </p>
+        <p>
+            The rules for auxiliaries are simple. The name you choose for this predicate must start with a lower-case letter and must contain &quot;[aux]&quot;
+            inside the name. In this case, we might choose 'cross_cousin[aux]' as the name of our auxiliary term. We click on the 'Auxiliary Terms' drop-down
+            menu and choose 'Define  New Auxiliary Term'. We are prompted for a valid name, then we can begin to write the definition in the editing area.
+        </p>
+        <p>
+            As soon as we provide the name, SILKin puts into the editing area <br/>
+            <code>cross_cousin[aux](Alter, Ego) :- </code> <br/>
+            to start our definition. In the local
+            language, the only requirement is that a cross cousin must be the child of your parent's opposite-sex sibling.  The gender of neither Ego nor Alter matters.
+            So we write the following definition in the editing area:</p>
+            <code>parents(B, Ego), sibling(C, B), children(Alter, C), gender(D, B), gender(E, C), not(equal(D, E)).</code> 
+        <p>By assigning separate variables to the genders of B and C, and then specifying that those gender variables (D and E) cannot be equal, we have expressed
+            the local meaning of &quot;cross&quot;. As soon as we validate and accept the definition of this auxiliary term (as described 
+            <a href="#bottom-buttons">below</a>), 'cross_cousin[aux]' will appear in the menu of 'Defined Local Terms' and we can use it in definitions of other terms.
+        </p>
+        <p>
+            Notice that we used the plural 'parents' in this definition (it applies to both male and female parents) and also the plural 'children' (the gender of
+            the cousin doesn't matter). But we did not use the plural of 'sibling'. Why not? Because (when generating examples) SILKin will generate samples for both
+            a male parent and a female parent. But once the gender of the parent has been chosen, the gender of the sibling <span style="font-style: italic">must</span>
+            be the opposite. So SILKin cannot generate both a male and a female sibling for the male parent. We use 'sibling' (singular) so that SILKin will not try to generate
+            both genders for C. The rule of thumb is: <span style="font-style: italic">Use a singular gender-neutral predicate if some constraints in the clause will
+            restrict the gender. Use a plural gender-neutral predicate if there are no constraints on the gender, and you want to be sure SILKin generates both cases
+            when creating examples or charts.</span>
+        </p>
+        <a name="bottom-buttons"></a>
+        <h3> Validating and Accepting Definitions</h3>
+        <p>
+            After you have written or edited a definition in Horn Clause form, SILKin must validate the definition before it can be accepted. The 
+            'Syntax Check' button asks SILKin to verify that you have followed all the rules for writing Horn Clauses, spelled predicates correctly, etc.
+            The sample session below illustrates the kinds of syntax errors SILKin can detect. We have tried to anticipate the more common errors, but if
+            you try you can probably make a creative mistake that will completely perplex the syntax checker. If you fail the syntax check but cannot
+            see anything wrong with your definition, perhaps a colleague can focus fresh eyes on the clause and suggest a solution. If all else fails,
+            email your SILK file (your edits-in-progress are in it) to the support address shown on the site where you downloaded SILKin. The project team
+            will inspect your definition and tell you why it failed the test.
+        </p>
+        <p> 
+            Once you pass the syntax check, you may need to perform a dyad check. (If you are editing or creating an auxiliary term definition, you may
+            skip the dyad check &mdash; an auxiliary term will not have any dyads associated with it.) In a dyad check, SILKin examines every dyad in your
+            data. If there are any dyads for this kin term that do not fit your definition, you will be informed. Also, if there are any dyads for some
+            other kin term that fit this definition, you will be informed. You will have the option of examining a list of the misfit dyads.
+        </p>
+        <p>
+            Until you resolve the misfit dyads, the 'Accept Def' button will not light up. Usually you can resolve the misfits in one of the following ways:
+            <ul>
+                <li>If your definition does not cover some legitimate dyads for this kin term, you can add one or more clauses that cover these additional
+                ways that someone can qualify for this kin term.</li>
+                <li>If a misfit dyad is incorrect, you can go back to the chart and correct the kin term data. For example, if you discover an incorrect
+                dyad for Ego = #4 and Alter = #12, go the chart, change Ego to #4 and then click on #12 as Alter. Correct (or delete) the kin term shown in the 
+                'Ego calls Alter' field. </li>
+                <li>If your definition covers some cases that it should not, but there are no apparent errors in your dyads, you must carefully analyze
+                    <span style="font-style: italic">why</span> these cases should not be included in your definition. Is there perhaps a constraint 
+                    that you failed to include in a clause? Is there a non-genealogical factor involved?
+                </li>
+            </ul>
+        </p>
+        <p>
+            If you have a large collection of dyads, and your definition fits all but a small number of cases, SILKin may ignore this 'noise in the
+            data' and allow you to pass the dyad check. The percentage of 'noise' allowed in your data is determined by the parameter 'Ignorable %' in
+            <a href="Prefs.html#ignore"> the 'Edit Prefs' screen</a>. 
+        </p><p>
+            When you have passed the syntax check and the dyad check, you may click 'Accept Def' to add the definition to the domain theory for this
+            language. Once it is accepted, this kin term will be automatically applied to any new Ego/Alter pair who fit the definition. You will be
+            given the option to retroactively apply it to all pairs who fit.
+        </p>
+        <a name="sample-session"></a>
+        <h3> A Sample Session in the Theory Editor</h3>
+        <p>
+            Jean has been gathering genealogical data about the XYZ people for several weeks. He chose &quot;Get New Suggestions&quot; recently, and SILKin
+            suggested two definitions that seemed reasonable, so he accepted them. Jean thinks he has figured out the definition of a third term on his own.
+            After loading his SILK file he chooses 'Edit Context.' In the context editor he clicks on 'Edit Theory' and the theory editor opens up.
+            He chooses one of the accepted definitions from the 'Kin Terms &amp; Edits In Progress' menu and it is displayed in the editing area. He wants to
+            edit his definition, so he clicks the 'Display is editable' check box at the bottom of the editor window; now he can place his cursor in the text of
+            the definition and make changes. He sees the following in the editing area:
+         </p>
+        <pre>
+   gerbis(Alter, Ego) :- mother(B, Ego), sister(Alter, B).
+                      |  mother(B, Ego), brother(C, B), wife(Alter, C).
+                      |  father(B, Ego), sister(Alter, B).
+                      |  father(B, Ego), brother(C, B), wife(Alter, C).
+        </pre>
+        <p>
+            The definition of 'gerbis' is exactly the same as the English 'aunt' above (how convenient for this example!). 
+            Jean wants to replace the four clauses with just two that begin with 'parents.' So he changes 'mother' to 'parents' in the first two clauses and deletes
+            the last two clauses. Now he has this:
+        </p>
+        <pre>
+   gerbis(Alter, Ego) :- parents(B, Ego), sister(Alter, B).
+                      |  parents(B, Ego), brother(C, B), wife(Alter, C).
+        </pre>
+        <p>
+            Jean clicks the 'Syntax Check' button; he gets the message that his syntax is good, and the 'Dyad Check' button is enabled. Pressing the 'Dyad Check'
+            button produces another message that everything is OK and the 'Accept Def' button is enabled. He clicks that button and the new statement of the definition
+            becomes official. SILKin will use this two-clause version from now on.
+        </p>
+        <p>
+            Now Jean clicks on the 'Kin Terms &amp; Edits In Progress' menu and scrolls down the list of undefined local terms to 'brac.' He has figured out that this
+            kin term means &quot;daughter's child&quot;. As soon as he clicks on 'brac' the beginning of the definition is generated in the editing area and the
+            'Display is editable' box is checked. He enters his definition, making the editing area look like this:
+        </p>
+        <pre>
+brac(Alter, Ego) :- daughter(B, Ego) child(Alter, B)
+        </pre>
+        <p>
+            He does not notice his typing errors, so he presses the 'Syntax Check' button. SILKin responds with the message<br/>
+            <code>KSBadHornClauseException: Each Horn Clause must end with a period. Found no period in &quot; daughter(B, Ego) child(Alter, B) &quot;
+            </code>
+        </p>
+        <p>
+            He adds the missing period. If he doesn't see his other error, pressing the 'Syntax Check' button again will produce <br/>
+<pre>There is likely a punctuation error or missing comma somewhere near the '***' in:
+daughter(B, Ego) *** child(Alter, B).
+(Multiple arguments should be separated by commas.
+ Also, multiple literals are separated by commas.)
+</pre>
+        </p>
+        <p>Jean adds the missing comma between literals (after &quot;Ego)&quot;) and presses 'Syntax Check' once more. This time he sees
+            <code>Syntax is correct for this definition</code> and the 'Dyad Check' button lights up. This means he can now check his definition
+            against the data (dyads) he has gathered for the term 'brac'.            
+        </p>
+        <p>
+            <span style="font-weight: bold">NOTE:</span> Passing the Syntax Check successfully causes the 'Dyad Check' button to light up. And if the 
+            Dyad Check is passed the 'Accept Def' button lights up. But if Jean makes any further edits (changing just a single character), all the
+            buttons will dim except 'Syntax Check.' If he wants to be sure he does not inadvertently change the definition, he may un-check the 
+            'Display is editable' check box; this prevents accidental changes.
+        </p>
+        
+        <a name="variable-generation"></a>
+        <h3> Automatic Variable Generation</h3>
+        <p>
+            SILKin is very strict about the syntax of definitions. The smallest error in typing a predicate or variable &mdash; or a small punctuation
+            mistake &mdash; will cause your definition to fail the Syntax Check. As a convenience, SILKin offers automatic variable generation.
+            Whenever you are typing <span style="font-style: italic">at the end</span> of your definition (i.e. adding new literals) 
+            if 'Automatic Variable Generation' is checked 
+            you can simply scroll to and select the predicate you want, click 'Insert,' and SILKin will insert the predicate and 
+            <span style="font-style: italic">try</span> to generate a set of variables in parentheses. If it can't figure out what they should be,
+            it may generate a capital letter you don't want. Our guess is that it's easier to edit an incorrect variable name than it is to type the
+            whole literal. If you find this feature annoying, turn it off by un-checking the box.
+        </p>
+        <p>
+            When using Automatic Variable Generation, the last literal inserted will have a generated variable and the literal will be followed by 
+            a comma. If you click on 'Period' the last variable generated will be changed to 'Alter' and the final comma will be replaced with a period.
+            This will complete your clause in the usual way. If you need to insert constraints, you must do this manually.
+        </p>
+        <p>
+            <span style="font-weight: bold">NOTE:</span> If you are editing in the middle of an existing clause, SILKin will not even attempt to
+            guess the variables you might want. You can still use 'Insert' to insert a predicate, but it will be followed by empty parentheses 
+            where you may type the proper variables. The 'Period' button will be ineffective.
+        </p>
+        <a name="edit-comments"></a>
+        <h3> Editing Comments</h3>
+        <p> 
+            There is a 'Comments' field associated with each accepted definition, plus one for the entire context. When the 'Edit Def'
+            button is selected (below the editing area), you can edit definitions. When the 'Edit Comments' button is selected, you can edit
+            the comments associated with an <span style="font-style: italic">accepted</span> definition. These comments are stored on the
+            SILK file; they might be useful for documenting special circumstances or meanings of a kin term. Or they might explain why the
+            User has written the Horn Clause in a particular way.
+        </p>
+        <p>
+            To edit the comments associated with the defined kin term 'gerbis' you would select that term in the 'Kin Terms &amp; Edits
+            In Progress' menu, then click on 'Edit Comments.' Note that the syntax and dyad checks (as well as acceptance) are not available
+            for comments. Whatever you type in the editing area will be stored in the SILK file.
+        </p>
+        <p>
+            To edit your commentary on the entire context, select the titles of the 'Kin Terms &amp; Edits In Progress' and 'Auxiliary Terms' 
+            menus. (The editing area will say &quot;[No definition selected for editing.]&quot;) Then click the 'Edit Comments' button and the
+            context comments will be displayed for editing. There is no limit on the length of your comments (except the memory available on your
+            computer), but SILKin is not a word processor. Please note that if you have separate theories for Terms of Reference and Terms of
+            Address, your comments about both of them will appear together in the context's comments. You should label them clearly. 
+        </p>
+    </body>
+</html>

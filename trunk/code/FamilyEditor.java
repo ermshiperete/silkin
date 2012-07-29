@@ -207,7 +207,7 @@ public class FamilyEditor extends KSJInternalFrame {
         editor.add(kidBox);
 
         //  NOTES
-        notes = new JTextArea(fam.comment);
+        notes = new JTextArea(PersonPanel.restoreLineBreaks(fam.comment));
         notes.setWrapStyleWord(true);
         JScrollPane noteScroll = new JScrollPane(notes);
         noteScroll.setMinimumSize(new Dimension(400, 60));
@@ -821,7 +821,7 @@ public class FamilyEditor extends KSJInternalFrame {
                 //  end of delete-family
             } else if (e.getActionCommand().equals("done")) {
                 ctxt.saveState = true;
-                fam.comment = notes.getText();
+                fam.comment = FamilyPanel.convertBannedCharacters(notes.getText());
                 fam.dataChangeDate = UDate.today();
                 fam.dataAuthor = dataAuth.getText();
                 // check for date entries without 'Enter' key

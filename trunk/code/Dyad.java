@@ -175,6 +175,14 @@ public class Dyad  implements Serializable, Comparable  {
 				+ " (" + ego.gender + ") - " + pcString + ": lvl " + level + codes + ">";
 		}  //  end of overriding method toString
     
+    public String toProblemString() {
+        String s =  "Kin term: " + kinTerm + "   Kin type: " + pcString;
+        s += "\n     Ego = #" + ego.serialNmbr + " (" + ego.name + ")";
+        s += "      Alter = #" + alter.serialNmbr + " (" + alter.name + ")";
+        return s;
+    }
+    
+    
     public boolean equals(Object o) {
         if (o instanceof Dyad) {
             Dyad d = (Dyad)o;

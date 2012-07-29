@@ -3950,8 +3950,7 @@ public class DomainTheory extends DT_Abstract2 {
         int size = cb.body.size();
         ConstraintObj constraints = new ConstraintObj();
         ArrayList<Object> genderStuff = new ArrayList<Object>(), starStuff = new ArrayList<Object>(), starBindings = new ArrayList<Object>();
-        for (int i = 0; i < size; i++) // if any literal specifies an ego gender other than ego.gender, we fail.
-        {
+        for (int i = 0; i < size; i++) {  // if any literal specifies an ego gender other than ego.gender, we fail.
             if (!(((Literal) cb.body.get(i)).constraintCheck(dad.ego.gender, constraints, genderStuff, starStuff))) {
                 return false;
             }
@@ -3962,7 +3961,7 @@ public class DomainTheory extends DT_Abstract2 {
         if (!LiteralAbstract1.finalConstraintCheck(dad.ego.gender, bindings, constraints, cb.body, genderStuff, starStuff)) {
             return false;
         }
-        // finalConstraintCheck does post-processing & a final conflict-check.
+        // finalConstraintCheck does post-processing & a final conflict-check. It sdds UDP constraints.
         ArrayList<Object> bodyCopy = new ArrayList<Object>(cb.body), starStuffCopy = new ArrayList<Object>(starStuff);
         String kinTerm = cb.ktd.kinTerm;
         Literal next = null;

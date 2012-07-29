@@ -27,16 +27,20 @@ who have a kin of that type, and for each one has a list of Alters whom Ego call
  */
 public class KinTermMatrix implements Serializable {
 
-    TreeMap matrix;
-    TreeMap indexRef, indexAddr;
+    TreeMap matrix = new TreeMap();
 
-
-    /** This constructor creates an empty matrix.  */
-    public KinTermMatrix() {
-        matrix = new TreeMap();
-        indexRef = new TreeMap();
-        indexAddr = new TreeMap();
-    }  //  end of constructor
+    
+    public KinTermMatrix clone() {
+        KinTermMatrix clon = new KinTermMatrix();
+        Iterator egoIter = matrix.keySet().iterator();
+        while (egoIter.hasNext()) {
+            Integer egoNum = (Integer)egoIter.next();
+            
+            TreeMap cloneRow = new TreeMap(getRow(egoNum));
+            clon.matrix.put(egoNum, cloneRow);
+        }
+        return clon;
+    }
 
     /** This method removes the row and column associated
      *  with an Individual. This method is used to clean up
@@ -163,7 +167,7 @@ public class KinTermMatrix implements Serializable {
             altIter = ((TreeMap) egoEntry.getValue()).entrySet().iterator();
             while (altIter.hasNext()) {
                 altEntry = (Map.Entry) altIter.next();
-                alter = ((Integer) altEntry.getKey()).intValue();
+                alter = (Integer) altEntry.getKey();
                 cell = (Node) altEntry.getValue();
                 image += "\n\t<cell alter=\"" + alter + "\">" + cell.toSILKString() + "</cell>";
             }  //  end of loop thru cells in the row
@@ -174,15 +178,7 @@ public class KinTermMatrix implements Serializable {
 
     /** Return a printable String displaying the complete contents of this Matrix and Indices */
     public String toString() {
-        String st = "";
-        if (indexRef.size() > 0) {
-            st += printIndexRef() + "\n\n";
-        }
-        if ((indexAddr != null) && (indexAddr.size() > 0)) {
-            st += printIndexAddr() + "\n\n";
-        }
-        st += printMatrix();
-        return st;
+        return printMatrix();
     }  //  end of over-riding method
 
     /** Return a printable String displaying the selected contents of this Matrix.
@@ -194,12 +190,6 @@ public class KinTermMatrix implements Serializable {
      */
     public String toString(String type) {
         String image = "";
-        if (type.indexOf("address") > -1) {
-            image += printIndexAddr() + "\n\n";
-        }
-        if (type.indexOf("reference") > -1) {
-            image += printIndexRef() + "\n\n";
-        }
         if (type.indexOf("matrix") > -1) {
             image += printMatrix() + "\n\n";
         }
@@ -209,65 +199,9 @@ public class KinTermMatrix implements Serializable {
         return image;
     }  
 
-    /** Return a printable String displaying the Index of Kinship Terms of Reference. */
-    public String printIndexRef() {
-// This method is temporarily bypassed. If a use for this index appears
-// it can be reinstated
-        return "";
-//        String image = "\nIndex of Kinship Terms of Reference in " + DomainTheory.current.languageName, term;
-//        image += ".\nKin Term\n     Ego    (All_Known_Alters)\n";
-//        Iterator termIter = indexRef.entrySet().iterator(), egoIter;
-//        Map.Entry termEntry, egoEntry;
-//        ArrayList<Object> altLst;
-//        Integer ego, alter;
-//        while (termIter.hasNext()) {
-//            termEntry = (Map.Entry) termIter.next();
-//            image += "\n" + (String) termEntry.getKey() + "\n";
-//            egoIter = ((TreeMap) termEntry.getValue()).entrySet().iterator();
-//            while (egoIter.hasNext()) {
-//                egoEntry = (Map.Entry) egoIter.next();
-//                image += "     " + egoEntry.getKey() + "    (";
-//                altLst = (ArrayList<Object>) egoEntry.getValue();
-//                for (int i = 0; i < altLst.numberOfKinTerms(); i++) {
-//                    image += altLst.get(i) + " ";
-//                }
-//                image += ")\n";
-//            }
-//        }
-//        return image;
-    }  //  end of method for printing indexRef of kinTerms
-
-    /** Return a printable String displaying the Index of Kinship Terms of Address. */
-    public String printIndexAddr() {
-        if ((indexAddr == null) || (indexAddr.isEmpty())) {
-            return " ";
-        }
-        String image = "\nIndex of Kinship Terms of Address in " + DomainTheory.current.languageName, term;
-        image += ".\nKin Term\n     Ego    (All_Known_Alters)\n";
-        Iterator termIter = indexAddr.entrySet().iterator(), egoIter;
-        Map.Entry termEntry, egoEntry;
-        ArrayList<Object> altLst;
-        Integer ego, alter;
-        while (termIter.hasNext()) {
-            termEntry = (Map.Entry) termIter.next();
-            image += "\n" + (String) termEntry.getKey() + "\n";
-            egoIter = ((TreeMap) termEntry.getValue()).entrySet().iterator();
-            while (egoIter.hasNext()) {
-                egoEntry = (Map.Entry) egoIter.next();
-                image += "     " + egoEntry.getKey() + "    (";
-                altLst = (ArrayList<Object>) egoEntry.getValue();
-                for (int i = 0; i < altLst.size(); i++) {
-                    image += altLst.get(i) + " ";
-                }
-                image += ")\n";
-            }
-        }
-        return image;
-    }  //  end of method for printing indexAddr of kinTerms
-
     /** Return a printable String displaying the contents of this Matrix */
     public String printMatrix() {
-        String image = "\nMatrix of Relationships in " + DomainTheory.current.languageName, term;
+        String image = "\nMatrix of Relationships in " + DomainTheory.current.languageName;
         image += ".\nEgo\n   Alter   (Primaries)  [Extended]  {Exceptions}    * = Terms of Address\n";
         Iterator egoIter = matrix.entrySet().iterator(), altIter, ktIter;
         Map.Entry egoEntry, altEntry;
@@ -314,190 +248,12 @@ public class KinTermMatrix implements Serializable {
                 file.println("</row> ");
             }
             file.println("</matrix> ");
-            if (indexRef != null) {
-                writeIndexToKtmFile(file, "ref");
-            }
-            if (indexAddr != null) {
-                writeIndexToKtmFile(file, "addr");
-            }
             file.flush();
             file.close();
         } catch (IOException e) {
             throw new JavaSystemException(langName + ".ktm File Creation failed:\n" + e);
         } //  end of catch block
     }  //  end of method writeKtmFile
-
-    public void writeIndexToKtmFile(PrintWriter file, String type) {
-        String tag;
-        TreeMap index;
-        if (type.equals("ref")) {
-            tag = "indexRef";
-            index = indexRef;
-        } else {
-            tag = "indexAddr";
-            index = indexAddr;
-        }
-        file.println("<" + tag + "> ");
-        Iterator termIter = index.entrySet().iterator(), egoIter;
-        Map.Entry termEntry, egoEntry;
-        ArrayList<Object> altLst;
-        Integer ego, alter;
-        while (termIter.hasNext()) {
-            termEntry = (Map.Entry) termIter.next();
-            file.println("<row> " + (String) termEntry.getKey());
-            egoIter = ((TreeMap) termEntry.getValue()).entrySet().iterator();
-            while (egoIter.hasNext()) {
-                egoEntry = (Map.Entry) egoIter.next();
-                file.print(egoEntry.getKey() + "  (");
-                altLst = (ArrayList<Object>) egoEntry.getValue();
-                file.print(altLst.get(0));
-                for (int i = 1; i < altLst.size(); i++) {
-                    file.print(", " + altLst.get(i));
-                }
-                file.println(")");
-            } //  end of while-egoIter.hasNext
-            file.println("</row> ");
-        }  //  end of while-termIter.hasNext
-        file.println("</" + tag + "> ");
-    }  //  end of method writeIndexToKtmFile
-
-    private void addToIndex(Integer egoNum, Integer altNum, String kinTerm, boolean addr) {
-// This method is temporarily bypassed. If a use for this index appears
-// it can be reinstated
-        return;
-//        TreeMap index;
-//        if (!addr) {
-//            index = indexRef;
-//        } else {
-//            if (indexAddr == null) {
-//                indexAddr = new TreeMap();
-//            }
-//            index = indexAddr;
-//        }
-//        if (index.get(kinTerm) == null) {
-//            index.put(kinTerm, new TreeMap());
-//        }
-//        TreeMap egoTree = (TreeMap) index.get(kinTerm);
-//        if (egoTree.get(egoNum) == null) {
-//            egoTree.put(egoNum, new ArrayList<Object>());
-//        }
-//        ((ArrayList<Object>) egoTree.get(egoNum)).add(altNum);
-    }  //  end of method addToIndex
-
-    /**
-    Find all the (serial numbers of) people (alters) who are called <code>kinTerm</code> by ego.
-
-    @param	ego	  (serial number of) speaker of this kinTerm: the focus person.
-    @param	kinTerm	  the term to be found
-    @param  addr      true = searching Terms of Address, false = searching Terms of Reference
-
-    @return	  array of ints - the serial numbers of all people ego calls by this term
-    (primary, extended, or exception), or null if there are none.
-     */
-    public int[] findKinFor(int ego, String kinTerm, boolean addr) {
-        TreeMap index;
-        if (!addr) {
-            index = indexRef;
-        } else {
-            if (indexAddr == null) {
-                return null;
-            } else {
-                index = indexAddr;
-            }
-        }
-        Integer egoInt = new Integer(ego);
-        TreeMap termMap = (TreeMap) index.get(kinTerm);
-        if ((termMap == null) || (termMap.get(egoInt) == null)) {
-            return null;
-        }
-        ArrayList<Object> egoKin = (ArrayList<Object>) termMap.get(egoInt);
-        int[] answer = new int[egoKin.size()];
-        Iterator egoIter = egoKin.iterator();
-        int i = 0;
-        while (egoIter.hasNext()) {
-            answer[i++] = ((Integer) egoIter.next()).intValue();
-        }
-        return answer;
-    }  //  end of method findKinFor with int
-
-    /**
-    Find all the (serial numbers of) people (alters) who are called <code>kinTerm</code> by ego.
-
-    @param	ego		speaker of this kinTerm: the focus person.
-    @param	kinTerm		the term to be found
-    @param  addr      true = searching Terms of Address, false = searching Terms of Reference
-
-    @return			array of ints - the serial numbers of all people ego calls by this term (primary, extended, or exception).
-     */
-    public int[] findKinFor(Individual ego, String kinTerm, boolean addr) {
-        return findKinFor(ego.serialNmbr, kinTerm, addr);
-    }
-
-    /**
-    Find all instances of <code>kinTerm</code>, for any ego, in this KinTermMatrix.
-
-    @param	kinTerm	  the term to be found
-    @param  addr      true = searching Terms of Address, false = searching Terms of Reference
-
-    @return		TreeMap with keys = ego serial numbers (Integers) and values = ALists of serial numbers (Integers)
-    of all people that ego calls by this term (primary, extended, or exception).
-    Return null if there are no entries for <code>kinTerm</code>.
-     */
-    public TreeMap exampleMapOf(String kinTerm, boolean addr) {
-        TreeMap index;
-        if (!addr) {
-            index = indexRef;
-        } else {
-            if (indexAddr == null) {
-                return null;
-            } else {
-                index = indexAddr;
-            }
-        }
-        return (TreeMap) index.get(kinTerm);
-    }  //  end of method exampleMapOf
-
-    /**
-    Find all instances of <code>kinTerm</code>, for any ego, in this KinTermMatrix.
-
-    @param	kinTerm	  the term to be found
-    @param  addr      true = searching Terms of Address, false = searching Terms of Reference
-
-    @return		ArrayList<Object> (possibly empty) of {@link KinTermExample} objects.
-    For each example, ego calls alter by this term (primary, extended, or exception).
-     */
-    public ArrayList<Object> exampleListOf(String kinTerm, boolean addr) {
-        TreeMap index;
-        if (!addr) {
-            index = indexRef;
-        } else {
-            if (indexAddr == null) {
-                return new ArrayList<Object>();
-            } else {
-                index = indexAddr;
-            }
-        }
-        ArrayList<Object> examples = new ArrayList<Object>();
-        Map.Entry entry;
-        Integer ego;
-        ArrayList<Object> alters;
-        TreeMap termMap = (TreeMap) index.get(kinTerm);
-        if (termMap == null) {
-            return examples;
-        }
-        Iterator entryIter = termMap.entrySet().iterator();
-        Iterator alterIter;
-        while (entryIter.hasNext()) {
-            entry = (Map.Entry) entryIter.next();
-            ego = (Integer) entry.getKey();
-            alters = (ArrayList<Object>) entry.getValue();
-            alterIter = alters.iterator();
-            while (alterIter.hasNext()) {
-                examples.add(new KinTermExample(ego.intValue(), ((Integer) alterIter.next()).intValue(), kinTerm));
-            }
-        }  //  end of outer loop thru ego's for this kinTerm
-        return examples;
-    }  //  end of method exampleListOf
 
     /**
     Enter into this KinTermMatrix the kinship term that <code>ego</code> calls <code>alter</code>.
@@ -522,7 +278,6 @@ public class KinTermMatrix implements Serializable {
         if (((TreeMap) matrix.get(ego)).get(alter) == null) {
             ((TreeMap) matrix.get(ego)).put(alter, new Node());
         }
-        addToIndex(ego, alter, kinTerm, addr);
         ((Node) ((TreeMap) matrix.get(ego)).get(alter)).addTerm(kinTerm, type, clas);
     }  //  end of method replaceTerms with ints
 
@@ -530,16 +285,23 @@ public class KinTermMatrix implements Serializable {
     Enter into this KinTermMatrix the kinship term that <code>ego</code> calls <code>alter</code>.
     For example:  addKinTerm(DonaldDuckSerial#, ScroogeMcDuckSerial#, "uncle", "primary", false).
 
-    @param	egoInd      {@link Individual} who uses this kinTerm: the focus person.
-    @param	alterInd    Individual ego would call this kinTerm
-    @param	kinTerm     the term used
-    @param	type        'primary' or 'extended' or 'exception'
+    @param  egoInd      {@link Individual} who uses this kinTerm: the focus person.
+    @param  alterInd    Individual ego would call this kinTerm
+    @param  kinTerm     the term used
+    @param  type        'primary' or 'extended' or 'exception'
     @param  addr        true = searching Terms of Address, false = searching Terms of Reference
      */
     public void addTerm(Individual egoInd, Individual alterInd, String kinTerm, String type, boolean addr)
             throws KSInternalErrorException {
         addTerm(egoInd.serialNmbr, alterInd.serialNmbr, kinTerm, type, addr);
     }  //  end of method replaceTerms with Individuals
+    
+    public void insertNewRow(int serialNmbr) {
+        TreeMap row = new TreeMap();
+        Node n = Node.makeSelfNode(false);
+        row.put(serialNmbr, n);
+        matrix.put(serialNmbr, row);
+    }
 
     public void addNode(int egoInt, int alterInt, Node node) {
         Integer ego = new Integer(egoInt), alter = new Integer(alterInt);
@@ -799,14 +561,12 @@ public class KinTermMatrix implements Serializable {
                 Integer altEgo = new Integer(pullSerial(person.node.ktSuffix));
                 if (altEgo.intValue() == egoInd.serialNmbr) {  //  regular ego
                     tree.put(alter, person.node);
-                    updateIndices(ego, alter, person.node);
                 } else {  //  substitute ego
                     if (matrix.get(altEgo) == null) {
                         matrix.put(altEgo, new TreeMap());
                     }
                     altTree = (TreeMap) matrix.get(altEgo);
                     altTree.put(alter, person.node);
-                    updateIndices(altEgo, alter, person.node);
                 }
             } else {
                 tree.remove(alter);
@@ -819,36 +579,6 @@ public class KinTermMatrix implements Serializable {
         return Integer.parseInt(suffix.substring(1, end));
     }  //  end of method pullSerial
 
-    private void updateIndices(Integer ego, Integer alter, Node cell) {
-        return;
-        /*           Iterator termIter;
-        //  SEE HEADER NOTES ON THIS CLASS FOR HOW TO RECORD DELETED KIN TERMS
-        if (cell.kinTermsRef() != null)  {
-        termIter = cell.kinTermsRef().iterator();
-        while (termIter.hasNext()) addToIndex(ego, alter, (String)termIter.next(), false);
-        }
-        if (cell.exceptionsRef() != null)  {
-        termIter = cell.exceptionsRef().iterator();
-        while (termIter.hasNext()) addToIndex(ego, alter, (String)termIter.next(), false);
-        }
-        if (cell.extKinTermsRef() != null)  {
-        termIter = cell.extKinTermsRef().iterator();
-        while (termIter.hasNext()) addToIndex(ego, alter, (String)termIter.next(), false);
-        }
-        if (cell.kinTermsAddr() != null)  {
-        termIter = cell.kinTermsAddr().iterator();
-        while (termIter.hasNext()) addToIndex(ego, alter, (String)termIter.next(), true);
-        }
-        if (cell.exceptionsAddr() != null)  {
-        termIter = cell.exceptionsAddr().iterator();
-        while (termIter.hasNext()) addToIndex(ego, alter, (String)termIter.next(), true);
-        }
-        if (cell.extKinTermsAddr() != null)  {
-        termIter = cell.extKinTermsAddr().iterator();
-        while (termIter.hasNext()) addToIndex(ego, alter, (String)termIter.next(), true);
-        }
-         */    }  //  end of method updateIndices
-
     /** 
     Replace <code>ego</code>'s row in this KinTermMatrix with this TreeMap.  All terms in the old row are erased.
     Update the Indices of kinTerms associated with this KinTermMatrix.
@@ -859,7 +589,7 @@ public class KinTermMatrix implements Serializable {
     @throws	  a KSInternalErrorException if the values in the TreeMap <code>newRow</code>
     are not <code>Node</code>s and the keys are not Integers.
      */
-    public void replaceRow(Individual egoInd, TreeMap newRow) throws KSInternalErrorException {
+    public void replaceRow(Individual egoInd, TreeMap newRow) {
         replaceRow(egoInd.serialNmbr, newRow);
     }  //  end of alternate-format call to method replaceRow.
 
@@ -873,39 +603,24 @@ public class KinTermMatrix implements Serializable {
     @throws	  a KSInternalErrorException if the values in the TreeMap <code>newRow</code>
     are not <code>Node</code>s and the keys are not Integers.
      */
-    public void replaceRow(int egoInt, TreeMap newRow) throws KSInternalErrorException {
+    public void replaceRow(int egoInt, TreeMap newRow) {
 
         Integer ego = new Integer(egoInt), alter;
         Iterator entries = newRow.entrySet().iterator();
         Map.Entry entry;
-        Integer person;
         Node cell;
-        try {
-            while (entries.hasNext()) {
-                entry = (Map.Entry) entries.next();
-                person = (Integer) entry.getKey();
-                cell = (Node) entry.getValue();
-            }  //  end of validity-test loop thru newRow's contents
-        } catch (ClassCastException e) {
-            throw new KSInternalErrorException("In KinTermMatrix.replaceRow: newRow not composed of Integers and Nodes" + e);
-        }
+        while (entries.hasNext()) {
+            entry = (Map.Entry) entries.next();
+            Integer person = (Integer) entry.getKey();
+            cell = (Node) entry.getValue();
+        }  //  end of validity-test loop thru newRow's contents
         //  If we made it this far, all data is valid.
         matrix.put(ego, newRow);
-        //  Now remove from Index all entries for this Ego
-        Iterator indexIter = indexRef.values().iterator();
-        while (indexIter.hasNext()) {
-            ((TreeMap) indexIter.next()).remove(ego);
-        }
-        indexIter = indexAddr.values().iterator();
-        while (indexIter.hasNext()) {
-            ((TreeMap) indexIter.next()).remove(ego);
-        }
         entries = newRow.entrySet().iterator();
         while (entries.hasNext()) {
             entry = (Map.Entry) entries.next();
             alter = (Integer) entry.getKey();
             cell = (Node) entry.getValue();
-            updateIndices(ego, alter, cell);
         }  //  end of loop thru newRow's contents
     }  //  end of method replaceRow
 }  //  end of class KinTermMatrix

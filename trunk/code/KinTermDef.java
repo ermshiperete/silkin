@@ -470,8 +470,8 @@ public class KinTermDef implements Serializable, Comparable {
                     definitions = ktdIn.definitions;
                 } catch (Exception exc) {
                     String msg = "<!-- Disk read error prevented finding definition.";
-                    msg += "\nKinTermDef = " + langName + ":" + kinTerm;
-                    msg += "\nReport this bug! -->";
+                    msg += "$$br$$KinTermDef = " + langName + ":" + kinTerm;
+                    msg += "$$br$$Report this bug! -->";
                     JOptionPane.showMessageDialog(null, msg, "Internal Error", JOptionPane.ERROR_MESSAGE);
                     MainPane.activity.log.append(msg);
                     System.err.println(msg);
@@ -484,22 +484,33 @@ public class KinTermDef implements Serializable, Comparable {
             s += bacer + "</kin-term-def>";
             return s;
         }
-        
-        
+    
     public String toSILKString(String bacer, boolean writeDT) {
+        return toSILKString(bacer, writeDT, true);
+    }
+        
+        
+    /** Return an XML block representing this definition.
+     * 
+     * @param bacer         The basic spacer needed at the head of each line (for pretty printing)
+     * @param writeDT       true = print the associated DomainTheory. 
+     * @param defsRequired  true = empty definitions not allowed (the default)
+     *                      An EditInProgress does allow empty definitions
+     * @return              An XML string suitable for insertion in a SILK file.
+     */public String toSILKString(String bacer, boolean writeDT, boolean defsRequired) {
         String spacer = "\t", dblSpacer = "\t\t";
         String ktad = (Arrays.binarySearch(standardMacros, kinTerm) > -1 ? 
                 " non-term=\"yes\"" : "");
         String kt = (writeDT ? " term=\"" + kinTerm + "\"" : ktad);
         String s = bacer + "<kin-term-def" + kt + ">\n", langName = null;
         s += bacer + spacer + "<head>" + kinTerm + "</head>\n";
-        if (eqcSigExact != null) {
+        if (eqcSigExact != null && !eqcSigExact.isEmpty()) {
             s += bacer + spacer + "<eqcSigExact>" + eqcSigExact + "</eqcSigExact>\n";
         }
-        if (eqcSigStruct != null) {
+        if (eqcSigStruct != null && !eqcSigStruct.isEmpty()) {
             s += bacer + spacer + "<eqcSigStruct>" + eqcSigStruct + "</eqcSigStruct>\n";
         }
-        if (gloss == null) { 
+        if (defsRequired && gloss == null) { // if not defsRequired, no gloss needed.                
             gloss = gloss();
         }
         if (gloss != null) {
@@ -523,7 +534,7 @@ public class KinTermDef implements Serializable, Comparable {
             }
             s += bacer + spacer + "</ktd-domain-theory>\n";
         }
-        if (definitions == null || definitions.isEmpty()) {
+        if (defsRequired && (definitions == null || definitions.isEmpty())) {
             try {
                 langName = domTh.languageName;
                 String fileName = Library.libraryDirectory + "Domain Theory Files/" + langName + ".thy";
@@ -532,8 +543,8 @@ public class KinTermDef implements Serializable, Comparable {
                 definitions = ktdIn.definitions;
             } catch (Exception exc) {
                 String msg = "<!-- Disk read error prevented finding definition.";
-                msg += "\nKinTermDef = " + langName + ":" + kinTerm;
-                msg += "\nReport this bug! -->";
+                msg += "$$br$$KinTermDef = " + langName + ":" + kinTerm;
+                msg += "$$br$$Report this bug! -->";
                 JOptionPane.showMessageDialog(null, msg, "Internal Error", JOptionPane.ERROR_MESSAGE);
                 MainPane.activity.log.append(msg);
                 System.err.println(msg);
@@ -598,29 +609,44 @@ public class KinTermDef implements Serializable, Comparable {
             }
         }  //  end of loop thru all base clauses
         if (!cumCulturalPreds.isEmpty()) {
-//            cumCulturalPreds = alphabetize(cumCulturalPreds);  //  Parser.parseKinTerm reads file in order
-            String langName = null;
-            try {
-                langName = domTh.languageName;  //  Library domTheory where def was found
-                String fileName = Library.libraryDirectory + "Domain Theory Files/" + langName + ".thy";
-                for (String cPred : cumCulturalPreds) {
-                    Parser parzer = new Parser(new Tokenizer(Library.getDFA(), new Linus(fileName)));
-                    KinTermDef culturalKTD = parzer.parseKinTerm(cPred, false);
-                    ArrayList pcStringList = decodeString(culturalKTD.eqcSigExact);
+            for (String cPred : cumCulturalPreds) {
+                KinTermDef culturalKTD = (KinTermDef) domTh.theory.get(cPred);
+                ArrayList pcStringList;
+                TreeMap localUDPs = domTh.ctxt.userDefinedProperties;
+                if (culturalKTD != null && culturalKTD.gloss != null) {
+                    glos.addCulturalPred(cPred, culturalKTD.gloss);
+                } else if (culturalKTD != null && culturalKTD.eqcSigExact != null) {
+                    pcStringList = decodeString(culturalKTD.eqcSigExact);
                     for (Object o : pcStringList) {
-                        glos.addCulturalPred(cPred, glossify((String)o));
-                    }                    
+                        glos.addCulturalPred(cPred, glossify((String) o));
+                    }
+                } else if (cPred.startsWith("*") && localUDPs.containsKey(cPred)) {
+                    // This is a UDP defined for this Context
+                    String s = "value_Y is the " + cPred + " of person_X.";
+                    glos.addCulturalPred(cPred, s);
+                } else {
+                    String langName = null;
+                    try {
+                        langName = domTh.languageName;  //  Library domTheory where def was found
+                        String fileName = Library.libraryDirectory + "Domain Theory Files/" + langName + ".thy";
+                        Parser parzer = new Parser(new Tokenizer(Library.getDFA(), new Linus(fileName)));
+                        culturalKTD = parzer.parseKinTerm(cPred, false);
+                        pcStringList = decodeString(culturalKTD.eqcSigExact);
+                        for (Object o : pcStringList) {
+                            glos.addCulturalPred(cPred, glossify((String) o));
+                        }
+                    } catch (Exception exc) {
+                        String msg = "Disk read error prevented finding definition:\n" + exc;
+                        msg += "\nKinTermDef = " + langName + ":" + kinTerm;
+                        msg += "\nReport this bug!";
+                        JOptionPane.showMessageDialog(null, msg, "Internal Error", JOptionPane.ERROR_MESSAGE);
+                        MainPane.activity.log.append(msg);
+                        System.err.println(msg);
+                        glos.elements.add(msg);
+                    }
                 }
-                glos.addCitation(domTh.citation);                
-            } catch (Exception exc) {
-                String msg = "<!-- Disk read error prevented finding definition:\n" + exc;
-                msg += "\nKinTermDef = " + langName + ":" + kinTerm;
-                msg += "\nReport this bug! -->";
-                JOptionPane.showMessageDialog(null, msg, "Internal Error", JOptionPane.ERROR_MESSAGE);
-                MainPane.activity.log.append(msg);
-                System.err.println(msg);
-                glos.elements.add(msg);
             }
+            glos.addCitation(domTh.citation);
         }  // end of optional 'WHERE' section defining cultural predicates used in def.  
         return glos;
     }
@@ -769,6 +795,18 @@ public class KinTermDef implements Serializable, Comparable {
         return true;
     }
     
+    static Integer[] pluckEgoAndAlter(ArrayList miniPreds) {
+        Integer[] pair = new Integer[2];
+        String firstPred = (String)miniPreds.get(0),
+               lastPred = (String)miniPreds.get(miniPreds.size() -1);
+        int loc1 = firstPred.lastIndexOf("#") +1,
+            loc2 = firstPred.indexOf(")");
+        pair[0] = Integer.parseInt(firstPred.substring(loc1, loc2));
+        loc1 = lastPred.indexOf("#") +1;
+        loc2 = lastPred.indexOf(",");
+        pair[1] = Integer.parseInt(lastPred.substring(loc1, loc2));
+        return pair;
+    }
     
     static ArrayList<String> explodePCSymbols(String pcString) {
         ArrayList<String> symbols = new ArrayList<String>();
@@ -1000,33 +1038,34 @@ public class KinTermDef implements Serializable, Comparable {
 		}  // end of method generateExamples
 	
   
-		      
-     /** This method is called to generate examples - in the process it identifies and removes 
-		duplicative clauses and re-numbers them.
+    /** This method is called to generate examples - in the process it identifies and removes 
+    duplicative clauses and re-numbers them.
     
     @param	ctxt		the (hypothetical) Context for this DomainTheory
     @param	egoBag		contains at least 1 male and 1 female {@link Individual} who can serve as Ego in definitions.
     @param	dt			the DomainTheory we're using
-    */
+     */
     public void generateExamples(Context ctxt, ArrayList<Object> egoBag, Oracle orca)
-        throws KSBadHornClauseException, KSInternalErrorException, KSConstraintInconsistency, 
-                ClassNotFoundException  {
-		Iterator cbIter = expandedDefs.iterator();
-		ClauseBody cb;
-		int serial = 0;
-		while (cbIter.hasNext())  {
-			cb = (ClauseBody)cbIter.next();
+            throws KSBadHornClauseException, KSInternalErrorException, KSConstraintInconsistency,
+            ClassNotFoundException {
+        Iterator cbIter = expandedDefs.iterator();
+        ClauseBody cb;
+        int serial = 0;
+        while (cbIter.hasNext()) {
+            cb = (ClauseBody) cbIter.next();
 //     if (ctxt.languageName.equals("Cogui") && kinTerm.equals("augui")) {
 //         Context.breakpoint();
 //     }
-			cb.generateExamples(ctxt, egoBag, null, orca);
-			if (cb.duplicative && ! ctxt.simDataGen) {
-				cbIter.remove();
-			}else cb.seqNmbr = serial++;
-			}
-		}  // end of method generateExamples
-	
-  
+            cb.generateExamples(ctxt, egoBag, null, orca);
+            if (cb.duplicative && !ctxt.simDataGen) {
+                cbIter.remove();
+            } else {
+                cb.seqNmbr = serial++;
+            }
+        }
+    }  // end of method generateExamples
+
+
 		      
     /** This method is called when we need to be sure that this KTD has been expanded and all its
     fields computed during generation.
@@ -1052,6 +1091,14 @@ public class KinTermDef implements Serializable, Comparable {
             domTh.ctxt.saveState = true;
         }
     }  //  end of method assureExamplesGenerated
+    
+    public void argValsRemover() {
+        //  Only need to worry about expanded defs -- where the action is
+        for (int i=0; i < expandedDefs.size(); i++) {
+            ClauseBody cb = (ClauseBody)expandedDefs.get(i);
+            cb.valRemover(cb.body, new ArrayList<Object>());
+        }
+    }
     
 
     public ArrayList<Object> makeFlags()  {

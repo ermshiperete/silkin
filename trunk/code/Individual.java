@@ -20,7 +20,6 @@ public class Individual extends Person implements Serializable  {
     
     ArrayList<Object> nameHistory = new ArrayList<Object>();
     boolean deleted = false;
-    int seenB4 = 0;
     Node node = null;
     Dyad dyad;
 
@@ -532,7 +531,9 @@ public boolean hasDoD() {
                 image += "     Marriages:\n";
                 for (int i=0; i < marriages.size(); i++)  {
                         Family fam = (Family)marriages.get(i);
-                        image += "          Family#" + fam.serialNmbr + ": I-" + fam.husband.serialNmbr + ",  I-" + fam.wife.serialNmbr +  "\n";
+                        image += "          Family#" + fam.serialNmbr + 
+                                (fam.husband == null ? "none" : ": I-" + fam.husband.serialNmbr) + 
+                                (fam.wife == null ? "none" : ",  I-" + fam.wife.serialNmbr) +  "\n";
                         }  // end of for-each-marriage
                 }  // end of if-marriages
         if (userDefinedProperties != null) {

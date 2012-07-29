@@ -17,12 +17,12 @@ import java.util.Arrays;
 public class HelpFrame extends JFrame implements HyperlinkListener {
 
     static HelpFrame help = null;
-    static final int START = 0, CHART = 1, SUGGEST = 2, PREFS = 3;
+    static final int START = 0, CHART = 1, SUGGEST = 2, PREFS = 3, THEORY_EDIT = 4;
     static String[] filenames = {"Start.html", "Chart.html",
-        "Suggs.html", "Prefs.html"};    
+        "Suggs.html", "Prefs.html", "HornClause.html"};    
     static String[] titles = {"Getting Started", 
-        "Drawing and Editing Genealogy Charts", "Suggestions", "Preferences"};    
-    String[] pathNames = new String[4];
+        "Drawing and Editing Genealogy Charts", "Suggestions", "Preferences", "Editing Definitions"};    
+    String[] pathNames = new String[5];
     ArrayList<HyperlinkEvent> stack = new ArrayList<HyperlinkEvent>();
     ArrayList<String> titleStack = new ArrayList<String>();
     int stackPtr = 0;
@@ -281,6 +281,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             chartSubMenu = new JMenu();
             suggsSubMenu = new JMenu();
             prefsSubMenu = new JMenu();
+            theoryEditSubMenu = new JMenu();
         // SubMenu Items
             screenItem = new JMenuItem();
             createProjectItem = new JMenuItem();
@@ -307,6 +308,18 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             inductionItem = new JMenuItem();
             undoItem = new JMenuItem();
             polygamyItem = new JMenuItem();
+            nameCaptureItem = new JMenuItem();
+            snapToGridItem = new JMenuItem();
+            linkPriorityItem = new JMenuItem();
+            layoutItem = new JMenuItem();
+            tutorialItem = new JMenuItem();
+            rulesItem = new JMenuItem();
+            predefinedItem = new JMenuItem();
+            auxiliariesItem = new JMenuItem();
+            bottomBtnsItem = new JMenuItem();
+            sampleSessionItem = new JMenuItem();
+            variableGenItem = new JMenuItem();
+            editCommentsItem = new JMenuItem();
 
             // Getting Started SubMenu
             startSubMenu.setText("Getting Started");
@@ -550,12 +563,125 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
                 }
             });
             prefsSubMenu.add(polygamyItem);
+
+            nameCaptureItem.setText("Capturing Surnames and Birth Dates");
+            nameCaptureItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(PREFS, "capture");
+                }
+            });
+            prefsSubMenu.add(nameCaptureItem);
+
+            snapToGridItem.setText("Snap To Grid");
+            snapToGridItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(PREFS, "grid");
+                }
+            });
+            prefsSubMenu.add(snapToGridItem);
+
+            linkPriorityItem.setText("Link Priorities");
+            linkPriorityItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(PREFS, "priority");
+                }
+            });
+            prefsSubMenu.add(linkPriorityItem);
+            
+// Theory Editor SubMenu
+            theoryEditSubMenu.setText("Editing Definitions");
+            add(theoryEditSubMenu);
+
+            layoutItem.setText("Theory Editor Window Layout");
+            layoutItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(THEORY_EDIT, "layout");
+                }
+            });
+            theoryEditSubMenu.add(layoutItem);
+
+            tutorialItem.setText("What Is A Horn Clause? ");
+            tutorialItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(THEORY_EDIT, "tutorial");
+                }
+            });
+            theoryEditSubMenu.add(tutorialItem);
+
+            rulesItem.setText("Rules For Writing Horn Clauses");
+            rulesItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(THEORY_EDIT, "rules");
+                }
+            });
+            theoryEditSubMenu.add(rulesItem);
+
+            predefinedItem.setText("Pre-Defined Terms");
+            predefinedItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(THEORY_EDIT, "pre-defined-terms");
+                }
+            });
+            theoryEditSubMenu.add(predefinedItem);
+
+            auxiliariesItem.setText("Auxiliary Terms");
+            auxiliariesItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(THEORY_EDIT, "auxiliaries");
+                }
+            });
+            theoryEditSubMenu.add(auxiliariesItem);
+
+            bottomBtnsItem.setText("Validating and Accepting Definitions");
+            bottomBtnsItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(THEORY_EDIT, "bottom-buttons");
+                }
+            });
+            theoryEditSubMenu.add(bottomBtnsItem);
+
+            sampleSessionItem.setText("A Sample Session");
+            sampleSessionItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(THEORY_EDIT, "sample-session");
+                }
+            });
+            theoryEditSubMenu.add(sampleSessionItem);
+
+            variableGenItem.setText("Automatic Variable Generation");
+            variableGenItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(THEORY_EDIT, "variable-generation");
+                }
+            });
+            theoryEditSubMenu.add(variableGenItem);
+
+            editCommentsItem.setText("Editing Comments");
+            editCommentsItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(THEORY_EDIT, "edit-comments");
+                }
+            });
+            theoryEditSubMenu.add(editCommentsItem);            
         }
         
         private JMenu startSubMenu;
         private JMenu chartSubMenu;
         private JMenu suggsSubMenu;
         private JMenu prefsSubMenu;
+        private JMenu theoryEditSubMenu;
         private JMenuItem screenItem;
         private JMenuItem createProjectItem;
         private JMenuItem addPeopleItem;
@@ -581,5 +707,17 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
         private JMenuItem subPatternItem;
         private JMenuItem inductionItem;
         private JMenuItem polygamyItem;
+        private JMenuItem nameCaptureItem;
+        private JMenuItem snapToGridItem;
+        private JMenuItem linkPriorityItem;
+        private JMenuItem layoutItem;
+        private JMenuItem tutorialItem;
+        private JMenuItem rulesItem;
+        private JMenuItem predefinedItem;
+        private JMenuItem auxiliariesItem;
+        private JMenuItem bottomBtnsItem;
+        private JMenuItem sampleSessionItem;
+        private JMenuItem variableGenItem;
+        private JMenuItem editCommentsItem;
     }
 }

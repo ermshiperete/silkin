@@ -38,6 +38,9 @@ public class DyadTMap extends TreeMap implements Serializable {
         }
         if (get(item.kinTerm) == null) {
             put(item.kinTerm, new TreeMap());
+            if (EditTheoryFrame.current != null) {
+                EditTheoryFrame.current.dirty = true;
+            }
         }
         TreeMap termTM = (TreeMap) get(item.kinTerm);
         if (termTM.get(item.pcString) == null) {
@@ -67,6 +70,9 @@ public class DyadTMap extends TreeMap implements Serializable {
         }
         if (get(item.kinTerm) == null) {
             put(item.kinTerm, new TreeMap());
+            if (EditTheoryFrame.current != null) {
+                EditTheoryFrame.current.dirty = true;
+            }
         }
         TreeMap termTM = (TreeMap) get(item.kinTerm);
         if (termTM.get(item.pcString) == null) {
@@ -158,6 +164,9 @@ public class DyadTMap extends TreeMap implements Serializable {
         }
         if (termTM.isEmpty()) {
             remove(kinTerm);
+            if (EditTheoryFrame.current != null) {
+                EditTheoryFrame.current.dirty = true;
+            }
         }
     }  //  end of method removeDyad
 
@@ -217,6 +226,36 @@ public class DyadTMap extends TreeMap implements Serializable {
             dyList.remove(target);
         }
     }
+    
+    /**Iterate thru all dyads, removing any that refer to a person with
+     * this serial number or higher.
+     * 
+     * @param personNmbr        the lowest serial number to be purged
+     */
+    public void purgeDyads(int personNmbr) {
+        Iterator termIter = values().iterator();
+        while (termIter.hasNext()) {
+            TreeMap tm = (TreeMap) termIter.next();
+            Iterator pcStrIter = tm.values().iterator();
+            while (pcStrIter.hasNext()) {
+                ArrayList alist = (ArrayList) pcStrIter.next();
+                Iterator dyIter = alist.iterator();
+                while (dyIter.hasNext()) {
+                    Dyad dy = (Dyad) dyIter.next();
+                    if (dy.ego.serialNmbr >= personNmbr
+                            || dy.alter.serialNmbr >= personNmbr) {
+                        dyIter.remove();
+                    }
+                }
+                if (alist.isEmpty()) {
+                    pcStrIter.remove();
+                }
+            }
+            if (tm.isEmpty()) {
+                termIter.remove();
+            }
+        }
+    }  //  end of method purgeDyads
 
     /**  Integrate all the dyads in <code>otherMap</code> into this one.    
         @param  otherMap   the DyadTMap to be assimilated. */

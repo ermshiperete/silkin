@@ -57,13 +57,16 @@ public class Library {
             baseCB_Wait = 0,
             inductionWait = 0,
             maxExpansionStringDist = 5,
-            maxLevelForExpansion = 4;
+            maxLevelForExpansion = 4,
+            gridX = 40,
+            gridY = 60;
     static float minHitPerCent = 0.75f;
     static boolean parseClauseCounterOn = true,
             allowOverWrites = false,
             includeSourceDT = false,
             errorCorrectionOn = true,
             synUmbDetectOn = true,
+            snapToGrid = true,
             preXML = false;
 
     static DFA getDFA() throws KSParsingErrorException {
@@ -1118,6 +1121,18 @@ public class Library {
         }
         return cb;
     }  //  end of method decodeCCBS
+    
+    /* This method is for use by the EditTheoryFrame class to check the syntax
+     * of a manually constructed or edited Horn Clause
+     */
+    public static ClauseBody readCBfromString(String txtCB, DomainTheory dt)
+     throws KSInternalErrorException, JavaSystemException, KSParsingErrorException {
+        
+        Parser stringParser = new Parser(new Tokenizer(getDFA(), new LinusFromString(txtCB)));
+        ClauseBody cb = stringParser.parseCBfromString(dt);
+        
+        return cb;
+    }
 
     /** The Library's <code>KTD_Coder</code> class holds a numeric code (serial number) for this KTD in the
     language, plus the exactSignature for this KTD.

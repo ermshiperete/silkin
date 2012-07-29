@@ -1378,7 +1378,7 @@ public class Parser {
     } //  end of method parseFlagOrKinTerm
 
     /* LitOrFlag -> flag.
-    |  Literal.
+                 |  Literal.
      */
     private void parseLitOrFlag(ClauseBody claws) throws KSParsingErrorException {
         current = scanner.lookAhead();
@@ -1936,15 +1936,15 @@ public class Parser {
 
     public ClauseBody parseCBfromString(DomainTheory dt) throws KSParsingErrorException {
         //  To be used ONLY when lineMan is a LinusFromString
-        ClauseBody claws = new ClauseBody();
+        ClauseBody cb = new ClauseBody();
         dTheory = dt;
-        parseLitOrFlag(claws);
-        parseOtherLitsOrFlags(claws);
+        parseLitOrFlag(cb);
+        parseOtherLitsOrFlags(cb);
         current = scanner.readToken();  // consume next, which must be a period
         if (!current.token.equals("period")) {
             error("parseCBfromString seeking 'period'.");
         }
-        return claws;
+        return cb;
     }  //  end of method parseCBfromString
 
     public KinTermDef parseKinTerm(String kinTerm, boolean domThyAlso)

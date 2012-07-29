@@ -46,8 +46,13 @@ public class EditPrefsWindow extends JFrame {
         polygamyCkBox.setSelected(Context.current.polygamyPermit);
         inductionCkBox.setSelected(Context.current.doInduction);
         subpatternCkBox.setSelected(Context.current.doBaseCBs);
-        surnameCheckBox.setSelected(SIL_Edit.editWindow.getPPanel().surnameNormallyCaptured);
-        birthdateCheckBox.setSelected(SIL_Edit.editWindow.getPPanel().birthDateNormallyCaptured);
+        surnameCheckBox.setSelected(Context.current.surnameNormallyCaptured);
+        birthdateCheckBox.setSelected(Context.current.birthDateNormallyCaptured);
+        snapToGridCkBox.setSelected(Library.snapToGrid);
+        wideTxtFld.setText(String.valueOf(Library.gridX));
+        highTxtFld.setText(String.valueOf(Library.gridY));
+        wideTxtFld.setEditable(Library.snapToGrid);
+        highTxtFld.setEditable(Library.snapToGrid);
         String fileName = SIL_Edit.editWindow.chart.saveFile.getName();
         setTitle("Edit Preferences for " + fileName);
         loading = false;
@@ -80,6 +85,14 @@ public class EditPrefsWindow extends JFrame {
         surnameCheckBox = new javax.swing.JCheckBox();
         birthdateCheckBox = new javax.swing.JCheckBox();
         normalCaptureHelpBtn = new javax.swing.JButton();
+        snapToGridCkBox = new javax.swing.JCheckBox();
+        snapToGridHelp = new javax.swing.JButton();
+        editLinkPrioritiesBtn = new javax.swing.JButton();
+        linkPrioritiesHelp = new javax.swing.JButton();
+        wideLabel = new javax.swing.JLabel();
+        wideTxtFld = new javax.swing.JTextField();
+        highLabel = new javax.swing.JLabel();
+        highTxtFld = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -200,28 +213,76 @@ public class EditPrefsWindow extends JFrame {
             }
         });
 
+        snapToGridCkBox.setText("Snap To Grid");
+        snapToGridCkBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                snapToGridCkBoxActionPerformed(evt);
+            }
+        });
+
+        snapToGridHelp.setForeground(new java.awt.Color(255, 0, 51));
+        snapToGridHelp.setText("?");
+        snapToGridHelp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                snapToGridHelpActionPerformed(evt);
+            }
+        });
+
+        editLinkPrioritiesBtn.setText("Inspect/Edit Link Priorities");
+        editLinkPrioritiesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editLinkPrioritiesBtnActionPerformed(evt);
+            }
+        });
+
+        linkPrioritiesHelp.setForeground(new java.awt.Color(255, 0, 0));
+        linkPrioritiesHelp.setText("?");
+
+        wideLabel.setText("Wide");
+
+        wideTxtFld.setText("120");
+        wideTxtFld.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                wideTxtFldFocusLost(evt);
+            }
+        });
+
+        highLabel.setText("High");
+
+        highTxtFld.setText("100");
+        highTxtFld.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                highTxtFldFocusLost(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                        .add(layout.createSequentialGroup()
+                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                .add(maxLabel)
+                                .add(ignorableLabel))
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                .add(ignorableField)
+                                .add(maxField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)))
+                        .add(layout.createSequentialGroup()
+                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                .add(subpatternCkBox)
+                                .add(polygamyCkBox)
+                                .add(inductionCkBox)
+                                .add(surnameCheckBox)
+                                .add(birthdateCheckBox)
+                                .add(snapToGridCkBox))
+                            .add(7, 7, 7)))
                     .add(layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                            .add(maxLabel)
-                            .add(ignorableLabel))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                            .add(ignorableField)
-                            .add(maxField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)))
-                    .add(layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(subpatternCkBox)
-                            .add(polygamyCkBox)
-                            .add(inductionCkBox)
-                            .add(surnameCheckBox)
-                            .add(birthdateCheckBox))
-                        .add(7, 7, 7)))
+                        .addContainerGap()
+                        .add(editLinkPrioritiesBtn)))
                 .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
@@ -231,18 +292,28 @@ public class EditPrefsWindow extends JFrame {
                             .add(ignoreHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .add(layout.createSequentialGroup()
                             .add(maxSlider, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(maxHelp, 0, 0, Short.MAX_VALUE)))
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                            .add(maxHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                     .add(subpatternHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(inductionHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                        .add(org.jdesktop.layout.GroupLayout.LEADING, normalCaptureHelpBtn, 0, 0, Short.MAX_VALUE)
-                        .add(org.jdesktop.layout.GroupLayout.LEADING, polygamyHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, Short.MAX_VALUE)))
-                .addContainerGap())
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(391, Short.MAX_VALUE)
-                .add(doneBtn)
-                .addContainerGap())
+                    .add(layout.createSequentialGroup()
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, linkPrioritiesHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, snapToGridHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, normalCaptureHelpBtn, 0, 0, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, polygamyHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, Short.MAX_VALUE))
+                        .add(18, 18, 18)
+                        .add(wideLabel)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(wideTxtFld, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(18, 18, 18)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(doneBtn)
+                            .add(layout.createSequentialGroup()
+                                .add(highLabel)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                .add(highTxtFld, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -278,13 +349,25 @@ public class EditPrefsWindow extends JFrame {
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                         .add(surnameCheckBox)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(birthdateCheckBox)
-                        .add(28, 28, 28)
-                        .add(doneBtn))
+                        .add(birthdateCheckBox))
                     .add(layout.createSequentialGroup()
-                        .add(15, 15, 15)
+                        .add(26, 26, 26)
                         .add(normalCaptureHelpBtn)))
-                .addContainerGap())
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(snapToGridCkBox)
+                    .add(snapToGridHelp)
+                    .add(wideLabel)
+                    .add(wideTxtFld, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(highLabel)
+                    .add(highTxtFld, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(editLinkPrioritiesBtn)
+                    .add(linkPrioritiesHelp))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(doneBtn)
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         pack();
@@ -375,7 +458,7 @@ public class EditPrefsWindow extends JFrame {
          if (loading) {
             return;
         }
-        SIL_Edit.editWindow.getPPanel().surnameNormallyCaptured = surnameCheckBox.isSelected();
+        Context.current.surnameNormallyCaptured = surnameCheckBox.isSelected();
         SIL_Edit.editWindow.getPPanel().buildFocusFields();
         SIL_Edit.editWindow.chart.dirty = true;
     }//GEN-LAST:event_surnameCheckBoxActionPerformed
@@ -384,10 +467,83 @@ public class EditPrefsWindow extends JFrame {
         if (loading) {
             return;
         }
-        SIL_Edit.editWindow.getPPanel().birthDateNormallyCaptured = birthdateCheckBox.isSelected();
+        Context.current.birthDateNormallyCaptured = birthdateCheckBox.isSelected();
         SIL_Edit.editWindow.getPPanel().buildFocusFields();
         SIL_Edit.editWindow.chart.dirty = true;
     }//GEN-LAST:event_birthdateCheckBoxActionPerformed
+
+    private void snapToGridHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_snapToGridHelpActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_snapToGridHelpActionPerformed
+
+    private void snapToGridCkBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_snapToGridCkBoxActionPerformed
+        if (loading) {
+            return;
+        }
+        if (snapToGridCkBox.isSelected()) {
+            highTxtFld.setEditable(true);
+            wideTxtFld.setEditable(true);
+        }else {
+            highTxtFld.setEditable(false);
+            wideTxtFld.setEditable(false);
+        }
+        Library.snapToGrid = snapToGridCkBox.isSelected();
+        SIL_Edit.editWindow.setSnapToGrid(Library.snapToGrid);
+        SIL_Edit.editWindow.chart.dirty = true;
+    }//GEN-LAST:event_snapToGridCkBoxActionPerformed
+
+    private void wideTxtFldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_wideTxtFldFocusLost
+        if (loading) {
+            return;
+        }
+        int wide = 0;
+        try {
+            wide = Integer.parseInt(wideTxtFld.getText());
+        } catch (Exception ex) {
+            String msg = "You must enter an integer between 20 and 120.",
+                   ttl = "Invalid Entry for Grid Width.";
+            JOptionPane.showMessageDialog(SIL_Edit.editWindow, msg, ttl, JOptionPane.WARNING_MESSAGE);
+            wideTxtFld.setText(String.valueOf(Library.gridX));
+            return;
+        }
+        if (wide < 20 || wide > 120) {
+            String msg = "You must enter an integer between 20 and 120.",
+                   ttl = "Invalid Entry for Grid Width.";
+            JOptionPane.showMessageDialog(SIL_Edit.editWindow, msg, ttl, JOptionPane.WARNING_MESSAGE);
+            wideTxtFld.setText(String.valueOf(Library.gridX));
+            return;
+        }
+        Library.gridX = wide;
+    }//GEN-LAST:event_wideTxtFldFocusLost
+
+    private void highTxtFldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_highTxtFldFocusLost
+        if (loading) {
+            return;
+        }
+        int high = 0;
+        try {
+            high = Integer.parseInt(highTxtFld.getText());
+        } catch (Exception ex) {
+            String msg = "You must enter an integer between 40 and 180.",
+                   ttl = "Invalid Entry for Grid Height.";
+            JOptionPane.showMessageDialog(SIL_Edit.editWindow, msg, ttl, JOptionPane.WARNING_MESSAGE);
+            wideTxtFld.setText(String.valueOf(Library.gridX));
+            return;
+        }
+        if (high < 40 || high > 180) {
+            String msg = "You must enter an integer between 40 and 180.",
+                   ttl = "Invalid Entry for Grid Height.";
+            JOptionPane.showMessageDialog(SIL_Edit.editWindow, msg, ttl, JOptionPane.WARNING_MESSAGE);
+            wideTxtFld.setText(String.valueOf(Library.gridY));
+            return;
+        }
+        Library.gridY = high;
+    }//GEN-LAST:event_highTxtFldFocusLost
+
+    private void editLinkPrioritiesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editLinkPrioritiesBtnActionPerformed
+        LinkPriorityFrame lpf = new LinkPriorityFrame();
+        lpf.setVisible(true);
+    }//GEN-LAST:event_editLinkPrioritiesBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -427,12 +583,16 @@ public class EditPrefsWindow extends JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox birthdateCheckBox;
     private javax.swing.JButton doneBtn;
+    private javax.swing.JButton editLinkPrioritiesBtn;
+    private javax.swing.JLabel highLabel;
+    private javax.swing.JTextField highTxtFld;
     private javax.swing.JTextField ignorableField;
     private javax.swing.JLabel ignorableLabel;
     private javax.swing.JSlider ignorableSlider;
     private javax.swing.JButton ignoreHelp;
     private javax.swing.JCheckBox inductionCkBox;
     private javax.swing.JButton inductionHelp;
+    private javax.swing.JButton linkPrioritiesHelp;
     private javax.swing.JTextField maxField;
     private javax.swing.JButton maxHelp;
     private javax.swing.JLabel maxLabel;
@@ -440,8 +600,12 @@ public class EditPrefsWindow extends JFrame {
     private javax.swing.JButton normalCaptureHelpBtn;
     private javax.swing.JCheckBox polygamyCkBox;
     private javax.swing.JButton polygamyHelp;
+    private javax.swing.JCheckBox snapToGridCkBox;
+    private javax.swing.JButton snapToGridHelp;
     private javax.swing.JCheckBox subpatternCkBox;
     private javax.swing.JButton subpatternHelp;
     private javax.swing.JCheckBox surnameCheckBox;
+    private javax.swing.JLabel wideLabel;
+    private javax.swing.JTextField wideTxtFld;
     // End of variables declaration//GEN-END:variables
 }

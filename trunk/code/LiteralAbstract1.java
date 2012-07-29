@@ -395,9 +395,8 @@ public void expand(Context hypo, ArrayList<Object> clauseSoFar, ArrayList<Object
 			if (remainingLits.isEmpty())  
 				finishExpansion(hypo, clauseSoFar, origCB, expandedDefs, save4Last, path);
 			else {	//  remLits not empty.  Pop & recurse
-				StackMarkerObj newMarker = (StackMarkerObj)marker.copy();	//  Use copies, so recursive calls don't increment the counts in marker
-				Argument remLitArg = (Argument)remainingLits.get(0);
-				remainingLits.remove(0);  //  pop it off remLits
+				StackMarkerObj newMarker = (StackMarkerObj)marker.copy(); //  Use copies, so recursive calls don't increment the counts in marker
+				Argument remLitArg = (Argument)remainingLits.remove(0);  //  pop it off remLits
 				while (remLitArg.argType.equals("StackMarkerObj")) {
 					newMarker = (StackMarkerObj)((StackMarkerObj)remLitArg).copy(); // restore old marker state
 					remLitArg = (Argument)remainingLits.get(0);
@@ -738,38 +737,42 @@ public void neg_expand(Context hypo, ArrayList<Object> save4Last, ArrayList<Obje
             
             //  First validate the arity of the predicates
             if ((args.isEmpty()) && (! (predicate.name.equals("allowCreation"))))
-                throw new KSBadHornClauseException("Incorrect number of args for " + this);
+                throw new KSBadHornClauseException("Incorrect number of args for \"" + this + "\"");
             if ((args.size() == 1) && 
                 (! ((predicate.name.equals("male")) || (predicate.name.equals("female")) || 
                     (predicate.name.equals("dead")) || (predicate.name.equals("divorced")) || 
                     (predicate.name.equals("not"))))) 
-                throw new KSBadHornClauseException("Incorrect number of args for " + this);
+                throw new KSBadHornClauseException("Incorrect number of args for \"" + this + "\"");
             if ((args.size() == 2) && ((predicate.name.equals("male")) || (predicate.name.equals("female")) || 
                                        (predicate.name.equals("dead"))))
-                throw new KSBadHornClauseException("Incorrect number of args for " + this);
+                throw new KSBadHornClauseException("Incorrect number of args for \"" + this + "\"");
             if ((args.size() > 2) && (! predicate.name.equals("not")))
-                throw new KSBadHornClauseException("Incorrect number of args for " + this);
+                throw new KSBadHornClauseException("Incorrect number of args for \"" + this + "\"");
             //  Next, extract gender implications & check 'em
             String argName, otherName, oldConstraint, otherConstraint;
             if ((predicate.name.equals("father")) || (predicate.name.equals("son"))
                 || (predicate.name.equals("male")) || (predicate.name.equals("husband")))  {
                     // All imply arg0 is male.  Pass that to our helpful assistant.  Return of false means conflict.
                 if (! (genderCheck(((Argument)args.get(0)).argName, "M", "F", constraints.gender))) 
-                    throw new KSConstraintInconsistency("Conflicting gender constraints for " + ((Argument)args.get(0)).argName);
+                    throw new KSConstraintInconsistency("Conflicting gender constraints for \"" 
+                            + ((Argument)args.get(0)).argName + "\"");
                 ((Variable)args.get(0)).neuterOK = false;
                 if (predicate.name.equals("husband"))  // corrolary: wife is female
                     if (! (genderCheck(((Argument)args.get(1)).argName, "F", "M", constraints.gender)))  
-                        throw new KSConstraintInconsistency("Conflicting gender constraints for " + ((Argument)args.get(1)).argName);
+                        throw new KSConstraintInconsistency("Conflicting gender constraints for \"" 
+                                + ((Argument)args.get(1)).argName + "\"");
             } 
             else if ((predicate.name.equals("mother")) || (predicate.name.equals("daughter"))
                         || (predicate.name.equals("female")) || (predicate.name.equals("wife")))  { 
                             // all imply arg0 is female
                 if (! (genderCheck(((Argument)args.get(0)).argName, "F", "M", constraints.gender)))  
-                    throw new KSConstraintInconsistency("Conflicting gender constraints for " + ((Argument)args.get(0)).argName);
+                    throw new KSConstraintInconsistency("Conflicting gender constraints for \"" 
+                            + ((Argument)args.get(0)).argName + "\"");
                 ((Variable)args.get(0)).neuterOK = false;
                 if (predicate.name.equals("wife"))  // corrolary: husband is male
                     if (! (genderCheck(((Argument)args.get(1)).argName, "M", "F", constraints.gender)))  
-                        throw new KSConstraintInconsistency("Conflicting gender constraints for " + ((Argument)args.get(1)).argName);
+                        throw new KSConstraintInconsistency("Conflicting gender constraints for \"" 
+                                + ((Argument)args.get(1)).argName + "\"");
             } 
             else if ((predicate.name.equals("spouse")) || ((predicate.name.equals("divorced")) && (args.size() == 2)))
             {  // both have 2 args, both Variables
@@ -803,11 +806,13 @@ public void neg_expand(Context hypo, ArrayList<Object> save4Last, ArrayList<Obje
 				 Literal negatedLit = (Literal)args.get(0);
                 if (negatedLit.predicate.name.equals("male")) { 
                     if (! (genderCheck(((Argument)negatedLit.args.get(0)).argName, "F", "M", constraints.gender)))  
-                        throw new KSConstraintInconsistency("Conflicting gender constraints for " + ((Argument)negatedLit.args.get(0)).argName);
+                        throw new KSConstraintInconsistency("Conflicting gender constraints for \"" 
+                                + ((Argument)negatedLit.args.get(0)).argName + "\"");
                 }  //  end of if-pred=not-male
                 else if (negatedLit.predicate.name.equals("female"))  {
                     if (! (genderCheck(((Argument)negatedLit.args.get(0)).argName, "M", "F", constraints.gender))) 
-                         throw new KSConstraintInconsistency("Conflicting gender constraints for " + ((Argument)negatedLit.args.get(0)).argName);
+                         throw new KSConstraintInconsistency("Conflicting gender constraints for \"" 
+                                 + ((Argument)negatedLit.args.get(0)).argName + "\"");
                 }  //  end of if-pred=not-female
                 else if (negatedLit.predicate.name.equals("dead"))  
                     constraints.death.put((((Argument)negatedLit.args.get(0)).argName), "alive");

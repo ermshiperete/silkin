@@ -519,7 +519,11 @@ public abstract class DT_Abstract2 extends DT_Abstract1  {
 		//  on some Alter for the same Ego.  This is an overlapping pair of kinTerms.
 		//  If neither term is a non-term or an umbrella or synonym for the other, record Overlapping Terms.
 		//  If these terms are not already registered as Overlapping Terms, generate report.
-		for (int i=0; i < egoList.size(); i++) fillInNames((Individual)egoList.get(i));
+            for (int i=0; i < ctxt.individualCensus.size(); i++)  {
+			Individual ind = (Individual)ctxt.individualCensus.get(i);
+                        ind.node = new Node();
+            }
+            for (int i=0; i < egoList.size(); i++) fillInNames((Individual)egoList.get(i));
 		TreeMap oLaps = new TreeMap();
 		Iterator iter;
 		for (int i=0; i < ctxt.individualCensus.size(); i++)  {
@@ -853,6 +857,23 @@ public abstract class DT_Abstract2 extends DT_Abstract1  {
 			}
 		return result;
 		}  //  end of method expandStruct
+        
+        void mergeUDPs() {
+            if (userDefinedProperties == null || userDefinedProperties.isEmpty()) {
+                userDefinedProperties = ctxt.userDefinedProperties;
+                return;
+            }
+            if (userDefinedProperties != null && ctxt.userDefinedProperties != null) {
+                // Context is "official" in case of conflicts
+                Iterator udpIter = ctxt.userDefinedProperties.entrySet().iterator();
+                while (udpIter.hasNext()) {
+                    Map.Entry entry = (Map.Entry)udpIter.next();
+                    String key = (String)entry.getKey();
+                    UserDefinedProperty udp = (UserDefinedProperty)entry.getValue();
+                    userDefinedProperties.put(key, udp); // if duplication, ctxt udp will overwrite
+                }
+            }
+        }
 	
 	
 	public TreeSet setUnionOfCB_Ptrs(TreeSet structSet, ArrayList<Object> union)  {

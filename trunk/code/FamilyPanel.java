@@ -511,8 +511,8 @@ public class FamilyPanel extends JPanel {
         clean = clean.replace("\r", "  ");
         clean = clean.replace("<", "[");
         clean = clean.replace(">", "]");
-        clean = clean.replace("&amp;", "and");
-        return clean.replace("&", "and");
+        clean = clean.replace("&amp;", " and ");
+        return clean.replace("&", " and ");
     }
 
     

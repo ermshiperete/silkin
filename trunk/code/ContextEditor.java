@@ -1,36 +1,37 @@
 
-
-import java.util.* ;
+import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.beans.*;
 
-
-/** 
-The ContextEditor is a window that displays some of a {@link Context}'s fields for user editing.
-It is an extension of KSJInternalFrame because I want this to appear in the View menu.
-<p>
-The ContextEditor can only display one context - the current <code>Library.contextUnderConstruction</code>.  
-Often there will be only one; if there are more, the User must choose one to be his current focus, then edit it.</p>
-
-@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
+/**
+ * The ContextEditor is a window that displays some of a {@link Context}'s
+ * fields for user editing. It is an extension of KSJInternalFrame because I
+ * want this to appear in the View menu. <p> The ContextEditor can only display
+ * one context - the current
+ * <code>Library.contextUnderConstruction</code>. Often there will be only one;
+ * if there are more, the User must choose one to be his current focus, then
+ * edit it.</p>
+ *
+ * @author	Gary Morris, Northern Virginia Community College
+ * garymorris2245@verizon.net
  */
-public class ContextEditor extends KSJInternalFrame implements ItemListener {
+public class ContextEditor extends KSJInternalFrame {
 
     public Context ctxt;
     public JTextField name, folder;
     public JComboBox UDPick, indPick, famPick;
-    public boolean rebuilding, showDeleted = false;
+    public boolean rebuilding = false;
     public JPanel populationBox = new JPanel();
     public ArrayList<Object> peopleList;
+    public JLabel indivLabel, famLabel;
     public ArrayList<Family> famList;
-    public JCheckBox delBox;
     public Rectangle bnds = new Rectangle();
     public JTextArea comments;
     public CEListener listener;
-	
+
     public ContextEditor(Context cntxt) {
         super("Edit User Context: " + cntxt.languageName);
         ctxt = cntxt;
@@ -38,16 +39,18 @@ public class ContextEditor extends KSJInternalFrame implements ItemListener {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         listener = new CEListener(this);
 
-        JLabel textEdLabel = new JLabel("After editing a field, press 'Enter' key.");
-        textEdLabel.setAlignmentX(0.5f);
-        textEdLabel.setMaximumSize(new Dimension(225, 22));
-
         JPanel nameBox = new JPanel();
         nameBox.setLayout(new BoxLayout(nameBox, BoxLayout.LINE_AXIS));
         name = new JTextField(ctxt.languageName, 28);
         name.setMaximumSize(new Dimension(225, 22));
-        name.addActionListener(listener);
-        name.setActionCommand("name edit");
+        name.addFocusListener(new java.awt.event.FocusAdapter() {
+
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                nameFocusLost(evt);
+            }
+        });
+
+
         JLabel nameLabel = new JLabel("Language Name: ");
         nameBox.add(nameLabel);
         nameBox.add(name);
@@ -56,8 +59,15 @@ public class ContextEditor extends KSJInternalFrame implements ItemListener {
         folderBox.setLayout(new BoxLayout(folderBox, BoxLayout.LINE_AXIS));
         folder = new JTextField(ctxt.editDirectory);
         folder.setMaximumSize(new Dimension(225, 22));
-        folder.addActionListener(listener);
-        folder.setActionCommand("folder edit");
+//        folder.addActionListener(listener);
+//        folder.setActionCommand("folder edit");
+        folder.addFocusListener(new java.awt.event.FocusAdapter() {
+
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                folderFocusLost(evt);
+            }
+        });
+
         JLabel folderLabel = new JLabel("SILK file folder: ");
         folderBox.add(folderLabel);
         folderBox.add(folder);
@@ -70,9 +80,6 @@ public class ContextEditor extends KSJInternalFrame implements ItemListener {
         nameFolderBox.add(folderBox);
         nameFolderBox.setAlignmentX(0.5f);
 
-        delBox = new JCheckBox("Show deleted records");
-        delBox.setSelected(false);
-        delBox.addItemListener(this);
         buildPopulationBox();
 
         JPanel btnBoxUDPs = new JPanel(), subBoxUDP = new JPanel();
@@ -237,9 +244,13 @@ public class ContextEditor extends KSJInternalFrame implements ItemListener {
         distinctBox.add(noDistinct);
 
 
-        /*  NOTE:  It should be possible to put all these elements directly into the ContentPane.
-        But that doesn't work; the layout is truly ugly and stuff gets stacked on top of other stuff.
-        What works is to put everything into a JPanel with BoxLayout.  Then put the JPanel into ContentPane.  */
+        /*
+         * NOTE: It should be possible to put all these elements directly into
+         * the ContentPane. But that doesn't work; the layout is truly ugly and
+         * stuff gets stacked on top of other stuff. What works is to put
+         * everything into a JPanel with BoxLayout. Then put the JPanel into
+         * ContentPane.
+         */
         JPanel leftCol = new JPanel();
         leftCol.setLayout(new BoxLayout(leftCol, BoxLayout.PAGE_AXIS));
         leftCol.add(nameFolderBox);
@@ -273,6 +284,7 @@ public class ContextEditor extends KSJInternalFrame implements ItemListener {
         comments.setColumns(20);
         comments.setEditable(true);
         comments.setRows(3);
+        comments.setText(PersonPanel.restoreLineBreaks(ctxt.comments));
         comments.getDocument().addDocumentListener(new CommentListener());
         commentsPane.setViewportView(comments);
         commentBox.add(commentsPane);
@@ -285,7 +297,6 @@ public class ContextEditor extends KSJInternalFrame implements ItemListener {
 
         JPanel wholeThing = new JPanel();
         wholeThing.setLayout(new BoxLayout(wholeThing, BoxLayout.PAGE_AXIS));
-        wholeThing.add(textEdLabel);
         wholeThing.add(Box.createRigidArea(new Dimension(0, 4)));
         wholeThing.add(guts);
         wholeThing.add(Box.createRigidArea(new Dimension(0, 8)));
@@ -298,149 +309,165 @@ public class ContextEditor extends KSJInternalFrame implements ItemListener {
         setSize(600, 620);
         setVisible(true);
     }  //  end of ContextEditor constructor
-	
-	
-	public void buildPopulationBox()  {
-		rebuilding = true;
-		populationBox.removeAll();
-		peopleList = new ArrayList<Object>();
-		famList = new ArrayList<Family>();
-		if (showDeleted) peopleList.addAll(ctxt.individualCensus);
-		else {  //  must filter out the deleted records
-			Individual psn;
-			Iterator pplIter = ctxt.individualCensus.iterator();
-			while (pplIter.hasNext())  {
-				psn = (Individual)pplIter.next();
-				if (! psn.deleted) peopleList.add(psn);
-				}
-			}  //  end of filtering deleted records
-		
-		String plur = "s";
-		if (peopleList.size() == 1) plur = "";
-		populationBox.setLayout(new BoxLayout(populationBox, BoxLayout.PAGE_AXIS));
-		populationBox.setBorder(BorderFactory.createTitledBorder(
-								BorderFactory.createLineBorder(Color.blue), 
-								"Current Population"));
-		populationBox.setAlignmentX(0.5f);
-		populationBox.add(delBox);
-		populationBox.add(Box.createRigidArea(new Dimension(8,0)));
-		JLabel indivLabel = new JLabel("Contains " + peopleList.size() + " Individual" + plur);
-		indivLabel.setAlignmentX(0.5f);
-		populationBox.add(indivLabel);
-		if (peopleList.size() > 0)  {
-			JPanel indivBtnBox = new JPanel();
-			indivBtnBox.setLayout(new BoxLayout(indivBtnBox, BoxLayout.LINE_AXIS));
-			Dimension sizer2 = new Dimension(350, 50);
-			String[] indMenu = genIndMenu(peopleList);
-			indPick = new JComboBox(indMenu);
-			indPick.addActionListener(listener); 
-			indPick.setActionCommand("view/edit person");
-			indPick.setMinimumSize(sizer2);
-			indPick.setMaximumSize(sizer2);
-			indPick.setBorder(BorderFactory.createTitledBorder(
-                              BorderFactory.createLineBorder(Color.blue), 
-                              "View/Edit Person"));
-			indivBtnBox.add(indPick);
-			populationBox.add(indivBtnBox);
-		}  //  end of if-any-people-exist
-		
-		if (showDeleted) famList.addAll(ctxt.familyCensus);
-		else {  //  must filter out the deleted records
-			Family fm;
-			Iterator fmIter = ctxt.familyCensus.iterator();
-			while (fmIter.hasNext())  {
-				fm = (Family)fmIter.next();
-				if (! fm.deleted) famList.add(fm);
-				}
-			}  //  end of filtering deleted records
-		plur = "ies";
-		if (famList.size() == 1) plur = "y";
-		JLabel famLabel = new JLabel("Contains " + famList.size() + " Famil" + plur);
-		famLabel.setAlignmentX(0.5f);
-		populationBox.add(Box.createRigidArea(new Dimension(0,4)));
-		populationBox.add(famLabel);
-		if (famList.size() > 0)  {
-			JPanel famBtnBox = new JPanel();
-			famBtnBox.setLayout(new BoxLayout(famBtnBox, BoxLayout.LINE_AXIS));
-			Dimension sizer2 = new Dimension(350, 50);
-			String[] famMenu = genFamMenu(famList);
-			famPick = new JComboBox(famMenu);
-			famPick.addActionListener(listener); 
-			famPick.setActionCommand("view/edit family");
-			famPick.setMinimumSize(sizer2);
-			famPick.setMaximumSize(sizer2);
-			famPick.setBorder(BorderFactory.createTitledBorder(
-                              BorderFactory.createLineBorder(Color.blue), 
-                              "View/Edit Family"));
-			famBtnBox.add(famPick);
-			populationBox.add(famBtnBox);
-			} //  end of if-any-families-exist
-		rebuilding = false;
-		}  //  end of method buildPopulationBox
-	
-	
-	public static String[] genIndMenu(ArrayList<Object> source)  {
-		String[] menu = new String[source.size()];
-		Iterator indIter = source.iterator();
-		Individual ind;
-		String item;
-		int ndex = 0;
-		while (indIter.hasNext()) {
-			ind = (Individual)indIter.next();
-			item = "<no name>";
-			if ((ind.name != null) && (ind.name.length() > 0))
-				item = ind.name;
-			item += " (" + ind.serialNmbr + ")";
-			menu[ndex++] = item;
-			}
-		return menu;
-		}  //  end of method genIndMenu(source)
 
-	
-	public static String[] genFamMenu(ArrayList<Family> source)  {
-		String[] menu = new String[source.size()];
-		Iterator famIter = source.iterator();
-		String dad, mom;
-		Family fam;
-		int ndex = 0;
-		while (famIter.hasNext()) {
-			fam = (Family)famIter.next();
-			dad = "Anonymous";  mom = "Anonymous";
-			if (fam.husband != null) dad = fam.husband.name;
-			if (fam.wife != null) mom = fam.wife.name;
-			menu[ndex++] = dad + " & " + mom + " (" + fam.serialNmbr + ")";
-			}
-		return menu;
-		}  //  end of method genFamMenu(source)
-
-	
-	public String[] genUDPMenu()  {
-		String[] menu = new String[ctxt.userDefinedProperties.size()];
-		Iterator udpIter = ctxt.userDefinedProperties.keySet().iterator();
-		String item;
-		int ndex = 0;
-		while (udpIter.hasNext()) {
-			item = (String)udpIter.next();
-			menu[ndex++] = item;
-			}
-		return menu;
-		}  //  end of method genUDPMenu()
-
-    public void itemStateChanged(ItemEvent e) {  //  the required method for an Item Listener
-        if (e.getStateChange() == ItemEvent.DESELECTED) {
-            showDeleted = false;
-        } else {
-            showDeleted = true;
-        }
+    public void buildPopulationBox() {
+        rebuilding = true;
         populationBox.removeAll();
-        buildPopulationBox();
-        populationBox.getBounds(bnds);
-        populationBox.repaint(bnds);
-    }  //  end of method itemStateChanged
+        peopleList = new ArrayList<Object>();
+        famList = new ArrayList<Family>();
+        peopleList.addAll(ctxt.individualCensus);
+        String plur = (peopleList.size() == 1 ? "" : "s");
+        populationBox.setLayout(new BoxLayout(populationBox, BoxLayout.PAGE_AXIS));
+        populationBox.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.blue),
+                "Current Population"));
+        populationBox.setAlignmentX(0.5f);
+        populationBox.add(Box.createRigidArea(new Dimension(8, 0)));
+        indivLabel = new JLabel("Contains " + peopleList.size() + " Individual" + plur);
+        indivLabel.setAlignmentX(0.5f);
+        populationBox.add(indivLabel);
+        if (peopleList.size() > 0) {
+            JPanel indivBtnBox = new JPanel();
+            indivBtnBox.setLayout(new BoxLayout(indivBtnBox, BoxLayout.LINE_AXIS));
+            Dimension sizer2 = new Dimension(350, 50);
+            String[] indMenu = genIndMenu(peopleList);
+            indPick = new JComboBox(indMenu);
+            indPick.addActionListener(listener);
+            indPick.setActionCommand("view/edit person");
+            indPick.setMinimumSize(sizer2);
+            indPick.setMaximumSize(sizer2);
+            indPick.setBorder(BorderFactory.createTitledBorder(
+                    BorderFactory.createLineBorder(Color.blue),
+                    "View/Edit Person"));
+            indivBtnBox.add(indPick);
+            populationBox.add(indivBtnBox);
+        }  //  end of if-any-people-exist
 
-    /** This internal class is the ActionListener for a ContextEditor; it
-     *  contains all the code behind the buttons, combo boxes, etc. in the
-     *  editor.
+        famList.addAll(ctxt.familyCensus);   //  end of filtering deleted records
+        plur = (famList.size() == 1 ? "y" : "ies");
+        famLabel = new JLabel("Contains " + famList.size() + " Famil" + plur);
+        famLabel.setAlignmentX(0.5f);
+        populationBox.add(Box.createRigidArea(new Dimension(0, 4)));
+        populationBox.add(famLabel);
+        if (famList.size() > 0) {
+            JPanel famBtnBox = new JPanel();
+            famBtnBox.setLayout(new BoxLayout(famBtnBox, BoxLayout.LINE_AXIS));
+            Dimension sizer2 = new Dimension(350, 50);
+            String[] famMenu = genFamMenu(famList);
+            famPick = new JComboBox(famMenu);
+            famPick.addActionListener(listener);
+            famPick.setActionCommand("view/edit family");
+            famPick.setMinimumSize(sizer2);
+            famPick.setMaximumSize(sizer2);
+            famPick.setBorder(BorderFactory.createTitledBorder(
+                    BorderFactory.createLineBorder(Color.blue),
+                    "View/Edit Family"));
+            famBtnBox.add(famPick);
+            populationBox.add(famBtnBox);
+        } //  end of if-any-families-exist
+        rebuilding = false;
+    }  //  end of method buildPopulationBox
+
+    public static String[] genIndMenu(ArrayList<Object> source) {
+        String[] menu = new String[source.size()];
+        Iterator indIter = source.iterator();
+        Individual ind;
+        String item;
+        int ndex = 0;
+        while (indIter.hasNext()) {
+            ind = (Individual) indIter.next();
+            item = "<no name>";
+            if ((ind.name != null) && (ind.name.length() > 0)) {
+                item = ind.name;
+            }
+            item += " (" + ind.serialNmbr + ")";
+            if (ind.deleted) {
+                item += "     DELETED";
+            }
+            menu[ndex++] = item;
+        }
+        return menu;
+    }  //  end of method genIndMenu(source)
+
+    public static String[] genFamMenu(ArrayList<Family> source) {
+        String[] menu = new String[source.size()];
+        Iterator famIter = source.iterator();
+        String dad, mom, item;
+        Family fam;
+        int ndex = 0;
+        while (famIter.hasNext()) {
+            fam = (Family) famIter.next();
+            dad = "Anonymous";
+            mom = "Anonymous";
+            if (fam.husband != null) {
+                dad = fam.husband.name;
+            }
+            if (fam.wife != null) {
+                mom = fam.wife.name;
+            }
+            item = dad + " & " + mom + " (" + fam.serialNmbr + ")";
+            if (fam.deleted) {
+                item += "     DELETED";
+            }
+            menu[ndex++] = item;
+        }
+        return menu;
+    }  //  end of method genFamMenu(source)
+
+    public String[] genUDPMenu() {
+        String[] menu = new String[ctxt.userDefinedProperties.size()];
+        Iterator udpIter = ctxt.userDefinedProperties.keySet().iterator();
+        String item;
+        int ndex = 0;
+        while (udpIter.hasNext()) {
+            item = (String) udpIter.next();
+            menu[ndex++] = item;
+        }
+        return menu;
+    }  //  end of method genUDPMenu()
+
+    public void nameFocusLost(java.awt.event.FocusEvent evt) {
+        ctxt.saveState = true;
+        String newName = name.getText(), msg;
+        while (!Library.validateFileName(newName, false)) {
+            msg = "The name '" + newName + "' violates the rules for names:\n"
+                    + "The name MUST start with a letter.\n"
+                    + "Use up to 28 LETTERS, NUMBERS, or DASHES (-) but NO SPACES.";
+            newName = JOptionPane.showInputDialog(msg);
+        }  //  end of harrass-em-until-they-give-a-good-name
+        name.setText(newName);
+        if (!newName.equals(ctxt.languageName)) { // Made a change
+            msg = "Change this context's language name\nto" + newName + "?";
+            String[] options = {newName, ctxt.languageName};
+            int choice = JOptionPane.showOptionDialog(this, msg, "Confirm Changed Language Name",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                    null, options, options[0]);
+            if (choice == 0) {  //  Change is confirmed
+                ctxt.languageName = newName;
+                msg = "Normally, the file name for a context is the same as the language name "
+                        + "\nfor that context.  Change this context's file name\n"
+                        + "to " + newName + "?";
+                options[0] = "Change File Name";
+                options[1] = "Do Not Change";
+                choice = JOptionPane.showOptionDialog(this, msg, "Confirm Correct File Name",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                        null, options, options[0]);
+                if (choice == 0) {
+                    Library.userContextName = newName;
+                }
+            }  //  end of Change-is-confirmed
+        }  //  end of change-was-made       
+    }
+
+    public void folderFocusLost(java.awt.event.FocusEvent evt) {
+        ctxt.saveState = true;
+        ctxt.editDirectory = folder.getText();
+    }
+
+    /**
+     * This internal class is the ActionListener for a ContextEditor; it
+     * contains all the code behind the buttons, combo boxes, etc. in the
+     * editor.
      */
     public class CEListener implements ActionListener {
 
@@ -453,41 +480,6 @@ public class ContextEditor extends KSJInternalFrame implements ItemListener {
         public void actionPerformed(ActionEvent e) {
             if (rebuilding) {
                 return;
-            }
-            if (e.getActionCommand().equals("name edit")) {
-                ctxt.saveState = true;
-                String newName = name.getText(), msg;
-                while (!Library.validateFileName(newName, false)) {
-                    msg = "The name '" + newName + "' violates the rules for names:\n"
-                            + "The name MUST start with a letter.\n"
-                            + "Use up to 28 LETTERS, NUMBERS, or DASHES (-) but NO SPACES.";
-                    newName = JOptionPane.showInputDialog(msg);
-                }  //  end of harrass-em-until-they-give-a-good-name
-                name.setText(newName);
-                if (!newName.equals(ctxt.languageName)) { // Made a change
-                    msg = "Change this context's language name\nto" + newName + "?";
-                    String[] options = {newName, ctxt.languageName};
-                    int choice = JOptionPane.showOptionDialog(ed, msg, "Confirm Changed Language Name",
-                            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-                            null, options, options[0]);
-                    if (choice == 0) {  //  Change is confirmed
-                        ctxt.languageName = newName;
-                        msg = "Normally, the file name for a context is the same as the language name "
-                                + "\nfor that context.  Change this context's file name\n"
-                                + "to " + newName + "?";
-                        options[0] = "Change File Name";
-                        options[1] = "Do Not Change";
-                        choice = JOptionPane.showOptionDialog(ed, msg, "Confirm Correct File Name",
-                                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-                                null, options, options[0]);
-                        if (choice == 0) {
-                            Library.userContextName = newName;
-                        }
-                    }  //  end of Change-is-confirmed
-                }  //  end of change-was-made
-            }  //  end of "name edit"
-            if (e.getActionCommand().equals("folder edit")) {
-                ctxt.editDirectory = folder.getText();
             }
             if (e.getActionCommand().equals("polygamy yes")) {
                 ctxt.saveState = true;
@@ -516,12 +508,14 @@ public class ContextEditor extends KSJInternalFrame implements ItemListener {
                 MainPane.topPane.setVisible(true);
             }
             if (e.getActionCommand().equals("edit matrix")) {
-                // TODO Allow edit of KinTermMatrix
+                JOptionPane.showMessageDialog(ed, "Editing the Kin Term Matrix as a table"
+                        + "\nwill be a feature of a future version.",
+                        "Action Not Availabe",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
             if (e.getActionCommand().equals("view/edit person")) {
                 ctxt.saveState = true;
-                int serial = indPick.getSelectedIndex();
-                Individual edee = (Individual) peopleList.get(serial);
+                Individual edee = (Individual) peopleList.get(indPick.getSelectedIndex());
                 PersonEditor pEd = new PersonEditor(ctxt, ed, "View or Edit a Person", edee, "census", 0);
                 if (!pEd.dupEditor) {
                     pEd.desktop = desktop;
@@ -601,62 +595,40 @@ public class ContextEditor extends KSJInternalFrame implements ItemListener {
                 }
             }
 
-            //  THE NEXT 6 COMMANDS ARE NOT IMPLEMENTED
-            //  They'll be done after learning methods have been implemented
-//            if (e.getActionCommand().equals("dtRef add")) {
-//                ctxt.saveState = true;
-//                JOptionPane.showMessageDialog(ed, "The function 'Add Terms of Reference' is not yet available.",
-//                        "Action Not Availabe",
-//                        JOptionPane.INFORMATION_MESSAGE);
-//            }
             if (e.getActionCommand().equals("edit dtRef")) {
                 ctxt.saveState = true;
-                JOptionPane.showMessageDialog(ed, "The function 'Edit Terms of Reference' is not yet available.",
-                        "Action Not Availabe",
-                        JOptionPane.INFORMATION_MESSAGE);
+                try {
+                    EditTheoryFrame etf = EditTheoryFrame.getEditTheoryFrame(ctxt.domTheoryRef());
+                    etf.setVisible(true);
+                } catch (Exception exc) {
+                    System.err.println("ERROR in creating Edit Frame.\n" + exc);
+                }
             }
-//            if (e.getActionCommand().equals("dtRef delete")) {
-//                ctxt.saveState = true;
-//                JOptionPane.showMessageDialog(ed, "The function 'Delete Terms of Reference' is not yet available.",
-//                        "Action Not Availabe",
-//                        JOptionPane.INFORMATION_MESSAGE);
-//            }
-//            if (e.getActionCommand().equals("dtAddr add")) {
-//                ctxt.saveState = true;
-//                JOptionPane.showMessageDialog(ed, "The function 'Add Terms of Address' is not yet available.",
-//                        "Action Not Availabe",
-//                        JOptionPane.INFORMATION_MESSAGE);
-//            }
             if (e.getActionCommand().equals("edit dtAddr")) {
                 ctxt.saveState = true;
-                JOptionPane.showMessageDialog(ed, "The function 'Edit Terms of Address' is not yet available.",
-                        "Action Not Availabe",
-                        JOptionPane.INFORMATION_MESSAGE);
+                try {
+                    EditTheoryFrame etf = EditTheoryFrame.getEditTheoryFrame(ctxt.domTheoryAdr());
+                    etf.setVisible(true);
+                } catch (Exception exc) {
+                    System.err.println("ERROR in creating Edit Frame.\n" + exc);
+                }
             }
-//            if (e.getActionCommand().equals("dtAddr delete")) {
-//                ctxt.saveState = true;
-//                JOptionPane.showMessageDialog(ed, "The function 'Delete Terms of Address' is not yet available.",
-//                        "Action Not Availabe",
-//                        JOptionPane.INFORMATION_MESSAGE);
-//            }
 
-        }  //  end of ActionListerner method actionPerformed
+        }  //  end of ActionListener method actionPerformed
     }  //  end of inner class CEListener
 
     class CommentListener implements DocumentListener {
 
         public void insertUpdate(DocumentEvent e) {
-            ctxt.comments = comments.getText();
+            ctxt.comments = FamilyPanel.convertBannedCharacters(comments.getText());
         }
 
         public void removeUpdate(DocumentEvent e) {
-            ctxt.comments = comments.getText();
+            ctxt.comments = FamilyPanel.convertBannedCharacters(comments.getText());
         }
 
         public void changedUpdate(DocumentEvent e) {
             //Plain text components do not fire these events
         }
     }  // end of inner class CommentListener
-
-
 }  //  end of class ContextEditor

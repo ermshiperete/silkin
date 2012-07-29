@@ -45,23 +45,21 @@ public class PersonPanel extends javax.swing.JPanel {
     boolean dirty = false;  //  This 'dirty bit' applies only to the current
                             //  infoPerson.
     boolean storing = false;  // true when storing info on Person
-    boolean birthDateNormallyCaptured = false,
-            surnameNormallyCaptured = true;
-
+    
     static String alterKinTermRefImg, alterKinTermAdrImg, recipKinTermRefImg, recipKinTermAdrImg;
     JTextField[] focusFields;
 
     void buildFocusFields() {
         int size = 3, ndx = 0;
-        if (surnameNormallyCaptured) size++;
-        if (birthDateNormallyCaptured) size++;
+        if (Context.current.surnameNormallyCaptured) size++;
+        if (Context.current.birthDateNormallyCaptured) size++;
         if (parent.chart.distinctAdrTerms) size += 2;
         focusFields = new JTextField[size];
         focusFields[ndx++] = alterFirstNames;
-        if (surnameNormallyCaptured) {
+        if (Context.current.surnameNormallyCaptured) {
             focusFields[ndx++] = alterLastName;
         }
-        if (birthDateNormallyCaptured) {
+        if (Context.current.birthDateNormallyCaptured) {
             focusFields[ndx++] = personBirthYr;
         }
         focusFields[ndx++] = alterRefTerm;
@@ -323,7 +321,7 @@ public class PersonPanel extends javax.swing.JPanel {
                                     .add(personBirthYr))
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                    .add(personDeathMon, 0, 0, Short.MAX_VALUE)
+                                    .add(personDeathMon, 0, 1, Short.MAX_VALUE)
                                     .add(personBirthMM, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 40, Short.MAX_VALUE))
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -354,11 +352,13 @@ public class PersonPanel extends javax.swing.JPanel {
                             .add(layout.createSequentialGroup()
                                 .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
                                 .add(20, 20, 20))
-                            .add(egoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(layout.createSequentialGroup()
-                                .add(dataChgDateLabel)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(dataChgDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 174, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(egoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(layout.createSequentialGroup()
+                                        .add(dataChgDateLabel)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(dataChgDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 174, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                                 .addContainerGap())))
                     .add(layout.createSequentialGroup()
                         .add(127, 127, 127)
@@ -665,6 +665,9 @@ public class PersonPanel extends javax.swing.JPanel {
     }
     
     static String restoreLineBreaks(String in) {        
+        if (in == null) {
+            return "";
+        }
         return in.replace("$$br$$", "\n");
     }
     
@@ -771,7 +774,7 @@ public class PersonPanel extends javax.swing.JPanel {
         return nam.replace("\"", "'").replace('<', '[').replace('>', ']').trim();
     }
     
-    public String sanitizeKinTerms(String k, String typ) throws KSParsingErrorException {
+    public static String sanitizeKinTerms(java.awt.Component c, String k, String typ) throws KSParsingErrorException {
         String sanitized = k.replace('-', '_').replace("\"", "'")
                 .replace('<', '[').replace('>', ']').trim();
         ArrayList<String> badChars = new ArrayList<String>(), 
@@ -800,19 +803,19 @@ public class PersonPanel extends javax.swing.JPanel {
                 msg += "\n'" + badChars.get(i) + "' replaced by '" + goodChars.get(i) + "'";
             }
             msg += "\n in '" + typ + "'";
-            JOptionPane.showMessageDialog(parent, msg, 
-                    "Restrictions on Kin Term Characters", 
+            JOptionPane.showMessageDialog(c, msg, 
+                    "Restrictions on Term Characters", 
                     JOptionPane.INFORMATION_MESSAGE);
         }
         if (!allBlanksPrecededByCommas(sanitized)) {
             msg = "In '" + typ + "'\n";
-            msg += "Kin terms may not contain embedded blanks. If you intended\n";
+            msg += "Kin terms  & UDPs may not contain embedded blanks. If you intended\n";
             msg += "to separate multiple terms, use a comma to separate. If a single\n";
             msg += "term has multiple components, join them with an underscore.";
-            JOptionPane.showMessageDialog(parent, msg, 
-                    "Restrictions on Kin Term Characters", 
+            JOptionPane.showMessageDialog(c, msg, 
+                    "Restrictions on Term Characters", 
                     JOptionPane.ERROR_MESSAGE);
-            throw new KSParsingErrorException("Must remove blanks from kin term");
+            throw new KSParsingErrorException("Must remove blanks from term");
         }
         char[] letters = sanitized.toCharArray();
         ArrayList<Character> baddies = new ArrayList<Character>();
@@ -825,15 +828,15 @@ public class PersonPanel extends javax.swing.JPanel {
             pl = (baddies.size() > 1 ? "s" : "");
             msg = "Illegal character" + pl + " detected: " + baddies;
             msg += "\n in '" + typ + "'";
-            JOptionPane.showMessageDialog(parent, msg, 
-                    "Restrictions on Kin Term Characters", 
+            JOptionPane.showMessageDialog(c, msg, 
+                    "Restrictions on Term Characters", 
                     JOptionPane.ERROR_MESSAGE);
             throw new KSParsingErrorException("Must replace illegal characters");
         }        
         return sanitized;
     }
     
-    boolean allBlanksPrecededByCommas(String s) {
+    static boolean allBlanksPrecededByCommas(String s) {
         s = s.trim();
         int bl = s.indexOf(" "), start;
         if (bl == -1) return true;
@@ -895,7 +898,7 @@ public class PersonPanel extends javax.swing.JPanel {
         //  The comments field is handled by a DocumentListner
         ArrayList<String> oldTerms, newTerms;
         if (infoPerson.node != null && infoPerson.serialNmbr != currEgoNum) {
-            a = sanitizeKinTerms(alterRefTerm.getText(), "Ego Refers to Alter");
+            a = sanitizeKinTerms(parent, alterRefTerm.getText(), "Ego Refers to Alter");
             if (!a.equals(alterKinTermRefImg.trim())) { // alterKinTermRefImg = before User editing
                 oldTerms = getKinTerms(alterKinTermRefImg);
                 newTerms = getKinTerms(a);
@@ -903,14 +906,14 @@ public class PersonPanel extends javax.swing.JPanel {
             } // end of User must have edited alterKinTermsRef
             if (parent.chart.distinctAdrTerms) {
                 // Must pick up the term of address, if any
-                a = sanitizeKinTerms(alterAdrTerm.getText(), "Ego Addresses Alter");
+                a = sanitizeKinTerms(parent, alterAdrTerm.getText(), "Ego Addresses Alter");
                 if (!a.equals(alterKinTermAdrImg.trim())) {
                     oldTerms = getKinTerms(alterKinTermAdrImg);
                     newTerms = getKinTerms(a);
                     updateKinTerms(currEgo, infoPerson, infoPerson.node, oldTerms, newTerms, "Adr");
                 }
             }  // end of there-were-distinct-address-terms
-            a = sanitizeKinTerms(recipRefTerm.getText(), "Alter Refers to Ego");
+            a = sanitizeKinTerms(parent, recipRefTerm.getText(), "Alter Refers to Ego");
             TreeMap tmap = parent.ktm.getRow(infoPerson.serialNmbr);
             Node recipNode = (Node) tmap.get(currEgoNum);
             if (!a.equals(recipKinTermRefImg.trim())) {
@@ -930,7 +933,7 @@ public class PersonPanel extends javax.swing.JPanel {
             } //  end of recip-ref-terms-were-edited
             if (parent.chart.distinctAdrTerms) {
                 // Must pick up the reciprocal term of address, if any
-                a = sanitizeKinTerms(recipAdrTerm.getText(), "Alter Addresses Ego");
+                a = sanitizeKinTerms(parent, recipAdrTerm.getText(), "Alter Addresses Ego");
                 if (!a.equals(recipKinTermAdrImg.trim())) {
                     oldTerms = getKinTerms(recipKinTermAdrImg);
                     newTerms = getKinTerms(a);
@@ -939,7 +942,7 @@ public class PersonPanel extends javax.swing.JPanel {
             }  //  end of distinct-address-terms           
         }  //  end of non-ego-has-a-node
         while (Library.currDataAuthor == null || Library.currDataAuthor.length() == 0) {
-            Library.currDataAuthor = parent.chart.getCurrentUser();
+            Library.currDataAuthor = parent.chart.getCurrentUser(parent, "Register Current User");
         }
         infoPerson.dataAuthor = Library.currDataAuthor;
         infoPerson.dataChangeDate = UDate.today();
@@ -1095,7 +1098,7 @@ public class PersonPanel extends javax.swing.JPanel {
                     || ch == '*') {
                 return pcString.substring(0, i);
             }
-        } // If we get here,must have ben a single symbol
+        } // If we get here, must have been a single symbol
         return pcString;
     }
 
@@ -1106,14 +1109,9 @@ public class PersonPanel extends javax.swing.JPanel {
         if (ktMatrixInBalance(false)) {
             return;
         }
-        fillMatrixFromDyads();
-        if (ktMatrixInBalance(false)) {
-            System.err.println("Unbalanced data fixed by filling from Dyads.");
-            return;
-        }
-        fillDyadsFromMatrix();
+        SIL_Edit.editWindow.rebuildKTMatrixEtc();
         if (ktMatrixInBalance(true)) {
-            System.err.println("Unbalanced data fixed by cross-filling from Dyads and Matrix.");
+            return;
         }
     }
     
@@ -1123,7 +1121,7 @@ public class PersonPanel extends javax.swing.JPanel {
             ktmSz = Context.current.ktm.numberOfKinTerms();
             ktmCells = Context.current.ktm.numberOfCells();
             mult = (Context.current.domTheoryAdrExists() ? 2 : 1);
-            popSz = Context.current.indSerNumGen;
+            popSz = popSize();
             refSz = DomainTheory.countLeaves(Context.current.domTheoryRef().dyadsUndefined)
                     + DomainTheory.countLeaves(Context.current.domTheoryRef().dyadsDefined);
             adrSz = (!Context.current.domTheoryAdrExists() ? 0
@@ -1144,75 +1142,37 @@ public class PersonPanel extends javax.swing.JPanel {
         }
     }
     
-    static ArrayList<DyadTMap> gatherDTMs() {
-        ArrayList<DyadTMap> dyadTMs = new ArrayList<DyadTMap>();
-        Context ctxt = Context.current;
-        try {
-            if (ctxt.domTheoryRefExists()) {
-                if (ctxt.domTheoryRef().dyadsUndefined != null) {
-                    dyadTMs.add(ctxt.domTheoryRef().dyadsUndefined);
-                }
-                if (ctxt.domTheoryRef().dyadsDefined != null) {
-                    dyadTMs.add(ctxt.domTheoryRef().dyadsDefined);
-                }
-            }
-            if (ctxt.domTheoryAdrExists()) {
-                if (ctxt.domTheoryAdr().dyadsUndefined != null) {
-                    dyadTMs.add(ctxt.domTheoryAdr().dyadsUndefined);
-                }
-                if (ctxt.domTheoryAdr().dyadsDefined != null) {
-                    dyadTMs.add(ctxt.domTheoryAdr().dyadsDefined);
-                }
-            }
-        } catch (Exception exc) {
-        }
-        return dyadTMs;
-    }
-    
-    static void fillMatrixFromDyads() {
-        ArrayList<DyadTMap> dyadTMs = gatherDTMs();
-        KinTermMatrix ktm = Context.current.ktm;
-        for (DyadTMap tm : dyadTMs) {
-            Iterator tmIter = tm.entrySet().iterator();
-            while (tmIter.hasNext()) {
-                Map.Entry entry1 = (Map.Entry) tmIter.next();
-                String kinTerm = (String) entry1.getKey();
-                TreeMap typMap = (TreeMap) entry1.getValue();
-                Iterator typIter = typMap.values().iterator();
-                while (typIter.hasNext()) {
-                    ArrayList<Object> dyads = (ArrayList<Object>) typIter.next();
-                    for (int i = 0; i < dyads.size(); i++) {
-                        Dyad dy = (Dyad) dyads.get(i);
-                        Node nod = ktm.getCell(dy.ego, dy.alter);
-                        if (nod != null) {
-                            String clas = (dy.addrOrRef == 0 ? "reference" : "address");
-                            nod.addTerm(kinTerm, "primary", clas);  // addTerm cks for duplicates
-                        } else {
-                            try {
-                                nod = new Node(dy, Context.current);
-                                int egoInt = dy.ego.serialNmbr,
-                                    altInt = dy.alter.serialNmbr;
-                                ktm.addNode(egoInt, altInt, nod);
-                            }catch(KSInternalErrorException exc) {                                
-                            }                            
-                        }
-                    }
-                }
+    static int popSize() {  // Don't count deleted persons
+        int census = 0;
+        Iterator censusIter = Context.current.individualCensus.iterator();
+        while (censusIter.hasNext()) {
+            Individual ind = (Individual)censusIter.next();
+            if (! ind.deleted) {
+                census++;
             }
         }
+        return census;
     }
     
     static void fillDyadsFromMatrix() {
+        // Always called to regenerate dyads from scratch, thus duR etc. sre cleared
         DyadTMap duR = null, ddR = null, duA = null, ddA = null;
+        DomainTheory domThRef = null, domThAdr = null;
         Context ctxt = Context.current;
         try {
             if (ctxt.domTheoryRefExists()) {
-                duR = ctxt.domTheoryRef().dyadsUndefined;
-                ddR = ctxt.domTheoryRef().dyadsDefined;
+                domThRef = ctxt.domTheoryRef();
+                duR = domThRef.dyadsUndefined;
+                duR.clear();
+                ddR = domThRef.dyadsDefined;
+                ddR.clear();
             }
             if (ctxt.domTheoryAdrExists()) {
-                duA = ctxt.domTheoryAdr().dyadsUndefined;
-                ddA = ctxt.domTheoryAdr().dyadsDefined;
+                domThAdr = ctxt.domTheoryAdr();
+                duA = domThAdr.dyadsUndefined;
+                duA.clear();
+                ddA = domThAdr.dyadsDefined;
+                ddA.clear();
             }
         } catch (Exception e) {
         }
@@ -1229,25 +1189,20 @@ public class PersonPanel extends javax.swing.JPanel {
                 if (!egoInt.equals(altInt)) {  //  don't include self-nodes
                     Individual ego = ctxt.individualCensus.get(egoInt);
                     for (Dyad dy : Dyad.makeDyads(n, ego)) {
-                        try {
-                            if (dy.addrOrRef == 0) {  // Ref DyadTMaps are always
-                                if (ctxt.domTheoryRef().theory.containsKey(dy.kinTerm)) {
-                                    ddR.dyAdd(dy);
-                                } else {
-                                    duR.dyAdd(dy);
-                                }
+                        if (dy.addrOrRef == 0) {  // Ref DyadTMaps are always
+                            if (domThRef.theory.containsKey(dy.kinTerm)) {
+                                ddR.dyAdd(dy);
                             } else {
-                                if (ctxt.domTheoryAdr().theory.containsKey(dy.kinTerm)) {
-                                    ddA.dyAdd(dy);
-                                } else {
-                                    duA.dyAdd(dy);
-                                }
+                                duR.dyAdd(dy);
                             }
-                        } catch (Exception exc) {
-                            MainPane.displayError(exc.toString(),
-                                    "While reloading dyads from KinTerm Matrix",
-                                    JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            if (domThAdr.theory.containsKey(dy.kinTerm)) {
+                                ddA.dyAdd(dy);
+                            } else {
+                                duA.dyAdd(dy);
+                            }
                         }
+
                     }
                 }
             }

@@ -288,8 +288,7 @@ public class ClauseBody implements Serializable, Comparator {
             Literal lit = (Literal) body.get(i);
             hornClaws += lit + ", ";
         }
-        Literal lit = (Literal) body.get(last);        
-        return hornClaws + lit + ". ";
+        return hornClaws + body.get(last) + ". ";
     }
 
     String toSILKString(String bacer) {
@@ -487,12 +486,12 @@ public class ClauseBody implements Serializable, Comparator {
                 lit.args.add(nextVar);  //  new varName
                 lit.args.add(arg1);
             }
-            if (lit.predicate.name.equals("*")) {  //  Special processing for UDPs
+            if (lit.predicate.name.equals("*")) {  //  Special processing for uDPs
                 if (ctxt.userDefinedProperties == null || ctxt.userDefinedProperties.isEmpty()) {
                     Context.breakpoint();
                 }
                 //  TBA
-            }  //  end of processing for UDPs
+            }  //  end of processing for uDPs
 
         }  //  end of loop thru body
         unifyVariables();
@@ -623,12 +622,12 @@ public class ClauseBody implements Serializable, Comparator {
                 mostRecentNewVarName = nextVarName;
                 nextVarName = LiteralAbstract1.argCodes[argCodeIndex++];
             }
-            if (lit.predicate.name.equals("*")) {  //  Special processing for UDPs
+            if (lit.predicate.name.equals("*")) {  //  Special processing for uDPs
                 if (ctxt.userDefinedProperties == null || ctxt.userDefinedProperties.isEmpty()) {
                     Context.breakpoint();
                 }
                 //  TBA
-            }  //  end of processing for UDPs
+            }  //  end of processing for uDPs
         }  //  end of i_loop
         //  Now change the mostRecentNewVarName to 'Alter'
         for (int j = 0; j < body.size(); j++) {
@@ -755,8 +754,7 @@ public class ClauseBody implements Serializable, Comparator {
     @throws KSInternalErrorException        if KS system has processed a literal improperly: send Bug Report!
     @throws ClassNotFoundException          if an invalid type name is found in a user-defined property
      */
-    public void generateExamples(Context hypo, ArrayList<Object> egoBag, Dyad dyad, Oracle orca)
-            throws KSBadHornClauseException, KSInternalErrorException, KSConstraintInconsistency, ClassNotFoundException {
+    public void generateExamples(Context hypo, ArrayList<Object> egoBag, Dyad dyad, Oracle orca) throws KSInternalErrorException  {
         Individual ego = null;
         boolean oKay = false;
         int loops = 0, spares = 2,
@@ -992,7 +990,6 @@ public class ClauseBody implements Serializable, Comparator {
                 genderOfAlter = "?";
             }
             egoNum = ego.serialNmbr;
-            String startEgo = "#" + egoNum, startAlter = "#" + alter.serialNmbr;
             LiteralAbstract1.assignKinTerm(ktd.kinTerm, alter, this, MainPane.fill_In_Flag, orca);
             if (orca != null && orca.holder.size() > 0) {
                 Oracle.NoiseRecord rec = (Oracle.NoiseRecord) orca.holder.remove(0);  //  there can only be one
@@ -1031,6 +1028,7 @@ public class ClauseBody implements Serializable, Comparator {
                 dyad.pcString = pcString;  // 99.99% the same, but sometimes legitimately different.  We want the pcStr for actual example.
             }
         } catch (Exception exc) {
+            EditTheoryFrame.syntaxErrors.add(exc);
             hypo.resetTo(indivReset, famReset);
         }
         return;
@@ -1069,6 +1067,7 @@ public class ClauseBody implements Serializable, Comparator {
         SIL_Edit.editWindow.setCurrentEgo(ego.serialNmbr);
         boolean oldIndexBool = ChartPanel.doIndexes;
         ChartPanel.doIndexes = false;
+ /*  // OLD CODE       
         Family fam = ego.birthFamily;
         if (fam != null) {
             resetNodes(ego, SIL_Edit.editWindow.chart.distinctAdrTerms);
@@ -1102,6 +1101,30 @@ public class ClauseBody implements Serializable, Comparator {
                 }
             }
         } // if no hits in marriages either: Error!
+        // END OLD CODE    */
+        
+        // NEW CODE
+        KSQ bfq = new KSQ();
+        bfq.enQ(ego);        
+        TreeMap newRow = ktd.domTh.ctxt.ktm.getRow(ego.serialNmbr);
+        if (newRow == null) {
+            newRow = new TreeMap();
+        }
+        resetNodes2(ego, ktd.domTh.ctxt.distinctAdrTerms);
+        SIL_Edit.propagateNodes(bfq, newRow, alter);
+        if (alter.node != null) {
+            pcStr = alter.node.pcString;
+            if (genderOfAlter.equals("?")) {
+                pcStr = neuterAlter(pcStr);
+            }
+        }
+        if (pcStr != null && pcStr.length() > 0) {
+            SIL_Edit.editWindow.setCurrentEgo(oldEgo);
+            ChartPanel.doIndexes = oldIndexBool;
+            return pcStr;
+        }
+        // END NEW CODE
+        
         SIL_Edit.editWindow.setCurrentEgo(oldEgo);
         ChartPanel.doIndexes = oldIndexBool;
         String msg = "While making a PC String for " + ktd.domTh.languageName;
@@ -1112,11 +1135,18 @@ public class ClauseBody implements Serializable, Comparator {
         throw new KSInternalErrorException(msg);
     }
 
+    public void resetNodes2(Individual ego, boolean adr) {
+        ArrayList<Individual> pop = ktd.domTh.ctxt.individualCensus;
+        for (Individual ind : pop) {
+            ind.node = null;
+        }
+        ego.node = Node.makeSelfNode(adr);
+    }
+    
     public void resetNodes(Individual ego, boolean adr) {
         ArrayList<Individual> pop = ktd.domTh.ctxt.individualCensus;
         for (Individual ind : pop) {
             ind.node = new Node();
-            ind.seenB4 = 0;
         }
         ego.node = Node.makeSelfNode(adr);
     }
@@ -3091,7 +3121,7 @@ if (pcStr == null) Context.breakpoint();
             }  //  end of while-true loop
         } catch (KSNoChainOfRelations2Alter exc) {
             return 0;
-        }	//	Rare cases involving UDPs have no true path to Alter.
+        }	//	Rare cases involving uDPs have no true path to Alter.
     }	//	end of method lateralCount()						//	Those cases also defy definition of a lateral count.
 
     public void setLevel(Literal lit, TreeMap bindings) {
@@ -3199,7 +3229,7 @@ if (pcStr == null) Context.breakpoint();
         //  constraintCheck, by side-effect, builds the lists of gender, age, equality, & inequality constraints
         TreeMap bindings = new TreeMap();
         bindings.put("Ego", ego);
-//  if (ego.serialNmbr == 1 && kinTerm.equals("jibuwaimo"))  Context.breakpoint(); 
+//  if (kinTerm.equals("bwada"))  Context.breakpoint(); 
         if (! LiteralAbstract1.finalConstraintCheck(ego.gender, bindings, constraints, body, genderStuff, starStuff)) {
             return;  // does post-processing
         }

@@ -314,7 +314,7 @@ public class SILKFileParser extends Parser {
         current = scanner.lookAhead();  //  inspect the next flag.
         if (current.lexeme.indexOf("<theory") == 0) {
             String fileName = readOneAttribute("theory", "file", "parseTheory1");
-            File currFile = new File(filePath);     //  current token is relative pathname to .thy file
+            File currFile = new File(filePath);     //  currentEdit token is relative pathname to .thy file
             String theoryFile = currFile.getParent() + "/" + fileName;
             Library.readThyFile(theoryFile);  // dt automatically added by readThyFile
         }
@@ -330,7 +330,7 @@ public class SILKFileParser extends Parser {
         current = scanner.lookAhead();  //  inspect the next flag.
         if (current.lexeme.indexOf("<theory") == 0) {
             String fileName = readOneAttribute("theory", "file", "parseTheory2");
-            File currFile = new File(filePath);     //  current token is relative pathname to .thy file
+            File currFile = new File(filePath);     //  currentEdit token is relative pathname to .thy file
             String theoryFile = currFile.getParent() + "/" + fileName;
             Library.readThyFile(theoryFile);  // dt automatically added by readThyFile
         }
@@ -367,7 +367,7 @@ public class SILKFileParser extends Parser {
     /**
      * DomTheoryComponents -> Citation, NonTerms, NonTermFlags, LevelsOfRecursion,
      *                          Theory, Synonyms, Umbrellas, Overlaps, NonSynonyms,
-     *                          NonOverlaps, NonUmbrellas, '</domain-theory>'.
+     *                          NonOverlaps, NonUmbrellas, EditsInProgress, '</domain-theory>'.
      *                      |  \empty.
      *
      * @param dt    the DomainTheory to receive the components. 
@@ -378,6 +378,10 @@ public class SILKFileParser extends Parser {
                 KSInternalErrorException  {
         scanner.readToken();  // consume start tag
         current = scanner.lookAhead();
+        if (current.lexeme.startsWith("<author")) {
+            dt.author = readOneAttribute("author", "name", "parseDomTheoryComponents");
+            current = scanner.lookAhead();
+        }
         if (current.lexeme.indexOf("<citation") == 0) {
             dt.citation = readOneAttribute("citation", "text", "parseDomTheoryComponents");
             current = scanner.lookAhead();
@@ -401,7 +405,7 @@ public class SILKFileParser extends Parser {
             dt.nonTermFlags = new ArrayList<Object>();
             current = scanner.lookAhead();  // peek at next tag
             while (current.lexeme.indexOf("<non-term value=") == 0) {
-                dt.nonTerms.add(readOneAttribute("non-term-flag", "value", "parseDomTheoryComponents"));
+                dt.nonTermFlags.add(readOneAttribute("non-term-flag", "value", "parseDomTheoryComponents"));
                 current = scanner.lookAhead();
             }
             scanner.readToken();  //  consume next, which must be  '</non-term-flags>'
@@ -566,6 +570,42 @@ public class SILKFileParser extends Parser {
             }
             current = scanner.lookAhead();
         }
+        if (current.lexeme.equals("<editsInProgress>")) {
+            scanner.readToken();  //  consume '<editsInProgress>'
+            dt.editsInProgress = new TreeMap<String, EditTheoryFrame.EditInProgress>();
+            current = scanner.lookAhead();  // peek at next tag
+            while (current.lexeme.startsWith("<eip")) {
+                String[] tags = {"kinTerm", "text", "indent",  "lastVar",  
+                    "nextVar",  "checkpoint", "syntaxOK", "dyadCkOK"};
+                String[] components = readAttributes("eip", tags, "parseDomTheoryComponents");
+                String kt = components[0];
+                EditTheoryFrame.EditInProgress eip = new EditTheoryFrame.EditInProgress(kt);
+                eip.currentText = components[1];
+                eip.indent = Integer.parseInt(components[2]);
+                eip.lastVar = components[3];
+                eip.nextVar = Integer.parseInt(components[4]);
+                eip.checkpoint = Integer.parseInt(components[5]);
+                eip.syntaxOK = Boolean.parseBoolean(components[6]);
+                eip.dyadCkOK = Boolean.parseBoolean(components[7]);
+                current = scanner.readToken();
+                if (!current.lexeme.startsWith("<kin-term-def")) {
+                    error("parseDomTheoryComponents seeking tag '<kin-term-def'.");
+                }
+                eip.currentDef = parseKinTermDef();
+                eip.currentDef.domTh = dt;
+                dt.editsInProgress.put(kt, eip);
+                current = scanner.readToken();
+                if (!current.lexeme.equals("</eip>")) {
+                    error("parseDomTheoryComponents seeking end tag '</eip>'.");
+                }
+                current = scanner.lookAhead();
+            }
+            scanner.readToken();  //  consume next, which must be  '</editsInProgress>'
+            if (!current.lexeme.equals("</editsInProgress>")) {
+                error("parseDomTheoryComponents seeking end tag '</editsInProgress>'.");
+            }
+            current = scanner.lookAhead();
+        }
         scanner.readToken();  //  consume next, which must be the end tag
         if (!current.lexeme.equals("</domain-theory>")) {
             error("parseDomTheoryComponents seeking end tag '</domain-theory>'.");
@@ -687,6 +727,7 @@ public class SILKFileParser extends Parser {
     void parseUDPList(Individual ind) throws KSParsingErrorException {
         current = scanner.lookAhead();  //  inspect the tag, which must be "<userDefinedProperties>"
         if (current.lexeme.equals("<userDefinedProperties>")) {
+            scanner.readToken();  //  consume <userDefinedProperties>
             TreeMap tMap = new TreeMap();
             parseUDPs(tMap, false);
             scanner.readToken();  //  consume the tag, which must be "</userDefinedProperties>"
@@ -696,6 +737,7 @@ public class SILKFileParser extends Parser {
             if (!tMap.isEmpty()) {
                 ind.userDefinedProperties = tMap;
             }
+            current = scanner.lookAhead();
         }
         if (current.lexeme.equals("<starLinks>") || current.lexeme.equals("</individual>")) {
             return;
@@ -733,7 +775,7 @@ public class SILKFileParser extends Parser {
         if (current.lexeme.equals("<UDP>"))  {
             scanner.readToken();  //  consume the start flag.
             UserDefinedProperty newProp = parseUDP(full);
-            current = scanner.readToken();  //  consume the divorceYr flag, which must be "</UDP>"
+            current = scanner.readToken();  //  consume the end tag, which must be "</UDP>"
             if (! current.lexeme.equals("</UDP>"))
                 error("parseUDPs seeking the flag '</UDP>'. ");
             String propName = newProp.starName;
@@ -810,7 +852,7 @@ public class SILKFileParser extends Parser {
             error("parseValueList seeking the flag '<value>'. ");
         udp.value = new ArrayList<Object>();
         parseValues(udp);
-        current = scanner.readToken();  //  consume the divorceYr flag, which must be "</value>"
+        current = scanner.readToken();  //  consume the next tag, which must be "</value>"
         if (! current.lexeme.equals("</value>"))
             error("parsePropName seeking the flag '</value>'. ");
     }
@@ -880,7 +922,7 @@ public class SILKFileParser extends Parser {
         current = scanner.lookAhead();
         if (current.lexeme.equals("</validEntries>"))  //  empty
             return;
-        //  if current = a comma, this is not legal
+        //  if currentEdit = a comma, this is not legal
         scanner.readToken();  //  consume the token
         if (udp.typ.equals("integer")) {
             udp.validEntries.add(new Integer(current.lexeme));
@@ -1036,7 +1078,7 @@ public class SILKFileParser extends Parser {
     /*
     EditorSettings -> "<currentEgo n=", integer, "/>",
                 "<editDirectory dir=", string, "/>",
-                KAESParameters, LastPersonIndexed.
+                KAESParameters, LastPersonIndexed, LinkPriorities.
          First: [flag: <currentEgo..., <editDirectory..., <origin...]
          Follow: ["</editorSettings>"]
     */
@@ -1051,15 +1093,57 @@ public class SILKFileParser extends Parser {
             newCtxt.editDirectory = readOneAttribute("editDirectory", "dir", "parseEditorSettings");
         }
         parseKAESParameters(); // always present
-        parseLastPersonIndexed();
+        parseLastPersonIndexed(); 
+        parseLinkPriorities();
+        parseSnapToGrid();
     }
 
     void parseLastPersonIndexed() throws KSParsingErrorException {
         current = scanner.lookAhead();  // peek at token, which must be a flag.
         if (current.lexeme.equals("<lastPersonIndexed>")) { // temp storage
             lastPersonIndexed = readTaggedInteger("lastPersonIndexed", "parseLastPersonIndexed");
+        }else if (! current.lexeme.equals("</editorSettings>") && 
+                ! current.lexeme.startsWith("<linkPriorities")) {
+            error("parseLastPersonIndexed seeking the flags '<lastPersonIndexed>' '<linkPriorities>' or </editorSettings>'. ");
+        }
+    }
+
+    void parseLinkPriorities() throws KSParsingErrorException {
+        current = scanner.lookAhead();  // peek at token, which must be a flag.
+        if (current.lexeme.startsWith("<linkPriorities")) { 
+            String mf = readOneAttribute("linkPriorities", "maleFirst", "parseLinkPriorities");
+            newCtxt.maleFirst = Boolean.parseBoolean(mf);
+            newCtxt.linkOrder = new ArrayList<String>();
+            newCtxt.linkPriority = new ArrayList<String>();
+            newCtxt.linkPriorityTMap = new TreeMap<String, String>();
+            current = scanner.lookAhead();
+            while (current.lexeme.startsWith("<link name=")) {
+                String[] vals, attributes = {"name", "priority"};
+                vals = readAttributes("link", attributes, "parseLinkPriorities");
+                newCtxt.linkOrder.add(vals[0]);
+                newCtxt.linkPriority.add(vals[1]);
+                newCtxt.linkPriorityTMap.put(vals[0], vals[1]);
+                current = scanner.lookAhead();
+            }
+            scanner.readToken();
+            if (! current.lexeme.equals("</linkPriorities>")) {
+            error("parseLinkPriorities seeking the flag '</linkPriorities>'. ");
+            }
+        }else if (! current.lexeme.equals("</editorSettings>") && !current.lexeme.startsWith("<snapToGrid")) {
+            error("parseLinkPriorities seeking the flags '<linkPriorities>', '<snapToGrid>' or </editorSettings>'. ");
+        }
+    }
+    
+    void parseSnapToGrid() throws KSParsingErrorException {
+        current = scanner.lookAhead();  // peek at token, which must be a flag.
+        if (current.lexeme.startsWith("<snapToGrid")) { 
+            String[] vals, attributes = {"val", "x", "y"};
+            vals = readAttributes("snapToGrid", attributes, "parseSnapToGrid");
+            Library.snapToGrid = Boolean.parseBoolean(vals[0]);
+            Library.gridX = Integer.parseInt(vals[1]);
+            Library.gridY = Integer.parseInt(vals[2]);
         }else if (! current.lexeme.equals("</editorSettings>")) {
-            error("parseLastPersonIndexed seeking the flags '<lastPersonIndexed>' or </editorSettings>'. ");
+            error("parseSnapToGrid seeking the flags '<snapToGrid>' or </editorSettings>'. ");
         }
     }
 
@@ -1073,7 +1157,9 @@ public class SILKFileParser extends Parser {
                       "<editable>", boolean, "</editable>",
                       "<distinctAdrTerms>", boolean, "</distinctAdrTerms>",
                       "<maxNoise>", integer, "</maxNoise>",
-                      "<ignorable>", integer, "</ignorable>".
+                      "<ignorable>", integer, "</ignorable>",
+                      "<surnameCapture value=", boolean, "/>",
+                      "<birthdateCapture value=", boolean, "/>".
          First: [flag: <origin>]	 Follow: [flag: </editorSettings>]
     */
     void parseKAESParameters() throws KSParsingErrorException {
@@ -1100,6 +1186,17 @@ public class SILKFileParser extends Parser {
         newCtxt.ignorableP = readTaggedInteger("ignorable", "parseKAESParameters");
         newCtxt.doBaseCBs = Boolean.parseBoolean(readOneAttribute("doBaseCBs", "value", "parseKAESParameters"));
         newCtxt.doInduction = Boolean.parseBoolean(readOneAttribute("doInduction", "value", "parseKAESParameters"));
+        //  Next 2 parameters are optional
+        current = scanner.lookAhead();
+        if (current.lexeme.startsWith("<surnameCapture")) { 
+            boolean b = Boolean.parseBoolean(readOneAttribute("surnameCapture", "value", "parseKAESParameters"));
+            newCtxt.surnameNormallyCaptured = b;
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.startsWith("<birthdateCapture")) { 
+            boolean b = Boolean.parseBoolean(readOneAttribute("birthdateCapture", "value", "parseKAESParameters"));
+            newCtxt.birthDateNormallyCaptured = b;
+        }
     }
 
     int readTaggedInteger(String tag, String caller) throws KSParsingErrorException  {
@@ -1497,11 +1594,11 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
 
 	/* Old version
     void parseFamilies(Context newCtxt)  throws KSParsingErrorException  {
-        current = scanner.lookAhead();
-        if (current.lexeme.equals("<family>")) {
+        currentEdit = scanner.lookAhead();
+        if (currentEdit.lexeme.equals("<family>")) {
         parseFamily(newCtxt);
         parseFamilies(newCtxt);
-        }else if (current.lexeme.equals("</familyCensus>"))
+        }else if (currentEdit.lexeme.equals("</familyCensus>"))
             return;
         else error("parseFamilies seeking tags '<family>' or '</familyCensus>'.");
     }
@@ -2592,8 +2689,11 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
                 error("parseKinTermDef seeking tag '</ktd-domain-theory>'. ");
             }
             ktd.domTh.addTerm(ktd);
+            current = scanner.lookAhead(); 
         }
-        parseDefinitions(ktd); // min 1 def'n required
+        if (current.lexeme.equals("<definitions>")) { // An EIP may not have any definitions
+            parseDefinitions(ktd); // min 1 def'n required
+        }
         current = scanner.lookAhead();
         if (current.lexeme.equals("<expandedDefs>")) {
             parseExpandedDefs(ktd);

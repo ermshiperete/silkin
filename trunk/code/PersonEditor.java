@@ -253,7 +253,7 @@ public class PersonEditor extends KSJInternalFrame implements ListSelectionListe
         editor.add(Box.createRigidArea(new Dimension(0, 6)));
 
         // NOTES
-        notes = new JTextArea(ind.comment);
+        notes = new JTextArea(PersonPanel.restoreLineBreaks(ind.comment));
         notes.setWrapStyleWord(true);
         JScrollPane noteScroll = new JScrollPane(notes);
         noteScroll.setMinimumSize(new Dimension(400, 50));
@@ -756,6 +756,13 @@ public class PersonEditor extends KSJInternalFrame implements ListSelectionListe
             if (e.getActionCommand().equals("un-delete")) {
                 //  Can only fire when a deleted record is being edited.
                 ind.deleted = false;
+                if (ind.location.getX() < 10 || ind.location.getY() < 20) {
+                    ind.location = new Point(10,20);
+                }
+                ctxt.ktm.insertNewRow(ind.serialNmbr);
+                if (SIL_Edit.editWindow != null) {
+                    SIL_Edit.editWindow.ktm.insertNewRow(ind.serialNmbr);
+                }
             } else if (e.getActionCommand().equals("new birthdate")) {
                 a = birthDay.getText();
                 b = birthYr.getText();
@@ -1313,7 +1320,7 @@ public class PersonEditor extends KSJInternalFrame implements ListSelectionListe
                 ind.firstNames = firstNames.getText();
                 ind.surname = lastName.getText();
                 ind.name = ind.firstNames + " " + ind.surname;
-                ind.comment = notes.getText();
+                ind.comment = FamilyPanel.convertBannedCharacters(notes.getText());
                 ind.dataChangeDate = UDate.today();
                 //  Check for dates entered without hitting 'Enter'
                 a = birthDay.getText();

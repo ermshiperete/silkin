@@ -16,7 +16,7 @@ public abstract class LiteralAbstract2 extends LiteralAbstract1  {
 	public static final String stdLitType = "Literal";
 
 	/** Generic zero-arg constructor.  Primarily for use in Serialization    */
-	public LiteralAbstract2()  {
+	public LiteralAbstract2()  { 
 		super();
 		argType = stdLitType;
 		}
@@ -529,19 +529,19 @@ public abstract class LiteralAbstract2 extends LiteralAbstract1  {
                         ConstraintObj constraints, int tryFlag, boolean keepBB, String kinTerm, ClauseBody cb, ArrayList<Object> pcStr, Dyad dyad)
         throws KSBadHornClauseException, KSInternalErrorException, KSConstraintInconsistency, ClassNotFoundException   {
         //  The current literal is a *-predicate declaring a value (via a constant or variable) for a person's UDP.
-		//  Arg0 is the value (a Variable/MathVariable/Constant); Arg1 is the Variable for the person whose UDP's value must equal arg0.
-		//  *-predicates can serve as constraints, or can define a trait that "links" 2 individuals in the chain from Ego to Alter.
-		//  Only the latter case is handled here; constraints were handled earlier in cb.constraintCheck.
+        //  Arg0 is the value (a Variable/MathVariable/Constant); Arg1 is the Variable for the person whose UDP's value must equal arg0.
+        //  *-predicates can serve as constraints, or can define a trait that "links" 2 individuals in the chain from Ego to Alter.
+        //  Only the latter case is handled here; constraints were handled earlier in cb.constraintCheck.
 
-		//  NOTE:  The semantics of a *-predicate are simplistic.  The literal "*friends(X, Gary)"  means that the MathVariable X has a
-		//		   value exactly equal to the value of Gary's UserDefinedProperty *friends.  Sub-sets and super-sets are not considered equal.
-		//		   The math operator "contains" expresses sub-set relationships, if desired.
+        //  NOTE:  The semantics of a *-predicate are simplistic.  The literal "*friends(X, Gary)"  means that the MathVariable X has a
+        //	   value exactly equal to the value of Gary's UserDefinedProperty *friends.  Sub-sets and super-sets are not considered equal.
+        //	   The math operator "contains" expresses sub-set relationships, if desired.
 
         int resetInd = Context.current.indSerNumGen,  resetFam = Context.current.famSerNumGen, sbSize = starBindings.size();
         String bindingMade = null;
-		MathVariable mathVar = null;
-		Constant konstant = null;
-		Variable personVar = (Variable)args.get(1), valPerVar = null;
+        MathVariable mathVar = null;
+        Constant konstant = null;
+        Variable personVar = (Variable)args.get(1), valPerVar = null;
         Individual person = (Individual)bindings.get(personVar.argName), valPer = null;  //  null = that variable not yet bound
 //  if (Context.breakFlag) Context.breakpoint();
 
@@ -1727,7 +1727,7 @@ public abstract class LiteralAbstract2 extends LiteralAbstract1  {
       <li> a Variable to which it applies (e.g. candArg)
       <li> the name of the star-property involved
       <li> a {@link MathVariable} or {link Variable} to which candidate's value for this star-prop will be bound.
-		   Recall that a MathVariable stands for an integer, float, string, boolean, or list.  A Variable stands for a person.
+           Recall that a MathVariable stands for an integer, float, string, boolean, or list.  A Variable stands for a person.
       </ul>
       <p>
       Two kinds of constraints must be satisfied:
@@ -1809,7 +1809,8 @@ public abstract class LiteralAbstract2 extends LiteralAbstract1  {
                     mVC = (Argument)propEntry.getValue();
                     udp = (UserDefinedProperty)candidate.userDefinedProperties.get(starProp);
                     if (udp == null)  {
-                        msg = "A mandatory User Defined Property '" + starProp + "' is not defined on Individual";
+                        msg = "Mandatory User Defined Property '" + starProp + 
+                                "' is not defined on Individual #" + candidate.serialNmbr;
                         throw new KSInternalErrorException(msg);
                         }  //  end of udp==null
                     if (mVC instanceof Constant)  {

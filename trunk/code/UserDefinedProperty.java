@@ -96,9 +96,9 @@ public class UserDefinedProperty implements Serializable {
         boolean full = size.equals("full");
         String result = "";
         if (full) {
-            result += "  <typ>" + typ + "</typ>\n";
+            result += "\t\t\t<typ>" + typ + "</typ>\n";
         }
-        result += "  <value>";
+        result += "\t\t\t<value>";
         if (value != null) {
             for (int i = 0; i < value.size(); i++) {
                 if (i > 0) {
@@ -114,8 +114,8 @@ public class UserDefinedProperty implements Serializable {
         }  //  end of value != null
         result += " </value>";
         if (full) {
-            result += "\n  <singleValue>"  + singleValue + "</singleValue>\n";
-            result += "  <validEntries> ";
+            result += "\n\t\t\t<singleValue>"  + singleValue + "</singleValue>\n";
+            result += "\t\t\t<validEntries> ";
             if (validEntries != null && validEntries.size() > 0) {
                 result += validEntries.get(0);
                 for (int i = 1; i < validEntries.size(); i++) {
@@ -123,11 +123,11 @@ public class UserDefinedProperty implements Serializable {
                 }
             }  //  end of validEntries is non-null
             result += " </validEntries>\n";
-            result += "  <defaultValue>";	//  DITTO FOR DEFAULT VALUE
+            result += "\t\t\t<defaultValue>";	//  DITTO FOR DEFAULT VALUE
             result += (defaultValue == null ? "" : defaultValue);
             result += "</defaultValue>\n";
-            result += "  <minVal>" + (minVal == null ? "" : minVal) + "</minVal>\n";
-            result += "  <maxVal>" + (maxVal == null ? "" : maxVal) + "</maxVal>";
+            result += "\t\t\t<minVal>" + (minVal == null ? "" : minVal) + "</minVal>\n";
+            result += "\t\t\t<maxVal>" + (maxVal == null ? "" : maxVal) + "</maxVal>";
         }
         return result;
     }  //  end of method toSILKString

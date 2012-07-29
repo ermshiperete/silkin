@@ -180,6 +180,36 @@ public class KinTypeIndex implements Serializable {
         edwin.changeEgo(formerEgo);
         return oKay;
     }
+    
+    /**For each Ego/Alter pair represented in the Row, make a KTI entry
+     * 
+     * @param egoInt    Serial number of the Ego in the row
+     * @param row       Ego's row from the KinTermMAtrix
+     */
+    public void updateFromRow(Integer egoInt, TreeMap row) {
+        Iterator altIter = row.entrySet().iterator();
+        while(altIter.hasNext()) {
+            Map.Entry entry = (Map.Entry)altIter.next();
+            Integer altInt = (Integer)entry.getKey();
+            if (egoInt == altInt) {
+                continue;  // no entry to self-nodes
+            }
+            Node n = (Node)entry.getValue();
+            String kinType = n.pcString;
+            if (tmap.get(kinType) == null) {
+                tmap.put(kinType, new TreeMap<Integer, ArrayList<Integer>>());
+            }
+            TreeMap<Integer, ArrayList<Integer>> typeTree = tmap.get(kinType);
+            if (typeTree.get(egoInt) == null) {
+                typeTree.put(egoInt, new ArrayList<Integer>());
+            }
+            ArrayList<Integer> altList = typeTree.get(egoInt);
+            if (altList != null && !altList.contains(altInt)) {
+                altList.add(altInt);
+            }
+        }
+    }
+    
 
     void removeDuplicates() {
         // Create a TMap for sorting all entries in the KTI

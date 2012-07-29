@@ -43,6 +43,10 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             tiedKnot = -1,
             whichHalf = -1;
     Line selectLine;
+    int lastFolk = -1;
+    int lastKnot = -1;
+    Image theImage = null;
+    int jpegs = 0;
     boolean editable = true,
             dragged = false,
             resize = false,
@@ -54,6 +58,8 @@ public class ChartPanel extends JPanel implements MouseInputListener {
     int refYear = 0;
     int nameLabel = INITIALS;
     int kinTermLabel = NOKINTERM;
+    ArrayList<Person> draggedPersons = new ArrayList<Person>();
+    ArrayList<Marriage> draggedMarriages = new ArrayList<Marriage>();
     Point lastPersonLoc = null;
     Dimension area = new Dimension(0, 0);
     ArrayList<Individual> reSizInds = new ArrayList<Individual>();
@@ -291,7 +297,8 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         boolean keepLooping = true;
         while (keepLooping) {
             ctxtName = JOptionPane.showInputDialog(parent, msg, title, JOptionPane.QUESTION_MESSAGE);
-            if (ctxtName != null && ctxtName.trim().length() > 1) {
+            if (ctxtName != null && ctxtName.trim().length() > 1
+                    && Library.validateFileName(ctxtName, false)) {
                 keepLooping = false;
             } else if (ctxtName == null) {
                 String msg2 = "You did not provide a name, so SILKin\nwill use the name 'Temp'.";
@@ -305,6 +312,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 }
             } else {
                 String msg3 = "Your project name must have 2 or more characters.";
+                msg3 += "\nUse letters, dashes, numbers -- but NO spaces.";
                 JOptionPane.showMessageDialog(parent, msg3, "Try Again", JOptionPane.PLAIN_MESSAGE);
             }
         }
@@ -331,18 +339,6 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             Context.current = new Context(dt);
             DomainTheory.current = dt;
             Context.current.dataAuthors.add(auth);
-//            dt = new DomainTheory(ctxtName + "(Adr)", auth, createDate, false);
-//            dt.addressTerms = true;
-//            dt.dyadsDefined = new DyadTMap();
-//            dt.dyadsUndefined = new DyadTMap();
-//            // Load Std Macros
-//            macroIter = tempDT.theory.values().iterator();
-//            while (macroIter.hasNext()) {
-//                KinTermDef ktd = (KinTermDef) macroIter.next();
-//                dt.addTerm(ktd);
-//                dt.nonTerms.add(ktd.kinTerm);
-//            }
-//            Context.current.addDomainTheory(dt);
         } catch (Exception e) {
             msg = "Fatal error while creating new context.\n" + e;
             MainPane.displayError(msg, "Internal Error", JOptionPane.ERROR_MESSAGE);
@@ -355,10 +351,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         Library.activeContexts.put(ctxtName, Context.current);
         Context.current.editDirectory = Library.editDirectory;
         parent.ktm = Context.current.ktm;
-//        String filePath = (Library.editDirectory != null
-//                ? Library.editDirectory + "/" : "");
-//        filePath += Context.current.languageName + ".silk";
-//        saveFile = new File(filePath);
+        Context.current.loadDefaultLinkStuff();        
         saveFile = null;
     }  //  end of Check when 1st person/union created
 
@@ -386,6 +379,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         }
         Individual newPerson = null;
         Family newMar = null;
+        lastLoc = gridSnap(lastLoc);
         switch (theIndex) {
             case 0: // female
                 newPerson = new Individual(Person.fem, new Point(lastLoc.x, lastLoc.y));
@@ -434,9 +428,15 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         dirty = true;
         repaint();
     }
-
-    int findFreeMarriage() {  //  SILKin does not delete marriages, just marks them 'deleted'
-        return Marriage.knots.size();
+    
+    public Point gridSnap(Point p) {
+        if (! Library.snapToGrid) {
+            return p;
+        }
+        int deltaX = Library.gridX, deltaY = Library.gridY;
+        int newX = ((p.x + (deltaX/2)) / deltaX) * deltaX, 
+            newY = ((p.y + (deltaY/2)) / deltaY) * deltaY;        
+        return new Point(newX, newY);
     }
 
     public int findMarriage(int x, int y) {
@@ -450,10 +450,6 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         }
         return -1;
     }
-    int lastFolk = -1;
-    int lastKnot = -1;
-    Image theImage = null;
-    int jpegs = 0;
 
     void delayedAreaCk(Individual ind) {
         if (!reSizInds.contains(ind)) {
@@ -537,17 +533,19 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             resize = true;
         }
         // if top or left has inadequate margin, add extra space
+        // if snap2grid is on, round to nearest multiples
         int extraWidth = Math.max((4 * sz) - left, 0);
         int extraHeight = Math.max((4 * sz) - top, 0);
-        if (extraWidth + extraHeight > 0) {
+        Point extra = gridSnap(new Point(extraWidth, extraHeight));
+        if (extra.x + extra.y > 0) {
             for (Individual ind : Context.current.individualCensus) {
-                ind.adjustLocation(extraWidth, extraHeight);
+                ind.adjustLocation(extra.x, extra.y);
             }
             for (Family fam : Context.current.familyCensus) {
-                fam.adjustLocation(extraWidth, extraHeight);
+                fam.adjustLocation(extra.x, extra.y);
             }
-            area.width += extraWidth;
-            area.height += extraHeight;
+            area.width += extra.x;
+            area.height += extra.y;
             resize = true;
         }
         if (resize) {
@@ -676,7 +674,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         boolean shiftDn = event.isShiftDown(),
                 altDn = event.isAltDown(),
                 metaDn = event.isMetaDown();
-        if (shiftDn) {
+        if (shiftDn) {  //  Shift-drag on a Family = move nuclear family
             if (whichKnot != -1) {
                 int dx = Marriage.knots.get(whichKnot).location.x - mouseX + 10;
                 int dy = Marriage.knots.get(whichKnot).location.y - mouseY + 10;
@@ -692,8 +690,8 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 delayedAreaCk((Individual) p);
                 repaint();
             }
-        } else if (metaDn || altDn) {
-            if (whichKnot != -1) {
+        } else if (metaDn || altDn) {   //  Alt-drag on a Family = move all descendants
+            if (whichKnot != -1) {      //  Option-drag or Command-drag on a Mac
                 int dx = Marriage.knots.get(whichKnot).location.x - mouseX + 10;
                 int dy = Marriage.knots.get(whichKnot).location.y - mouseY + 10;
                 ArrayList<Individual> people = new ArrayList<Individual>();
@@ -710,22 +708,27 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 repaint();
             }
 
-        } else {  //  No mod keys
+        } else {  //  No mod keys = drag current object only
             selectLine = null;
             if (whichFolk != -1) {
                 Person p = Person.folks.get(whichFolk);
-                p.location.x = mouseX - 10;
-                p.location.y = mouseY - 10;
+                Point newLoc = new Point(mouseX - 10, mouseY - 10);
+                if (!draggedPersons.contains(p)) {
+                    draggedPersons.add(p);
+                }
+                p.setLocation(newLoc);
                 whichKnot = -1;
                 dirty = true;
-                selectLine = new Line(lastPersonLoc, new Point(mouseX, mouseY));
-                delayedAreaCk((Individual) p);
+                selectLine = new Line(lastPersonLoc, newLoc);
                 repaint();
             } else if (whichKnot != -1) {
                 Marriage m = Marriage.knots.get(whichKnot);
-                m.location.x = mouseX - 10;
-                m.location.y = mouseY - 10;
-                delayedAreaCk((Family) m);
+                Point newLoc = new Point(mouseX - 10, mouseY - 10);
+                if (!draggedMarriages.contains(m)) {
+                    draggedMarriages.add(m);
+                }
+                m.location.x = newLoc.x;
+                m.location.y = newLoc.y;                
                 dirty = true;
                 repaint();
             } else {
@@ -735,6 +738,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
     }
 
     void KinshipEditor_MouseUp(MouseEvent event) {
+        //  MouseUp is fired before MouseReleased
         if (!editable) {
             return;
         }
@@ -743,6 +747,25 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 shiftDn = event.isShiftDown(),
                 altDn = event.isAltDown(),
                 metaDn = event.isMetaDown();
+        if (!draggedPersons.isEmpty()) {
+            for (Person p : draggedPersons) {
+                Point newLoc = p.location;
+                p.setLocation(gridSnap(newLoc));
+                delayedAreaCk((Individual) p);
+            }
+            repaint();
+            draggedPersons.clear();
+        }
+        if (!draggedMarriages.isEmpty()) {
+            for (Marriage m : draggedMarriages) {
+                Point newLoc = m.location;
+                newLoc = gridSnap(newLoc);
+                m.location = newLoc;
+                delayedAreaCk((Family) m);
+            }
+            repaint();
+            draggedMarriages.clear();
+        }
         if (altDn && whichFolk > -1) {
             parent.changeEgo(whichFolk);
             parent.getPPanel().resetEgoBox(parent.getCurrentEgo());
@@ -816,18 +839,17 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                             }
                             // Love triumphs over all
                             mx.addSpouse(px);
-                            try {
-                                newNode = createNode(ix, fx, "spouse");                                
-                            } catch (KSInternalErrorException e) {
-                                String msg = "Fatal error while creating new context.\n" + e;
-                                MainPane.displayError(msg, "Internal Error", JOptionPane.ERROR_MESSAGE);
-                                System.exit(9);
+                            
+                            //  NEW CODE
+                            Individual shortestPathPerson = findShortestPath(ix, fx);
+                            if (shortestPathPerson != null) {
+                                KSQ bfq = new KSQ();
+                                bfq.enQ(shortestPathPerson);
+                                TreeMap newRow = parent.ktm.getRow(parent.getCurrentEgo());
+                                SIL_Edit.propagateNodes(bfq, newRow, null);
                             }
-                            // If ix has a node, we just propogated it to family
-                            // If not, then this is ix's new node (maybe null).
-                            if (ix.node == null && newNode != null) {
-                                ix.node = newNode;
-                            }
+                            //  end of NEW CODE
+                            
                             showInfo(ix);
                             dirty = true;
                         } else {  // ix is already a spouse in fx. This is a deletion request.
@@ -877,18 +899,15 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                             px.setLocation(lastPersonLoc);
                             mx.addSib(px);
                             fx.addChild(ix);
-                            try {
-                                newNode = createNode(ix, fx, "child");
-                            } catch (KSInternalErrorException e) {
-                                String msg = "FATAL Node creation error:\n" + e;
-                                MainPane.displayError(msg, "Internal Error", JOptionPane.ERROR_MESSAGE);
-                                System.exit(9);
+                            Individual shortestPathPerson = findShortestPath(ix, fx);
+                            if (shortestPathPerson != null) {
+                                KSQ bfq = new KSQ();
+                                bfq.enQ(shortestPathPerson);
+                                TreeMap newRow = parent.ktm.getRow(parent.getCurrentEgo());
+                                SIL_Edit.propagateNodes(bfq, newRow, null);
                             }
-                            // If ix has a node, we just propogated it to family
-                            // If not, then this is ix's new node (maybe null).
-                            if (ix.node == null && newNode != null) {
-                                ix.node = newNode;
-                            }
+                            //  end of NEW CODE
+                            
                             showInfo(ix);
                             dirty = true;
                         } else {  //  Removing a child
@@ -917,10 +936,9 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             selectLine = null;
             repaint();
         } else if (ctrlDn) {  //  Control = deletion
-            int which = -1;
+            int which;
             if ((which = Person.findPerson(mouseX, mouseY)) >= 0) {
                 //  Want to delete a Person
-
                 if (whichFolk == which) {
                     lastLoc = new Point(mouseX, mouseY);
                 } else {
@@ -997,247 +1015,6 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         }
     }
 
-    /** Make a node for 'ind' that records ind's connection path to Ego, using
-     *	the path information from the nodes of existing members of the 'fam' family;
-     *	OR, if no one in fam is connected to Ego, use ind's existing node
-     *	and path to propagate a connection to all the members of fam.
-     *	When ind obtains a connection path from some member of fam, be sure to
-     *	use the member whose path to Ego is the shortest.
-    
-    @param ind	the Individual being added to the family
-    @param fam	the family gaining new member ind
-    @param role	the role of ind in fam: spouse or child
-    
-    @throws KSInternalErrorException if fam is labeled as connected to Ego
-    but no member of the family is in fact connected.
-     */
-    public static Node createNode(Individual ind, Family fam, String role)
-            throws KSInternalErrorException {
-        Node node = null, oldNode = ind.node;
-        Individual mate,mateMate, kid, shortestPathPerson = findShortestPath(ind, fam);
-        String miniCB, pred, arg0 = "#" + ind.serialNmbr, arg1;
-        if (shortestPathPerson == ind) {
-            // ind is already connected to Ego by the shortest path
-            if (role.equals("spouse")) {
-                mate = (ind.gender.equals("M") ? fam.wife : fam.husband);
-                if (mate != null) {
-                    propogateNodes(ind, mate, fam, "spouse");
-                    for (Object o : mate.marriages) {
-                        Family mar = (Family) o;
-                        if (mar != fam) {
-                            mateMate = (mate == mar.husband ? mar.wife : mar.husband);
-                            propogateNodes(mate, mateMate, mar, "spouse");
-                        }
-                    }
-                }
-                for (Object o : fam.children) {
-                    kid = (Individual) o;
-                    propogateNodes(ind, kid, fam, "parent");
-                }
-                // end of ind-is-spouse
-            } else if (role.equals("child")) {
-                if (fam.husband != null) {
-                    propogateNodes(ind, fam.husband, fam, "child");
-                }
-                if (fam.wife != null) {
-                    propogateNodes(ind, fam.wife, fam, "child");
-                }
-                for (Object o : fam.children) {
-                    kid = (Individual) o;
-                    if (kid == ind) continue;
-                    propogateNodes(ind, kid, fam, "sibling");
-                }
-            } //  end of ind-is-a-child-in-this-fam
-        } else if (shortestPathPerson != null) {
-            // A member of fam has the shortest path to Ego
-            node = new Node();
-            node.indiv = ind;
-            if (shortestPathPerson == fam.husband || shortestPathPerson == fam.wife) {
-                if (role.equals("spouse")) {
-                    mate = shortestPathPerson;
-                    // ind's mate is most directly linked to Ego, and not thru fam's kids,
-                    // so she's linked either thru (1) parents or (2) a current or prior spouse,
-                    // or (3) a child by prior spouse. (#3 requires special handling)
-                    Individual[] kidHolder = new Individual[1];
-                    if (linkByChildInOtherFam(mate, fam, kidHolder)) { // case 3
-                        kid = kidHolder[0];
-                        pred = (ind.gender.equals("M") ? "Stfa" : "Stmo");
-                        arg1 = "#" + kid.serialNmbr;
-                        node.setLevel(kid.node.getLevel() + 1);
-                        node.miniPreds.addAll(kid.node.miniPreds);
-                    } else { //  cases-1-or-2
-                        pred = (ind.gender.equals("M") ? "Hu" : "Wi");
-                        arg1 = "#" + mate.serialNmbr;
-                        node.setLevel(mate.node.getLevel());
-                        node.miniPreds.addAll(mate.node.miniPreds);
-                    } //  end of cases-1-or-2
-                    miniCB = pred + "(" + arg0 + "," + arg1 + ")";
-                    node.miniPreds.add(miniCB);
-                    makePCString2(node);
-                    // Attach this node to ind so it can propagate. 
-                    // Ind's original node is saved.
-                    ind.node = node;
-                    // Now propogate to ind's parents. Spouse was shortestPath, 
-                    // and ergo his kids have nodes. But her parents may or may not.
-                    if (ind.birthFamily != null) {
-                        Family bFam = ind.birthFamily;
-                        if (bFam.husband != null) {
-                            propogateNodes(ind, bFam.husband, bFam, "child");
-                        }
-                        if (bFam.wife != null) {
-                            propogateNodes(ind, bFam.wife, bFam, "child");
-                        }
-                        for (Object k : bFam.children) {
-                            kid = (Individual) k;
-                            if (kid != ind) {
-                                propogateNodes(ind, kid, bFam, "child");
-                            }
-                        }
-                    }
-                    // end of spouse-of-short-path-person
-                } else { // role equals "child"
-                    Individual par = shortestPathPerson;
-                    // par is most directly linked to Ego, and not thru fam's kids,
-                    // so she's linked either thru (1) parents or (2) a prior spouse,
-                    // (3) a child by prior spouse, or (4) step-child in former marriage.
-                    // (2, 3 & 4 require special handling)
-                    Individual[] kidHolder = new Individual[1];
-                    if (linkByChildInOtherFam(par, fam, kidHolder)) { // case 3
-                        kid = kidHolder[0];
-                        pred = (ind.gender.equals("M") ? "Hbro" : "Hsis");
-                        arg1 = "#" + kid.serialNmbr;
-                        node.setLevel(kid.node.getLevel());
-                        node.miniPreds.addAll(kid.node.miniPreds);
-                    } // end of case 3
-                    else if (linkByStepChildInOtherFam(par, fam, kidHolder)) { // case 4
-                        kid = kidHolder[0];
-                        pred = (ind.gender.equals("M") ? "Stbro" : "Stsis");
-                        arg1 = "#" + kid.serialNmbr;
-                        node.setLevel(kid.node.getLevel());
-                        node.miniPreds.addAll(kid.node.miniPreds);
-                    } // end of case 4
-                    else if (linkByOtherSpouse(par, fam, kidHolder)) { // case 2
-                        mate = kidHolder[0];
-                        pred = (ind.gender.equals("M") ? "Stso" : "Stda");
-                        arg1 = "#" + mate.serialNmbr;
-                        node.setLevel(mate.node.getLevel() - 1);
-                        node.miniPreds.addAll(mate.node.miniPreds);
-                    } //  end of case 2
-                    else { //  case 1
-                        pred = (ind.gender.equals("M") ? "So" : "Da");
-                        arg1 = "#" + par.serialNmbr;
-                        node.setLevel(par.node.getLevel() - 1);
-                        node.miniPreds.addAll(par.node.miniPreds);
-                    }
-                    miniCB = pred + "(" + arg0 + "," + arg1 + ")";
-                    node.miniPreds.add(miniCB);
-                    makePCString2(node);
-                    // Attach this node to ind so it can propagate. 
-                    // Ind's original node is saved.
-                    ind.node = node;
-                    // Now propagate to ind's spouse & kids. Ind's parent was the
-                    // shortPath, so neither parents nor siblings need nodes. But her
-                    // spouse and kids might.
-                    for (Object o : ind.marriages) {
-                        Family m = (Family) o;
-                        mate = (m.husband == ind ? m.wife : m.husband);
-                        if (mate != null) {
-                            propogateNodes(ind, mate, m, "spouse");
-                        }
-                        for (Object k : m.children) {
-                            kid = (Individual) k;
-                            propogateNodes(ind, kid, m, "parent");
-                        }
-                    }  // end of ind-has-marriages
-                } // end of child-of-short-path-person
-            } else { // short-path must be a child in fam
-                kid = shortestPathPerson;
-                if (role.equals("spouse")) {
-                    pred = (ind.gender.equals("M") ? "Fa" : "Mo");
-                    node.setLevel(kid.node.getLevel() + 1);
-                } else {
-                    pred = (ind.gender.equals("M") ? "Bro" : "Sis");
-                    node.setLevel(kid.node.getLevel());
-                }
-                arg1 = "#" + kid.serialNmbr;
-                node.miniPreds.addAll(kid.node.miniPreds);
-                miniCB = pred + "(" + arg0 + "," + arg1 + ")";
-                node.miniPreds.add(miniCB);
-                makePCString2(node);
-                ind.node = node;
-                if (role.equals("spouse")) {
-                    // ind's spouse and kids have nodes, but her other marriages
-                    // and her birthFam may need them
-                    for (Object o : ind.marriages) {
-                        Family m = (Family) o;
-                        if (fam != m) {
-                            mate = (m.husband == ind ? m.wife : m.husband);
-                            if (mate != null) {
-                                propogateNodes(ind, mate, m, "spouse");
-                            }
-                            for (Object k : m.children) {
-                                kid = (Individual) k;
-                                propogateNodes(ind, kid, m, "parent");
-                            }
-                        }
-                    }
-                    if (ind.birthFamily != null) {
-                        Family bFam = ind.birthFamily;
-                        if (bFam.husband != null) {
-                            propogateNodes(ind, bFam.husband, bFam, "child");
-                        }
-                        if (bFam.wife != null) {
-                            propogateNodes(ind, bFam.wife, bFam, "child");
-                        }
-                        for (Object k : bFam.children) {
-                            kid = (Individual) k;
-                            if (kid != ind) {
-                                propogateNodes(ind, kid, bFam, "sibling");
-                            }
-                        }
-                    }
-                }else {  // ind's role is sibling of short-path
-                    // ind's birthFam all have nodes. Her spice & kids may need them.
-                    for (Object o : ind.marriages) {
-                        Family m = (Family) o;
-                        mate = (m.husband == ind ? m.wife : m.husband);
-                        if (mate != null) {
-                            propogateNodes(ind, mate, m, "spouse");
-                        }
-                        for (Object k : m.children) {
-                            kid = (Individual) k;
-                            propogateNodes(ind, kid, m, "parent");
-                        }
-                    }
-                }
-            }          
-        } // end of a member of fam had shortest path to Ego
-        if (ind.starLinks != null) {
-            //  ind must have miniPreds to pass along to star-linked people
-            if (node != null && node.miniPreds.size() > 0) {
-                ind.node = node;
-            } //  Propogate starLinks to everyone to whom ind is connected via a UDP.
-            for (Object o : ind.starLinks) {
-                Individual pers = (Individual) o;
-                propogateNodes(ind, pers, fam, "starLink");
-            }
-        }
-        if (node != null && oldNode != null && oldNode.hasKinTerms()
-                && oldNode.pcString.equals(node.pcString)) {
-            node = oldNode;
-        }
-        if (node != null && doIndexes) {
-            parent.ktm.addNode(parent.getCurrentEgo(), ind.serialNmbr, node);
-            Integer[] pair = {parent.getCurrentEgo(), ind.serialNmbr};
-            Context.current.kti.addPair(node.pcString, pair);
-        }
-        if (node != null && Context.current == Library.contextUnderConstruction) {
-            Individual ego = Context.current.individualCensus.get(parent.getCurrentEgo());
-            parent.getPPanel().checkForAutoDefs(node, ego);
-        }
-        ind.node = oldNode;
-        return node;
-    }
 
     /** Survey ind and all members of fam, and return the person with the
      *  shortest path to Ego. In case of a tie, give first preference to
@@ -1317,120 +1094,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         theList.add(ind);
     }
 
-    /** Examine the path by which par is linked to Ego.
-     *  Return true if par is linked to Ego by way of a child by some other marriage.
-     *  We are guaranteed that par has a node with a non-empty miniPreds list.
-     *  We are also guaranteed that the last miniPred contains par.
-     *
-     * @param par   person whose link to Ego we examine.
-     * @param fam   the family par belongs to now.
-     * @param holder an array where we'll place the kid from another family, if true.
-     * @return      true if par is linked to Ego thru a child of some other marriage.
-     */
-    static boolean linkByChildInOtherFam(Individual par, Family fam, Individual[] holder) {
-        return linkExaminer(par, fam, holder, false);
-    }
-
-    static boolean linkExaminer(Individual par, Family fam, Individual[] holder, boolean stepRel) {
-        if (par.serialNmbr == parent.getCurrentEgo()) {
-            return false;
-        }
-        Individual kid;
-        String pred, arg0, arg1, miniPred;
-        String parSerial = String.valueOf(par.serialNmbr);
-        String[] kinTerms = new String[4];
-        if (stepRel) {
-            kinTerms[0] = "Stmo";
-            kinTerms[1] = "Stfa";
-            kinTerms[2] = "Stda";
-            kinTerms[3] = "Stso";
-        } else {
-            kinTerms[0] = "Mo";
-            kinTerms[1] = "Fa";
-            kinTerms[2] = "Da";
-            kinTerms[3] = "So";
-        }
-        ArrayList<Object> miniPreds = par.node.miniPreds;
-        miniPred = (String) miniPreds.get(miniPreds.size() - 1);
-        int leftParen = miniPred.indexOf("("),
-                firstPound = miniPred.indexOf("#"),
-                comma = miniPred.indexOf(","),
-                secondPound = miniPred.lastIndexOf("#"),
-                rightParen = miniPred.indexOf(")");
-        pred = miniPred.substring(0, leftParen);
-        arg0 = miniPred.substring(firstPound + 1, comma);
-        arg1 = miniPred.substring(secondPound + 1, rightParen);
-        if ((pred.equals(kinTerms[0]) || pred.equals(kinTerms[1]))
-                && arg0.equals(parSerial)) {
-            kid = Context.current.individualCensus.get(Integer.parseInt(arg1));
-            if (kid.birthFamily != fam) {
-                holder[0] = kid;
-                return true;
-            }
-        } else if ((pred.equals(kinTerms[2]) || pred.equals(kinTerms[3]))
-                && arg1.equals(parSerial)) {
-            kid = Context.current.individualCensus.get(Integer.parseInt(arg0));
-            if (kid.birthFamily != fam) {
-                holder[0] = kid;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /** Examine the path by which par is linked to Ego.
-     *  Return true if par is linked to Ego by way of a stepchild in some other marriage.
-     *  We are guaranteed that par has a node with a non-empty miniPreds list.
-     *  We are also guaranteed that the last miniPred contains par.
-     *
-     * @param par   person whose link to Ego we examine.
-     * @param fam   the family par belongs to now.
-     * @param holder an array where we'll place the kid from another family, if true.
-     * @return      true if par is linked to Ego thru a stepchild in some other marriage.
-     */
-    static boolean linkByStepChildInOtherFam(Individual par, Family fam, Individual[] holder) {
-        return linkExaminer(par, fam, holder, true);
-    }
-
-    /** Examine the path by which par is linked to Ego.
-     *  Return true if par is linked to Ego by way of a spouse in some other marriage.
-     *  We are guaranteed that par has a node with a non-empty miniPreds list.
-     *  We are also guaranteed that the last miniPred contains par.
-     *
-     * @param par   person whose link to Ego we examine.
-     * @param fam   the family par belongs to now.
-     * @param holder an array where we'll place the kid from another family, if true.
-     * @return      true if par is linked to Ego thru a stepchild in some other marriage.
-     */
-    static boolean linkByOtherSpouse(Individual par, Family fam, Individual[] holder) {
-        if (par.serialNmbr == parent.getCurrentEgo()) {
-            return false;
-        }
-        Individual spouse;
-        String pred, arg0, arg1, miniPred;
-        String parSerial = String.valueOf(par.serialNmbr), otherSerial;
-        ArrayList<Object> miniPreds = par.node.miniPreds;
-        miniPred = (String) miniPreds.get(miniPreds.size() - 1);
-        int leftParen = miniPred.indexOf("("),
-                firstPound = miniPred.indexOf("#"),
-                comma = miniPred.indexOf(","),
-                secondPound = miniPred.lastIndexOf("#"),
-                rightParen = miniPred.indexOf(")");
-        pred = miniPred.substring(0, leftParen);
-        arg0 = miniPred.substring(firstPound + 1, comma);
-        arg1 = miniPred.substring(secondPound + 1, rightParen);
-        if (pred.equals("Hu") || pred.equals("Wi")) {
-            otherSerial = (arg0.equals(parSerial) ? arg1 : arg0);
-            spouse = Context.current.individualCensus.get(Integer.parseInt(otherSerial));
-            if (spouse != fam.husband && spouse != fam.wife) {
-                holder[0] = spouse;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    static void makePCString2(Node node) {
+    static void makePCString(Node node) {
         node.pcString = "";
         String mini;
         int leftParen;
@@ -1441,108 +1105,6 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         }
     }
 
-    public static void propogateNodes(Individual fromPerson, Individual toPerson,
-            Family fam, String relat) throws KSInternalErrorException {
-        // Propogations should stop IF toPerson is Ego OR (already has been seen
-        //  4+ times AND has a node with no longer path to Ego than we could produce here).
-        // Make a node for toPerson; if toPerson needs one, or this node's
-        // miniPreds list is shorter than toPerson's, assign the new node.
-        // Then, propogate nodes to all toPerson's relatives, if necessary.
-        if (toPerson.serialNmbr == parent.getCurrentEgo()) {
-            return;
-        }
-//        System.out.println("From: " + fromPerson.serialNmbr + "\tTo: " + toPerson.serialNmbr + "\t" + toPerson.seenB4);
-        if (toPerson.seenB4++ > 4) {
-            return;
-        }
-        // The first time we see someone, propagate even if they have a node. They may be
-        // connected to someone who doesn't. But second time around, stop here.
-        if (toPerson.seenB4 > 1 && toPerson.node != null && toPerson.node.miniPreds != null 
-                && fromPerson.node != null && fromPerson.node.miniPreds != null && toPerson.node.miniPreds.size() > 0
-                && (toPerson.node.miniPreds.size() <= fromPerson.node.miniPreds.size() + 1)) {
-            return;
-        }
-        String role = null;
-        if (relat.equals("spouse") || relat.equals("child")) {
-            role = "spouse";
-        } else if (relat.equals("sibling") || relat.equals("parent")) {
-            role = "child";
-        } else if (relat.equals("starLink")) {
-            role = "starLink";
-        }
-        Node node;
-        if (role.equals("child") || role.equals("spouse")) {
-            node = createNode(toPerson, fam, role);
-        } else { // starLink
-            node = new Node();
-            node.indiv = toPerson;
-            node.setLevel(fromPerson.node.getLevel());
-            node.miniPreds.addAll(fromPerson.node.miniPreds);
-            String mini = "**(#" + toPerson.serialNmbr
-                    + ",#" + fromPerson.serialNmbr + ")";
-            node.miniPreds.add(mini);
-            makePCString2(node);
-        }
-        //  If we made a new node with the same kin type as prior node,
-        //  keep the old node with its kin terms.
-        if (node != null) {
-            toPerson.node = node;            
-        }
-        //  We've made a node for toPerson. Now propogate further
-        if (role.equals("spouse") || role.equals("starLink")) {
-            if (toPerson.birthFamily != null) {
-                //  Propogate nodes to spouse's birthFam members
-                Family famly = toPerson.birthFamily;
-                if (famly.husband != null) {
-                    propogateNodes(toPerson, famly.husband, famly, "child");
-                }
-                if (famly.wife != null) {
-                    propogateNodes(toPerson, famly.wife, famly, "child");
-                }
-                for (Object o : famly.children) {
-                    Individual ind = (Individual) o;
-                    if (ind.serialNmbr != toPerson.serialNmbr) {
-                        propogateNodes(toPerson, ind, famly, "sibling");
-                    }
-                }
-            } // propogate nodes to any prior/other spice
-            for (Object o : toPerson.marriages) {
-                Family mar = (Family) o;
-                if (mar != fam) {
-                    if (mar.husband != null && mar.husband != toPerson) {
-                        propogateNodes(toPerson, mar.husband, mar, "spouse");
-                    }
-                    if (mar.wife != null && mar.wife != toPerson) {
-                        propogateNodes(toPerson, mar.wife, mar, "spouse");
-                    }
-                    for (Object obj : mar.children) {
-                        Individual ind = (Individual) obj;
-                        propogateNodes(toPerson, ind, mar, "parent");
-                    }
-                }
-            }
-            if (!role.equals("starLink")) {
-                for (Object o : fam.children) {
-                    Individual kid = (Individual) o;
-                    propogateNodes(toPerson, kid, fam, "parent");
-                }
-            }
-        } else if ((role.equals("child") || role.equals("starLink"))
-                && !toPerson.marriages.isEmpty()) {
-            for (Object o : toPerson.marriages) {
-                Family famly = (Family) o;
-                if (toPerson.gender.equals("M") && famly.wife != null) {
-                    propogateNodes(toPerson, famly.wife, famly, "spouse");
-                } else if (toPerson.gender.equals("F") && famly.husband != null) {
-                    propogateNodes(toPerson, famly.husband, famly, "spouse");
-                }
-                for (Object obj : famly.children) {
-                    Individual kid = (Individual) obj;
-                    propogateNodes(toPerson, kid, famly, "parent");
-                }
-            }
-        }
-    }
 
     /** Remove this person from fam, then modify/remove all nodes
      *  in the KinTermMatrix and all dyads in the DyadTMaps that were affected.
@@ -1550,8 +1112,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
      * @param ix   Individual to be removed.
      * @param fam  Family object from which to remove ix.
      */
-    void removePersonAndRecomputeNodes(Individual ix, Family fam)
-            throws KSInternalErrorException {
+    void removePersonAndRecomputeNodes(Individual ix, Family fam) {
         recomputingDyads = true;
         if (ix == fam.husband) {
             fam.husband = null;
@@ -1560,36 +1121,18 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         } else if (fam.children.contains(ix)) {
             fam.children.remove(ix);
         }
-        int savedEgo = parent.getCurrentEgo();
-        // Sort the rows of the KTMatrix, largest to smallest; Minimum numberOfKinTerms = 2.
-        TreeMap<Integer, ArrayList<Integer>> sorted = new TreeMap<Integer, ArrayList<Integer>>();
-        Iterator rowIter = parent.ktm.matrix.entrySet().iterator();
-        while (rowIter.hasNext()) {
-            Map.Entry entry = (Map.Entry) rowIter.next();
-            Integer rowNmbr = (Integer) entry.getKey();
-            Integer rowSize = new Integer(((TreeMap) entry.getValue()).size() * -1);
-            if (rowSize < -1) {  //  row sizes are recorded as negative numbers
-                if (sorted.get(rowSize) == null) {
-                    sorted.put(rowSize, new ArrayList<Integer>());
-                }
-                ArrayList<Integer> rows = sorted.get(rowSize);
-                rows.add(rowNmbr);
-            }
-        }   // From largest numberOfKinTerms to smallest, do recompute of nodes by row
-        // Since rows are sorted by (-1 * numberOfKinTerms), ascending order = largest to smallest numberOfKinTerms
-        ArrayList<Integer> alreadyDone = new ArrayList<Integer>();
-        rowIter = sorted.values().iterator();
-        while (rowIter.hasNext()) {
-            ArrayList<Integer> rows = (ArrayList<Integer>) rowIter.next();
-            for (Integer rowNum : rows) {
-                TreeMap<Integer, Node> thisRow = parent.ktm.getRow(rowNum);
-                if (containsUndoneNodes(thisRow, rowNum, alreadyDone)) {
-                    recomputeNodes(rowNum, thisRow);
-                    alreadyDone.add(rowNum);
-                }
-            }
-        }
+        int savedEgo = parent.getCurrentEgo();        
+        parent.rebuildKTMatrixEtc();
         parent.changeEgo(savedEgo);
+        // re-attach nodes in Ego's row of KTM
+        TreeMap<Integer, Node> egoRow = parent.ktm.getRow(savedEgo);
+        Iterator rowIter = egoRow.entrySet().iterator();
+        while (rowIter.hasNext()) {
+            Map.Entry entry = (Map.Entry)rowIter.next();
+            Integer altInt = (Integer)entry.getKey();
+            Node nod = (Node)entry.getValue();
+            nod.indiv.node = nod;
+        }
         recomputingDyads = false;
         try {
             if ((Context.current.domTheoryRefExists() && 
@@ -1605,82 +1148,63 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         } // skip it
     }
 
-    public boolean containsUndoneNodes(TreeMap<Integer, Node> thisRow,
-            Integer rowNum, ArrayList<Integer> alreadyDone) {
-        Iterator alterIter = thisRow.keySet().iterator();
-        while (alterIter.hasNext()) {
-            Integer altInt = (Integer) alterIter.next();
-            if (altInt.compareTo(rowNum) != 0 && !alreadyDone.contains(altInt)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**The nodes in this Ego's row represent paths to Ego that may have been
-     * severed. Make a new row and fill it with nodes computed from scratch.
-     *
-     * @param rowNum    number of the ego for this row
-     * @param thisRow   the row to be recomputed
-     */
-    void recomputeNodes(Integer rowNum, TreeMap<Integer, Node> thisRow) {
-        TreeMap<Integer, Node> newRow = new TreeMap<Integer, Node>();
-        Iterator nodIter = thisRow.entrySet().iterator();
-        while (nodIter.hasNext()) {
-            Map.Entry entry = (Map.Entry) nodIter.next();
-            Integer altInt = (Integer) entry.getKey();
-            Node n = (Node) entry.getValue();
-            Integer[] pair = {rowNum, altInt};
-            //de-index the node. It will be re-indexed by createNode().
-            Context.current.kti.removePair(n.pcString, pair);
-        }
-        for (Individual i : Context.current.individualCensus) {
-            i.seenB4 = 0;
-            i.node = null;  //  clean out node slots
-        }
-        Node selfNode = Node.makeSelfNode(distinctAdrTerms);
-        Individual egoPerson = Context.current.individualCensus.get(rowNum);
-        selfNode.indiv = egoPerson;
-        newRow.put(rowNum, selfNode);
-        egoPerson.node = selfNode;
-        try {
-            parent.ktm.replaceRow(rowNum, newRow);
-            parent.setCurrentEgo(rowNum);
-            if (egoPerson.birthFamily != null) {
-                createNode(egoPerson, egoPerson.birthFamily, "child");
-            }
-            for (Object o : egoPerson.marriages) {
-                Family f = (Family) o;
-                createNode(egoPerson, f, "spouse");
-            }
-        } catch (KSInternalErrorException ksie) {
-            String msg = "While recomputing Nodes: " + ksie;
-            System.err.println(msg);
-            MainPane.activity.log.append(msg);
-        }
-        nodIter = thisRow.entrySet().iterator();
-        while (nodIter.hasNext()) {
-            Map.Entry entry = (Map.Entry) nodIter.next();
-            Integer altInt = (Integer) entry.getKey();
-            if (altInt.intValue() == rowNum.intValue()) {
-                continue;  // skip self-node
-            }
-            Node oldNode = (Node) entry.getValue();
-            Node newNode = newRow.get(altInt);
-            if (oldNode.sameMiniPreds(newNode)) {
-                newNode.addKinTermsFrom(oldNode);
-            } else {  // path to Ego was severed. Kill old dyads.
-                Context.current.deleteDyads(oldNode, rowNum);
-                Node oldReciprocal = parent.ktm.getCell(altInt, rowNum);
-                if (oldReciprocal != null) {
-                    Context.current.deleteDyads(oldReciprocal, altInt);
-                    Integer[] pair = {altInt, rowNum};
-                    Context.current.kti.removePair(oldReciprocal.pcString, pair);
-                    parent.ktm.removeCell(altInt, rowNum);
-                }
-            }
-        }
-    }
+//    /**The nodes in this Ego's row represent paths to Ego that may have been
+//     * severed. Make a new row and fill it with nodes computed from scratch.
+//     *
+//     * @param rowNum    number of the ego for this row
+//     * @param oldRow   the row to be recomputed
+//     */
+//    void recomputeNodes(Integer rowNum, TreeMap<Integer, Node> oldRow) {
+//        TreeMap<Integer, Node> newRow = new TreeMap<Integer, Node>();
+//        Iterator nodIter = oldRow.entrySet().iterator();
+//        while (nodIter.hasNext()) {
+//            Map.Entry entry = (Map.Entry) nodIter.next();
+//            Integer altInt = (Integer) entry.getKey();
+//            Node n = (Node) entry.getValue();
+//            Integer[] pair = {rowNum, altInt};
+//            //de-index the node. It will be re-indexed by createNode().
+//            Context.current.kti.removePair(n.pcString, pair);
+//        }
+//        for (Individual i : Context.current.individualCensus) {
+//            i.seenB4 = 0;
+//            i.node = null;  //  clean out node slots
+//        }
+//        Node selfNode = Node.makeSelfNode(distinctAdrTerms);
+//        Individual egoPerson = Context.current.individualCensus.get(rowNum);
+//        selfNode.indiv = egoPerson;
+//        newRow.put(rowNum, selfNode);
+//        egoPerson.node = selfNode;
+//        parent.ktm.replaceRow(rowNum, newRow);
+//        parent.setCurrentEgo(rowNum);
+//        KSQ bfq = new KSQ();
+//        bfq.enQ(egoPerson);
+//        SIL_Edit.propagateNodes(bfq, newRow, null);
+//        // TODO Must re-index the (revised) nodes on the KinTypeIndex
+//        nodIter = oldRow.entrySet().iterator();
+//        while (nodIter.hasNext()) {
+//            Map.Entry entry = (Map.Entry) nodIter.next();
+//            Integer altInt = (Integer) entry.getKey();
+//            if (altInt.intValue() == rowNum.intValue()) {
+//                continue;  // skip self-node
+//            }
+//            Node oldNode = (Node) entry.getValue();
+//            Node newNode = newRow.get(altInt);
+//            if (oldNode.sameMiniPreds(newNode)) {
+//                newNode.addKinTermsFrom(oldNode);
+//            } else {  // path to Ego was severed. Kill old dyads.
+//                Context.current.deleteDyads(oldNode, rowNum);
+//                Node oldReciprocal = parent.ktm.getCell(altInt, rowNum);
+//                if (oldReciprocal != null) {
+//                    Context.current.deleteDyads(oldReciprocal, altInt);
+//                    Integer[] pair = {altInt, rowNum};
+//                    Context.current.kti.removePair(oldReciprocal.pcString, pair);
+//                    parent.ktm.removeCell(altInt, rowNum);
+//                }
+//            }
+//        }
+//    }
+//    
+    
     XFile sFile = null;  // Used for KAES-format files
     File saveFile = null; // Used for SILKin files
 
@@ -1766,7 +1290,9 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         params += "  <maxNoise>" + ctxt.maxNoiseP + "</maxNoise>" + EOL;
         params += "  <ignorable>" + ctxt.ignorableP + "</ignorable>" + EOL;
         params += "  <doBaseCBs value=\"" + ctxt.doBaseCBs + "\"/>" + EOL;
-        params += "  <doInduction value=\"" + ctxt.doInduction + "\"/>";
+        params += "  <doInduction value=\"" + ctxt.doInduction + "\"/>" + EOL;
+        params += "  <surnameCapture value=\"" +   ctxt.surnameNormallyCaptured + "\"/>" + EOL;
+        params += "  <birthdateCapture value=\"" +   ctxt.birthDateNormallyCaptured + "\"/>";
         return params;
     }
 
@@ -1817,24 +1343,6 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             }
         }  //  end of loop thru individuals
     }  //  end of method checkNames
-
-    public String fixXML(String in) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < in.length(); i++) {
-            char c = in.charAt(i);
-            switch (c) {
-                case '&':
-                    sb.append("&amp;");
-                    break;
-                case '\'':
-                    sb.append("&apos;");
-                    break;
-                default:
-                    sb.append(c);
-            }
-        }
-        return "";
-    }
 
     public synchronized void deleteAll() {
         if (dirty) {
@@ -2046,7 +1554,17 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 Library.userDirectory = fc.getCurrentDirectory().getName();
                 ctxt = Context.current;
                 parent.ktm = ctxt.ktm;
-                parent.suggestionsRef = ctxt.domTheoryRef().issuesForUser;
+                DomainTheory dt = ctxt.domTheoryRef();
+                if (!dt.theory.containsKey("step_brother")) {
+                    Linus macroLineServer = new Linus(Library.libraryDirectory + "Standard_Macros");
+                    Tokenizer tok = new Tokenizer(Library.getDFA(), macroLineServer);
+                    Parser parzer = new Parser(tok, tok);
+                    parzer.parseStandardMacros(dt);
+                }
+                if (ctxt.linkOrder == null) {
+                    ctxt.loadDefaultLinkStuff();
+                }
+                parent.suggestionsRef = dt.issuesForUser;
                 if (ctxt.domTheoryAdrExists()) {
                     parent.suggestionsAdr = ctxt.domTheoryAdr().issuesForUser;
                 }
@@ -2060,6 +1578,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 parent.synchronizeLabelParams(nameLabel, kinTermLabel);
                 editable = ctxt.editable;
                 parent.getPPanel().setDistinctAdrTerms(ctxt.distinctAdrTerms);
+                parent.setSnap(Library.snapToGrid);
                 whichFolk = ctxt.infoPerson;
                 whichKnot = ctxt.infoMarriage;
                 boolean empty = ctxt.infoPerson == -1;
@@ -2075,7 +1594,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                         }
                     }
                 }
-                Library.currDataAuthor = getCurrentUser();
+                Library.currDataAuthor = getCurrentUser(parent, "Register Current User");
                 parent.setActOnSuggsEnabled(ctxt.hasIssues());
             } catch (Exception e) {
                 String msg = "While reading " + saveFile.getName() + "\n" + e;
@@ -2095,7 +1614,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         }
     }
 
-    String getCurrentUser() throws KSInternalErrorException {
+    String getCurrentUser(JFrame parentFrame, String paneTitle) throws KSInternalErrorException {
         int size = Context.current.dataAuthors.size(),
                 repeats = -1;
         String[] authors = new String[size + 1];
@@ -2104,15 +1623,15 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         }
         authors[size] = "Add a New User";
         String author = (String) JOptionPane.showInputDialog(
-                parent, "Find yourself in the list below,\n"
+                parentFrame, "Find yourself in the list below,\n"
                 + "or choose 'Add New User'",
-                "Register Current User",
+                paneTitle,
                 JOptionPane.PLAIN_MESSAGE, null,
                 authors, authors[0]);
         if (author == null) {
             author = System.getProperty("user.name");
             String msg = "Will register current data author as '" + author + "'.";
-            JOptionPane.showMessageDialog(parent, msg);
+            JOptionPane.showMessageDialog(parentFrame, msg);
             if (!Context.current.dataAuthors.contains(author)) {
                 Context.current.dataAuthors.add(author);
             }
@@ -2122,22 +1641,22 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             String rep = (repeats == 0 ? "\n" : "\n -- CAREFULLY --\n"),
                     msg = "Please enter your name" + rep + "as it should appear in the User List.",
                     title = author;
-            author = JOptionPane.showInputDialog(parent,
+            author = JOptionPane.showInputDialog(parentFrame,
                     msg, title, JOptionPane.PLAIN_MESSAGE);
             while (author == null || author.isEmpty() || author.length() < 3) {
                 String badAuth = (author == null || author.isEmpty() ? "That " : "'" + author + "' ");
                 msg = badAuth + "is not a valid entry. Enter at least\n 3 non-blank characters (e.g. your initials).";
-                author = JOptionPane.showInputDialog(parent,
+                author = JOptionPane.showInputDialog(parentFrame,
                         msg, title, JOptionPane.PLAIN_MESSAGE);
                 if (repeats++ > 2 && (author == null || author.isEmpty() || author.length() < 3)) {
                     author = System.getProperty("user.name");
                     msg = "Will register current data author as '" + author + "'.";
-                    JOptionPane.showMessageDialog(parent, msg);
+                    JOptionPane.showMessageDialog(parentFrame, msg);
                 }
             }
             Object[] options = {"Use '" + author + "'", "Try Again"};
             msg = "Display your name as '" + author + "'?";
-            int ch = JOptionPane.showOptionDialog(parent, msg,
+            int ch = JOptionPane.showOptionDialog(parentFrame, msg,
                     "Just Making Sure ...",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
@@ -2149,7 +1668,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             } else if (ch == JOptionPane.CANCEL_OPTION) {
                 author = System.getProperty("user.name");
                 msg = "Will register current data author as '" + author + "'.";
-                JOptionPane.showMessageDialog(parent, msg);
+                JOptionPane.showMessageDialog(parentFrame, msg);
                 if (!Context.current.dataAuthors.contains(author)) {
                     Context.current.dataAuthors.add(author);
                 }

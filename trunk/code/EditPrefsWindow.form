@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
@@ -22,57 +22,76 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="maxLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="ignorableLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="maxLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="ignorableLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="ignorableField" max="32767" attributes="1"/>
+                              <Component id="maxField" alignment="0" pref="40" max="32767" attributes="1"/>
+                          </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="ignorableField" max="32767" attributes="1"/>
-                          <Component id="maxField" alignment="0" pref="40" max="32767" attributes="1"/>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="subpatternCkBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="polygamyCkBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="inductionCkBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="surnameCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="birthdateCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="snapToGridCkBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="subpatternCkBox" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="polygamyCkBox" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="inductionCkBox" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="surnameCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="birthdateCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="editLinkPrioritiesBtn" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" attributes="0">
                           <Component id="ignorableSlider" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="ignoreHelp" min="-2" pref="29" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="1">
+                      <Group type="102" attributes="0">
                           <Component id="maxSlider" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="maxHelp" min="0" pref="0" max="32767" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="maxHelp" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Component id="subpatternHelp" alignment="0" min="-2" pref="29" max="-2" attributes="0"/>
                   <Component id="inductionHelp" alignment="0" min="-2" pref="29" max="-2" attributes="0"/>
-                  <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="normalCaptureHelpBtn" alignment="0" min="0" pref="0" max="32767" attributes="1"/>
-                      <Component id="polygamyHelp" alignment="0" pref="29" max="32767" attributes="1"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="linkPrioritiesHelp" alignment="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="snapToGridHelp" alignment="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="normalCaptureHelpBtn" alignment="0" min="0" pref="0" max="32767" attributes="1"/>
+                          <Component id="polygamyHelp" alignment="0" pref="29" max="32767" attributes="1"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="wideLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="wideTxtFld" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="doneBtn" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="highLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="highTxtFld" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="391" max="32767" attributes="0"/>
-              <Component id="doneBtn" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace pref="22" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -118,15 +137,29 @@
                       <Component id="surnameCheckBox" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="birthdateCheckBox" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                      <Component id="doneBtn" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                       <Component id="normalCaptureHelpBtn" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="snapToGridCkBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="snapToGridHelp" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="wideLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="wideTxtFld" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="highLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="highTxtFld" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="editLinkPrioritiesBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="linkPrioritiesHelp" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="doneBtn" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="8" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -279,6 +312,67 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="normalCaptureHelpBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="snapToGridCkBox">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Snap To Grid"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="snapToGridCkBoxActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="snapToGridHelp">
+      <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="33" green="0" red="ff" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="?"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="snapToGridHelpActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="editLinkPrioritiesBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Inspect/Edit Link Priorities"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editLinkPrioritiesBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="linkPrioritiesHelp">
+      <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="ff" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="?"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="wideLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Wide"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="wideTxtFld">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="120"/>
+      </Properties>
+      <Events>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="wideTxtFldFocusLost"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="highLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="High"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="highTxtFld">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="100"/>
+      </Properties>
+      <Events>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="highTxtFldFocusLost"/>
       </Events>
     </Component>
   </SubComponents>

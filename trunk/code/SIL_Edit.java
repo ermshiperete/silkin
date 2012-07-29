@@ -36,7 +36,35 @@ public class SIL_Edit extends JFrame {
     static final int minDyadsPerPCStr = 2;
     static ArrayList<ArrayList<Integer>> namedDyadList = null;
     static boolean helpScreenOnStartUp = true;
-
+    
+    static TreeMap<String, PropagationMethod> linkMethods = buildLinkMethods();
+    
+    static TreeMap<String, PropagationMethod> buildLinkMethods() {
+        TreeMap<String, PropagationMethod> lm = new TreeMap<String, PropagationMethod>();
+        lm.put("Fa", new ParentMethod());
+        lm.put("Mo", new ParentMethod());
+        lm.put("P", new ParentMethod());
+        lm.put("So", new ChildMethod());
+        lm.put("Da", new ChildMethod());
+        lm.put("C", new ChildMethod());
+        lm.put("Hu", new SpouseMethod());
+        lm.put("Wi", new SpouseMethod());
+        lm.put("S", new SpouseMethod());
+        lm.put("Bro", new SiblingMethod());
+        lm.put("Sis", new SiblingMethod());
+        lm.put("Sib", new SiblingMethod());
+        lm.put("Hbro", new HalfSiblingMethod());
+        lm.put("Hsis", new HalfSiblingMethod());
+        lm.put("Stfa", new StepParentMethod());
+        lm.put("Stmo", new StepParentMethod());
+        lm.put("Stbro", new StepSiblingMethod());
+        lm.put("Stsis", new StepSiblingMethod());
+        lm.put("Stso", new StepChildMethod());
+        lm.put("Stda", new StepChildMethod());
+        return lm;
+    }
+    
+    
     boolean editable = true;
     Individual infoPerson = null;
     Family infoMarriage = null;
@@ -111,6 +139,7 @@ public class SIL_Edit extends JFrame {
         contextMenu = new JMenu();
         distinctAdrItem = new JCheckBoxMenuItem();
         editableItem = new JCheckBoxMenuItem();
+        snapToGrid = new JCheckBoxMenuItem();
         getSuggestionsItem = new JMenuItem();
         actOnSuggsItem = new JMenuItem();
         actOnSuggsItem.setEnabled(false);
@@ -413,14 +442,15 @@ public class SIL_Edit extends JFrame {
         });
         contextMenu.add(editableItem);
 
-//        testKeyItem = new JMenuItem("Keyboard Test");
-//        testKeyItem.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent evt) {
-//                keyTestItemActionPerformed(evt);
-//            }
-//        });
-//        contextMenu.add(testKeyItem);
-//
+        snapToGrid.setText("Snap To Grid");
+        setSnap(true);
+        snapToGrid.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                snapToGridActionPerformed(evt);
+            }
+        });
+        contextMenu.add(snapToGrid);
+
 //        testUnicodeItem = new JMenuItem("Unicode Test");
 //        testUnicodeItem.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent evt) {
@@ -541,6 +571,10 @@ public class SIL_Edit extends JFrame {
             chart.deleteAll();
         }
     }
+    
+    public void setSnap(boolean onOff) {
+        snapToGrid.setSelected(onOff);
+    }
 
     private void newLiBrowserActionPerformed(ActionEvent evt) {
         Library.currentActivity = Library.BROWSING;
@@ -610,6 +644,7 @@ public class SIL_Edit extends JFrame {
         if (SILKin.mainPane == null) {
             SILKin.createAndShowGUI();
             MainPane.topPane.menuAdmin.setEnabled(false);
+            MainPane.topPane.editCUC();
         }else {
             MainPane.topPane.editCUC();
             MainPane.topPane.menuAdmin.setEnabled(false);
@@ -771,6 +806,15 @@ public class SIL_Edit extends JFrame {
         }else {
             chart.editable = false;
             Context.current.editable = false;
+        }
+    }
+    
+    
+    private void snapToGridActionPerformed(ActionEvent evt) {
+        if (snapToGrid.isSelected()) {
+            Library.snapToGrid = true;
+        }else {
+            Library.snapToGrid = false;
         }
     }
     
@@ -969,6 +1013,57 @@ public class SIL_Edit extends JFrame {
                 break;
         }
     }
+    
+    /** Rebuild the KinTermMatrix's node lattice from the population's
+     *  graph of Individuals and Families. Any nodes from the old KTM
+     *  that have exact counterparts in the new KTM can copy their kin
+     *  terms to the new one.
+     * 
+     *  After the KTM is regenerated, build a new set of DyadTMaps and
+     *  the Kin Type Index from it.
+     */
+    public void rebuildKTMatrixEtc() {
+        KinTermMatrix oldKTM = ktm;
+        ktm = new KinTermMatrix();
+        for (Individual pers : Context.current.individualCensus) {
+            pers.node = null;
+        }
+        for (Individual pers : Context.current.individualCensus) {
+            if (!pers.deleted) {
+                int id = pers.serialNmbr;
+                TreeMap newRow = new TreeMap();
+                ktm.matrix.put(id, newRow);
+                currentEgo = id;
+                pers.node = Node.makeSelfNode(Context.current.distinctAdrTerms);
+                pers.node.indiv = pers;
+                newRow.put(id, pers.node);
+                KSQ bfq = new KSQ();
+                bfq.enQ(pers);
+                propagateNodes(bfq, newRow, null);
+                TreeMap oldRow = (TreeMap)oldKTM.matrix.get(id);
+                if (oldRow != null) {
+                    copyNodes(oldRow, newRow);
+                }
+                for (Object n : newRow.values()) {  //  reset nodes
+                    ((Node)n).indiv.node = null;
+                }
+            }
+        }  //  KTM is now regenerated. Install as official.
+        Context.current.ktm = ktm;
+        PersonPanel.fillDyadsFromMatrix();
+        regenerateKTI();  // rebuild Kin Type Index
+    }
+    
+    void regenerateKTI() {
+        KinTypeIndex kti = (Context.current.kti = new KinTypeIndex());
+        Iterator ktmIter = ktm.matrix.entrySet().iterator();
+        while(ktmIter.hasNext()) {
+            Map.Entry entry = (Map.Entry)ktmIter.next();
+            Integer egoInt = (Integer)entry.getKey();
+            TreeMap row = (TreeMap)entry.getValue();
+            kti.updateFromRow(egoInt, row);
+        }
+    }
 
     boolean changeEgo(int egoNum) {
         boolean oKay = true;
@@ -1006,66 +1101,296 @@ public class SIL_Edit extends JFrame {
                 Integer alter = (Integer)entry.getKey();
                 Node n = (Node)entry.getValue();
                 oldRowCopy.put(alter, n);
-                Individual indiv = Context.current.individualCensus.get(alter);
-                indiv.node = n;
-                n.indiv = indiv;
             }            
         }
-        //  Must build nodes for each person who is connected to currentEgo
+        //  Must build NEW nodes for each person who is connected to currentEgo
         ChartPanel.doIndexes = true;
         Individual ego = Context.current.individualCensus.get(egoNum);
-        for (Individual i : Context.current.individualCensus) {
-            i.seenB4 = 0;
-        }
-        Family mar = null;
-        try {
-            for (Object o : ego.marriages) {
-                mar = (Family)o;
-                chart.createNode(ego, mar, "spouse");
-            }
-            mar = ego.birthFamily;
-            if (mar != null) chart.createNode(ego, mar, "child");
-        }catch(KSInternalErrorException exc) {
-            String msg = "While propogating nodes from person #" + ego.serialNmbr +
-                    " in family #" + mar.serialNmbr;
-            MainPane.displayError(msg, "Internal Error", JOptionPane.ERROR_MESSAGE);
-        }
-        // insert old nodes with kin terms into new ktm row
+        ego.node = Node.makeSelfNode(Context.current.distinctAdrTerms);
+        
+        //  2.2  NEW CODE  Uses a breadth-first queue (bfq)
+        KSQ bfq = new KSQ();
+        bfq.enQ(ego);
+        TreeMap newRow = ktm.getRow(currentEgo);
+        propagateNodes(bfq, newRow, null);
+        
+        // 2.3  insert old nodes with kin terms into new ktm row
         if (oldRowCopy != null) {
-            TreeMap newRow = ktm.getRow(currentEgo);
-            Iterator nodeIter = oldRowCopy.entrySet().iterator();
-            while (nodeIter.hasNext()) {
-                Map.Entry entry = (Map.Entry)nodeIter.next();
-                Integer alterInt = (Integer)entry.getKey();
-                Node oldNode = (Node) entry.getValue();
-                Node newNode = (Node) newRow.get(alterInt);
-                if(newNode == null) {  //  should not happen
-                    String msg = "While copying kin terms from old row to new row" +
-                            " in ChangeEgo(), \nSerial#" + ego.serialNmbr + "'s new row " +
-                    "in KT Matrix does not have a node for Serial#" + alterInt + " like old row did.";
-                    MainPane.displayError(msg, "Internal Error", JOptionPane.ERROR_MESSAGE);
-                    oKay = false;
-                }else if (newNode.pcString.equals(oldNode.pcString)) {
-                    if (alterInt == currentEgo) oldNode = oldNode.clone();
-                    newRow.put(alterInt, oldNode);
-                    Individual al = Context.current.individualCensus.get(alterInt);
-                    al.node = oldNode;
-                }else {  //  probably will happen -- I want to monitor them for a while
-                    String msg = "\nWhile copying kin terms from old row to new row" +
-                            " in ChangeEgo(), \nSerial#" + alterInt  + "'s node in " +
-                            ego.serialNmbr + "'s row has a different PCString.\n";
-                    msg += "Old string: " + oldNode.pcString + "  new string: " + newNode.pcString;
-                    MainPane.displayError(msg, "Internal Error", JOptionPane.ERROR_MESSAGE);
-                    oKay = false;
-                }
-                
-            }
+            newRow = ktm.getRow(currentEgo);
+            oKay = copyNodes(oldRowCopy, newRow);
         }
         showInfo(infoPerson);
         chart.repaint();
         return oKay;
     }
-
+    
+    public boolean copyNodes(TreeMap oldRow, TreeMap newRow) {
+        Iterator nodeIter = oldRow.entrySet().iterator();
+        while (nodeIter.hasNext()) {
+            Map.Entry entry = (Map.Entry) nodeIter.next();
+            Integer alterInt = (Integer) entry.getKey();
+            Node oldNode = (Node) entry.getValue();
+            Node newNode = (Node) newRow.get(alterInt);
+            if (newNode != null && newNode.pcString.equals(oldNode.pcString)) {
+                if (alterInt == currentEgo) {
+                    oldNode = oldNode.clone();
+                }
+                newRow.put(alterInt, oldNode);
+                Individual al = Context.current.individualCensus.get(alterInt);
+                al.node = oldNode;
+            }
+        }
+        return true;
+    }
+    
+    
+  /*   public static void propagateNodes(KSQ bfq, TreeMap newRow, Individual target) {
+        try {
+            while (!bfq.isEmpty()) {
+                Individual currInd = (Individual) bfq.deQ(), nextInd;
+                String relat = "";
+                if (currInd.birthFamily != null) {  //  to parents
+                    nextInd = currInd.birthFamily.husband;
+                    propagate(currInd, nextInd, "Fa", bfq, newRow, target);
+                    nextInd = currInd.birthFamily.wife;
+                    propagate(currInd, nextInd, "Mo", bfq, newRow, target);
+                }
+                for (Object o : currInd.marriages) {  //  to children
+                    Family fam = (Family) o;
+                    for (Object child : fam.children) {
+                        nextInd = (Individual) child;
+                        relat = (nextInd.gender.equals("M") ? "So" : "Da");
+                        propagate(currInd, nextInd, relat, bfq, newRow, target);
+                    }  //  to spouse
+                    nextInd = (currInd.gender.equals("M") ? fam.wife : fam.husband);
+                    if (nextInd != null) {
+                        relat = (nextInd.gender.equals("M") ? "Hu" : "Wi");
+                    }
+                    propagate(currInd, nextInd, relat, bfq, newRow, target);
+                }
+                if (currInd.birthFamily != null) {
+                    Family bFam = (Family) currInd.birthFamily;
+                    //  to full siblings
+                    for (Object o : bFam.children) {
+                        if (o != currInd) {
+                            nextInd = (Individual) o;
+                            relat = (nextInd.gender.equals("M") ? "Bro" : "Sis");
+                            propagate(currInd, nextInd, relat, bfq, newRow, target);
+                        }
+                    }
+                    //  to half siblings
+                    ArrayList<Individual> parents = new ArrayList<Individual>();
+                    if (bFam.husband != null) {
+                        parents.add(bFam.husband);
+                    }
+                    if (bFam.wife != null) {
+                        parents.add(bFam.wife);
+                    }
+                    for (Individual naturalParent : parents) {
+                        for (Object o : naturalParent.marriages) {
+                            Family mar = (Family) o;
+                            if (mar != bFam) {
+                                for (Object ch : mar.children) {
+                                    nextInd = (Individual) ch;
+                                    relat = (nextInd.gender.equals("M") ? "Hbro" : "Hsis");
+                                    propagate(currInd, nextInd, relat, bfq, newRow, target);
+                                }
+                                //  to step parents
+                                Individual stepParent = (naturalParent == mar.wife ? mar.husband : mar.wife);
+                                if (stepParent != null) {
+                                    relat = (stepParent.gender.equals("M") ? "Stfa" : "Stmo");
+                                    propagate(currInd, stepParent, relat, bfq, newRow, target);
+                                    //  to step siblings
+                                    for (Object m : stepParent.marriages) {
+                                        Family stepFam = (Family) m;
+                                        if (stepFam != mar && stepFam != bFam) {
+                                            for (Object k : stepFam.children) {
+                                                nextInd = (Individual) k;
+                                                relat = (nextInd.gender.equals("M") ? "Stbro" : "Stsis");
+                                                propagate(currInd, nextInd, relat, bfq, newRow, target);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }  //  end of loop thru natural parents & their other marriages
+                }  //  end of currInd's birth family != null
+                //  to step children
+                for (Object o : currInd.marriages) {
+                    Family fam = (Family) o;
+                    Individual currIndSpouse = (currInd == fam.husband ? fam.wife : fam.husband);
+                    if (currIndSpouse != null) {
+                        for (Object f : currIndSpouse.marriages) {
+                            Family spouseFam = (Family) f;
+                            if (spouseFam != fam) {
+                                for (Object kid : spouseFam.children) {
+                                    nextInd = (Individual) kid;
+                                    relat = (nextInd.gender.equals("M") ? "Stso" : "Stda");
+                                    propagate(currInd, nextInd, relat, bfq, newRow, target);
+                                }
+                            }
+                        }
+                    }
+                }
+                //  to star links
+                if (currInd.starLinks != null) {
+                    for (Object o : currInd.starLinks) {
+                        nextInd = (Individual) o;
+                        propagate(currInd, nextInd, "**", bfq, newRow, target);
+                    }
+                }
+            }  //  end of while BFQ is not empty    
+        } catch (KSDateParseException ksd) {
+            // If ksd is thrown, then target is non-null, and a node has been
+            // created for target with a PCString. We're done.
+        }
+    }  //  end of OLD method propagateNodes
+    */
+    
+    public static void propagateNodes(KSQ bfq, TreeMap newRow, Individual target) {
+        ArrayList<String> linkOrder = Context.current.linkOrder;
+        TreeMap<String, String> priorities = Context.current.linkPriorityTMap;
+        Iterator linkIter = linkOrder.iterator();
+         try {
+            while (!bfq.isEmpty()) {
+                Individual currInd = (Individual) bfq.deQ(), nextInd;
+                while (linkIter.hasNext()) {
+                    String link = (String)linkIter.next();
+                    PropagationMethod method = linkMethods.get(link);
+                    method.prop(currInd, link, bfq, newRow, target, priorities);
+                } //  and finally, star links
+                if (currInd.starLinks != null) {
+                    for (Object o : currInd.starLinks) {
+                        nextInd = (Individual) o;
+                        propagate(currInd, nextInd, "**", bfq, newRow, target, priorities);
+                    }
+                }
+                linkIter = linkOrder.iterator();
+            }  //  end of while BFQ is not empty    
+        } catch (KSDateParseException ksd) {
+            // If ksd is thrown, then target is non-null, and a node has been
+            // created for target with a PCString. We're done.
+        }
+    }  //  end of method propagateNodes
+    
+    
+    public static void propagate(Individual currInd, Individual nextInd,
+            String relat, KSQ bfq, TreeMap newRow, Individual target,
+            TreeMap<String, String> priorities)
+            throws KSDateParseException {
+        if (nextInd == null) {
+            return;
+        }
+        Node fromNode = currInd.node,
+             toNode = nextInd.node;
+        if (toNode != null) {
+            // If toNode has a shorter path to Ego than we can provide, quit
+            // UNLESS toNode's path contains starlinks and our path does not.
+            // If the 2 paths are equal length, quit if the new path is not 
+            // higher priority.
+            int toPathLength = toNode.miniPreds.size(),
+                    newPathLength = fromNode.miniPreds.size() + 1;
+            boolean newShorter = newPathLength < toPathLength,
+                    equalPaths = newPathLength == toPathLength,
+                    oldHasStars = false,
+                    newHigherPriority = false,
+                    newMoreNatural = !relat.equals("**");
+            for (Object s : fromNode.miniPreds) {
+                if (s.toString().startsWith("*")) {
+                    newMoreNatural = false;
+                    break;
+                }
+            }
+            for (Object s : toNode.miniPreds) {
+                if (s.toString().startsWith("*")) {
+                    oldHasStars = true;
+                    break;
+                }
+            }
+            if (!oldHasStars) {
+                newMoreNatural = false;
+            }
+            if (equalPaths) {
+                ArrayList<String> oldPCs = new ArrayList<String>(),
+                                  newPCs = new ArrayList<String>();
+                if (!toNode.pcString.isEmpty()) {
+                    oldPCs.addAll(KinTermDef.explodePCSymbols(toNode.pcString));
+                }
+                if (!fromNode.pcString.isEmpty()) {
+                    newPCs.addAll(KinTermDef.explodePCSymbols(fromNode.pcString));
+                }
+                newPCs.add(relat);
+                newHigherPriority = higherPriority(newPCs, oldPCs, priorities);
+            }            
+            if (!newShorter && !newMoreNatural && !newHigherPriority) {
+                return;
+            }
+            // Remove the kin type pair of the old path from KTI
+            String oldKinType = toNode.pcString;
+            Integer[] pair = KinTermDef.pluckEgoAndAlter(toNode.miniPreds);
+            Context.current.kti.removePair(oldKinType, pair);
+        }
+        //  Proceed to make or modify toNode
+        if (toNode == null) {
+            nextInd.node = new Node();
+            nextInd.node.indiv = nextInd;
+            toNode = nextInd.node;
+        }
+        // The new path will replace any prior path
+        toNode.miniPreds = new ArrayList<Object>(fromNode.miniPreds);
+        toNode.pcString = fromNode.pcString + relat;
+        String miniPred = relat + "(#" + nextInd.serialNmbr
+                + ",#" + currInd.serialNmbr + ")";
+        toNode.miniPreds.add(miniPred);
+        int level = fromNode.getLevel();
+        if (relat.equals("Mo") || relat.equals("Fa") || relat.equals("Stmo")
+                || relat.equals("Stfa")) {
+            level++;
+        }
+        if (relat.equals("So") || relat.equals("Da") || relat.equals("Stso")
+                || relat.equals("Stda")) {
+            level--;
+        }
+        toNode.setLevel(level);
+        bfq.enQ(nextInd);  //  Propagate by putting onto the BFQ
+        newRow.put(nextInd.serialNmbr, toNode);
+        if (target == nextInd) {  // goal reached. End search.
+            throw new KSDateParseException("Found alter.");
+        }
+        // Insert the new kin type pair into KTI
+        String newKinType = toNode.pcString;
+        Integer[] pair = KinTermDef.pluckEgoAndAlter(toNode.miniPreds);
+        Context.current.kti.addPair(newKinType, pair);
+    }  //  end of method propagate
+    
+    public static boolean higherPriority(ArrayList<String> newPCS, 
+            ArrayList<String> oldPCS, TreeMap<String, String> priorities) {
+        ArrayList<String> newPriorities = new ArrayList<String>(), 
+                          oldPriorities = new ArrayList<String>();
+        for (String pcs : newPCS) {
+            String pri = priorities.get(pcs);
+            if (pri == null) throw new NullPointerException("No priority found for " + pcs);
+            newPriorities.add(pri);
+        }
+        for (String pcs : oldPCS) {
+            String pri = priorities.get(pcs);
+            if (pri == null) throw new NullPointerException("No priority found for " + pcs);
+            oldPriorities.add(pri);
+        }
+        for (int i=0; i < newPriorities.size(); i++) {
+            int comp = newPriorities.get(i).compareTo(oldPriorities.get(i));
+            if (comp < 0) {
+                return true;
+            }
+            if (comp > 0) {
+                return false;
+            }
+        }
+        return false;
+    }
+    
+    
     //  SETTERS AND GETTERS
     public PersonPanel getPPanel() {
         return personPanel1;
@@ -1081,6 +1406,10 @@ public class SIL_Edit extends JFrame {
 
     void setCurrentEgo(int newEgo) {
         currentEgo = newEgo;
+    }
+    
+    void setSnapToGrid(boolean setting) {
+        snapToGrid.setSelected(setting);
     }
 
     void storeInfo()
@@ -1142,16 +1471,15 @@ public class SIL_Edit extends JFrame {
 
     void applyDef(KinTermDef newDef, DomainTheory dt) {
         chart.recomputingDyads = true;
-        KinTypeIndex kti = Context.current.kti;
-        kti.updateIndex(Context.current);
         DomainTheory.current = dt;
+        Context ctxt = Context.current;
         for (Object o : newDef.expandedDefs) {
             ClauseBody cb = (ClauseBody)o;
-            ArrayList<Integer[]> candidates = kti.getList(cb.pcString);
+            ArrayList<Integer[]> candidates = ctxt.kti.getList(cb.pcString);
             for (Integer[] pair : candidates) {
                 Dyad dad = new Dyad();
-                dad.ego = Context.current.individualCensus.get(pair[0]);
-                dad.alter = Context.current.individualCensus.get(pair[1]);
+                dad.ego = ctxt.individualCensus.get(pair[0]);
+                dad.alter = ctxt.individualCensus.get(pair[1]);
                 try {
                     if (dt.fit(cb, dad)) {
                         Node nod = ktm.getCell(dad.ego, dad.alter);
@@ -1290,6 +1618,258 @@ public class SIL_Edit extends JFrame {
             actOnSuggsItem.setEnabled(true);
             returnToSuggsItem.setEnabled(false);
     }
+    
+    static abstract class PropagationMethod {
+        abstract void prop(Individual currInd, String link, KSQ bfq, 
+                TreeMap newRow, Individual target, TreeMap<String, String> priorities)
+                 throws KSDateParseException ;
+    }
+
+    static class ParentMethod extends PropagationMethod {
+
+        void prop(Individual currInd, String link, KSQ bfq,
+                TreeMap newRow, Individual target, TreeMap<String, String> priorities)
+                throws KSDateParseException {
+
+            if (currInd.birthFamily == null) {
+                return;
+            }
+            Individual nextInd;
+            if (link.equals("Fa") && currInd.birthFamily.husband != null
+                    && currInd.birthFamily.husband.gender.equals("M")) {
+                nextInd = currInd.birthFamily.husband;
+                propagate(currInd, nextInd, "Fa", bfq, newRow, target, priorities);
+            } else if (link.equals("Mo") && currInd.birthFamily.wife != null
+                    && currInd.birthFamily.wife.gender.equals("F")) {
+                nextInd = currInd.birthFamily.wife;
+                propagate(currInd, nextInd, "Mo", bfq, newRow, target, priorities);
+            } else if (link.equals("P")) {
+                nextInd = currInd.birthFamily.wife;
+                if (nextInd != null && nextInd.gender.equals("?")) {
+                    propagate(currInd, nextInd, "P", bfq, newRow, target, priorities);
+                }
+                nextInd = currInd.birthFamily.husband;
+                if (nextInd != null && nextInd.gender.equals("?")) {
+                    propagate(currInd, nextInd, "P", bfq, newRow, target, priorities);
+                }
+            }
+        } // end of prop method
+    } // end of inner class ParentMethod
+
+    static class ChildMethod extends PropagationMethod {
+
+        void prop(Individual currInd, String link, KSQ bfq,
+                TreeMap newRow, Individual target, TreeMap<String, String> priorities)
+                throws KSDateParseException {
+            
+            for (Object o : currInd.marriages) {
+                Family fam = (Family) o;
+                for (Object child : fam.children) {
+                    Individual nextInd = (Individual) child;
+                    if ((link.equals("So") && nextInd.gender.equals("M"))
+                            || (link.equals("Da") && nextInd.gender.equals("F"))
+                            || (link.equals("C") && nextInd.gender.equals("?"))) {
+                        propagate(currInd, nextInd, link, bfq, newRow, target, priorities);
+                    }
+                }
+            }
+        } // end of prop method
+    } // end of inner class ChildMethod
+
+    static class SpouseMethod extends PropagationMethod {
+
+        void prop(Individual currInd, String link, KSQ bfq,
+                TreeMap newRow, Individual target, TreeMap<String, String> priorities)
+                throws KSDateParseException {
+            
+            if ((currInd.gender.equals("M") && link.equals("Hu"))
+                    || (currInd.gender.equals("F") && link.equals("Wi"))) {
+                return;
+            }
+            for (Object o : currInd.marriages) {
+                Family fam = (Family) o;
+                if (link.equals("Wi")) {
+                    Individual nextInd = fam.wife;
+                    if (nextInd != null && nextInd.gender.equals("F")) {
+                    propagate(currInd, nextInd, link, bfq, newRow, target, priorities);
+                    }
+                }else if (link.equals("Hu")) {
+                    Individual nextInd = fam.husband;
+                    if (nextInd != null && nextInd.gender.equals("M")) {
+                    propagate(currInd, nextInd, link, bfq, newRow, target, priorities);
+                    }
+                }else if (link.equals("S")) {
+                    Individual nextInd = (currInd == fam.husband ? fam.wife : fam.husband);
+                    if (nextInd != null && nextInd.gender.equals("?")) {
+                    propagate(currInd, nextInd, link, bfq, newRow, target, priorities);
+                    }
+                }
+             }
+        } // end of prop method
+    } // end of inner class SpouseMethod
+
+    static class SiblingMethod extends PropagationMethod {
+
+        void prop(Individual currInd, String link, KSQ bfq,
+                TreeMap newRow, Individual target, TreeMap<String, String> priorities)
+                throws KSDateParseException {
+
+            if (currInd.birthFamily == null) {
+                return;
+            }
+            Family bFam = (Family) currInd.birthFamily;
+            Individual nextInd;
+            for (Object o : bFam.children) {
+                if (o != currInd) {
+                    nextInd = (Individual) o;
+                    if ((link.equals("Bro") && nextInd.gender.equals("M"))
+                            || (link.equals("Sis") && nextInd.gender.equals("F"))
+                            || (link.equals("Sib") && nextInd.gender.equals("?"))) {
+                        propagate(currInd, nextInd, link, bfq, newRow, target, priorities);
+                    }
+                }
+            }
+        } // end of prop method
+    } // end of inner class SiblingMethod
+
+    static class HalfSiblingMethod extends PropagationMethod {
+
+        void prop(Individual currInd, String link, KSQ bfq,
+                TreeMap newRow, Individual target, TreeMap<String, String> priorities)
+                throws KSDateParseException {
+
+            if (currInd.birthFamily == null) {
+                return;
+            }
+            Family bFam = (Family) currInd.birthFamily;
+            Individual nextInd;
+            ArrayList<Individual> parents = new ArrayList<Individual>();
+            if (bFam.husband != null) {
+                parents.add(bFam.husband);
+            }
+            if (bFam.wife != null) {
+                parents.add(bFam.wife);
+            }
+            for (Individual naturalParent : parents) {
+                for (Object o : naturalParent.marriages) {
+                    Family mar = (Family) o;
+                    if (mar != bFam) {
+                        for (Object ch : mar.children) {
+                            nextInd = (Individual) ch;
+                            if ((nextInd.gender.equals("M") && link.equals("Hbro")) ||
+                                    (nextInd.gender.equals("F") && link.equals("Hsis"))) {
+                            propagate(currInd, nextInd, link, bfq, newRow, target, priorities);
+                            }
+                        }
+                    }
+                }
+            }  //  end of loop thru natural parents & their other marriages
+        } // end of prop method
+    } // end of inner class HalfSiblingMethod
+
+    static class StepParentMethod extends PropagationMethod {
+
+        void prop(Individual currInd, String link, KSQ bfq,
+                TreeMap newRow, Individual target, TreeMap<String, String> priorities)
+                throws KSDateParseException {
+
+            if (currInd.birthFamily == null) {
+                return;
+            }
+            Family bFam = (Family) currInd.birthFamily;
+            Individual nextInd;
+            ArrayList<Individual> parents = new ArrayList<Individual>();
+            if (bFam.husband != null) {
+                parents.add(bFam.husband);
+            }
+            if (bFam.wife != null) {
+                parents.add(bFam.wife);
+            }
+            for (Individual naturalParent : parents) {
+                for (Object o : naturalParent.marriages) {
+                    Family mar = (Family) o;
+                    if (mar != bFam) {
+                        Individual stepParent = (naturalParent == mar.wife ? mar.husband : mar.wife);
+                        if (stepParent != null) {
+                            if ((stepParent.gender.equals("M") && link.equals("Stfa")) ||
+                                    (stepParent.gender.equals("F") && link.equals("Stmo")))
+                            propagate(currInd, stepParent, link, bfq, newRow, target, priorities);
+                        }
+                    }
+                }
+            }  //  end of loop thru natural parents & their other marriages
+        } // end of prop method
+    } // end of inner class StepParentMethod
+
+    static class StepSiblingMethod extends PropagationMethod {
+
+        void prop(Individual currInd, String link, KSQ bfq,
+                TreeMap newRow, Individual target, TreeMap<String, String> priorities)
+                throws KSDateParseException {
+
+            if (currInd.birthFamily == null) {
+                return;
+            }
+            Family bFam = (Family) currInd.birthFamily;
+            Individual nextInd;
+            ArrayList<Individual> parents = new ArrayList<Individual>();
+            if (bFam.husband != null) {
+                parents.add(bFam.husband);
+            }
+            if (bFam.wife != null) {
+                parents.add(bFam.wife);
+            }
+            for (Individual naturalParent : parents) {
+                for (Object o : naturalParent.marriages) {
+                    Family mar = (Family) o;
+                    if (mar != bFam) {
+                        Individual stepParent = (naturalParent == mar.wife ? mar.husband : mar.wife);
+                        if (stepParent != null) {
+                            for (Object m : stepParent.marriages) {
+                                Family stepFam = (Family) m;
+                                if (stepFam != mar && stepFam != bFam) {
+                                    for (Object k : stepFam.children) {
+                                        nextInd = (Individual) k;
+                                        if ((nextInd.gender.equals("M") && link.equals("Stbro")) ||
+                                                (nextInd.gender.equals("F") && link.equals("Stsis"))) {
+                                        propagate(currInd, nextInd, link, bfq, newRow, target, priorities);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }  //  end of loop thru natural parents & their other marriages          
+        } // end of prop method
+    } // end of inner class StepSiblingMethod
+    
+    static class StepChildMethod extends PropagationMethod {
+
+        void prop(Individual currInd, String link, KSQ bfq,
+                TreeMap newRow, Individual target, TreeMap<String, String> priorities)
+                throws KSDateParseException {
+
+            for (Object o : currInd.marriages) {
+                Family fam = (Family) o;
+                Individual currIndSpouse = (currInd == fam.husband ? fam.wife : fam.husband);
+                if (currIndSpouse != null) {
+                    for (Object f : currIndSpouse.marriages) {
+                        Family spouseFam = (Family) f;
+                        if (spouseFam != fam) {
+                            for (Object kid : spouseFam.children) {
+                                Individual nextInd = (Individual) kid;
+                                if ((nextInd.gender.equals("M") && link.equals("Stso")) ||
+                                        (nextInd.gender.equals("F") && link.equals("Stda"))) {
+                                propagate(currInd, nextInd, link, bfq, newRow, target, priorities);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } // end of prop method
+    } // end of inner class StepChildMethod
 
     
     // Variables declaration
@@ -1345,6 +1925,7 @@ public class SIL_Edit extends JFrame {
     public JMenuItem returnToSuggsItem;
     private JMenuItem saveAsItem;
     private JMenuItem saveItem;
+    private JCheckBoxMenuItem snapToGrid;
 //    private JMenuItem testKeyItem;
 //    private JMenuItem testUnicodeItem;
     private JRadioButtonMenuItem wholeNameBtn;

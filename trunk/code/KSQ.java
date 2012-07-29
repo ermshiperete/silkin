@@ -18,9 +18,7 @@ public class KSQ  {
     */
     public Object deQ()  {
         if (queue.isEmpty()) return null;
-        Object obj = queue.get(0);
-        queue.remove(0);
-        return obj;
+        return queue.remove(0);
     }  //  end of method deQ
     
         

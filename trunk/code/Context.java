@@ -58,7 +58,7 @@ public class Context implements Serializable {
     /** The <code>saveState</code> boolean flag determines whether this instance of Context has its complete state
     saved to disk at shut-down.  The context in which Data_Gathering is done (the 'target culture') MUST be
     saved between sessions.  Other contexts can be saved by the User's explicit menu choice.  */
-    public boolean saveState = false, simDataGen = false;
+    public boolean saveState = false, simDataGen = false, maleFirst = true;
     /** The learningHistory (Ref or Adr) is a TreeMap from kinTerm -> ArrayList<HistoryItem>.
      *  Each history item records a User decision on a Suggestion.   */
     public TreeMap<String, ArrayList<HistoryItem>> learningHistoryRef = new TreeMap<String, ArrayList<HistoryItem>>();
@@ -68,18 +68,26 @@ public class Context implements Serializable {
      *  It is used to determine if we should attempt to pre-fill the kinTerm field for a new Alter.  */
     public TreeMap<String, ArrayList<CB_Ptr>> autoDefRef = new TreeMap<String, ArrayList<CB_Ptr>>();
     public TreeMap<String, ArrayList<CB_Ptr>> autoDefAdr;
-
+    public String[] defaultLinkOrder = { "Fa", "Mo", "P", "So", "Da", "C", "Hu", "Wi", "S",
+           "Bro", "Sis", "Sib", "Hbro", "Hsis", "Stfa", "Stmo", "Stbro", "Stsis", "Stso", "Stda" };
+    public String[] defaultLinkPriority = { "A", "A", "A", "B", "B", "B", "B", "B", "B", 
+            "C", "C", "C", "D", "D", "E", "E", "E", "E", "E", "E" };
+    public ArrayList<String> linkOrder, linkPriority;
+    public TreeMap<String, String> linkPriorityTMap;
+    
     /* The following fields were added to allow a Context to carry the parameters
      * needed by KAES back to the loadFile method.     */
     public Point origin;
     public Dimension area;
     public int infoPerson, infoMarriage, labelChoice, ktLabelChoice, maxNoiseP = 25, ignorableP = 5;
-    public boolean editable, distinctAdrTerms;
+    public boolean editable, distinctAdrTerms, birthDateNormallyCaptured = false,
+            surnameNormallyCaptured = true;
 
     /** This zero-arg constructor is for use by Serialization ONLY.  */
     public Context() {
         createDate = UDate.today();
         Context.current = this;
+        loadDefaultLinkStuff();
     }
 // end of zero-arg constructor
 
@@ -104,6 +112,7 @@ public class Context implements Serializable {
         }
         polygamyPermit = dt.polygamyOK;
         userDefinedProperties = dt.userDefinedProperties;
+        loadDefaultLinkStuff();
         Library.activeContexts.put(languageName, this);
     }  // end of theory-only constructor
 
@@ -130,6 +139,7 @@ public class Context implements Serializable {
         }
         polygamyPermit = dt.polygamyOK;
         userDefinedProperties = dt.userDefinedProperties;
+        loadDefaultLinkStuff();
         Library.activeContexts.put(languageName, this);
     }  // end of 2-arg constructor
 
@@ -140,6 +150,12 @@ public class Context implements Serializable {
     public static String convertDoubleQuotes(String s) {
         return FamilyPanel.convertBannedCharacters(s);
     }  //  end of method convertDoubleQuotes
+    
+    public static Context tempCtxt(DomainTheory dt) {
+        Context c = new Context(dt);
+        Library.activeContexts.remove(c.languageName);
+        return c;
+    }
 
     /** Add a Domain Theory to this context.
     
@@ -598,6 +614,23 @@ public class Context implements Serializable {
         outFile.println("0 TRLR");
         return;
     }  // end of method exportGEDCOM
+    
+    void loadDefaultLinkStuff() {
+    //  Since no link priority order is specified for this context, load the deaults
+        linkOrder = new ArrayList<String>();
+        linkPriority = new ArrayList<String>();
+        for (String link : defaultLinkOrder) {
+            linkOrder.add(link);
+        }
+        for (String prio : defaultLinkPriority) {
+            linkPriority.add(prio);
+        }
+        linkPriorityTMap = new TreeMap<String, String>();
+        for (int i=0; i < linkOrder.size(); i++) {
+            linkPriorityTMap.put(defaultLinkOrder[i], defaultLinkPriority[i]);
+        }
+    }
+    
     private String editorParameters = "";
 
     public void writeSILKFile(File f, String params) throws FileNotFoundException,
@@ -707,13 +740,13 @@ public class Context implements Serializable {
             Iterator iter = userDefinedProperties.entrySet().iterator();
             Map.Entry entry;
             while (iter.hasNext()) {
-                silk.println("<UDP>");
+                silk.println("\t<UDP>");
                 entry = (Map.Entry) iter.next();
                 String propName = (String) entry.getKey();
                 UserDefinedProperty udp = (UserDefinedProperty) entry.getValue();
-                silk.println("<propertyName>" + propName + "</propertyName>");
+                silk.println("\t\t<propertyName>" + propName + "</propertyName>");
                 silk.println(udp.toSILKString("full"));
-                silk.println("</UDP>");
+                silk.println("\t</UDP>");
             }  //  end of loop thru UDPs
             silk.println("</userDefinedProperties>");
         }  //  end of optional UDPs
@@ -729,6 +762,16 @@ public class Context implements Serializable {
         if (kti.lastSerial != -1) {
             silk.println("  <lastPersonIndexed>" + kti.lastSerial + "</lastPersonIndexed>");
         }
+        if (linkOrder != null && ! linkOrder.isEmpty()) {
+            silk.println("  <linkPriorities maleFirst=\"" + maleFirst + "\">");
+            for (int i=0; i < linkOrder.size(); i++) {
+                silk.println("\t<link name=\"" + linkOrder.get(i) + "\" priority=\"" 
+                        + linkPriority.get(i) + "\"/>");
+            }
+            silk.println("  </linkPriorities>");            
+        }
+        silk.println("  <snapToGrid val=\"" + Library.snapToGrid + "\" x=\"" 
+                + Library.gridX + "\" y=\"" + Library.gridY + "\"/>");
         silk.println("</editorSettings>\n");
         if (domTheoryRef != null) {
             silk.println(domTheoryRef.toSILKString(""));
@@ -992,6 +1035,18 @@ public class Context implements Serializable {
             }  //  end of kid processing
             familyCensus.remove(i);
         }  //  end of Family purge
+        try {
+            domTheoryRef().dyadsDefined.purgeDyads(nmbrIndivs);
+            domTheoryRef().dyadsUndefined.purgeDyads(nmbrIndivs);
+            if (domTheoryAdrExists()) {
+                domTheoryAdr().dyadsDefined.purgeDyads(nmbrIndivs);
+                domTheoryAdr().dyadsUndefined.purgeDyads(nmbrIndivs);
+            }
+        }catch(Exception exc) {
+            String msg = "Undexpected error while purging DyadTMaps of\n" +
+                    "persons created for examples:\n" + exc;
+            System.err.println(msg);
+        }
 
         if ((familyCensus.size() != nmbrFams) || (individualCensus.size() != nmbrIndivs)) {
             throw new KSInternalErrorException("Population counts after reset-purge don't balance.");

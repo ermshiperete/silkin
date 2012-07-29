@@ -29,7 +29,8 @@ public class MainPane extends JFrame implements ActionListener {
     public static ContextEditor curr_CUC_Editor;
     static JMenu menuView;
     public JMenu menuFileAdd2Library;
-    public JMenuItem miFileOpenSILK, miFileDelete, miFileDeleteContext, miFileSaveContext;
+    public JMenuItem miFileOpenSILK, miFileDelete, miFileDeleteContext, miFileNewBrowser, 
+            miFileOpenContext, miFileSaveContext;
     public static JDesktopPane desktop;
     public static MainPane topPane;
     public static int testSerialNmbr;
@@ -130,7 +131,7 @@ public class MainPane extends JFrame implements ActionListener {
         HelpFrame.help = new HelpFrame();
 
 //        JMenu menuFileNew = new JMenu("New");
-        JMenuItem miFileNewBrowser = menuFile.add("New Library Browser");
+        miFileNewBrowser = menuFile.add("New Library Browser");
         miFileNewBrowser.setActionCommand("new browser");
         miFileNewBrowser.addActionListener(this);
 //        JMenuItem miFileNewContext = menuFileNew.add("Context (Language)");
@@ -148,7 +149,7 @@ public class MainPane extends JFrame implements ActionListener {
         miFileOpenSILK.setActionCommand("open silk");
         miFileOpenSILK.addActionListener(this);
 
-        JMenuItem miFileOpenContext = menuFile.add("Open Context");
+        miFileOpenContext = menuFile.add("Open Context");
         miFileOpenContext.setActionCommand("open context");
         miFileOpenContext.addActionListener(this);
 
@@ -264,9 +265,7 @@ public class MainPane extends JFrame implements ActionListener {
         menuBar.add(menuView);
         menuBar.add(menuAdmin);
         menuBar.add(menuHelp);
-        if (Library.currentActivity != Library.ADMIN) {
-            menuAdmin.setEnabled(false);
-        }
+        menuAdmin.setEnabled(Library.currentActivity == Library.ADMIN);
         menuBar.validate();
     }  //  end of method createMenu
 
@@ -275,6 +274,11 @@ public class MainPane extends JFrame implements ActionListener {
         menuFileAdd2Library.setEnabled(bool);
         miFileDelete.setEnabled(bool);
         miFileDeleteContext.setEnabled(bool);
+        miFileNewBrowser.setEnabled(bool);
+        miFileOpenSILK.setEnabled(bool);
+        miFileOpenContext.setEnabled(bool);
+        menuAdmin.setEnabled(bool);
+        
     }
     
     
@@ -328,8 +332,9 @@ public class MainPane extends JFrame implements ActionListener {
         } //  end of action-is-open-kinedit
         else if (e.getActionCommand().equals("close window")) {
             KSJInternalFrame frame = (KSJInternalFrame) desktop.getSelectedFrame();
-            //  IF INSTANCE_OF DATA_GATHERING, SAVE THE CONTEXT TO DISK
-            frame.doDefaultCloseAction();
+            if (frame != null) {
+                frame.doDefaultCloseAction();
+            }
         } //  end of action-is-close-window
         else if (e.getActionCommand().equals("exit")) {
             if (SIL_Edit.editWindow != null
@@ -1440,6 +1445,7 @@ public class MainPane extends JFrame implements ActionListener {
             }
         }
         if (curr_CUC_Editor != null) {  //  duplicate ContextEditors not allowed
+            curr_CUC_Editor.buildPopulationBox();
             currentFrame = curr_CUC_Editor;
             currentFrame.moveToFront();
             try {

@@ -194,6 +194,8 @@ public class Marriage  {
             people.add((Individual)p);
             sp = sp.getNext();
         }
+        SIL_Edit.editWindow.chart.draggedPersons.addAll(people);
+        SIL_Edit.editWindow.chart.draggedMarriages.add(this);
         ChartPanel.parent.chart.delayedAreaCk(people);
     }
 
@@ -223,6 +225,13 @@ public class Marriage  {
                 }
             }
             sp = sp.getNext();
+        }
+        SIL_Edit.editWindow.chart.draggedMarriages.add(this);
+        ArrayList<Person> dragged = SIL_Edit.editWindow.chart.draggedPersons;
+        for (Individual ind : people) {
+            if (! dragged.contains(ind)) {
+                dragged.add(ind);
+            }
         }
     }
 
@@ -374,23 +383,37 @@ public class Marriage  {
 			return true;
 		else return false;
 	}
+        
+    public boolean divorced() {
+        // If marriage has an end date and both spouses are alive
+        // OR End-Reason = Divorce or Other, 
+        // Then marriage has ended before death.
+        Family fam = (Family)this;
+        boolean husbandNotDead = fam.husband == null || fam.husband.deathYr.equals("");
+        boolean wifeNotDead = fam.wife == null || fam.wife.deathYr.equals("");        
+        if ((hasEnded() && husbandNotDead && wifeNotDead) 
+             || reason.equals("Divorce") || reason.equals("Other")) {
+            return true;
+        }
+        return false;
+    }
 
-	public void drawSymbol(Graphics g, Rectangle pbounds) {
-		Rectangle myBounds = bounds();
-		// myBounds.translate(offset.x,offset.y);
-		drawn=false;
+    public void drawSymbol(Graphics g, Rectangle pbounds) {
+        Rectangle myBounds = bounds();
+        // myBounds.translate(offset.x,offset.y);
+        drawn = false;
 
-		if (myBounds.intersects(pbounds)) {
-			if (hasEnded()) {
-				marSymbol.symbol.drawEndSymbol(g,myBounds);
-				drawn = true;
-			} else if (hasBegun()) {
-				marSymbol.symbol.drawSymbol(g,myBounds);
-				drawn=true;
-			}
-		}
-	}
-	
+        if (myBounds.intersects(pbounds)) {
+            if (divorced()) {
+                marSymbol.symbol.drawEndSymbol(g, myBounds);
+                drawn = true;
+            } else if (hasBegun()) {
+                marSymbol.symbol.drawSymbol(g, myBounds);
+                drawn = true;
+            }
+        }
+    }
+
 	/** Generates a string in XML format with details of this Marriage.
          *  Note that 2 LinkedLists, 'spouses' and 'siblings', are not written.
          *  These duplicate the information in the husband, wife, and children

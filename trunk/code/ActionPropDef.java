@@ -185,11 +185,6 @@ public class ActionPropDef extends JPanel {
                         "Apply Definition?", JOptionPane.YES_NO_OPTION);
                 if (decision == JOptionPane.YES_OPTION) {
                     SIL_Edit.editWindow.applyDef(newDef, dt);
-                    //  With implicit Address Terms, we don't want this dual posting.
-//                    if (! SIL_Edit.editWindow.chart.distinctAdrTerms) {
-//                        DomainTheory altDT = (dt.addressTerms ? dt.ctxt.domTheoryRef() : dt.ctxt.domTheoryAdr());
-//                        SIL_Edit.editWindow.applyDef(newDef, altDT);
-//                    }
                 }                
                 //  Mark this suggestion as processed and update menu
                 papa.markProcessed(suggNmbr);

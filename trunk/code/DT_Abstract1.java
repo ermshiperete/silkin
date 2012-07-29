@@ -104,7 +104,7 @@ public abstract class DT_Abstract1 implements Serializable {
         return merg;
     }  //  end of method mergeNestedTrees
 
-    //       Class Variables        //
+    //       Instance Variables        //
     Context ctxt;           //  Ptr to enclosing Context.
     String languageName;    // name of the language or people group
     String author;		// field worker who devised theory or gathered data
@@ -126,6 +126,7 @@ public abstract class DT_Abstract1 implements Serializable {
     TreeMap synonyms, umbrellas, overlaps, potUmbrellas, nonUmbrellas, nonOverlaps;
     TreeMap<String, ArrayList<Issue>> issuesForUser = new TreeMap<String, ArrayList<Issue>>();
     ArrayList<Object> nonSynonyms;
+    TreeMap<String, EditTheoryFrame.EditInProgress> editsInProgress;
     //  NOTE:  structure of umbrellas is:  umbTerm -> list-of-subsumed-terms
     //		   structure of potUmbrellas is:  umbTerm -> {list of pcStrings, Quad, ... Quad }
     //				where Quad = {subTerm, list of its pcStrings, list of Dyads, filterType}
@@ -282,6 +283,9 @@ public abstract class DT_Abstract1 implements Serializable {
     public String toSILKString(String bacer) {
         String spacer = "\t", dblSpacer = "\t\t";
         String s = bacer + "<domain-theory type=\"" + (addressTerms ? "Adr" : "Ref") + "\">\n";
+        if (author != null && !author.isEmpty()) {
+            s += bacer + spacer + "<author name=\"" + author + "\"/>\n";
+        }
         if (citation != null && !citation.isEmpty()) {
             s += bacer + spacer + "<citation text=\"" + citation + "\"/>\n";
         }
@@ -389,7 +393,14 @@ public abstract class DT_Abstract1 implements Serializable {
                 s += bacer + dblSpacer + "</nonUmbrella>\n";
             }
             s += bacer + spacer + "</nonUmbrellas>\n";
-        }        
+        }
+        if (editsInProgress != null && !editsInProgress.isEmpty()) {
+            s += bacer + spacer + "<editsInProgress>\n";
+            for (EditTheoryFrame.EditInProgress eip : editsInProgress.values()) {
+                s += eip.toSILKString(bacer + dblSpacer);
+            }
+            s += bacer + spacer + "</editsInProgress>\n";
+        }
         s += bacer + "</domain-theory>\n";
         return s;
     }
