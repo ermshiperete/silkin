@@ -1,0 +1,1872 @@
+Dec 12, 2003
+Context for Cogui language is:
+209 individuals and 80 families registered.
+
+Individuals:
+#0: *Ego (F)  (F), born Jan 1, 1970.
+First name = null.  Surname = Ego.
+*Kin Terms: Ego .
+     BirthFamily: 9
+     Marriages:
+     Family#0: I-1,  I-0
+
+#1: *sewa (M)  (M), born Jan 1, 1970.
+First name = null.  Surname = *&^%$.
+*Kin Terms: sewa .
+Kin Term Name History: sewa:0 sewa:0& .
+     BirthFamily: 1
+     Marriages:
+     Family#0: I-1,  I-0
+     Family#45: I-1,  I-94
+     Family#56: I-1,  I-109
+
+#2: *jaba (F)  (F), born Jan 1, 1949.
+First name = null.  Surname = *&^%$.
+*Kin Terms: jaba .
+Kin Term Name History: jaba:5 jaba:5& .
+     Marriages:
+     Family#1: I-3,  I-2
+     Family#49: I-98,  I-2
+     Family#50: I-99,  I-2
+
+#3: *jate (M)  (M), born Jan 1, 1949.
+First name = Presumed.  Surname = Spouse.
+*Kin Terms: jate .
+Kin Term Name History: jate:5 jate:5& .
+     BirthFamily: 2
+     Marriages:
+     Family#1: I-3,  I-2
+     Family#27: I-3,  I-64
+     Family#28: I-3,  I-65
+
+#4: *augui, *augui_sukkua (M)  (M), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui augui_sukkua .
+Kin Term Name History: augui:0 augui_sukkua:0 augui:0& augui_sukkua:0& .
+     BirthFamily: 1
+     Marriages:
+     Family#6: I-4,  I-14
+
+#5: *jaba (F)  (F), born Jan 1, 1928.
+First name = null.  Surname = *&^%$.
+*Kin Terms: jaba .
+Kin Term Name History: jaba:6 jaba:6& .
+     Marriages:
+     Family#2: I-6,  I-5
+
+#6: *jate (M)  (M), born Jan 1, 1928.
+First name = Presumed.  Surname = Spouse.
+*Kin Terms: jate .
+Kin Term Name History: jate:6 jate:6& .
+     BirthFamily: 36
+     Marriages:
+     Family#2: I-6,  I-5
+
+#7: *augui, *augui_dueba (M)  (M), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui augui_dueba .
+Kin Term Name History: augui:1 augui_dueba:1 augui:1& augui_dueba:1& .
+     BirthFamily: 2
+     Marriages:
+     Family#3: I-7,  I-8
+
+#8: *maushi (F)  (F), born Jan 1, 1950.
+First name = Presumed.  Surname = Spouse.
+*Kin Terms: maushi .
+Kin Term Name History: maushi:1 maushi:1& .
+     Marriages:
+     Family#3: I-7,  I-8
+
+#9: *augui, *augui_sukkua (M)  (M), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui augui_sukkua .
+Kin Term Name History: augui:2 augui_sukkua:2 augui:2& augui_sukkua:2& .
+     BirthFamily: 3
+     Marriages:
+     Family#4: I-9,  I-10
+
+#10: *maushi (F)  (F), born Jan 1, 1971.
+First name = Presumed.  Surname = Spouse.
+*Kin Terms: maushi .
+Kin Term Name History: maushi:2 maushi:2& .
+     Marriages:
+     Family#4: I-9,  I-10
+
+#11: *augui, *augui_sukkua (M)  (M), born Jan 1, 1992.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui augui_sukkua .
+Kin Term Name History: augui:3 augui_sukkua:3 augui:3& augui_sukkua:3& .
+     BirthFamily: 4
+     Marriages:
+     Family#5: I-11,  I-12
+
+#12: *maushi (F)  (F), born Jan 1, 1992.
+First name = Presumed.  Surname = Spouse.
+*Kin Terms: maushi .
+Kin Term Name History: maushi:3 maushi:3& .
+     Marriages:
+     Family#5: I-11,  I-12
+
+#13: *augui, *augui_sukkua (M)  (M), born Jan 1, 2013.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui augui_sukkua .
+Kin Term Name History: augui:4 augui_sukkua:4 augui:4& augui_sukkua:4& .
+     BirthFamily: 5
+     Marriages:
+     Family#60: I-13,  I-117
+
+#14: *maushi (F)  (F), born Jan 1, 1971.
+First name = Presumed.  Surname = Spouse.
+*Kin Terms: maushi .
+Kin Term Name History: maushi:0 maushi:0& .
+     Marriages:
+     Family#6: I-4,  I-14
+
+#15: *augui, *augui_sukkua (M)  (M), born Jan 1, 1992.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui augui_sukkua .
+Kin Term Name History: augui:5 augui_sukkua:5 augui:5& augui_sukkua:5& .
+     BirthFamily: 6
+     Marriages:
+     Family#7: I-15,  I-16
+
+#16: *maushi (F)  (F), born Jan 1, 1992.
+First name = Presumed.  Surname = Spouse.
+*Kin Terms: maushi .
+Kin Term Name History: maushi:5 maushi:5& .
+     Marriages:
+     Family#7: I-15,  I-16
+
+#17: *augui, *augui_sukkua (M)  (M), born Jan 1, 2013.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui augui_sukkua .
+Kin Term Name History: augui:6 augui_sukkua:6 augui:6& augui_sukkua:6& .
+     BirthFamily: 7
+     Marriages:
+     Family#8: I-17,  I-18
+
+#18: *maushi (F)  (F), born Jan 1, 2013.
+First name = Presumed.  Surname = Spouse.
+*Kin Terms: maushi .
+Kin Term Name History: maushi:6 maushi:6& .
+     Marriages:
+     Family#8: I-17,  I-18
+
+#19: *augui, *augui_sukkua (M)  (M), born Jan 1, 2034.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui augui_sukkua .
+Kin Term Name History: augui:7 augui_sukkua:7 augui:7& augui_sukkua:7& .
+     BirthFamily: 8
+     Marriages:
+     Family#61: I-19,  I-118
+
+#20: *jaba (F)  (F), born Jan 1, 1949.
+First name = null.  Surname = *&^%$.
+*Kin Terms: jaba .
+Kin Term Name History: jaba:0 jaba:0& .
+     Marriages:
+     Family#9: I-21,  I-20
+     Family#46: I-95,  I-20
+     Family#47: I-96,  I-20
+
+#21: *jate (M)  (M), born Jan 1, 1949.
+First name = Presumed.  Surname = Spouse.
+*Kin Terms: jate .
+Kin Term Name History: jate:0 jate:0& .
+     BirthFamily: 11
+     Marriages:
+     Family#9: I-21,  I-20
+     Family#39: I-21,  I-85
+     Family#40: I-21,  I-86
+
+#22: *nani (F)  (F), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nani .
+Kin Term Name History: nani:8 nani:8& .
+     BirthFamily: 9
+     Marriages:
+     Family#10: I-23,  I-22
+     Family#19: I-47,  I-22
+
+#23: *augui, *augui_sukkua (M)  (M), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui augui_sukkua .
+Kin Term Name History: augui:8 augui_sukkua:8 augui:8& augui_sukkua:8& .
+     Marriages:
+     Family#10: I-23,  I-22
+
+#24: *jaba (F)  (F), born Jan 1, 1928.
+First name = null.  Surname = *&^%$.
+*Kin Terms: jaba .
+Kin Term Name History: jaba:1 jaba:1& .
+     Marriages:
+     Family#11: I-25,  I-24
+
+#25: *jate (M)  (M), born Jan 1, 1928.
+First name = Presumed.  Surname = Spouse.
+*Kin Terms: jate .
+Kin Term Name History: jate:1 jate:1& .
+     BirthFamily: 33
+     Marriages:
+     Family#11: I-25,  I-24
+
+#26: *nuhu (F)  (F), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nuhu .
+Kin Term Name History: nuhu:1 nuhu:1& .
+     BirthFamily: 11
+     Marriages:
+     Family#12: I-27,  I-26
+     Family#26: I-55,  I-26
+
+#27: *augui, *augui_dueba (M)  (M), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui augui_dueba .
+Kin Term Name History: augui:9 augui_dueba:9 augui:9& augui_dueba:9& .
+     Marriages:
+     Family#12: I-27,  I-26
+
+#28: *nani (F)  (F), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nani .
+Kin Term Name History: nani:10 nani:10& .
+     BirthFamily: 12
+     Marriages:
+     Family#13: I-29,  I-28
+     Family#20: I-48,  I-28
+
+#29: *augui, *augui_sukkua (M)  (M), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui augui_sukkua .
+Kin Term Name History: augui:10 augui_sukkua:10 augui:10& augui_sukkua:10& .
+     Marriages:
+     Family#13: I-29,  I-28
+
+#30: *nani (F)  (F), born Jan 1, 1992.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nani .
+Kin Term Name History: nani:11 nani:11& .
+     BirthFamily: 13
+     Marriages:
+     Family#14: I-31,  I-30
+     Family#21: I-49,  I-30
+
+#31: *augui, *augui_sukkua (M)  (M), born Jan 1, 1992.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui augui_sukkua .
+Kin Term Name History: augui:11 augui_sukkua:11 augui:11& augui_sukkua:11& .
+     Marriages:
+     Family#14: I-31,  I-30
+
+#32: *nani (F)  (F), born Jan 1, 2013.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nani .
+Kin Term Name History: nani:12 nani:12& .
+     BirthFamily: 14
+     Marriages:
+     Family#15: I-33,  I-32
+     Family#22: I-50,  I-32
+
+#33: *augui, *augui_sukkua (M)  (M), born Jan 1, 2013.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui augui_sukkua .
+Kin Term Name History: augui:12 augui_sukkua:12 augui:12& augui_sukkua:12& .
+     Marriages:
+     Family#15: I-33,  I-32
+
+#34: *nani (F)  (F), born Jan 1, 1992.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nani .
+Kin Term Name History: nani:13 nani:13& .
+     BirthFamily: 10
+     Marriages:
+     Family#16: I-35,  I-34
+     Family#23: I-51,  I-34
+
+#35: *augui, *augui_sukkua (M)  (M), born Jan 1, 1992.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui augui_sukkua .
+Kin Term Name History: augui:13 augui_sukkua:13 augui:13& augui_sukkua:13& .
+     Marriages:
+     Family#16: I-35,  I-34
+
+#36: *nani (F)  (F), born Jan 1, 2013.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nani .
+Kin Term Name History: nani:14 nani:14& .
+     BirthFamily: 16
+     Marriages:
+     Family#17: I-37,  I-36
+     Family#24: I-52,  I-36
+
+#37: *augui, *augui_sukkua (M)  (M), born Jan 1, 2013.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui augui_sukkua .
+Kin Term Name History: augui:14 augui_sukkua:14 augui:14& augui_sukkua:14& .
+     Marriages:
+     Family#17: I-37,  I-36
+
+#38: *nani (F)  (F), born Jan 1, 2034.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nani .
+Kin Term Name History: nani:15 nani:15& .
+     BirthFamily: 17
+     Marriages:
+     Family#18: I-39,  I-38
+     Family#25: I-53,  I-38
+
+#39: *augui, *augui_sukkua (M)  (M), born Jan 1, 2034.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui augui_sukkua .
+Kin Term Name History: augui:15 augui_sukkua:15 augui:15& augui_sukkua:15& .
+     Marriages:
+     Family#18: I-39,  I-38
+
+#40: *augui_dueba, *augui (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui_dueba augui .
+Kin Term Name History: augui_dueba:0 augui:0& augui_dueba:0& .
+     BirthFamily: 1
+
+#41: *augui_dueba, *augui (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui_dueba augui .
+Kin Term Name History: augui_dueba:2 augui:2& augui_dueba:2& .
+     BirthFamily: 3
+
+#42: *augui_dueba, *augui (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui_dueba augui .
+Kin Term Name History: augui_dueba:3 augui:3& augui_dueba:3& .
+     BirthFamily: 4
+
+#43: *augui_dueba, *augui (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui_dueba augui .
+Kin Term Name History: augui_dueba:4 augui:4& augui_dueba:4& .
+     BirthFamily: 5
+
+#44: *augui_dueba, *augui (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui_dueba augui .
+Kin Term Name History: augui_dueba:5 augui:5& augui_dueba:5& .
+     BirthFamily: 6
+
+#45: *augui_dueba, *augui (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui_dueba augui .
+Kin Term Name History: augui_dueba:6 augui:6& augui_dueba:6& .
+     BirthFamily: 7
+
+#46: *augui_dueba, *augui (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui_dueba augui .
+Kin Term Name History: augui_dueba:7 augui:7& augui_dueba:7& .
+     BirthFamily: 8
+
+#47: *augui_dueba, *augui (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui_dueba augui .
+Kin Term Name History: augui_dueba:8 augui:8& augui_dueba:8& .
+     Marriages:
+     Family#19: I-47,  I-22
+
+#48: *augui_dueba, *augui (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui_dueba augui .
+Kin Term Name History: augui_dueba:10 augui:10& augui_dueba:10& .
+     Marriages:
+     Family#20: I-48,  I-28
+
+#49: *augui_dueba, *augui (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui_dueba augui .
+Kin Term Name History: augui_dueba:11 augui:11& augui_dueba:11& .
+     Marriages:
+     Family#21: I-49,  I-30
+
+#50: *augui_dueba, *augui (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui_dueba augui .
+Kin Term Name History: augui_dueba:12 augui:12& augui_dueba:12& .
+     Marriages:
+     Family#22: I-50,  I-32
+
+#51: *augui_dueba, *augui (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui_dueba augui .
+Kin Term Name History: augui_dueba:13 augui:13& augui_dueba:13& .
+     Marriages:
+     Family#23: I-51,  I-34
+
+#52: *augui_dueba, *augui (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui_dueba augui .
+Kin Term Name History: augui_dueba:14 augui:14& augui_dueba:14& .
+     Marriages:
+     Family#24: I-52,  I-36
+
+#53: *augui_dueba, *augui (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui_dueba augui .
+Kin Term Name History: augui_dueba:15 augui:15& augui_dueba:15& .
+     Marriages:
+     Family#25: I-53,  I-38
+
+#54: *augui_sukkua, *augui (M)  (M), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui_sukkua augui .
+Kin Term Name History: augui_sukkua:1 augui:1& augui_sukkua:1& .
+     BirthFamily: 2
+
+#55: *augui_sukkua, *augui (M)  (M), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+*Kin Terms: augui_sukkua augui .
+Kin Term Name History: augui_sukkua:9 augui:9& augui_sukkua:9& .
+     Marriages:
+     Family#26: I-55,  I-26
+
+#56: *duwe (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: duwe .
+Kin Term Name History: duwe:0 duwe:0& .
+     BirthFamily: 9
+     Marriages:
+     Family#72: I-56,  I-201
+
+#57: *duwe (M)  (M), born Jan 1, 1951.
+First name = null.  Surname = *&^%$.
+*Kin Terms: duwe .
+Kin Term Name History: duwe:1 duwe:1& .
+     BirthFamily: 11
+     Marriages:
+     Family#73: I-57,  I-202
+
+#58: *duwe (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: duwe .
+Kin Term Name History: duwe:2 duwe:2& .
+     BirthFamily: 12
+     Marriages:
+     Family#74: I-58,  I-203
+
+#59: *duwe (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: duwe .
+Kin Term Name History: duwe:3 duwe:3& .
+     BirthFamily: 13
+     Marriages:
+     Family#75: I-59,  I-204
+
+#60: *duwe (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: duwe .
+Kin Term Name History: duwe:4 duwe:4& .
+     BirthFamily: 14
+     Marriages:
+     Family#76: I-60,  I-205
+
+#61: *duwe (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: duwe .
+Kin Term Name History: duwe:5 duwe:5& .
+     BirthFamily: 10
+     Marriages:
+     Family#77: I-61,  I-206
+
+#62: *duwe (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: duwe .
+Kin Term Name History: duwe:6 duwe:6& .
+     BirthFamily: 16
+     Marriages:
+     Family#78: I-62,  I-207
+
+#63: *duwe (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: duwe .
+Kin Term Name History: duwe:7 duwe:7& .
+     BirthFamily: 17
+     Marriages:
+     Family#79: I-63,  I-208
+
+#64: *gagi_zhakka (F)  (F), born Jan 1, 1949.
+First name = null.  Surname = *&^%$.
+*Kin Terms: gagi_zhakka .
+Kin Term Name History: gagi_zhakka:0 gagi_zhakka:0& .
+     BirthFamily: 30
+     Marriages:
+     Family#27: I-3,  I-64
+     Family#29: I-66,  I-64
+
+#65: No Defined Term (F)  (F), born Jan 1, 1949.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#28: I-3,  I-65
+
+#66: No Defined Term (M)  (M), born Jan 1, 1949.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#29: I-66,  I-64
+
+#67:   [*gagi_zhakka] (F)  (F), born Jan 1, 1928.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: gagi_zhakka .
+Kin Term Name History: gagi_zhakka:1 gagi_zhakka:1& .
+     Marriages:
+     Family#30: I-68,  I-67
+
+#68:   [*juazgui_zhakka] (M)  (M), born Jan 1, 1928.
+First name = Presumed.  Surname = Spouse.
+*Extended Kin Terms: juazgui_zhakka .
+Kin Term Name History: juazgui_zhakka:1 juazgui_zhakka:1& .
+     BirthFamily: 31
+     Marriages:
+     Family#30: I-68,  I-67
+
+#69:   [*gagi_zhakka] (F)  (F), born Jan 1, 1907.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: gagi_zhakka .
+Kin Term Name History: gagi_zhakka:2 gagi_zhakka:2& .
+     Marriages:
+     Family#31: I-70,  I-69
+
+#70:   [*juazgui_zhakka] (M)  (M), born Jan 1, 1907.
+First name = Presumed.  Surname = Spouse.
+*Extended Kin Terms: juazgui_zhakka .
+Kin Term Name History: juazgui_zhakka:2 juazgui_zhakka:2& .
+     BirthFamily: 32
+     Marriages:
+     Family#31: I-70,  I-69
+
+#71:   [*gagi_zhakka] (F)  (F), born Jan 1, 1886.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: gagi_zhakka .
+Kin Term Name History: gagi_zhakka:3 gagi_zhakka:3& .
+     Marriages:
+     Family#32: I-72,  I-71
+
+#72:   [*juazgui_zhakka] (M)  (M), born Jan 1, 1886.
+First name = Presumed.  Surname = Spouse.
+*Extended Kin Terms: juazgui_zhakka .
+Kin Term Name History: juazgui_zhakka:3 juazgui_zhakka:3& .
+     Marriages:
+     Family#32: I-72,  I-71
+
+#73:   [*jaba] (F)  (F), born Jan 1, 1907.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: jaba .
+Kin Term Name History: jaba:2 jaba:2& .
+     Marriages:
+     Family#33: I-74,  I-73
+
+#74:   [*jate] (M)  (M), born Jan 1, 1907.
+First name = Presumed.  Surname = Spouse.
+*Extended Kin Terms: jate .
+Kin Term Name History: jate:2 jate:2& .
+     BirthFamily: 34
+     Marriages:
+     Family#33: I-74,  I-73
+
+#75:   [*jaba] (F)  (F), born Jan 1, 1886.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: jaba .
+Kin Term Name History: jaba:3 jaba:3& .
+     Marriages:
+     Family#34: I-76,  I-75
+
+#76:   [*jate] (M)  (M), born Jan 1, 1886.
+First name = Presumed.  Surname = Spouse.
+*Extended Kin Terms: jate .
+Kin Term Name History: jate:3 jate:3& .
+     BirthFamily: 35
+     Marriages:
+     Family#34: I-76,  I-75
+
+#77:   [*jaba] (F)  (F), born Jan 1, 1865.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: jaba .
+Kin Term Name History: jaba:4 jaba:4& .
+     Marriages:
+     Family#35: I-78,  I-77
+
+#78:   [*jate] (M)  (M), born Jan 1, 1865.
+First name = Presumed.  Surname = Spouse.
+*Extended Kin Terms: jate .
+Kin Term Name History: jate:4 jate:4& .
+     Marriages:
+     Family#35: I-78,  I-77
+
+#79:   [*jaba] (F)  (F), born Jan 1, 1907.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: jaba .
+Kin Term Name History: jaba:7 jaba:7& .
+     Marriages:
+     Family#36: I-80,  I-79
+
+#80:   [*jate] (M)  (M), born Jan 1, 1907.
+First name = Presumed.  Surname = Spouse.
+*Extended Kin Terms: jate .
+Kin Term Name History: jate:7 jate:7& .
+     BirthFamily: 37
+     Marriages:
+     Family#36: I-80,  I-79
+
+#81:   [*jaba] (F)  (F), born Jan 1, 1886.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: jaba .
+Kin Term Name History: jaba:8 jaba:8& .
+     Marriages:
+     Family#37: I-82,  I-81
+
+#82:   [*jate] (M)  (M), born Jan 1, 1886.
+First name = Presumed.  Surname = Spouse.
+*Extended Kin Terms: jate .
+Kin Term Name History: jate:8 jate:8& .
+     BirthFamily: 38
+     Marriages:
+     Family#37: I-82,  I-81
+
+#83:   [*jaba] (F)  (F), born Jan 1, 1865.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: jaba .
+Kin Term Name History: jaba:9 jaba:9& .
+     Marriages:
+     Family#38: I-84,  I-83
+
+#84:   [*jate] (M)  (M), born Jan 1, 1865.
+First name = Presumed.  Surname = Spouse.
+*Extended Kin Terms: jate .
+Kin Term Name History: jate:9 jate:9& .
+     Marriages:
+     Family#38: I-84,  I-83
+
+#85: *jaku (F)  (F), born Jan 1, 1949.
+First name = null.  Surname = *&^%$.
+*Kin Terms: jaku .
+Kin Term Name History: jaku:0 jaku:0& .
+     BirthFamily: 42
+     Marriages:
+     Family#39: I-21,  I-85
+     Family#41: I-87,  I-85
+
+#86: No Defined Term (F)  (F), born Jan 1, 1949.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#40: I-21,  I-86
+
+#87: No Defined Term (M)  (M), born Jan 1, 1949.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#41: I-87,  I-85
+
+#88:   [*jaku] (F)  (F), born Jan 1, 1928.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: jaku .
+Kin Term Name History: jaku:1 jaku:1& .
+     Marriages:
+     Family#42: I-89,  I-88
+
+#89:   [*jate_zhakka] (M)  (M), born Jan 1, 1928.
+First name = Presumed.  Surname = Spouse.
+*Extended Kin Terms: jate_zhakka .
+Kin Term Name History: jate_zhakka:1 jate_zhakka:1& .
+     BirthFamily: 43
+     Marriages:
+     Family#42: I-89,  I-88
+
+#90:   [*jaku] (F)  (F), born Jan 1, 1907.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: jaku .
+Kin Term Name History: jaku:2 jaku:2& .
+     Marriages:
+     Family#43: I-91,  I-90
+
+#91:   [*jate_zhakka] (M)  (M), born Jan 1, 1907.
+First name = Presumed.  Surname = Spouse.
+*Extended Kin Terms: jate_zhakka .
+Kin Term Name History: jate_zhakka:2 jate_zhakka:2& .
+     BirthFamily: 44
+     Marriages:
+     Family#43: I-91,  I-90
+
+#92:   [*jaku] (F)  (F), born Jan 1, 1886.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: jaku .
+Kin Term Name History: jaku:3 jaku:3& .
+     Marriages:
+     Family#44: I-93,  I-92
+
+#93:   [*jate_zhakka] (M)  (M), born Jan 1, 1886.
+First name = Presumed.  Surname = Spouse.
+*Extended Kin Terms: jate_zhakka .
+Kin Term Name History: jate_zhakka:3 jate_zhakka:3& .
+     Marriages:
+     Family#44: I-93,  I-92
+
+#94: *jasaldu, *nema (F)  (F), born Jan 1, 1970.
+First name = null.  Surname = *&^%$.
+*Kin Terms: jasaldu nema .
+Kin Term Name History: jasaldu:0 nema:0 jasaldu:0& nema:0& .
+     Marriages:
+     Family#45: I-1,  I-94
+
+#95: *jate_zhakka (M)  (M), born Jan 1, 1949.
+First name = null.  Surname = *&^%$.
+*Kin Terms: jate_zhakka .
+Kin Term Name History: jate_zhakka:0 jate_zhakka:0& .
+     Marriages:
+     Family#46: I-95,  I-20
+     Family#48: I-95,  I-97
+
+#96: No Defined Term (M)  (M), born Jan 1, 1949.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#47: I-96,  I-20
+
+#97: No Defined Term (F)  (F), born Jan 1, 1949.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#48: I-95,  I-97
+
+#98: *juazgui_zhakka (M)  (M), born Jan 1, 1949.
+First name = null.  Surname = *&^%$.
+*Kin Terms: juazgui_zhakka .
+Kin Term Name History: juazgui_zhakka:0 juazgui_zhakka:0& .
+     Marriages:
+     Family#49: I-98,  I-2
+     Family#51: I-98,  I-100
+
+#99: No Defined Term (M)  (M), born Jan 1, 1949.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#50: I-99,  I-2
+
+#100: No Defined Term (F)  (F), born Jan 1, 1949.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#51: I-98,  I-100
+
+#101: No Defined Term  (?), born Jan 1, 1991.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 0
+     Marriages:
+     Family#52: I-102,  I-101
+
+#102: *juazi  (?), born Jan 1, 1991.
+First name = null.  Surname = *&^%$.
+*Kin Terms: juazi .
+Kin Term Name History: juazi:0 juazi:0& .
+     Marriages:
+     Family#52: I-102,  I-101
+
+#103: No Defined Term  (?), born Jan 1, 2012.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 52
+     Marriages:
+     Family#53: I-104,  I-103
+
+#104:   [*juazi]  (?), born Jan 1, 2012.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: juazi .
+Kin Term Name History: juazi:1 juazi:1& .
+     Marriages:
+     Family#53: I-104,  I-103
+
+#105: No Defined Term  (?), born Jan 1, 2033.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 53
+     Marriages:
+     Family#54: I-106,  I-105
+
+#106:   [*juazi]  (?), born Jan 1, 2033.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: juazi .
+Kin Term Name History: juazi:2 juazi:2& .
+     Marriages:
+     Family#54: I-106,  I-105
+
+#107: No Defined Term  (?), born Jan 1, 2054.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 54
+     Marriages:
+     Family#55: I-108,  I-107
+
+#108:   [*juazi]  (?), born Jan 1, 2054.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: juazi .
+Kin Term Name History: juazi:3 juazi:3& .
+     Marriages:
+     Family#55: I-108,  I-107
+
+#109: No Defined Term (F)  (F), born Jan 1, 1970.
+First name = null.  Surname = *&^%$.
+     Marriages:
+     Family#56: I-1,  I-109
+
+#110: *juazi_zhakka  (?), born Jan 1, 1991.
+First name = null.  Surname = *&^%$.
+*Kin Terms: juazi_zhakka .
+Kin Term Name History: juazi_zhakka:0 juazi_zhakka:0& .
+     BirthFamily: 56
+     Marriages:
+     Family#57: I-110,  I-111
+
+#111: No Defined Term  (?), born Jan 1, 1991.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#57: I-110,  I-111
+
+#112: *juazi_zhakka  (?), born Jan 1, 2012.
+First name = null.  Surname = *&^%$.
+*Kin Terms: juazi_zhakka .
+Kin Term Name History: juazi_zhakka:1 juazi_zhakka:1& .
+     BirthFamily: 57
+     Marriages:
+     Family#58: I-112,  I-113
+
+#113: No Defined Term  (?), born Jan 1, 2012.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#58: I-112,  I-113
+
+#114: *juazi_zhakka  (?), born Jan 1, 2033.
+First name = null.  Surname = *&^%$.
+*Kin Terms: juazi_zhakka .
+Kin Term Name History: juazi_zhakka:2 juazi_zhakka:2& .
+     BirthFamily: 58
+     Marriages:
+     Family#59: I-114,  I-115
+
+#115: No Defined Term  (?), born Jan 1, 2033.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#59: I-114,  I-115
+
+#116: *juazi_zhakka  (?), born Jan 1, 2054.
+First name = null.  Surname = *&^%$.
+*Kin Terms: juazi_zhakka .
+Kin Term Name History: juazi_zhakka:3 juazi_zhakka:3& .
+     BirthFamily: 59
+
+#117: *maushi (F)  (F), born Jan 1, 2013.
+First name = null.  Surname = *&^%$.
+*Kin Terms: maushi .
+Kin Term Name History: maushi:4 maushi:4& .
+     Marriages:
+     Family#60: I-13,  I-117
+
+#118: *maushi (F)  (F), born Jan 1, 2034.
+First name = null.  Surname = *&^%$.
+*Kin Terms: maushi .
+Kin Term Name History: maushi:7 maushi:7& .
+     Marriages:
+     Family#61: I-19,  I-118
+
+#119: *munzhi (F)  (F), born Jan 1, 1992.
+First name = null.  Surname = *&^%$.
+*Kin Terms: munzhi .
+Kin Term Name History: munzhi:0 munzhi:0& .
+     BirthFamily: 0
+
+#120: *munzhi (F)  (F), born Jan 1, 2013.
+First name = null.  Surname = *&^%$.
+*Kin Terms: munzhi .
+Kin Term Name History: munzhi:1 munzhi:1& .
+     BirthFamily: 52
+
+#121:   [*munzhi] (F)  (F), born Jan 1, 2034.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: munzhi .
+Kin Term Name History: munzhi:2 munzhi:2& .
+     BirthFamily: 53
+
+#122:   [*munzhi] (F)  (F), born Jan 1, 2055.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: munzhi .
+Kin Term Name History: munzhi:3 munzhi:3& .
+     BirthFamily: 54
+
+#123:   [*munzhi] (F)  (F), born Jan 1, 2075.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: munzhi .
+Kin Term Name History: munzhi:4 munzhi:4& .
+     BirthFamily: 55
+
+#124: *munzhi (F)  (F), born Jan 1, 1993.
+First name = null.  Surname = *&^%$.
+*Kin Terms: munzhi .
+Kin Term Name History: munzhi:0& .
+     BirthFamily: 0
+
+#125: *munzhi (F)  (F), born Jan 1, 1991.
+First name = null.  Surname = *&^%$.
+*Kin Terms: munzhi .
+Kin Term Name History: munzhi:5 munzhi:5& .
+     BirthFamily: 45
+     Marriages:
+     Family#62: I-126,  I-125
+
+#126: No Defined Term (M)  (M), born Jan 1, 1991.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#62: I-126,  I-125
+
+#127: *munzhi (F)  (F), born Jan 1, 2012.
+First name = null.  Surname = *&^%$.
+*Kin Terms: munzhi .
+Kin Term Name History: munzhi:6 munzhi:6& .
+     BirthFamily: 62
+     Marriages:
+     Family#63: I-128,  I-127
+
+#128: No Defined Term (M)  (M), born Jan 1, 2012.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#63: I-128,  I-127
+
+#129:   [*munzhi] (F)  (F), born Jan 1, 2033.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: munzhi .
+Kin Term Name History: munzhi:7 munzhi:7& .
+     BirthFamily: 63
+     Marriages:
+     Family#64: I-130,  I-129
+
+#130: No Defined Term (M)  (M), born Jan 1, 2033.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#64: I-130,  I-129
+
+#131:   [*munzhi] (F)  (F), born Jan 1, 2054.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: munzhi .
+Kin Term Name History: munzhi:8 munzhi:8& .
+     BirthFamily: 64
+     Marriages:
+     Family#65: I-132,  I-131
+
+#132: No Defined Term (M)  (M), born Jan 1, 2054.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#65: I-132,  I-131
+
+#133:   [*munzhi] (F)  (F), born Jan 1, 2075.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: munzhi .
+Kin Term Name History: munzhi:9 munzhi:9& .
+     BirthFamily: 65
+
+#134: *nani (M)  (M), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nani .
+Kin Term Name History: nani:0 nani:0& .
+     BirthFamily: 9
+
+#135: *nani (M)  (M), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nani .
+Kin Term Name History: nani:1 nani:1& .
+     BirthFamily: 11
+
+#136: *nani (M)  (M), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nani .
+Kin Term Name History: nani:2 nani:2& .
+     BirthFamily: 12
+
+#137: *nani (M)  (M), born Jan 1, 1994.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nani .
+Kin Term Name History: nani:3 nani:3& .
+     BirthFamily: 13
+
+#138: *nani (M)  (M), born Jan 1, 2015.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nani .
+Kin Term Name History: nani:4 nani:4& .
+     BirthFamily: 14
+
+#139: *nani (M)  (M), born Jan 1, 1994.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nani .
+Kin Term Name History: nani:5 nani:5& .
+     BirthFamily: 10
+
+#140: *nani (M)  (M), born Jan 1, 2015.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nani .
+Kin Term Name History: nani:6 nani:6& .
+     BirthFamily: 16
+
+#141: *nani (M)  (M), born Jan 1, 2036.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nani .
+Kin Term Name History: nani:7 nani:7& .
+     BirthFamily: 17
+
+#142: *nani (F)  (F), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nani .
+Kin Term Name History: nani:9 nani:9& .
+     BirthFamily: 11
+
+#143: No Defined Term  (?), born Jan 1, 1929.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 33
+     Marriages:
+     Family#66: I-143,  I-144
+
+#144: No Defined Term  (?), born Jan 1, 1929.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#66: I-143,  I-144
+
+#145: *nauwa_duwe (M)  (M), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_duwe .
+Kin Term Name History: nauwa_duwe:0 nauwa_duwe:0& .
+     BirthFamily: 66
+     Marriages:
+     Family#67: I-145,  I-146
+
+#146: No Defined Term (F)  (F), born Jan 1, 1950.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#67: I-145,  I-146
+
+#147: *nauwa_duwe (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_duwe .
+Kin Term Name History: nauwa_duwe:1 nauwa_duwe:1& .
+     BirthFamily: 67
+     Marriages:
+     Family#68: I-147,  I-148
+
+#148: No Defined Term (F)  (F), born Jan 1, 1969.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#68: I-147,  I-148
+
+#149: *nauwa_duwe (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_duwe .
+Kin Term Name History: nauwa_duwe:2 nauwa_duwe:2& .
+     BirthFamily: 68
+
+#150: No Defined Term  (?), born Jan 1, 1908.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 34
+     Marriages:
+     Family#69: I-150,  I-151
+
+#151: No Defined Term  (?), born Jan 1, 1908.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#69: I-150,  I-151
+
+#152: *nauwa_duwe (M)  (M), born Jan 1, 1929.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_duwe .
+Kin Term Name History: nauwa_duwe:3 nauwa_duwe:3& .
+     BirthFamily: 69
+     Marriages:
+     Family#70: I-152,  I-153
+
+#153: No Defined Term (F)  (F), born Jan 1, 1929.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#70: I-152,  I-153
+
+#154: *nauwa_duwe (M)  (M), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_duwe .
+Kin Term Name History: nauwa_duwe:4 nauwa_duwe:4& .
+     BirthFamily: 70
+     Marriages:
+     Family#71: I-154,  I-155
+
+#155: No Defined Term (F)  (F), born Jan 1, 1950.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#71: I-154,  I-155
+
+#156: *nauwa_duwe (M)  (M), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_duwe .
+Kin Term Name History: nauwa_duwe:5 nauwa_duwe:5& .
+     BirthFamily: 71
+
+#157: *nauwa_nani (M)  (M), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_nani .
+Kin Term Name History: nauwa_nani:0 nauwa_nani:0& .
+     BirthFamily: 66
+
+#158: *nauwa_nani (M)  (M), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_nani .
+Kin Term Name History: nauwa_nani:1 nauwa_nani:1& .
+     BirthFamily: 67
+
+#159: *nauwa_nani (M)  (M), born Jan 1, 1991.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_nani .
+Kin Term Name History: nauwa_nani:2 nauwa_nani:2& .
+     BirthFamily: 68
+
+#160: *nauwa_nani (M)  (M), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_nani .
+Kin Term Name History: nauwa_nani:3 nauwa_nani:3& .
+     BirthFamily: 69
+
+#161: *nauwa_nani (M)  (M), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_nani .
+Kin Term Name History: nauwa_nani:4 nauwa_nani:4& .
+     BirthFamily: 70
+
+#162: *nauwa_nani (M)  (M), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_nani .
+Kin Term Name History: nauwa_nani:5 nauwa_nani:5& .
+     BirthFamily: 71
+
+#163: *nauwa_nani (F)  (F), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_nani .
+Kin Term Name History: nauwa_nani:6 nauwa_nani:6& .
+     BirthFamily: 66
+
+#164: *nauwa_nani (F)  (F), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_nani .
+Kin Term Name History: nauwa_nani:7 nauwa_nani:7& .
+     BirthFamily: 67
+
+#165: *nauwa_nani (F)  (F), born Jan 1, 1992.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_nani .
+Kin Term Name History: nauwa_nani:8 nauwa_nani:8& .
+     BirthFamily: 68
+
+#166: *nauwa_nani (F)  (F), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_nani .
+Kin Term Name History: nauwa_nani:9 nauwa_nani:9& .
+     BirthFamily: 69
+
+#167: *nauwa_nani (F)  (F), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_nani .
+Kin Term Name History: nauwa_nani:10 nauwa_nani:10& .
+     BirthFamily: 70
+
+#168: *nauwa_nani (F)  (F), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_nani .
+Kin Term Name History: nauwa_nani:11 nauwa_nani:11& .
+     BirthFamily: 71
+
+#169: *nauwa_nu (F)  (F), born Jan 1, 1953.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_nu .
+Kin Term Name History: nauwa_nu:0 nauwa_nu:0& .
+     BirthFamily: 66
+
+#170: *nauwa_nu (F)  (F), born Jan 1, 1968.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_nu .
+Kin Term Name History: nauwa_nu:1 nauwa_nu:1& .
+     BirthFamily: 67
+
+#171: *nauwa_nu (F)  (F), born Jan 1, 1968.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_nu .
+Kin Term Name History: nauwa_nu:2 nauwa_nu:2& .
+     BirthFamily: 68
+
+#172: *nauwa_nu (F)  (F), born Jan 1, 1932.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_nu .
+Kin Term Name History: nauwa_nu:3 nauwa_nu:3& .
+     BirthFamily: 69
+
+#173: *nauwa_nu (F)  (F), born Jan 1, 1953.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_nu .
+Kin Term Name History: nauwa_nu:4 nauwa_nu:4& .
+     BirthFamily: 70
+
+#174: *nauwa_nu (F)  (F), born Jan 1, 1968.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nauwa_nu .
+Kin Term Name History: nauwa_nu:5 nauwa_nu:5& .
+     BirthFamily: 71
+
+#175: *nuhu (F)  (F), born Jan 1, 1968.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nuhu .
+Kin Term Name History: nuhu:0 nuhu:0& .
+     BirthFamily: 9
+
+#176: *nuhu (F)  (F), born Jan 1, 1968.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nuhu .
+Kin Term Name History: nuhu:2 nuhu:2& .
+     BirthFamily: 12
+
+#177: *nuhu (F)  (F), born Jan 1, 1968.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nuhu .
+Kin Term Name History: nuhu:3 nuhu:3& .
+     BirthFamily: 13
+
+#178: *nuhu (F)  (F), born Jan 1, 1968.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nuhu .
+Kin Term Name History: nuhu:4 nuhu:4& .
+     BirthFamily: 14
+
+#179: *nuhu (F)  (F), born Jan 1, 1968.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nuhu .
+Kin Term Name History: nuhu:5 nuhu:5& .
+     BirthFamily: 10
+
+#180: *nuhu (F)  (F), born Jan 1, 1968.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nuhu .
+Kin Term Name History: nuhu:6 nuhu:6& .
+     BirthFamily: 16
+
+#181: *nuhu (F)  (F), born Jan 1, 1968.
+First name = null.  Surname = *&^%$.
+*Kin Terms: nuhu .
+Kin Term Name History: nuhu:7 nuhu:7& .
+     BirthFamily: 17
+
+#182: *sukkua (M)  (M), born Jan 1, 1994.
+First name = null.  Surname = *&^%$.
+*Kin Terms: sukkua .
+Kin Term Name History: sukkua:0 sukkua:0& .
+     BirthFamily: 0
+
+#183: *sukkua (M)  (M), born Jan 1, 2014.
+First name = null.  Surname = *&^%$.
+*Kin Terms: sukkua .
+Kin Term Name History: sukkua:1 sukkua:1& .
+     BirthFamily: 52
+
+#184:   [*sukkua] (M)  (M), born Jan 1, 2035.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: sukkua .
+Kin Term Name History: sukkua:2 sukkua:2& .
+     BirthFamily: 53
+
+#185:   [*sukkua] (M)  (M), born Jan 1, 2056.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: sukkua .
+Kin Term Name History: sukkua:3 sukkua:3& .
+     BirthFamily: 54
+
+#186:   [*sukkua] (M)  (M), born Jan 1, 2076.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: sukkua .
+Kin Term Name History: sukkua:4 sukkua:4& .
+     BirthFamily: 55
+
+#187: *sukkua (M)  (M), born Jan 1, 1995.
+First name = null.  Surname = *&^%$.
+*Kin Terms: sukkua .
+Kin Term Name History: sukkua:0& .
+     BirthFamily: 0
+
+#188: *sukkua (M)  (M), born Jan 1, 1992.
+First name = null.  Surname = *&^%$.
+*Kin Terms: sukkua .
+Kin Term Name History: sukkua:5 sukkua:5& .
+     BirthFamily: 45
+
+#189: *sukkua (M)  (M), born Jan 1, 2013.
+First name = null.  Surname = *&^%$.
+*Kin Terms: sukkua .
+Kin Term Name History: sukkua:6 sukkua:6& .
+     BirthFamily: 62
+
+#190:   [*sukkua] (M)  (M), born Jan 1, 2034.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: sukkua .
+Kin Term Name History: sukkua:7 sukkua:7& .
+     BirthFamily: 63
+
+#191:   [*sukkua] (M)  (M), born Jan 1, 2055.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: sukkua .
+Kin Term Name History: sukkua:8 sukkua:8& .
+     BirthFamily: 64
+
+#192:   [*sukkua] (M)  (M), born Jan 1, 2076.
+First name = null.  Surname = *&^%$.
+*Extended Kin Terms: sukkua .
+Kin Term Name History: sukkua:9 sukkua:9& .
+     BirthFamily: 65
+
+#193: *zuwi (F)  (F), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+*Kin Terms: zuwi .
+Kin Term Name History: zuwi:0 zuwi:0& .
+     BirthFamily: 1
+
+#194: *zuwi (F)  (F), born Jan 1, 1952.
+First name = null.  Surname = *&^%$.
+*Kin Terms: zuwi .
+Kin Term Name History: zuwi:1 zuwi:1& .
+     BirthFamily: 2
+
+#195: *zuwi (F)  (F), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+*Kin Terms: zuwi .
+Kin Term Name History: zuwi:2 zuwi:2& .
+     BirthFamily: 3
+
+#196: *zuwi (F)  (F), born Jan 1, 1994.
+First name = null.  Surname = *&^%$.
+*Kin Terms: zuwi .
+Kin Term Name History: zuwi:3 zuwi:3& .
+     BirthFamily: 4
+
+#197: *zuwi (F)  (F), born Jan 1, 2015.
+First name = null.  Surname = *&^%$.
+*Kin Terms: zuwi .
+Kin Term Name History: zuwi:4 zuwi:4& .
+     BirthFamily: 5
+
+#198: *zuwi (F)  (F), born Jan 1, 1994.
+First name = null.  Surname = *&^%$.
+*Kin Terms: zuwi .
+Kin Term Name History: zuwi:5 zuwi:5& .
+     BirthFamily: 6
+
+#199: *zuwi (F)  (F), born Jan 1, 2015.
+First name = null.  Surname = *&^%$.
+*Kin Terms: zuwi .
+Kin Term Name History: zuwi:6 zuwi:6& .
+     BirthFamily: 7
+
+#200: *zuwi (F)  (F), born Jan 1, 2036.
+First name = null.  Surname = *&^%$.
+*Kin Terms: zuwi .
+Kin Term Name History: zuwi:7 zuwi:7& .
+     BirthFamily: 8
+
+#201: *zuwi (F)  (F), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: zuwi .
+Kin Term Name History: zuwi:8 zuwi:8& .
+     Marriages:
+     Family#72: I-56,  I-201
+
+#202: *zuwi (F)  (F), born Jan 1, 1951.
+First name = null.  Surname = *&^%$.
+*Kin Terms: zuwi .
+Kin Term Name History: zuwi:9 zuwi:9& .
+     Marriages:
+     Family#73: I-57,  I-202
+
+#203: *zuwi (F)  (F), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: zuwi .
+Kin Term Name History: zuwi:10 zuwi:10& .
+     Marriages:
+     Family#74: I-58,  I-203
+
+#204: *zuwi (F)  (F), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: zuwi .
+Kin Term Name History: zuwi:11 zuwi:11& .
+     Marriages:
+     Family#75: I-59,  I-204
+
+#205: *zuwi (F)  (F), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: zuwi .
+Kin Term Name History: zuwi:12 zuwi:12& .
+     Marriages:
+     Family#76: I-60,  I-205
+
+#206: *zuwi (F)  (F), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: zuwi .
+Kin Term Name History: zuwi:13 zuwi:13& .
+     Marriages:
+     Family#77: I-61,  I-206
+
+#207: *zuwi (F)  (F), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: zuwi .
+Kin Term Name History: zuwi:14 zuwi:14& .
+     Marriages:
+     Family#78: I-62,  I-207
+
+#208: *zuwi (F)  (F), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+*Kin Terms: zuwi .
+Kin Term Name History: zuwi:15 zuwi:15& .
+     Marriages:
+     Family#79: I-63,  I-208
+
+
+Families:
+0: Jun 10, 1988
+     H =  #1, W = #0.
+     5 children.
+        #101 (?).
+        #119 (F).
+        #124 (F).
+        #182 (M).
+        #187 (M).
+
+1: Jun 10, 1967 to Oct 1, 1972
+     H =  #3, W = #2.
+     4 children.
+        #1 (M).
+        #4 (M).
+        #40 (M).
+        #193 (F).
+
+2: Jun 10, 1946
+     H =  #6, W = #5.
+     4 children.
+        #3 (M).
+        #7 (M).
+        #54 (M).
+        #194 (F).
+
+3: Jun 10, 1968
+     H =  #7, W = #8.
+     3 children.
+        #9 (M).
+        #41 (M).
+        #195 (F).
+
+4: Jun 10, 1989
+     H =  #9, W = #10.
+     3 children.
+        #11 (M).
+        #42 (M).
+        #196 (F).
+
+5: Jun 10, 2010
+     H =  #11, W = #12.
+     3 children.
+        #13 (M).
+        #43 (M).
+        #197 (F).
+
+6: Jun 10, 1989
+     H =  #4, W = #14.
+     3 children.
+        #15 (M).
+        #44 (M).
+        #198 (F).
+
+7: Jun 10, 2010
+     H =  #15, W = #16.
+     3 children.
+        #17 (M).
+        #45 (M).
+        #199 (F).
+
+8: Jun 10, 2031
+     H =  #17, W = #18.
+     3 children.
+        #19 (M).
+        #46 (M).
+        #200 (F).
+
+9: Jun 10, 1967 to Oct 1, 1972
+     H =  #21, W = #20.
+     5 children.
+        #0 (F).
+        #22 (F).
+        #56 (M).
+        #134 (M).
+        #175 (F).
+
+10: Jun 10, 1989
+     H =  #23, W = #22.
+     4 children.
+        #34 (F).
+        #61 (M).
+        #139 (M).
+        #179 (F).
+
+11: Jun 10, 1946
+     H =  #25, W = #24.
+     5 children.
+        #21 (M).
+        #26 (F).
+        #57 (M).
+        #135 (M).
+        #142 (F).
+
+12: Jun 10, 1968
+     H =  #27, W = #26.
+     4 children.
+        #28 (F).
+        #58 (M).
+        #136 (M).
+        #176 (F).
+
+13: Jun 10, 1989
+     H =  #29, W = #28.
+     4 children.
+        #30 (F).
+        #59 (M).
+        #137 (M).
+        #177 (F).
+
+14: Jun 10, 2010
+     H =  #31, W = #30.
+     4 children.
+        #32 (F).
+        #60 (M).
+        #138 (M).
+        #178 (F).
+
+15: Jun 10, 2031
+     H =  #33, W = #32.
+     0 children.
+
+16: Jun 10, 2010
+     H =  #35, W = #34.
+     4 children.
+        #36 (F).
+        #62 (M).
+        #140 (M).
+        #180 (F).
+
+17: Jun 10, 2031
+     H =  #37, W = #36.
+     4 children.
+        #38 (F).
+        #63 (M).
+        #141 (M).
+        #181 (F).
+
+18: Jun 10, 2052
+     H =  #39, W = #38.
+     0 children.
+
+19: Jun 10, 1989
+     H =  #47, W = #22.
+     0 children.
+
+20: Jun 10, 1989
+     H =  #48, W = #28.
+     0 children.
+
+21: Jun 10, 2010
+     H =  #49, W = #30.
+     0 children.
+
+22: Jun 10, 2031
+     H =  #50, W = #32.
+     0 children.
+
+23: Jun 10, 2010
+     H =  #51, W = #34.
+     0 children.
+
+24: Jun 10, 2031
+     H =  #52, W = #36.
+     0 children.
+
+25: Jun 10, 2052
+     H =  #53, W = #38.
+     0 children.
+
+26: Jun 10, 1989
+     H =  #55, W = #26.
+     0 children.
+
+27: Jun 10, 1967
+     H =  #3, W = #64.
+     0 children.
+
+28: Jun 10, 1967 to Oct 1, 1968
+     H =  #3, W = #65.
+     0 children.
+
+29: Jun 10, 1967 to Oct 1, 1968
+     H =  #66, W = #64.
+     0 children.
+
+30: Jun 10, 1946
+     H =  #68, W = #67.
+     1 child.
+        #64 (F).
+
+31: Jun 10, 1925
+     H =  #70, W = #69.
+     1 child.
+        #68 (M).
+
+32: Jun 10, 1904
+     H =  #72, W = #71.
+     1 child.
+        #70 (M).
+
+33: Jun 10, 1925
+     H =  #74, W = #73.
+     2 children.
+        #25 (M).
+        #143 (?).
+
+34: Jun 10, 1904
+     H =  #76, W = #75.
+     2 children.
+        #74 (M).
+        #150 (?).
+
+35: Jun 10, 1883
+     H =  #78, W = #77.
+     1 child.
+        #76 (M).
+
+36: Jun 10, 1925
+     H =  #80, W = #79.
+     1 child.
+        #6 (M).
+
+37: Jun 10, 1904
+     H =  #82, W = #81.
+     1 child.
+        #80 (M).
+
+38: Jun 10, 1883
+     H =  #84, W = #83.
+     1 child.
+        #82 (M).
+
+39: Jun 10, 1967
+     H =  #21, W = #85.
+     0 children.
+
+40: Jun 10, 1967 to Oct 1, 1968
+     H =  #21, W = #86.
+     0 children.
+
+41: Jun 10, 1967 to Oct 1, 1968
+     H =  #87, W = #85.
+     0 children.
+
+42: Jun 10, 1946
+     H =  #89, W = #88.
+     1 child.
+        #85 (F).
+
+43: Jun 10, 1925
+     H =  #91, W = #90.
+     1 child.
+        #89 (M).
+
+44: Jun 10, 1904
+     H =  #93, W = #92.
+     1 child.
+        #91 (M).
+
+45: Jun 10, 1988
+     H =  #1, W = #94.
+     2 children.
+        #125 (F).
+        #188 (M).
+
+46: Jun 10, 1967
+     H =  #95, W = #20.
+     0 children.
+
+47: Jun 10, 1967 to Oct 1, 1968
+     H =  #96, W = #20.
+     0 children.
+
+48: Jun 10, 1967 to Oct 1, 1968
+     H =  #95, W = #97.
+     0 children.
+
+49: Jun 10, 1967
+     H =  #98, W = #2.
+     0 children.
+
+50: Jun 10, 1967 to Oct 1, 1968
+     H =  #99, W = #2.
+     0 children.
+
+51: Jun 10, 1967 to Oct 1, 1968
+     H =  #98, W = #100.
+     0 children.
+
+52: Jun 10, 2009
+     H =  #102, W = #101.
+     3 children.
+        #103 (?).
+        #120 (F).
+        #183 (M).
+
+53: Jun 10, 2030
+     H =  #104, W = #103.
+     3 children.
+        #105 (?).
+        #121 (F).
+        #184 (M).
+
+54: Jun 10, 2051
+     H =  #106, W = #105.
+     3 children.
+        #107 (?).
+        #122 (F).
+        #185 (M).
+
+55: Jun 10, 2072
+     H =  #108, W = #107.
+     2 children.
+        #123 (F).
+        #186 (M).
+
+56: Jun 10, 1988 to Oct 1, 1989
+     H =  #1, W = #109.
+     1 child.
+        #110 (?).
+
+57: Jun 10, 2009
+     H =  #110, W = #111.
+     1 child.
+        #112 (?).
+
+58: Jun 10, 2030
+     H =  #112, W = #113.
+     1 child.
+        #114 (?).
+
+59: Jun 10, 2051
+     H =  #114, W = #115.
+     1 child.
+        #116 (?).
+
+60: Jun 10, 2031
+     H =  #13, W = #117.
+     0 children.
+
+61: Jun 10, 2052
+     H =  #19, W = #118.
+     0 children.
+
+62: Jun 10, 2009
+     H =  #126, W = #125.
+     2 children.
+        #127 (F).
+        #189 (M).
+
+63: Jun 10, 2030
+     H =  #128, W = #127.
+     2 children.
+        #129 (F).
+        #190 (M).
+
+64: Jun 10, 2051
+     H =  #130, W = #129.
+     2 children.
+        #131 (F).
+        #191 (M).
+
+65: Jun 10, 2072
+     H =  #132, W = #131.
+     2 children.
+        #133 (F).
+        #192 (M).
+
+66: Jun 10, 1947
+     H =  #143, W = #144.
+     4 children.
+        #145 (M).
+        #157 (M).
+        #163 (F).
+        #169 (F).
+
+67: Jun 10, 1968
+     H =  #145, W = #146.
+     4 children.
+        #147 (M).
+        #158 (M).
+        #164 (F).
+        #170 (F).
+
+68: Jun 10, 1987
+     H =  #147, W = #148.
+     4 children.
+        #149 (M).
+        #159 (M).
+        #165 (F).
+        #171 (F).
+
+69: Jun 10, 1926
+     H =  #150, W = #151.
+     4 children.
+        #152 (M).
+        #160 (M).
+        #166 (F).
+        #172 (F).
+
+70: Jun 10, 1947
+     H =  #152, W = #153.
+     4 children.
+        #154 (M).
+        #161 (M).
+        #167 (F).
+        #173 (F).
+
+71: Jun 10, 1968
+     H =  #154, W = #155.
+     4 children.
+        #156 (M).
+        #162 (M).
+        #168 (F).
+        #174 (F).
+
+72: Jun 10, 1987
+     H =  #56, W = #201.
+     0 children.
+
+73: Jun 10, 1969
+     H =  #57, W = #202.
+     0 children.
+
+74: Jun 10, 1987
+     H =  #58, W = #203.
+     0 children.
+
+75: Jun 10, 1987
+     H =  #59, W = #204.
+     0 children.
+
+76: Jun 10, 1987
+     H =  #60, W = #205.
+     0 children.
+
+77: Jun 10, 1987
+     H =  #61, W = #206.
+     0 children.
+
+78: Jun 10, 1987
+     H =  #62, W = #207.
+     0 children.
+
+79: Jun 10, 1987
+     H =  #63, W = #208.
+     0 children.
+
+
+-------End------
+

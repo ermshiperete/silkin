@@ -1,0 +1,13 @@
+Eskimo Greenland-test
+false
+0
+false
+3.4482758
+3.4482758
+[gender(arg0, arg1)]
+[gender(arg0, Ego), gender(arg0, Alter), elder(Alter, Ego), younger(Alter, Ego)]
+1.6935484
+true
+false
+[Bro, BroDa_BroSo, BroDa_BroSo_MoBro, BroWi_SoWi_WiBroWi, Bro_Sis, Da, DaDaDa_DaDaSo_DaSoDa_DaSoSo_SoDaDa_SoDaSo_SoSoDa_SoSoSo, DaDa_DaSo_SoDa_SoSo, Fa, FaBro, FaBroDa_FaBroSo_FaSisDa_FaSisSo_MoBroDa_MoBroSo_MoSisDa_MoSisSo, FaFa_MoFa, FaMo_MoMo, FaSis, HuBroWi, HuBro_WiSis, HuFa_HuMo_WiFa_WiMo, HuSis_WiBro, Mo, MoSis, SisDa_SisSo, So, Stda, Stfa, Stmo, Stso, Wi]
+[C, CC, CCC, CSp_SibSp_SpSibSp, P, PP, PSib, PSibC, PSib_SibC, Sib, SibC, Sp, SpP, SpSib, SpSibSp, Stc, Stp]

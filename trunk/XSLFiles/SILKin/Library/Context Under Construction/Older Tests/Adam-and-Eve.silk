@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE SIL_KinData>
+<SIL_KinData>
+<parameters>
+  <languageName>"Adam-and-Eve"</languageName>
+  <theory> "Adam-and-Eve.thy" </theory>
+  <theory> "Adam-and-Eve(Adr).thy" </theory>
+  <createDate> "Feb 14, 2011" </createDate>
+  <dataAuthor> "GMorris" </dataAuthor>
+  <indSerNum> 11</indSerNum> 
+  <famSerNum> 3</famSerNum> 
+  <polygamyPermit> "true"</polygamyPermit> 
+</parameters>
+<editorSettings>
+  <currentEgo> 0 </currentEgo>
+  <editDirectory> "/Users/gary/NetBeansProjects/Library/Context Under Construction" </editDirectory>
+  <origin><x>0</x><y>0</y></origin>
+  <area> <W>640</W> <H>233</H> </area>
+  <infoPerson>5</infoPerson>
+  <infoMarriage>-1</infoMarriage>
+  <label>2</label>
+  <ktlabel>0</ktlabel>
+  <editable> "true" </editable>
+  <distinctAdrTerms> "false" </distinctAdrTerms>
+  <maxNoise>25</maxNoise>
+  <ignorable>5</ignorable>
+</editorSettings>
+
+<individualCensus>
+<individual>
+  <serial>0</serial><sex> "Male" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 278 </x> <y>57 </y> </location>
+  <comments> "" </comments>
+  <surname> "" </surname>
+  <firstNames> "Adam" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Feb 14, 2011" </dataChangeDate>
+  <dataAuthor> "GMorris" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily> </birthFamily>
+  <marriages> 0 </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>1</serial><sex> "Female" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 360 </x> <y>59 </y> </location>
+  <comments> "" </comments>
+  <surname> "" </surname>
+  <firstNames> "Eve" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Feb 14, 2011" </dataChangeDate>
+  <dataAuthor> "GMorris" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily> </birthFamily>
+  <marriages> 0 </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>2</serial><sex> "Male" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 283 </x> <y>116 </y> </location>
+  <comments> "" </comments>
+  <surname> "" </surname>
+  <firstNames> "Cain" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Feb 14, 2011" </dataChangeDate>
+  <dataAuthor> "GMorris" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>0</birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>3</serial><sex> "Male" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 352 </x> <y>116 </y> </location>
+  <comments> "" </comments>
+  <surname> "" </surname>
+  <firstNames> "Abel" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Feb 14, 2011" </dataChangeDate>
+  <dataAuthor> "GMorris" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>0</birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>4</serial><sex> "Male" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 415 </x> <y>113 </y> </location>
+  <comments> "" </comments>
+  <surname> "" </surname>
+  <firstNames> "Bert" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Feb 14, 2011" </dataChangeDate>
+  <dataAuthor> "GMorris" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>0</birthFamily>
+  <marriages> 1 </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>5</serial><sex> "Female" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 479 </x> <y>111 </y> </location>
+  <comments> "This is a 'test' of the [optional] bait and switch methods." </comments>
+  <surname> "" </surname>
+  <firstNames> "Doris" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Feb 14, 2011" </dataChangeDate>
+  <dataAuthor> "GMorris" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>0</birthFamily>
+  <marriages> 1 </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>6</serial><sex> "Male" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 560 </x> <y>166 </y> </location>
+  <comments> "" </comments>
+  <surname> "" </surname>
+  <firstNames> "Evan" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Feb 14, 2011" </dataChangeDate>
+  <dataAuthor> "GMorris" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>0</birthFamily>
+  <marriages> 2 </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>7</serial><sex> "Male" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 417 </x> <y>175 </y> </location>
+  <comments> "" </comments>
+  <surname> "" </surname>
+  <firstNames> "Frank" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Feb 14, 2011" </dataChangeDate>
+  <dataAuthor> "GMorris" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>1</birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>8</serial><sex> "Female" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 484 </x> <y>171 </y> </location>
+  <comments> "" </comments>
+  <surname> "" </surname>
+  <firstNames> "Grace" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Feb 14, 2011" </dataChangeDate>
+  <dataAuthor> "GMorris" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>1</birthFamily>
+  <marriages> 2 </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>9</serial><sex> "Male" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 486 </x> <y>233 </y> </location>
+  <comments> "" </comments>
+  <surname> "" </surname>
+  <firstNames> "Harry" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Feb 14, 2011" </dataChangeDate>
+  <dataAuthor> "GMorris" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>2</birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>10</serial><sex> "Female" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 574 </x> <y>230 </y> </location>
+  <comments> "" </comments>
+  <surname> "" </surname>
+  <firstNames> "Inez" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Feb 14, 2011" </dataChangeDate>
+  <dataAuthor> "GMorris" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>2</birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+</individualCensus>
+<familyCensus>
+<family>
+  <serial>0</serial><location><x>317</x><y>67</y></location>
+  <stats> <type> "Marriage" </type>
+    <begin> "NA" </begin> <end> "NA" </end>
+    <reason> "NA" </reason> </stats>
+  <comments> "" </comments>
+  <deleted>"false"</deleted>
+  <husband>0</husband>
+  <wife>1</wife>
+  <children> 3, 2, 4, 5, 6 </children>
+  <marriageDate> "" </marriageDate>
+  <endDate> null </endDate>
+  <dataAuthor> "GMorris" </dataAuthor>
+  <dataChangeDate> "Feb 14, 2011" </dataChangeDate>
+</family>
+
+<family>
+  <serial>1</serial><location><x>445</x><y>116</y></location>
+  <stats> <type> "Marriage" </type>
+    <begin> "NA" </begin> <end> "NA" </end>
+    <reason> "NA" </reason> </stats>
+  <comments> "" </comments>
+  <deleted>"false"</deleted>
+  <husband>4</husband>
+  <wife>5</wife>
+  <children> 8, 7 </children>
+  <marriageDate> "" </marriageDate>
+  <endDate> null </endDate>
+  <dataAuthor> "GMorris" </dataAuthor>
+  <dataChangeDate> "Feb 14, 2011" </dataChangeDate>
+</family>
+
+<family>
+  <serial>2</serial><location><x>525</x><y>181</y></location>
+  <stats> <type> "Marriage" </type>
+    <begin> "NA" </begin> <end> "NA" </end>
+    <reason> "NA" </reason> </stats>
+  <comments> "" </comments>
+  <deleted>"false"</deleted>
+  <husband>6</husband>
+  <wife>8</wife>
+  <children> 9, 10 </children>
+  <marriageDate> "" </marriageDate>
+  <endDate> null </endDate>
+  <dataAuthor> "GMorris" </dataAuthor>
+  <dataChangeDate> "Feb 14, 2011" </dataChangeDate>
+</family>
+
+</familyCensus>
+<matrix>
+<row>  0
+	<cell> 0 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+	<cell> 1 <pcString> "Wi" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Wi(#1,#0)" </pred>  </miniPreds> </cell>
+	<cell> 2 <pcString> "So" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "So(#2,#0)" </pred>  </miniPreds> </cell>
+	<cell> 3 <pcString> "So" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "So(#3,#0)" </pred>  </miniPreds> </cell>
+	<cell> 4 <pcString> "So" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "So(#4,#0)" </pred>  </miniPreds> </cell>
+	<cell> 5 <pcString> "Da" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Da(#5,#0)" </pred>  </miniPreds> </cell>
+	<cell> 6 <pcString> "So" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "So(#6,#0)" </pred>  </miniPreds> </cell>
+	<cell> 7 <pcString> "SoSo" </pcString> <level> -2 </level>
+		<miniPreds> <pred> "So(#4,#0)" </pred> <pred> "So(#7,#4)" </pred>  </miniPreds> </cell>
+	<cell> 8 <pcString> "SoWi" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "So(#6,#0)" </pred> <pred> "Wi(#8,#6)" </pred>  </miniPreds> </cell>
+	<cell> 9 <pcString> "SoSo" </pcString> <level> -2 </level>
+		<miniPreds> <pred> "So(#6,#0)" </pred> <pred> "So(#9,#6)" </pred>  </miniPreds> </cell>
+	<cell> 10 <pcString> "SoDa" </pcString> <level> -2 </level>
+		<miniPreds> <pred> "So(#6,#0)" </pred> <pred> "Da(#10,#6)" </pred>  </miniPreds> </cell>
+</row><row>  1
+	<cell> 1 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+</row><row>  2
+	<cell> 2 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+</row><row>  3
+	<cell> 3 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+</row><row>  4
+	<cell> 4 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+</row><row>  5
+	<cell> 5 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+</row><row>  6
+	<cell> 6 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+</row><row>  7
+	<cell> 7 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+</row><row>  8
+	<cell> 8 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+</row><row>  9
+	<cell> 9 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+</row><row>  10
+	<cell> 10 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+</row>
+</matrix>
+<dyadsUndefinedRef>
+
+</dyadsUndefinedRef>
+<dyadsDefinedRef>
+
+</dyadsDefinedRef>
+<dyadsUndefinedAddr>
+
+</dyadsUndefinedAddr>
+<dyadsDefinedAddr>
+
+</dyadsDefinedAddr>
+
+<kinTypeIndex>
+<entry kt="Da"> <pair 0,5 /> </entry>
+<entry kt="So"> <pair 0,3 /> <pair 0,2 /> <pair 0,4 /> <pair 0,6 /> </entry>
+<entry kt="SoDa"> <pair 0,8 /> <pair 0,10 /> </entry>
+<entry kt="SoSo"> <pair 0,7 /> <pair 0,9 /> </entry>
+<entry kt="SoWi"> <pair 0,8 /> </entry>
+<entry kt="Wi"> <pair 0,1 /> </entry>
+
+</kinTypeIndex>
+</SIL_KinData>

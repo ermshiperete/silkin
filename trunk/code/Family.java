@@ -740,18 +740,18 @@ public class Family extends Marriage implements Serializable {
     Delete this Family. Remove it from the marriages list of any spouses. If there are any
     children, throw an exception. Kids must be removed before deletion.
      */
-    public void delete() throws KSInternalErrorException {
-        if (!children.isEmpty()) {
-            throw new KSInternalErrorException("Children must be deleted before a family is deleted.");
-        }
+    public void delete() {
         deleted = true;
+        for (Object o : children) {
+            ((Individual) o).birthFamily = null;
+        }
         if (husband != null) {
             husband.marriages.remove(this);
         }
         if (wife != null) {
             wife.marriages.remove(this);
         }
-        comment += "Pointers to this family removed from husband & wife.  ";
+        comment += "Pointers to this family removed from parents & kids.  ";
         dataChangeDate = UDate.today();
     }  // end of method delete
 

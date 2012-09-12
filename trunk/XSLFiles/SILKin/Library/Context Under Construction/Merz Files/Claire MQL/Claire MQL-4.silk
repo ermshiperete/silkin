@@ -1,0 +1,2741 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="Silk-status.xsl"?>
+<!DOCTYPE SIL_KinData>
+<SIL_KinData>
+<parameters>
+  <language name="Claire MQL "/>
+  <createDate value="2011-10-26"/>
+  <dataAuthors>
+	<dataAuthor name="Sharon Merz"/>
+	<dataAuthor name="gary"/>
+  </dataAuthors>
+  <lastDataChangeDate value="2011-11-30"/>
+  <lastSuggestionDate value="2011-11-16"/>
+  <indSerNum>19</indSerNum> 
+  <famSerNum>5</famSerNum> 
+  <polygamyPermit>true</polygamyPermit> 
+</parameters>
+<editorSettings>
+  <currentEgo n="0"/>
+  <editDirectory dir="/Users/gary/Code/SVN Code/Library/Context Under Construction"/>
+  <origin x="0" y="0"/>
+  <area W="903" H="429"/>
+  <infoPerson>2</infoPerson>
+  <infoMarriage>-1</infoMarriage>
+  <label>1</label>
+  <ktlabel>1</ktlabel>
+  <editable>true</editable>
+  <distinctAdrTerms>false</distinctAdrTerms>
+  <maxNoise>0</maxNoise>
+  <ignorable>0</ignorable>
+  <doBaseCBs value="false"/>
+  <doInduction value="false"/>
+</editorSettings>
+
+<domain-theory type="Ref">
+	<non-terms>
+		<non-term value="brother"/>
+		<non-term value="children"/>
+		<non-term value="half_brother"/>
+		<non-term value="half_sister"/>
+		<non-term value="parents"/>
+		<non-term value="sibling"/>
+		<non-term value="siblings"/>
+		<non-term value="sister"/>
+		<non-term value="spice"/>
+		<non-term value="step_brother"/>
+		<non-term value="step_daughter"/>
+		<non-term value="step_father"/>
+		<non-term value="step_mother"/>
+		<non-term value="step_sister"/>
+		<non-term value="step_son"/>
+		<non-term value="no__term"/>
+	</non-terms>
+	<levels-of-recursion n="1"/>
+	<theory>
+		<kin-term-def non-term="yes">
+			<head>brother</head>
+			<eqcSigExact>Bro</eqcSigExact>
+			<gloss>
+				<element text="brother"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>sibling</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>male</predicate>
+						<arg-list>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>children</head>
+			<eqcSigExact>Da_So</eqcSigExact>
+			<gloss>
+				<element text="daughter"/>
+				<element text="son"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>half_brother</head>
+			<eqcSigExact>Hbro</eqcSigExact>
+			<gloss>
+				<element text="half-brother"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>C</var>
+									<var>A</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>C</var>
+									<var>B</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>half_sister</head>
+			<eqcSigExact>Hsis</eqcSigExact>
+			<gloss>
+				<element text="half-sister"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>C</var>
+									<var>A</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>C</var>
+									<var>B</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>parents</head>
+			<eqcSigExact>Fa_Mo</eqcSigExact>
+			<gloss>
+				<element text="father"/>
+				<element text="mother"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>sibling</head>
+			<eqcSigExact>Sib</eqcSigExact>
+			<gloss>
+				<element text="sibling"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>child</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>child</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>Alter</var>
+									<var>Ego</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>siblings</head>
+			<eqcSigExact>Bro_Sis</eqcSigExact>
+			<gloss>
+				<element text="brother"/>
+				<element text="sister"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>brother</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>sister</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>sister</head>
+			<eqcSigExact>Sis</eqcSigExact>
+			<gloss>
+				<element text="sister"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>sibling</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>female</predicate>
+						<arg-list>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>spice</head>
+			<eqcSigExact>Hu_Wi</eqcSigExact>
+			<gloss>
+				<element text="husband"/>
+				<element text="wife"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>step_brother</head>
+			<eqcSigExact>Stbro</eqcSigExact>
+			<gloss>
+				<element text="step-brother"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>C</var>
+									<var>A</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>D</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>D</var>
+									<var>B</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>D</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>C</var>
+									<var>B</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>D</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>D</var>
+									<var>A</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>D</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>step_daughter</head>
+			<eqcSigExact>Stda</eqcSigExact>
+			<gloss>
+				<element text="stepdaughter"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>spouse</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>spouse</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>Ego</var>
+									<var>B</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>step_father</head>
+			<eqcSigExact>Stfa</eqcSigExact>
+			<gloss>
+				<element text="stepfather"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>Alter</var>
+									<var>A</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>step_mother</head>
+			<eqcSigExact>Stmo</eqcSigExact>
+			<gloss>
+				<element text="stepmother"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>Alter</var>
+									<var>B</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>step_sister</head>
+			<eqcSigExact>Stsis</eqcSigExact>
+			<gloss>
+				<element text="step-sister"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>C</var>
+									<var>A</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>D</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>D</var>
+									<var>B</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>D</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>C</var>
+									<var>B</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>D</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>D</var>
+									<var>A</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>D</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>step_son</head>
+			<eqcSigExact>Stso</eqcSigExact>
+			<gloss>
+				<element text="stepson"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>spouse</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>spouse</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>Ego</var>
+									<var>B</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+	</theory>
+</domain-theory>
+
+<individualCensus>
+<individual n="0"><sex>F</sex>
+  <location x="120" y="164"/>
+  <comments txt="Clan: Bɛ̄ sīinbɛ. Family: n tāde wɛ̄pe/bíísí. Village: Sini.  Claire was not exchanged. When her first husband died, she was inherited by his classificatory brother. Same clan, but different family. There are no posthumous children."/>
+  <surname value="Nkpa Perpetue Claire"/>
+  <firstNames value="N'Tade"/>
+  <dateOfBirth value="1969-05-22"/>
+  <dataChangeDate value="2011-11-15"/>
+  <dataAuthor name="Sharon Merz"/>
+  <deleted>false</deleted>
+  <birthFamily>0</birthFamily>
+  <marriages>
+    <mar n="4"/>
+  </marriages>
+</individual>
+
+<individual n="1"><sex>M</sex>
+  <location x="484" y="87"/>
+  <comments txt="Clan: Bɛ̄ sīinbɛ. Family: n tāde wɛ̄pe/bíísí. Village: Sini"/>
+  <surname value="Npodi Ca̰nsi Paul"/>
+  <firstNames value="N'Tade"/>
+  <dateOfDeath value="1980-01-01"/>
+  <dataChangeDate value="2011-11-15"/>
+  <dataAuthor name="Sharon Merz"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="0"/>
+    <mar n="1"/>
+    <mar n="2"/>
+  </marriages>
+</individual>
+
+<individual n="2"><sex>F</sex>
+  <location x="263" y="77"/>
+  <comments txt="Clan: Bɛ̄ yuɔdɛ. Family: Kūmatiku wɛ̄pɛ. Village: Touga 1. Alter was exchanged against her husband's (Kɔnbɛtɔ, Npodi Ca̰nsi Paul) sister (Kɔnbɛtɔ, Nkpa Nikɔ Germaine). The sister is issue of the same father but different mother. Paul's first wife."/>
+  <surname value="Kuoti Nbota"/>
+  <firstNames value="Sinwɛɛka"/>
+  <dataChangeDate value="2011-11-30"/>
+  <dataAuthor name="Sharon Merz"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="0"/>
+    <mar n="3"/>
+  </marriages>
+</individual>
+
+<individual n="3"><sex>F</sex>
+  <location x="295" y="160"/>
+  <comments txt="Clan: Bɛ̄ sīinbɛ. Family: n tāde wɛ̄pe/bíísí. Village: Sini"/>
+  <surname value="̰̰̰Nnaki Marcelline"/>
+  <firstNames value="N'Tade"/>
+  <dateOfBirth value="1975-01-01"/>
+  <dataChangeDate value="2011-11-14"/>
+  <dataAuthor name="Sharon Merz"/>
+  <deleted>false</deleted>
+  <birthFamily>0</birthFamily>
+  <marriages>  </marriages>
+</individual>
+
+<individual n="4"><sex>M</sex>
+  <location x="233" y="160"/>
+  <comments txt="Clan: Bɛ̄ sīinbɛ. Family: n tāde wɛ̄pe/bíísí. Village: Sini"/>
+  <surname value="Bɔɔte Raphaël"/>
+  <firstNames value="N'Tade"/>
+  <dateOfBirth value="1972-01-01"/>
+  <dataChangeDate value="2011-11-14"/>
+  <dataAuthor name="Sharon Merz"/>
+  <deleted>false</deleted>
+  <birthFamily>0</birthFamily>
+  <marriages>  </marriages>
+</individual>
+
+<individual n="5"><sex>F</sex>
+  <location x="554" y="86"/>
+  <comments txt="Fon, from Cotonou. Paul's second wife. She left and remarried after Paul died."/>
+  <surname value="Antoinette"/>
+  <firstNames value=""/>
+  <dataChangeDate value="2011-11-15"/>
+  <dataAuthor name="Sharon Merz"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="1"/>
+  </marriages>
+</individual>
+
+<individual n="6"><sex>F</sex>
+  <location x="666" y="97"/>
+  <comments txt="Fon, from Abomey. Paul's third wife. She left and remarried after Paul died. A very good mother, who treated all the children as if they were her own."/>
+  <surname value="Jeanne"/>
+  <firstNames value="Ganvor"/>
+  <dataChangeDate value="2011-11-15"/>
+  <dataAuthor name="Sharon Merz"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="2"/>
+  </marriages>
+</individual>
+
+<individual n="7"><sex>F</sex>
+  <location x="518" y="159"/>
+  <comments txt="Clan: Bɛ̄ sīinbɛ. Family: n tāde wɛ̄pe/bíísí. Village: Sini"/>
+  <surname value="Victoire"/>
+  <firstNames value="N'Tade"/>
+  <dateOfBirth value="1969-08-01"/>
+  <dataChangeDate value="2011-11-14"/>
+  <dataAuthor name="Sharon Merz"/>
+  <deleted>false</deleted>
+  <birthFamily>1</birthFamily>
+  <marriages>  </marriages>
+</individual>
+
+<individual n="8"><sex>M</sex>
+  <location x="571" y="157"/>
+  <comments txt="Clan: Bɛ̄ sīinbɛ. Family: n tāde wɛ̄pe/bíísí. Village: Sini"/>
+  <surname value="Patrice"/>
+  <firstNames value="N'Tade"/>
+  <dataChangeDate value="2011-11-14"/>
+  <dataAuthor name="Sharon Merz"/>
+  <deleted>false</deleted>
+  <birthFamily>2</birthFamily>
+  <marriages>  </marriages>
+</individual>
+
+<individual n="9"><sex>F</sex>
+  <location x="672" y="153"/>
+  <comments txt="Clan: Bɛ̄ sīinbɛ. Family: n tāde wɛ̄pe/bíísí. Village: Sini"/>
+  <surname value="Lucie"/>
+  <firstNames value="N'Tade"/>
+  <dataChangeDate value="2011-11-14"/>
+  <dataAuthor name="Sharon Merz"/>
+  <deleted>false</deleted>
+  <birthFamily>2</birthFamily>
+  <marriages>  </marriages>
+</individual>
+
+<individual n="10"><sex>M</sex>
+  <location x="171" y="73"/>
+  <comments txt="Clan: Bɛ̄ sīinbɛ. Family: n tāde wɛ̄pe/bíísí. Village: Sini.  Biological father, but not pater. His biological offspring are the posthumous children of N'TadeNpodi Ca̰nsi Paul, Sinwɛɛka Kuoti Nbota's now-deceased husband."/>
+  <surname value="Ndaa Sinwɛɛka"/>
+  <firstNames value="N'Tade"/>
+  <dataChangeDate value="2011-11-15"/>
+  <dataAuthor name="Sharon Merz"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="3"/>
+  </marriages>
+</individual>
+
+<individual n="11"><sex>M</sex>
+  <location x="352" y="174"/>
+  <comments txt="Clan: Bɛ̄ sīinbɛ. Family: n tāde wɛ̄pe/bíísí. Village: Sini. Posthumous son of N'Tade Npodi Ca̰nsi Paul."/>
+  <surname value="Nca Constant"/>
+  <firstNames value="N'Tade"/>
+  <dataChangeDate value="2011-11-14"/>
+  <dataAuthor name="Sharon Merz"/>
+  <deleted>false</deleted>
+  <birthFamily>3</birthFamily>
+  <marriages>  </marriages>
+</individual>
+
+<individual n="12"><sex>M</sex>
+  <location x="407" y="179"/>
+  <comments txt="Clan: Bɛ̄ sīinbɛ. Family: n tāde wɛ̄pe/bíísí. Village: Sini. Posthumous son of N'Tade Npodi Ca̰nsi Paul.Twin of N'Tade Kuoti Yvette."/>
+  <surname value="Kpaako Yves"/>
+  <firstNames value="N'Tade"/>
+  <dateOfBirth value="1991-01-01"/>
+  <dataChangeDate value="2011-11-15"/>
+  <dataAuthor name="Sharon Merz"/>
+  <deleted>false</deleted>
+  <birthFamily>3</birthFamily>
+  <marriages>  </marriages>
+</individual>
+
+<individual n="13"><sex>F</sex>
+  <location x="447" y="176"/>
+  <comments txt="Clan: Bɛ̄ sīinbɛ. Family: n tāde wɛ̄pe/bíísí. Village: Sini. Posthumous daughter of N'Tade Npodi Ca̰nsi Paul. Twin of N'Tade Kpaako Yves."/>
+  <surname value="Kuoti Yvette"/>
+  <firstNames value="N'Tade"/>
+  <dateOfBirth value="1991-01-01"/>
+  <dataChangeDate value="2011-11-15"/>
+  <dataAuthor name="Sharon Merz"/>
+  <deleted>false</deleted>
+  <birthFamily>3</birthFamily>
+  <marriages>  </marriages>
+</individual>
+
+<individual n="14"><sex>M</sex>
+  <location x="178" y="160"/>
+  <comments txt="Clan: Bɛ̄ dɛtenbɛ, Family: Bɛ̄ cēncēkibɛ. Village: Datori"/>
+  <surname value="Pokidabɛ Stanislas"/>
+  <firstNames value="Kɔnbɛtɔ"/>
+  <dateOfBirth value="1956-01-01"/>
+  <dateOfDeath value="1998-01-01"/>
+  <dataChangeDate value="2011-11-14"/>
+  <dataAuthor name="Sharon Merz"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="4"/>
+  </marriages>
+</individual>
+
+<individual n="15"><sex>F</sex>
+  <location x="64" y="237"/>
+  <surname value=""/>
+  <firstNames value=""/>
+  <dataChangeDate value="2011-11-15"/>
+  <dataAuthor name="Sharon Merz"/>
+  <deleted>false</deleted>
+  <birthFamily>4</birthFamily>
+  <marriages>  </marriages>
+</individual>
+
+<individual n="16"><sex>M</sex>
+  <location x="131" y="236"/>
+  <surname value=""/>
+  <firstNames value=""/>
+  <dataChangeDate value="2011-11-14"/>
+  <dataAuthor name="Sharon Merz"/>
+  <deleted>false</deleted>
+  <birthFamily>4</birthFamily>
+  <marriages>  </marriages>
+</individual>
+
+<individual n="17"><sex>M</sex>
+  <location x="187" y="235"/>
+  <surname value=""/>
+  <firstNames value=""/>
+  <dataChangeDate value="2011-11-14"/>
+  <dataAuthor name="Sharon Merz"/>
+  <deleted>false</deleted>
+  <birthFamily>4</birthFamily>
+  <marriages>  </marriages>
+</individual>
+
+<individual n="18"><sex>M</sex>
+  <location x="246" y="239"/>
+  <surname value=""/>
+  <firstNames value=""/>
+  <dataChangeDate value="2011-11-14"/>
+  <dataAuthor name="Sharon Merz"/>
+  <deleted>false</deleted>
+  <birthFamily>4</birthFamily>
+  <marriages>  </marriages>
+</individual>
+
+</individualCensus>
+<familyCensus>
+<family n="0">  <location x="295" y="83"/>
+  <reason>Death</reason>
+  <deleted>false</deleted>
+  <husband n="1"/>
+  <wife n="2"/>
+  <children>
+    <kid n="0"/>
+    <kid n="4"/>
+    <kid n="3"/>
+  </children>
+  <endDate value="1980-01-01"/>
+  <dataAuthor name="Sharon Merz"/>
+  <dataChangeDate value="2011-11-14"/>
+</family>
+
+<family n="1">  <location x="518" y="87"/>
+  <reason>Death</reason>
+  <deleted>false</deleted>
+  <husband n="1"/>
+  <wife n="5"/>
+  <children>
+    <kid n="7"/>
+  </children>
+  <endDate value="1980-01-01"/>
+  <dataAuthor name="Sharon Merz"/>
+  <dataChangeDate value="2011-11-14"/>
+</family>
+
+<family n="2">  <location x="610" y="93"/>
+  <reason>Death</reason>
+  <deleted>false</deleted>
+  <husband n="1"/>
+  <wife n="6"/>
+  <children>
+    <kid n="8"/>
+    <kid n="9"/>
+  </children>
+  <endDate value="1980-01-01"/>
+  <dataAuthor name="Sharon Merz"/>
+  <dataChangeDate value="2011-11-14"/>
+</family>
+
+<family n="3">  <location x="221" y="70"/>
+  <reason>NA</reason>
+  <deleted>false</deleted>
+  <husband n="10"/>
+  <wife n="2"/>
+  <children>
+    <kid n="11"/>
+    <kid n="12"/>
+    <kid n="13"/>
+  </children>
+  <dataChangeDate value="2011-11-14"/>
+</family>
+
+<family n="4">  <location x="150" y="159"/>
+  <reason>NA</reason>
+  <deleted>false</deleted>
+  <husband n="14"/>
+  <wife n="0"/>
+  <children>
+    <kid n="15"/>
+    <kid n="16"/>
+    <kid n="17"/>
+    <kid n="18"/>
+  </children>
+  <marriageDate value="1986-01-01"/>
+  <endDate value="1998-01-01"/>
+  <dataAuthor name="Sharon Merz"/>
+  <dataChangeDate value="2011-11-14"/>
+</family>
+
+</familyCensus>
+<matrix>
+<row ego="0">
+	<cell alter="0"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="1"><pcString>Fa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="1" arg1="0"/> </miniPreds> <PR>n̄_tɔ̄ɔ</PR></cell>
+	<cell alter="2"><pcString>Mo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="2" arg1="0"/> </miniPreds> <PR>n̄_nīi, n̄_nīi_pēēt̄ɔ</PR></cell>
+	<cell alter="3"><pcString>Sis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="3" arg1="0"/> </miniPreds> <PR>n̄_nān̄kɛ</PR></cell>
+	<cell alter="4"><pcString>Bro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="4" arg1="0"/> </miniPreds> <PR>n̄_tāa, n̄_nān̄kɛ</PR></cell>
+	<cell alter="5"><pcString>Stmo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Stmo" arg0="5" arg1="0"/> </miniPreds> <PR>n̄_nīi, n̄_nīi_yɛ̄n̄tɔ̄ɔ</PR></cell>
+	<cell alter="6"><pcString>Stmo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Stmo" arg0="6" arg1="0"/> </miniPreds> <PR>n̄_nīi, n̄_nīi_yɛ̄n̄tɔ̄ɔ, n̄_nīi_yɛ̄n̄tɔ̄ɔ_híɛ́tɔ</PR></cell>
+	<cell alter="7"><pcString>Hsis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hsis" arg0="7" arg1="0"/> </miniPreds> <PR>n̄_nān̄kɛ, n̄_nīi_yɛ̄n̄tɔ̄ɔ_bīikɛ</PR></cell>
+	<cell alter="8"><pcString>Hbro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hbro" arg0="8" arg1="0"/> </miniPreds> <PR>n̄_tāa, n̄_nān̄kɛ, n̄_nīi_yɛ̄n̄tɔ̄ɔ_bīikɛ</PR></cell>
+	<cell alter="9"><pcString>Hsis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hsis" arg0="9" arg1="0"/> </miniPreds> <PR>n̄_nān̄kɛ, n̄_nīi_yɛ̄n̄tɔ̄ɔ_bīikɛ</PR></cell>
+	<cell alter="10"><pcString>Stfa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Stfa" arg0="10" arg1="0"/> </miniPreds> <PR>n̄_tɔ̄ɔ, n̄_tɔ̄ɔ_nān̄kɛ</PR></cell>
+	<cell alter="11"><pcString>Hbro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hbro" arg0="11" arg1="0"/> </miniPreds> </cell>
+	<cell alter="12"><pcString>Hbro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hbro" arg0="12" arg1="0"/> </miniPreds> </cell>
+	<cell alter="13"><pcString>Hsis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hsis" arg0="13" arg1="0"/> </miniPreds> </cell>
+	<cell alter="14"><pcString>Hu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="14" arg1="0"/> </miniPreds> <PR>n̄_yāa</PR></cell>
+	<cell alter="15"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="15" arg1="0"/> </miniPreds> </cell>
+	<cell alter="16"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="16" arg1="0"/> </miniPreds> </cell>
+	<cell alter="17"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="17" arg1="0"/> </miniPreds> </cell>
+	<cell alter="18"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="18" arg1="0"/> </miniPreds> </cell>
+</row><row ego="1">
+	<cell alter="0"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="0" arg1="1"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīsīɛ̄dɔ</PR></cell>
+	<cell alter="1"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="2"><pcString>Wi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="2" arg1="1"/> </miniPreds> <PR>n̄_pūōhɔ̰</PR></cell>
+	<cell alter="3"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="3" arg1="1"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīsīɛ̄dɔ</PR></cell>
+	<cell alter="4"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="4" arg1="1"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīyāa</PR></cell>
+	<cell alter="5"><pcString>Wi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="5" arg1="1"/> </miniPreds> <PR>n̄_pūōhɔ̰</PR></cell>
+	<cell alter="6"><pcString>Wi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="6" arg1="1"/> </miniPreds> <PR>n̄_pūōhɔ̰</PR></cell>
+	<cell alter="7"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="7" arg1="1"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīsīɛ̄dɔ</PR></cell>
+	<cell alter="8"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="8" arg1="1"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīyāa</PR></cell>
+	<cell alter="9"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="9" arg1="1"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīsīɛ̄dɔ</PR></cell>
+	<cell alter="10"><pcString>WiHu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="2" arg1="1"/><pred rel="Hu" arg0="10" arg1="2"/> </miniPreds> </cell>
+	<cell alter="11"><pcString>Stso</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Stso" arg0="11" arg1="1"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīyāa</PR></cell>
+	<cell alter="12"><pcString>Stso</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Stso" arg0="12" arg1="1"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīyāa, n̄_ya̰ākɛ</PR></cell>
+	<cell alter="13"><pcString>Stda</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Stda" arg0="13" arg1="1"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīsīɛ̄dɔ, n̄_ya̰ākɛ</PR></cell>
+	<cell alter="14"><pcString>DaHu</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="0" arg1="1"/><pred rel="Hu" arg0="14" arg1="0"/> </miniPreds> </cell>
+</row><row ego="2">
+	<cell alter="0"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="0" arg1="2"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīsīɛ̄dɔ</PR></cell>
+	<cell alter="1"><pcString>Hu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="1" arg1="2"/> </miniPreds> <PR>n̄_yāa</PR></cell>
+	<cell alter="2"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="3"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="3" arg1="2"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīsīɛ̄dɔ, n̄_ya̰ākɛ</PR></cell>
+	<cell alter="4"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="4" arg1="2"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīyāa</PR></cell>
+	<cell alter="5"><pcString>HuWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="1" arg1="2"/><pred rel="Wi" arg0="5" arg1="1"/> </miniPreds> <PR>n̄_yɛ̄n̄tɔ̄ɔ, n̄_yɛ̄n̄tɔ̄ɔ_híɛ́tɔ</PR></cell>
+	<cell alter="6"><pcString>HuWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="1" arg1="2"/><pred rel="Wi" arg0="6" arg1="1"/> </miniPreds> <PR>n̄_yɛ̄n̄tɔ̄ɔ, n̄_yɛ̄n̄tɔ̄ɔ_híɛ́tɔ</PR></cell>
+	<cell alter="7"><pcString>Stda</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Stda" arg0="7" arg1="2"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīsīɛ̄dɔ</PR></cell>
+	<cell alter="8"><pcString>Stso</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Stso" arg0="8" arg1="2"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīyāa</PR></cell>
+	<cell alter="9"><pcString>Stda</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Stda" arg0="9" arg1="2"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīsīɛ̄dɔ</PR></cell>
+</row><row ego="3">
+	<cell alter="0"><pcString>Sis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="0" arg1="3"/> </miniPreds> <PR>n̄_maanɔ</PR></cell>
+	<cell alter="1"><pcString>Fa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="1" arg1="3"/> </miniPreds> <PR>n̄_tɔ̄ɔ</PR></cell>
+	<cell alter="2"><pcString>Mo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="2" arg1="3"/> </miniPreds> <PR>n̄_nīi, n̄_nīi_pēēt̄ɔ</PR></cell>
+	<cell alter="3"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="4"><pcString>Bro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="4" arg1="3"/> </miniPreds> <PR>n̄_tāa, n̄_nān̄kɛ</PR></cell>
+	<cell alter="5"><pcString>Stmo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Stmo" arg0="5" arg1="3"/> </miniPreds> <PR>n̄_nīi, n̄_nīi_yɛ̄n̄tɔ̄ɔ</PR></cell>
+	<cell alter="6"><pcString>Stmo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Stmo" arg0="6" arg1="3"/> </miniPreds> <PR>n̄_nīi, n̄_nīi_yɛ̄n̄tɔ̄ɔ, n̄_nīi_yɛ̄n̄tɔ̄ɔ_híɛ́tɔ</PR></cell>
+	<cell alter="7"><pcString>Hsis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hsis" arg0="7" arg1="3"/> </miniPreds> <PR>n̄_nān̄kɛ</PR></cell>
+	<cell alter="8"><pcString>Hbro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hbro" arg0="8" arg1="3"/> </miniPreds> <PR>n̄_tāa, n̄_nān̄kɛ</PR></cell>
+	<cell alter="9"><pcString>Hsis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hsis" arg0="9" arg1="3"/> </miniPreds> <PR>n̄_nān̄kɛ</PR></cell>
+</row><row ego="4">
+	<cell alter="0"><pcString>Sis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="0" arg1="4"/> </miniPreds> <PR>n̄_tāa, n̄_nān̄kɛ</PR></cell>
+	<cell alter="1"><pcString>Fa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="1" arg1="4"/> </miniPreds> <PR>n̄_tɔ̄ɔ</PR></cell>
+	<cell alter="2"><pcString>Mo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="2" arg1="4"/> </miniPreds> <PR>n̄_nīi, n̄_nīi_pēēt̄ɔ</PR></cell>
+	<cell alter="3"><pcString>Sis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="3" arg1="4"/> </miniPreds> <PR>n̄_tāa, n̄_nān̄kɛ</PR></cell>
+	<cell alter="4"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="5"><pcString>Stmo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Stmo" arg0="5" arg1="4"/> </miniPreds> <PR>n̄_nīi, n̄_nīi_yɛ̄n̄tɔ̄ɔ</PR></cell>
+	<cell alter="6"><pcString>Stmo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Stmo" arg0="6" arg1="4"/> </miniPreds> <PR>n̄_nīi, n̄_nīi_yɛ̄n̄tɔ̄ɔ, n̄_nīi_yɛ̄n̄tɔ̄ɔ_híɛ́tɔ</PR></cell>
+	<cell alter="7"><pcString>Hsis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hsis" arg0="7" arg1="4"/> </miniPreds> <PR>n̄_tāa, n̄_nān̄kɛ</PR></cell>
+	<cell alter="8"><pcString>Hbro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hbro" arg0="8" arg1="4"/> </miniPreds> <PR>n̄_nān̄kɛ</PR></cell>
+	<cell alter="9"><pcString>Hsis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hsis" arg0="9" arg1="4"/> </miniPreds> <PR>n̄_tāa, n̄_nān̄kɛ</PR></cell>
+</row><row ego="5">
+	<cell alter="0"><pcString>Stda</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Stda" arg0="0" arg1="5"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīsīɛ̄dɔ, n̄_yɛ̄n̄tɔ̄ɔ_bīikɛ</PR></cell>
+	<cell alter="1"><pcString>Hu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="1" arg1="5"/> </miniPreds> <PR>n̄_yāa</PR></cell>
+	<cell alter="2"><pcString>HuWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="1" arg1="5"/><pred rel="Wi" arg0="2" arg1="1"/> </miniPreds> <PR>n̄_yɛ̄n̄tɔ̄ɔ, n̄_yɛ̄n̄tɔ̄ɔ_kpīɛ̄mɔ</PR></cell>
+	<cell alter="3"><pcString>Stda</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Stda" arg0="3" arg1="5"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīsīɛ̄dɔ, n̄_yɛ̄n̄tɔ̄ɔ_bīikɛ</PR></cell>
+	<cell alter="4"><pcString>Stso</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Stso" arg0="4" arg1="5"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīyāa</PR></cell>
+	<cell alter="5"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="6"><pcString>HuWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="1" arg1="5"/><pred rel="Wi" arg0="6" arg1="1"/> </miniPreds> <PR>n̄_yɛ̄n̄tɔ̄ɔ, n̄_yɛ̄n̄tɔ̄ɔ_híɛ́tɔ</PR></cell>
+	<cell alter="7"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="7" arg1="5"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīsīɛ̄dɔ</PR></cell>
+	<cell alter="8"><pcString>Stso</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Stso" arg0="8" arg1="5"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīyāa</PR></cell>
+	<cell alter="9"><pcString>Stda</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Stda" arg0="9" arg1="5"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīsīɛ̄dɔ, n̄_yɛ̄n̄tɔ̄ɔ_bīikɛ</PR></cell>
+</row><row ego="6">
+	<cell alter="0"><pcString>Stda</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Stda" arg0="0" arg1="6"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīsīɛ̄dɔ, n̄_yɛ̄n̄tɔ̄ɔ_bīikɛ</PR></cell>
+	<cell alter="1"><pcString>Hu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="1" arg1="6"/> </miniPreds> <PR>n̄_yāa</PR></cell>
+	<cell alter="2"><pcString>HuWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="1" arg1="6"/><pred rel="Wi" arg0="2" arg1="1"/> </miniPreds> <PR>n̄_yɛ̄n̄tɔ̄ɔ, n̄_yɛ̄n̄tɔ̄ɔ_kpīɛ̄mɔ</PR></cell>
+	<cell alter="3"><pcString>Stda</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Stda" arg0="3" arg1="6"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīsīɛ̄dɔ, n̄_yɛ̄n̄tɔ̄ɔ_bīikɛ</PR></cell>
+	<cell alter="4"><pcString>Stso</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Stso" arg0="4" arg1="6"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīyāa, n̄_yɛ̄n̄tɔ̄ɔ_bīikɛ</PR></cell>
+	<cell alter="5"><pcString>HuWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="1" arg1="6"/><pred rel="Wi" arg0="5" arg1="1"/> </miniPreds> <PR>n̄_yɛ̄n̄tɔ̄ɔ, n̄_yɛ̄n̄tɔ̄ɔ_kpīɛ̄mɔ</PR></cell>
+	<cell alter="6"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="7"><pcString>Stda</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Stda" arg0="7" arg1="6"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīsīɛ̄dɔ, n̄_yɛ̄n̄tɔ̄ɔ_bīikɛ</PR></cell>
+	<cell alter="8"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="8" arg1="6"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīyāa</PR></cell>
+	<cell alter="9"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="9" arg1="6"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīsīɛ̄dɔ, n̄_ya̰ākɛ</PR></cell>
+	<cell alter="10"><pcString>HuWiHu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="1" arg1="6"/><pred rel="Wi" arg0="2" arg1="1"/><pred rel="Hu" arg0="10" arg1="2"/> </miniPreds> </cell>
+	<cell alter="11"><pcString>HuStso</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Hu" arg0="1" arg1="6"/><pred rel="Stso" arg0="11" arg1="1"/> </miniPreds> </cell>
+	<cell alter="12"><pcString>HuStso</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Hu" arg0="1" arg1="6"/><pred rel="Stso" arg0="12" arg1="1"/> </miniPreds> </cell>
+	<cell alter="13"><pcString>HuStda</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Hu" arg0="1" arg1="6"/><pred rel="Stda" arg0="13" arg1="1"/> </miniPreds> </cell>
+	<cell alter="14"><pcString>StdaHu</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Stda" arg0="0" arg1="6"/><pred rel="Hu" arg0="14" arg1="0"/> </miniPreds> </cell>
+</row><row ego="7">
+	<cell alter="0"><pcString>Hsis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hsis" arg0="0" arg1="7"/> </miniPreds> <PR>n̄_maanɔ, n̄_nīi_yɛ̄n̄tɔ̄ɔ_bīikɛ</PR></cell>
+	<cell alter="1"><pcString>Fa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="1" arg1="7"/> </miniPreds> <PR>n̄_tɔ̄ɔ</PR></cell>
+	<cell alter="2"><pcString>Stmo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Stmo" arg0="2" arg1="7"/> </miniPreds> <PR>n̄_nīi, n̄_nīi_yɛ̄n̄tɔ̄ɔ_kpīɛ̄mɔ</PR></cell>
+	<cell alter="3"><pcString>Hsis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hsis" arg0="3" arg1="7"/> </miniPreds> <PR>n̄_maanɔ</PR></cell>
+	<cell alter="4"><pcString>Hbro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hbro" arg0="4" arg1="7"/> </miniPreds> <PR>n̄_tāa, n̄_nān̄kɛ</PR></cell>
+	<cell alter="5"><pcString>Mo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="5" arg1="7"/> </miniPreds> <PR>n̄_nīi, n̄_nīi_pēēt̄ɔ</PR></cell>
+	<cell alter="6"><pcString>Stmo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Stmo" arg0="6" arg1="7"/> </miniPreds> <PR>n̄_nīi, n̄_nīi_yɛ̄n̄tɔ̄ɔ</PR></cell>
+	<cell alter="7"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="8"><pcString>Hbro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hbro" arg0="8" arg1="7"/> </miniPreds> <PR>n̄_tāa, n̄_nān̄kɛ</PR></cell>
+	<cell alter="9"><pcString>Hsis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hsis" arg0="9" arg1="7"/> </miniPreds> <PR>n̄_nān̄kɛ</PR></cell>
+</row><row ego="8">
+	<cell alter="0"><pcString>Hsis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hsis" arg0="0" arg1="8"/> </miniPreds> <PR>n̄_tāa, n̄_nān̄kɛ, n̄_nīi_yɛ̄n̄tɔ̄ɔ_bīikɛ</PR></cell>
+	<cell alter="1"><pcString>Fa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="1" arg1="8"/> </miniPreds> <PR>n̄_tɔ̄ɔ</PR></cell>
+	<cell alter="2"><pcString>Stmo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Stmo" arg0="2" arg1="8"/> </miniPreds> <PR>n̄_nīi, n̄_nīi_yɛ̄n̄tɔ̄ɔ_kpīɛ̄mɔ</PR></cell>
+	<cell alter="3"><pcString>Hsis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hsis" arg0="3" arg1="8"/> </miniPreds> <PR>n̄_tāa, n̄_nān̄kɛ</PR></cell>
+	<cell alter="4"><pcString>Hbro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hbro" arg0="4" arg1="8"/> </miniPreds> <PR>n_maanɔ</PR></cell>
+	<cell alter="5"><pcString>Stmo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Stmo" arg0="5" arg1="8"/> </miniPreds> <PR>n̄_nīi, n̄_nīi_yɛ̄n̄tɔ̄ɔ</PR></cell>
+	<cell alter="6"><pcString>Mo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="6" arg1="8"/> </miniPreds> <PR>n̄_nīi, n̄_nīi_pēēt̄ɔ</PR></cell>
+	<cell alter="7"><pcString>Hsis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hsis" arg0="7" arg1="8"/> </miniPreds> <PR>n̄_tāa, n̄_nān̄kɛ</PR></cell>
+	<cell alter="8"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="9"><pcString>Sis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="9" arg1="8"/> </miniPreds> <PR>n̄_tāa, n̄_nān̄kɛ</PR></cell>
+</row><row ego="9">
+	<cell alter="0"><pcString>Hsis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hsis" arg0="0" arg1="9"/> </miniPreds> <PR>n̄_maanɔ, n̄_nīi_yɛ̄n̄tɔ̄ɔ_bīikɛ</PR></cell>
+	<cell alter="1"><pcString>Fa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="1" arg1="9"/> </miniPreds> <PR>n̄_tɔ̄ɔ</PR></cell>
+	<cell alter="2"><pcString>Stmo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Stmo" arg0="2" arg1="9"/> </miniPreds> <PR>n̄_nīi, n̄_nīi_yɛ̄n̄tɔ̄ɔ_kpīɛ̄mɔ</PR></cell>
+	<cell alter="3"><pcString>Hsis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hsis" arg0="3" arg1="9"/> </miniPreds> <PR>n̄_maanɔ</PR></cell>
+	<cell alter="4"><pcString>Hbro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hbro" arg0="4" arg1="9"/> </miniPreds> <PR>n̄_tāa, n̄_nān̄kɛ</PR></cell>
+	<cell alter="5"><pcString>Stmo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Stmo" arg0="5" arg1="9"/> </miniPreds> <PR>n̄_nīi, n̄_nīi_yɛ̄n̄tɔ̄ɔ</PR></cell>
+	<cell alter="6"><pcString>Mo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="6" arg1="9"/> </miniPreds> <PR>n̄_nīi, n̄_nīi_pēēt̄ɔ</PR></cell>
+	<cell alter="7"><pcString>Hsis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hsis" arg0="7" arg1="9"/> </miniPreds> <PR>n̄_maanɔ</PR></cell>
+	<cell alter="8"><pcString>Bro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="8" arg1="9"/> </miniPreds> <PR>n̄_tāa, n̄_nān̄kɛ</PR></cell>
+	<cell alter="9"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="10">
+	<cell alter="0"><pcString>Stda</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Stda" arg0="0" arg1="10"/> </miniPreds> <PR>n̄_bīikɛ, n̄_bīsīɛ̄dɔ, n̄_tɔ̄ɔ_nān̄kɛ_bīikɛ</PR></cell>
+	<cell alter="10"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="11">
+	<cell alter="1"><pcString>Stfa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Stfa" arg0="1" arg1="11"/> </miniPreds> <PR>n̄_tɔ̄ɔ</PR></cell>
+	<cell alter="11"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="12">
+	<cell alter="1"><pcString>Stfa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Stfa" arg0="1" arg1="12"/> </miniPreds> <PR>n̄_tɔ̄ɔ</PR></cell>
+	<cell alter="12"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="13">
+	<cell alter="1"><pcString>Stfa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Stfa" arg0="1" arg1="13"/> </miniPreds> <PR>n̄_tɔ̄ɔ</PR></cell>
+	<cell alter="13"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="14">
+	<cell alter="0"><pcString>Wi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="0" arg1="14"/> </miniPreds> <PR>n̄_pūōhɔ̰</PR></cell>
+	<cell alter="1"><pcString>WiFa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Wi" arg0="0" arg1="14"/><pred rel="Fa" arg0="1" arg1="0"/> </miniPreds> </cell>
+	<cell alter="2"><pcString>WiMo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Wi" arg0="0" arg1="14"/><pred rel="Mo" arg0="2" arg1="0"/> </miniPreds> </cell>
+	<cell alter="3"><pcString>WiSis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="0" arg1="14"/><pred rel="Sis" arg0="3" arg1="0"/> </miniPreds> </cell>
+	<cell alter="4"><pcString>WiBro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="0" arg1="14"/><pred rel="Bro" arg0="4" arg1="0"/> </miniPreds> </cell>
+	<cell alter="5"><pcString>WiStmo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Wi" arg0="0" arg1="14"/><pred rel="Stmo" arg0="5" arg1="0"/> </miniPreds> </cell>
+	<cell alter="6"><pcString>WiStmo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Wi" arg0="0" arg1="14"/><pred rel="Stmo" arg0="6" arg1="0"/> </miniPreds> </cell>
+	<cell alter="7"><pcString>WiHsis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="0" arg1="14"/><pred rel="Hsis" arg0="7" arg1="0"/> </miniPreds> </cell>
+	<cell alter="8"><pcString>WiHbro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="0" arg1="14"/><pred rel="Hbro" arg0="8" arg1="0"/> </miniPreds> </cell>
+	<cell alter="9"><pcString>WiHsis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="0" arg1="14"/><pred rel="Hsis" arg0="9" arg1="0"/> </miniPreds> </cell>
+	<cell alter="10"><pcString>WiStfa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Wi" arg0="0" arg1="14"/><pred rel="Stfa" arg0="10" arg1="0"/> </miniPreds> </cell>
+	<cell alter="11"><pcString>WiHbro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="0" arg1="14"/><pred rel="Hbro" arg0="11" arg1="0"/> </miniPreds> </cell>
+	<cell alter="12"><pcString>WiHbro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="0" arg1="14"/><pred rel="Hbro" arg0="12" arg1="0"/> </miniPreds> </cell>
+	<cell alter="13"><pcString>WiHsis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="0" arg1="14"/><pred rel="Hsis" arg0="13" arg1="0"/> </miniPreds> </cell>
+	<cell alter="14"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="15"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="15" arg1="14"/> </miniPreds> </cell>
+	<cell alter="16"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="16" arg1="14"/> </miniPreds> </cell>
+	<cell alter="17"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="17" arg1="14"/> </miniPreds> </cell>
+	<cell alter="18"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="18" arg1="14"/> </miniPreds> </cell>
+</row><row ego="15">
+	<cell alter="15"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="16">
+	<cell alter="16"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="17">
+	<cell alter="17"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="18">
+	<cell alter="18"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row>
+</matrix>
+<dyadsUndefinedRef>
+<dyadKinTerm kinTerm="n_maanɔ">
+	<kinType type="Hbro">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="8" alter="4" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_bīikɛ">
+	<kinType type="Da">
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="2" alter="0" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="0" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="3" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="7" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="9" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="2" alter="3" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="7" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="9" path="" />
+	</kinType>
+	<kinType type="So">
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="4" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="8" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="2" alter="4" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="8" path="" />
+	</kinType>
+	<kinType type="Stda">
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="0" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="0" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="2" alter="7" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="2" alter="9" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="3" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="9" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="3" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="7" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="10" alter="0" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="13" path="" />
+	</kinType>
+	<kinType type="Stso">
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="2" alter="8" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="4" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="8" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="4" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="12" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="11" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_bīsīɛ̄dɔ">
+	<kinType type="Da">
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="2" alter="0" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="0" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="3" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="7" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="9" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="2" alter="3" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="7" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="9" path="" />
+	</kinType>
+	<kinType type="Stda">
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="0" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="0" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="2" alter="7" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="2" alter="9" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="3" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="9" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="3" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="7" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="10" alter="0" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="13" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_bīyāa">
+	<kinType type="So">
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="4" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="8" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="2" alter="4" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="8" path="" />
+	</kinType>
+	<kinType type="Stso">
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="2" alter="8" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="4" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="8" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="4" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="12" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="11" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_maanɔ">
+	<kinType type="Hsis">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="7" alter="0" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="9" alter="0" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="7" alter="3" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="9" alter="3" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="9" alter="7" path="" />
+	</kinType>
+	<kinType type="Sis">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="3" alter="0" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_nān̄kɛ">
+	<kinType type="Bro">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="0" alter="4" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="3" alter="4" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="9" alter="8" path="" />
+	</kinType>
+	<kinType type="Hbro">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="0" alter="8" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="7" alter="4" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="9" alter="4" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="4" alter="8" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="3" alter="8" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="7" alter="8" path="" />
+	</kinType>
+	<kinType type="Hsis">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="0" alter="7" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="8" alter="0" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="0" alter="9" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="4" alter="7" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="4" alter="9" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="8" alter="3" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="3" alter="7" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="3" alter="9" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="8" alter="7" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="7" alter="9" path="" />
+	</kinType>
+	<kinType type="Sis">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="4" alter="0" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="0" alter="3" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="4" alter="3" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="8" alter="9" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_nīi">
+	<kinType type="Mo">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="0" alter="2" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="3" alter="2" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="4" alter="2" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="7" alter="5" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="8" alter="6" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="9" alter="6" path="" />
+	</kinType>
+	<kinType type="Stmo">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="0" alter="5" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="0" alter="6" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="7" alter="2" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="8" alter="2" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="9" alter="2" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="3" alter="5" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="4" alter="5" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="8" alter="5" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="9" alter="5" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="3" alter="6" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="4" alter="6" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="7" alter="6" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_nīi_pēēt̄ɔ">
+	<kinType type="Mo">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="0" alter="2" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="3" alter="2" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="4" alter="2" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="7" alter="5" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="8" alter="6" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="9" alter="6" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_nīi_yɛ̄n̄tɔ̄ɔ">
+	<kinType type="Stmo">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="0" alter="5" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="3" alter="5" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="4" alter="5" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="8" alter="5" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="9" alter="5" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="0" alter="6" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="3" alter="6" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="4" alter="6" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="7" alter="6" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_nīi_yɛ̄n̄tɔ̄ɔ_bīikɛ">
+	<kinType type="Hbro">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="0" alter="8" path="" />
+	</kinType>
+	<kinType type="Hsis">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="0" alter="7" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="7" alter="0" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="8" alter="0" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="0" alter="9" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="9" alter="0" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_nīi_yɛ̄n̄tɔ̄ɔ_híɛ́tɔ">
+	<kinType type="Stmo">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="0" alter="6" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="3" alter="6" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="4" alter="6" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_nīi_yɛ̄n̄tɔ̄ɔ_kpīɛ̄mɔ">
+	<kinType type="Stmo">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="7" alter="2" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="8" alter="2" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="9" alter="2" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_pūōhɔ̰">
+	<kinType type="Wi">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="1" alter="2" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="1" alter="5" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="1" alter="6" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="14" alter="0" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_tāa">
+	<kinType type="Bro">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="0" alter="4" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="3" alter="4" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="9" alter="8" path="" />
+	</kinType>
+	<kinType type="Hbro">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="0" alter="8" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="7" alter="4" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="9" alter="4" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="3" alter="8" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="7" alter="8" path="" />
+	</kinType>
+	<kinType type="Hsis">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="8" alter="0" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="4" alter="7" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="4" alter="9" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="8" alter="3" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="8" alter="7" path="" />
+	</kinType>
+	<kinType type="Sis">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="4" alter="0" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="4" alter="3" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="8" alter="9" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_tɔ̄ɔ">
+	<kinType type="Fa">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="0" alter="1" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="4" alter="1" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="3" alter="1" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="7" alter="1" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="9" alter="1" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="8" alter="1" path="" />
+	</kinType>
+	<kinType type="Stfa">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="0" alter="10" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="13" alter="1" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="12" alter="1" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="11" alter="1" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_tɔ̄ɔ_nān̄kɛ">
+	<kinType type="Stfa">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="0" alter="10" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_tɔ̄ɔ_nān̄kɛ_bīikɛ">
+	<kinType type="Stda">
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="10" alter="0" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_yāa">
+	<kinType type="Hu">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="2" alter="1" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="5" alter="1" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="6" alter="1" path="" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="0" alter="14" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_ya̰ākɛ">
+	<kinType type="Da">
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="9" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="2" alter="3" path="" />
+	</kinType>
+	<kinType type="Stda">
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="13" path="" />
+	</kinType>
+	<kinType type="Stso">
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="12" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_yɛ̄n̄tɔ̄ɔ">
+	<kinType type="HuWi">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="2" alter="5" path="1" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="5" alter="2" path="1" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="2" alter="6" path="1" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="6" alter="2" path="1" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="6" alter="5" path="1" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="5" alter="6" path="1" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_yɛ̄n̄tɔ̄ɔ_bīikɛ">
+	<kinType type="Stda">
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="0" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="0" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="3" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="9" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="3" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="7" path="" />
+	</kinType>
+	<kinType type="Stso">
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="4" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_yɛ̄n̄tɔ̄ɔ_híɛ́tɔ">
+	<kinType type="HuWi">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="2" alter="5" path="1" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="2" alter="6" path="1" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="5" alter="6" path="1" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="n̄_yɛ̄n̄tɔ̄ɔ_kpīɛ̄mɔ">
+	<kinType type="HuWi">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="5" alter="2" path="1" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="6" alter="2" path="1" />
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="6" alter="5" path="1" />
+	</kinType>
+</dyadKinTerm>
+</dyadsUndefinedRef>
+<dyadsDefinedRef>
+</dyadsDefinedRef>
+
+<kinTypeIndex>
+<entry kt="Bro"> <pair from="0" to="4" /><pair from="3" to="4" /><pair from="9" to="8" /></entry>
+<entry kt="Da"> <pair from="0" to="15" /><pair from="1" to="0" /><pair from="1" to="3" /><pair from="1" to="7" /><pair from="1" to="9" /><pair from="2" to="0" /><pair from="2" to="3" /><pair from="5" to="7" /><pair from="6" to="9" /><pair from="14" to="15" /></entry>
+<entry kt="DaHu"> <pair from="1" to="14" /></entry>
+<entry kt="Fa"> <pair from="0" to="1" /><pair from="3" to="1" /><pair from="4" to="1" /><pair from="7" to="1" /><pair from="8" to="1" /><pair from="9" to="1" /></entry>
+<entry kt="Hbro"> <pair from="0" to="8" /><pair from="0" to="11" /><pair from="0" to="12" /><pair from="3" to="8" /><pair from="4" to="8" /><pair from="7" to="4" /><pair from="7" to="8" /><pair from="8" to="4" /><pair from="9" to="4" /></entry>
+<entry kt="Hsis"> <pair from="0" to="7" /><pair from="0" to="9" /><pair from="0" to="13" /><pair from="3" to="7" /><pair from="3" to="9" /><pair from="4" to="7" /><pair from="4" to="9" /><pair from="7" to="0" /><pair from="7" to="3" /><pair from="7" to="9" /><pair from="8" to="0" /><pair from="8" to="3" /><pair from="8" to="7" /><pair from="9" to="0" /><pair from="9" to="3" /><pair from="9" to="7" /></entry>
+<entry kt="Hu"> <pair from="0" to="14" /><pair from="2" to="1" /><pair from="5" to="1" /><pair from="6" to="1" /></entry>
+<entry kt="HuStda"> <pair from="6" to="13" /></entry>
+<entry kt="HuStso"> <pair from="6" to="11" /><pair from="6" to="12" /></entry>
+<entry kt="HuWi"> <pair from="2" to="5" /><pair from="2" to="6" /><pair from="5" to="2" /><pair from="5" to="6" /><pair from="6" to="2" /><pair from="6" to="5" /></entry>
+<entry kt="HuWiHu"> <pair from="6" to="10" /></entry>
+<entry kt="Mo"> <pair from="0" to="2" /><pair from="3" to="2" /><pair from="4" to="2" /><pair from="7" to="5" /><pair from="8" to="6" /><pair from="9" to="6" /></entry>
+<entry kt="Sis"> <pair from="0" to="3" /><pair from="3" to="0" /><pair from="4" to="0" /><pair from="4" to="3" /><pair from="8" to="9" /></entry>
+<entry kt="So"> <pair from="0" to="16" /><pair from="0" to="17" /><pair from="0" to="18" /><pair from="1" to="4" /><pair from="1" to="8" /><pair from="2" to="4" /><pair from="6" to="8" /><pair from="14" to="16" /><pair from="14" to="17" /><pair from="14" to="18" /></entry>
+<entry kt="Stda"> <pair from="1" to="13" /><pair from="2" to="7" /><pair from="2" to="9" /><pair from="5" to="0" /><pair from="5" to="3" /><pair from="5" to="9" /><pair from="6" to="0" /><pair from="6" to="3" /><pair from="6" to="7" /></entry>
+<entry kt="StdaHu"> <pair from="6" to="14" /></entry>
+<entry kt="Stfa"> <pair from="0" to="10" /></entry>
+<entry kt="Stmo"> <pair from="0" to="5" /><pair from="0" to="6" /><pair from="3" to="5" /><pair from="3" to="6" /><pair from="4" to="5" /><pair from="4" to="6" /><pair from="7" to="2" /><pair from="7" to="6" /><pair from="8" to="2" /><pair from="8" to="5" /><pair from="9" to="2" /><pair from="9" to="5" /></entry>
+<entry kt="Stso"> <pair from="1" to="11" /><pair from="1" to="12" /><pair from="2" to="8" /><pair from="5" to="4" /><pair from="5" to="8" /><pair from="6" to="4" /></entry>
+<entry kt="Wi"> <pair from="1" to="2" /><pair from="1" to="5" /><pair from="1" to="6" /><pair from="14" to="0" /></entry>
+<entry kt="WiBro"> <pair from="14" to="4" /></entry>
+<entry kt="WiFa"> <pair from="14" to="1" /></entry>
+<entry kt="WiHbro"> <pair from="14" to="8" /><pair from="14" to="11" /><pair from="14" to="12" /></entry>
+<entry kt="WiHsis"> <pair from="14" to="7" /><pair from="14" to="9" /><pair from="14" to="13" /></entry>
+<entry kt="WiHu"> <pair from="1" to="10" /></entry>
+<entry kt="WiMo"> <pair from="14" to="2" /></entry>
+<entry kt="WiSis"> <pair from="14" to="3" /></entry>
+<entry kt="WiStfa"> <pair from="14" to="10" /></entry>
+<entry kt="WiStmo"> <pair from="14" to="5" /><pair from="14" to="6" /></entry>
+
+</kinTypeIndex>
+<silkin-issues type="Reference">
+	<umbrella kinTerm="n̄_bīikɛ">
+		<sub-terms>
+			<sub-term> 
+				<sub-kin-term>n̄_bīsīɛ̄dɔ</sub-kin-term>
+				<pc-strings-covered> Da, Stda </pc-strings-covered>
+				<gloss>
+					<element text="daughter"/>
+					<element text="stepdaughter"/>
+				</gloss>
+				<dyads-covered>
+					<dyad kinTerm="n̄_bīikɛ" pcString="Da" level="-1" kinTermType="0" addrOrRef="0" ego="2" alter="0" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Da" level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="0" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Da" level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="3" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Da" level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="7" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Da" level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="9" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Da" level="-1" kinTermType="0" addrOrRef="0" ego="2" alter="3" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Da" level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="7" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Da" level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="9" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="0" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="0" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="2" alter="7" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="2" alter="9" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="3" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="9" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="3" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="7" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="10" alter="0" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="13" path=""  />
+				</dyads-covered>
+				<type>1</type>
+			</sub-term>
+			<sub-term> 
+				<sub-kin-term>n̄_bīyāa</sub-kin-term>
+				<pc-strings-covered> So, Stso </pc-strings-covered>
+				<gloss>
+					<element text="son"/>
+					<element text="stepson"/>
+				</gloss>
+				<dyads-covered>
+					<dyad kinTerm="n̄_bīikɛ" pcString="So" level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="4" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="So" level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="8" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="So" level="-1" kinTermType="0" addrOrRef="0" ego="2" alter="4" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="So" level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="8" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stso" level="-1" kinTermType="0" addrOrRef="0" ego="2" alter="8" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stso" level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="4" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stso" level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="8" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stso" level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="4" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stso" level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="12" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stso" level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="11" path=""  />
+				</dyads-covered>
+				<type>1</type>
+			</sub-term>
+			<sub-term> 
+				<sub-kin-term>n̄_yɛ̄n̄tɔ̄ɔ_bīikɛ</sub-kin-term>
+				<pc-strings-covered> Stda </pc-strings-covered>
+				<gloss>
+					<element text="stepdaughter"/>
+				</gloss>
+				<dyads-covered>
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="0" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="0" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="3" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="9" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="3" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="7" path=""  />
+				</dyads-covered>
+				<type>1</type>
+			</sub-term>
+		</sub-terms>
+	</umbrella>
+	<umbrella kinTerm="n̄_bīsīɛ̄dɔ">
+		<sub-terms>
+			<sub-term> 
+				<sub-kin-term>n̄_yɛ̄n̄tɔ̄ɔ_bīikɛ</sub-kin-term>
+				<pc-strings-covered> Stda </pc-strings-covered>
+				<gloss>
+					<element text="stepdaughter"/>
+				</gloss>
+				<dyads-covered>
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="0" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="0" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="3" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="5" alter="9" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="3" path=""  />
+					<dyad kinTerm="n̄_bīikɛ" pcString="Stda" level="-1" kinTermType="0" addrOrRef="0" ego="6" alter="7" path=""  />
+				</dyads-covered>
+				<type>1</type>
+			</sub-term>
+		</sub-terms>
+	</umbrella>
+	<synonym kinTerm="n̄_maanɔ">
+		<other-term>n̄_nīi_yɛ̄n̄tɔ̄ɔ_bīikɛ</other-term>
+		<pc-strings-covered>Hsis </pc-strings-covered>
+		<kinTerm-dyads>
+			<dyad kinTerm="n̄_maanɔ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="7" alter="0" path=""  />
+			<dyad kinTerm="n̄_maanɔ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="9" alter="0" path=""  />
+			<dyad kinTerm="n̄_maanɔ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="7" alter="3" path=""  />
+			<dyad kinTerm="n̄_maanɔ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="9" alter="3" path=""  />
+			<dyad kinTerm="n̄_maanɔ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="9" alter="7" path=""  />
+		</kinTerm-dyads>
+		<other-term-dyads>
+			<dyad kinTerm="n̄_nān̄kɛ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="0" alter="7" path=""  />
+			<dyad kinTerm="n̄_maanɔ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="7" alter="0" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="8" alter="0" path=""  />
+			<dyad kinTerm="n̄_nān̄kɛ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="0" alter="9" path=""  />
+			<dyad kinTerm="n̄_maanɔ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="9" alter="0" path=""  />
+		</other-term-dyads>
+	</synonym>
+
+	<synonym kinTerm="n̄_nān̄kɛ">
+		<other-term>n̄_tāa</other-term>
+		<pc-strings-covered>Bro, Hbro, Hsis, Sis </pc-strings-covered>
+		<kinTerm-dyads>
+			<dyad kinTerm="n̄_tāa" pcString="Bro" level="0" kinTermType="0" addrOrRef="0" ego="0" alter="4" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Bro" level="0" kinTermType="0" addrOrRef="0" ego="3" alter="4" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Bro" level="0" kinTermType="0" addrOrRef="0" ego="9" alter="8" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hbro" level="0" kinTermType="0" addrOrRef="0" ego="0" alter="8" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hbro" level="0" kinTermType="0" addrOrRef="0" ego="7" alter="4" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hbro" level="0" kinTermType="0" addrOrRef="0" ego="9" alter="4" path=""  />
+			<dyad kinTerm="n̄_nān̄kɛ" pcString="Hbro" level="0" kinTermType="0" addrOrRef="0" ego="4" alter="8" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hbro" level="0" kinTermType="0" addrOrRef="0" ego="3" alter="8" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hbro" level="0" kinTermType="0" addrOrRef="0" ego="7" alter="8" path=""  />
+			<dyad kinTerm="n̄_nān̄kɛ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="0" alter="7" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="8" alter="0" path=""  />
+			<dyad kinTerm="n̄_nān̄kɛ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="0" alter="9" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="4" alter="7" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="4" alter="9" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="8" alter="3" path=""  />
+			<dyad kinTerm="n̄_nān̄kɛ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="3" alter="7" path=""  />
+			<dyad kinTerm="n̄_nān̄kɛ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="3" alter="9" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="8" alter="7" path=""  />
+			<dyad kinTerm="n̄_nān̄kɛ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="7" alter="9" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Sis" level="0" kinTermType="0" addrOrRef="0" ego="4" alter="0" path=""  />
+			<dyad kinTerm="n̄_nān̄kɛ" pcString="Sis" level="0" kinTermType="0" addrOrRef="0" ego="0" alter="3" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Sis" level="0" kinTermType="0" addrOrRef="0" ego="4" alter="3" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Sis" level="0" kinTermType="0" addrOrRef="0" ego="8" alter="9" path=""  />
+		</kinTerm-dyads>
+		<other-term-dyads>
+			<dyad kinTerm="n̄_tāa" pcString="Bro" level="0" kinTermType="0" addrOrRef="0" ego="0" alter="4" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Bro" level="0" kinTermType="0" addrOrRef="0" ego="3" alter="4" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Bro" level="0" kinTermType="0" addrOrRef="0" ego="9" alter="8" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hbro" level="0" kinTermType="0" addrOrRef="0" ego="0" alter="8" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hbro" level="0" kinTermType="0" addrOrRef="0" ego="7" alter="4" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hbro" level="0" kinTermType="0" addrOrRef="0" ego="9" alter="4" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hbro" level="0" kinTermType="0" addrOrRef="0" ego="3" alter="8" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hbro" level="0" kinTermType="0" addrOrRef="0" ego="7" alter="8" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="8" alter="0" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="4" alter="7" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="4" alter="9" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="8" alter="3" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="8" alter="7" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Sis" level="0" kinTermType="0" addrOrRef="0" ego="4" alter="0" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Sis" level="0" kinTermType="0" addrOrRef="0" ego="4" alter="3" path=""  />
+			<dyad kinTerm="n̄_tāa" pcString="Sis" level="0" kinTermType="0" addrOrRef="0" ego="8" alter="9" path=""  />
+		</other-term-dyads>
+	</synonym>
+
+	<umbrella kinTerm="n̄_nān̄kɛ">
+		<sub-terms>
+			<sub-term> 
+				<sub-kin-term>n̄_maanɔ</sub-kin-term>
+				<pc-strings-covered> Hsis </pc-strings-covered>
+				<gloss>
+					<element text="half-sister"/>
+				</gloss>
+				<dyads-covered>
+					<dyad kinTerm="n̄_maanɔ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="7" alter="0" path=""  />
+					<dyad kinTerm="n̄_maanɔ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="9" alter="0" path=""  />
+					<dyad kinTerm="n̄_maanɔ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="7" alter="3" path=""  />
+					<dyad kinTerm="n̄_maanɔ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="9" alter="3" path=""  />
+					<dyad kinTerm="n̄_maanɔ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="9" alter="7" path=""  />
+				</dyads-covered>
+				<type>1</type>
+			</sub-term>
+			<sub-term> 
+				<sub-kin-term>n̄_nīi_yɛ̄n̄tɔ̄ɔ_bīikɛ</sub-kin-term>
+				<pc-strings-covered> Hsis </pc-strings-covered>
+				<gloss>
+					<element text="half-sister"/>
+				</gloss>
+				<dyads-covered>
+					<dyad kinTerm="n̄_nān̄kɛ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="0" alter="7" path=""  />
+					<dyad kinTerm="n̄_maanɔ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="7" alter="0" path=""  />
+					<dyad kinTerm="n̄_tāa" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="8" alter="0" path=""  />
+					<dyad kinTerm="n̄_nān̄kɛ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="0" alter="9" path=""  />
+					<dyad kinTerm="n̄_maanɔ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="9" alter="0" path=""  />
+				</dyads-covered>
+				<type>1</type>
+			</sub-term>
+		</sub-terms>
+	</umbrella>
+	<umbrella kinTerm="n̄_nīi">
+		<sub-terms>
+			<sub-term> 
+				<sub-kin-term>n̄_nīi_pēēt̄ɔ</sub-kin-term>
+				<pc-strings-covered> Mo </pc-strings-covered>
+				<gloss>
+					<element text="mother"/>
+				</gloss>
+				<dyads-covered>
+					<dyad kinTerm="n̄_nīi" pcString="Mo" level="1" kinTermType="0" addrOrRef="0" ego="0" alter="2" path=""  />
+					<dyad kinTerm="n̄_nīi" pcString="Mo" level="1" kinTermType="0" addrOrRef="0" ego="3" alter="2" path=""  />
+					<dyad kinTerm="n̄_nīi" pcString="Mo" level="1" kinTermType="0" addrOrRef="0" ego="4" alter="2" path=""  />
+					<dyad kinTerm="n̄_nīi" pcString="Mo" level="1" kinTermType="0" addrOrRef="0" ego="7" alter="5" path=""  />
+					<dyad kinTerm="n̄_nīi" pcString="Mo" level="1" kinTermType="0" addrOrRef="0" ego="8" alter="6" path=""  />
+					<dyad kinTerm="n̄_nīi" pcString="Mo" level="1" kinTermType="0" addrOrRef="0" ego="9" alter="6" path=""  />
+				</dyads-covered>
+				<type>1</type>
+			</sub-term>
+			<sub-term> 
+				<sub-kin-term>n̄_nīi_yɛ̄n̄tɔ̄ɔ</sub-kin-term>
+				<pc-strings-covered> Stmo </pc-strings-covered>
+				<gloss>
+					<element text="stepmother"/>
+				</gloss>
+				<dyads-covered>
+					<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="0" alter="5" path=""  />
+					<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="3" alter="5" path=""  />
+					<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="4" alter="5" path=""  />
+					<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="8" alter="5" path=""  />
+					<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="9" alter="5" path=""  />
+					<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="0" alter="6" path=""  />
+					<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="3" alter="6" path=""  />
+					<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="4" alter="6" path=""  />
+					<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="7" alter="6" path=""  />
+				</dyads-covered>
+				<type>1</type>
+			</sub-term>
+			<sub-term> 
+				<sub-kin-term>n̄_nīi_yɛ̄n̄tɔ̄ɔ_híɛ́tɔ</sub-kin-term>
+				<pc-strings-covered> Stmo </pc-strings-covered>
+				<gloss>
+					<element text="stepmother"/>
+				</gloss>
+				<dyads-covered>
+					<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="0" alter="6" path=""  />
+					<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="3" alter="6" path=""  />
+					<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="4" alter="6" path=""  />
+				</dyads-covered>
+				<type>1</type>
+			</sub-term>
+			<sub-term> 
+				<sub-kin-term>n̄_nīi_yɛ̄n̄tɔ̄ɔ_kpīɛ̄mɔ</sub-kin-term>
+				<pc-strings-covered> Stmo </pc-strings-covered>
+				<gloss>
+					<element text="stepmother"/>
+				</gloss>
+				<dyads-covered>
+					<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="7" alter="2" path=""  />
+					<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="8" alter="2" path=""  />
+					<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="9" alter="2" path=""  />
+				</dyads-covered>
+				<type>1</type>
+			</sub-term>
+		</sub-terms>
+	</umbrella>
+	<synonym kinTerm="n̄_nīi_yɛ̄n̄tɔ̄ɔ">
+		<other-term>n̄_nīi_yɛ̄n̄tɔ̄ɔ_híɛ́tɔ</other-term>
+		<pc-strings-covered>Stmo </pc-strings-covered>
+		<kinTerm-dyads>
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="0" alter="5" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="3" alter="5" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="4" alter="5" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="8" alter="5" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="9" alter="5" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="0" alter="6" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="3" alter="6" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="4" alter="6" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="7" alter="6" path=""  />
+		</kinTerm-dyads>
+		<other-term-dyads>
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="0" alter="6" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="3" alter="6" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="4" alter="6" path=""  />
+		</other-term-dyads>
+	</synonym>
+
+	<synonym kinTerm="n̄_nīi_yɛ̄n̄tɔ̄ɔ">
+		<other-term>n̄_nīi_yɛ̄n̄tɔ̄ɔ_kpīɛ̄mɔ</other-term>
+		<pc-strings-covered>Stmo </pc-strings-covered>
+		<kinTerm-dyads>
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="0" alter="5" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="3" alter="5" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="4" alter="5" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="8" alter="5" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="9" alter="5" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="0" alter="6" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="3" alter="6" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="4" alter="6" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="7" alter="6" path=""  />
+		</kinTerm-dyads>
+		<other-term-dyads>
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="7" alter="2" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="8" alter="2" path=""  />
+			<dyad kinTerm="n̄_nīi" pcString="Stmo" level="1" kinTermType="0" addrOrRef="0" ego="9" alter="2" path=""  />
+		</other-term-dyads>
+	</synonym>
+
+	<proposed-def kinTerm="n̄_pūōhɔ̰">
+		<kin-term-def term="ex_wife">
+			<head>ex_wife</head>
+			<eqcSigExact>Wi</eqcSigExact>
+			<eqcSigStruct>Sp</eqcSigStruct>
+			<gloss>
+				<element text="divorced(Alter, Ego), male(Ego), female(Alter). "/>
+				<element text="husband(Ego, Alter), dead(Alter). "/>
+			</gloss>
+			<ktd-domain-theory>
+				<language name="English"/>
+				<author name="Gary Morris"/>
+				<create-date value="2003-08-01"/>
+			</ktd-domain-theory>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>divorced</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>male</predicate>
+						<arg-list>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>female</predicate>
+						<arg-list>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>Ego</var>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>dead</predicate>
+						<arg-list>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+			<expandedDefs>
+				<clause level="0">
+					<pc-string>Wi</pc-string>
+					<pc-string-structural>Sp</pc-string-structural>
+					<literal> 
+						<predicate>divorced</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>male</predicate>
+						<arg-list>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>female</predicate>
+						<arg-list>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<pc-string>Wi</pc-string>
+					<pc-string-structural>Sp</pc-string-structural>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>Ego</var>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>dead</predicate>
+						<arg-list>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</expandedDefs>
+		</kin-term-def>
+		<kin-term-eqc>
+			<signature-string>Wi</signature-string>
+			<prototype>
+				<kin-term-context>
+ 					<kin-term-def term="ex_wife">
+						<head>ex_wife</head>
+						<eqcSigExact>Wi</eqcSigExact>
+						<eqcSigStruct>Sp</eqcSigStruct>
+						<gloss>
+							<element text="divorced(Alter, Ego), male(Ego), female(Alter). "/>
+							<element text="husband(Ego, Alter), dead(Alter). "/>
+						</gloss>
+						<ktd-domain-theory>
+							<language name="English"/>
+							<author name="Gary Morris"/>
+							<create-date value="2003-08-01"/>
+						</ktd-domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>divorced</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>male</predicate>
+									<arg-list>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>female</predicate>
+									<arg-list>
+										<var>Alter</var>
+									</arg-list>
+								</literal>
+							</clause>
+							<clause level="0">
+								<literal> 
+									<predicate>husband</predicate>
+									<arg-list>
+										<var>Ego</var>
+										<var>Alter</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>dead</predicate>
+									<arg-list>
+										<var>Alter</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="0">
+								<pc-string>Wi</pc-string>
+								<pc-string-structural>Sp</pc-string-structural>
+								<literal> 
+									<predicate>divorced</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>male</predicate>
+									<arg-list>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>female</predicate>
+									<arg-list>
+										<var>Alter</var>
+									</arg-list>
+								</literal>
+							</clause>
+							<clause level="0">
+								<pc-string>Wi</pc-string>
+								<pc-string-structural>Sp</pc-string-structural>
+								<literal> 
+									<predicate>husband</predicate>
+									<arg-list>
+										<var>Ego</var>
+										<var>Alter</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>dead</predicate>
+									<arg-list>
+										<var>Alter</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 			</prototype>
+			<members>
+			</members>
+			<unused-clauses>
+				<clause level="0">
+					<pc-string>Wi</pc-string>
+					<pc-string-structural>Sp</pc-string-structural>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>Ego</var>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>dead</predicate>
+						<arg-list>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</unused-clauses>
+		</kin-term-eqc>
+	</proposed-def>
+
+	<umbrella kinTerm="n̄_tāa">
+		<sub-terms>
+			<sub-term> 
+				<sub-kin-term>n̄_maanɔ</sub-kin-term>
+				<pc-strings-covered> Hsis </pc-strings-covered>
+				<gloss>
+					<element text="half-sister"/>
+				</gloss>
+				<dyads-covered>
+					<dyad kinTerm="n̄_maanɔ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="7" alter="0" path=""  />
+					<dyad kinTerm="n̄_maanɔ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="9" alter="0" path=""  />
+					<dyad kinTerm="n̄_maanɔ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="7" alter="3" path=""  />
+					<dyad kinTerm="n̄_maanɔ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="9" alter="3" path=""  />
+					<dyad kinTerm="n̄_maanɔ" pcString="Hsis" level="0" kinTermType="0" addrOrRef="0" ego="9" alter="7" path=""  />
+				</dyads-covered>
+				<type>1</type>
+			</sub-term>
+		</sub-terms>
+	</umbrella>
+	<proposed-def kinTerm="n̄_yāa">
+		<kin-term-def term="ex_husband">
+			<head>ex_husband</head>
+			<eqcSigExact>Hu</eqcSigExact>
+			<eqcSigStruct>Sp</eqcSigStruct>
+			<gloss>
+				<element text="divorced(Alter, Ego), female(Ego), male(Alter). "/>
+				<element text="wife(Ego, Alter), dead(Alter). "/>
+			</gloss>
+			<ktd-domain-theory>
+				<language name="English"/>
+				<author name="Gary Morris"/>
+				<create-date value="2003-08-01"/>
+			</ktd-domain-theory>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>divorced</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>female</predicate>
+						<arg-list>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>male</predicate>
+						<arg-list>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>Ego</var>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>dead</predicate>
+						<arg-list>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+			<expandedDefs>
+				<clause level="0">
+					<pc-string>Hu</pc-string>
+					<pc-string-structural>Sp</pc-string-structural>
+					<literal> 
+						<predicate>divorced</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>female</predicate>
+						<arg-list>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>male</predicate>
+						<arg-list>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<pc-string>Hu</pc-string>
+					<pc-string-structural>Sp</pc-string-structural>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>Ego</var>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>dead</predicate>
+						<arg-list>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</expandedDefs>
+		</kin-term-def>
+		<kin-term-eqc>
+			<signature-string>Hu</signature-string>
+			<prototype>
+				<kin-term-context>
+ 					<kin-term-def term="ex_husband">
+						<head>ex_husband</head>
+						<eqcSigExact>Hu</eqcSigExact>
+						<eqcSigStruct>Sp</eqcSigStruct>
+						<gloss>
+							<element text="divorced(Alter, Ego), female(Ego), male(Alter). "/>
+							<element text="wife(Ego, Alter), dead(Alter). "/>
+						</gloss>
+						<ktd-domain-theory>
+							<language name="English"/>
+							<author name="Gary Morris"/>
+							<create-date value="2003-08-01"/>
+						</ktd-domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>divorced</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>female</predicate>
+									<arg-list>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>male</predicate>
+									<arg-list>
+										<var>Alter</var>
+									</arg-list>
+								</literal>
+							</clause>
+							<clause level="0">
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>Ego</var>
+										<var>Alter</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>dead</predicate>
+									<arg-list>
+										<var>Alter</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="0">
+								<pc-string>Hu</pc-string>
+								<pc-string-structural>Sp</pc-string-structural>
+								<literal> 
+									<predicate>divorced</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>female</predicate>
+									<arg-list>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>male</predicate>
+									<arg-list>
+										<var>Alter</var>
+									</arg-list>
+								</literal>
+							</clause>
+							<clause level="0">
+								<pc-string>Hu</pc-string>
+								<pc-string-structural>Sp</pc-string-structural>
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>Ego</var>
+										<var>Alter</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>dead</predicate>
+									<arg-list>
+										<var>Alter</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 			</prototype>
+			<members>
+			</members>
+			<unused-clauses>
+				<clause level="0">
+					<pc-string>Hu</pc-string>
+					<pc-string-structural>Sp</pc-string-structural>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>Ego</var>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>dead</predicate>
+						<arg-list>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</unused-clauses>
+		</kin-term-eqc>
+	</proposed-def>
+
+	<synonym kinTerm="n̄_yɛ̄n̄tɔ̄ɔ">
+		<other-term>n̄_yɛ̄n̄tɔ̄ɔ_híɛ́tɔ</other-term>
+		<pc-strings-covered>HuWi </pc-strings-covered>
+		<kinTerm-dyads>
+			<dyad kinTerm="n̄_yɛ̄n̄tɔ̄ɔ" pcString="HuWi" level="0" kinTermType="0" addrOrRef="0" ego="2" alter="5" path="1"  />
+			<dyad kinTerm="n̄_yɛ̄n̄tɔ̄ɔ" pcString="HuWi" level="0" kinTermType="0" addrOrRef="0" ego="5" alter="2" path="1"  />
+			<dyad kinTerm="n̄_yɛ̄n̄tɔ̄ɔ" pcString="HuWi" level="0" kinTermType="0" addrOrRef="0" ego="2" alter="6" path="1"  />
+			<dyad kinTerm="n̄_yɛ̄n̄tɔ̄ɔ" pcString="HuWi" level="0" kinTermType="0" addrOrRef="0" ego="6" alter="2" path="1"  />
+			<dyad kinTerm="n̄_yɛ̄n̄tɔ̄ɔ" pcString="HuWi" level="0" kinTermType="0" addrOrRef="0" ego="6" alter="5" path="1"  />
+			<dyad kinTerm="n̄_yɛ̄n̄tɔ̄ɔ" pcString="HuWi" level="0" kinTermType="0" addrOrRef="0" ego="5" alter="6" path="1"  />
+		</kinTerm-dyads>
+		<other-term-dyads>
+			<dyad kinTerm="n̄_yɛ̄n̄tɔ̄ɔ" pcString="HuWi" level="0" kinTermType="0" addrOrRef="0" ego="2" alter="5" path="1"  />
+			<dyad kinTerm="n̄_yɛ̄n̄tɔ̄ɔ" pcString="HuWi" level="0" kinTermType="0" addrOrRef="0" ego="2" alter="6" path="1"  />
+			<dyad kinTerm="n̄_yɛ̄n̄tɔ̄ɔ" pcString="HuWi" level="0" kinTermType="0" addrOrRef="0" ego="5" alter="6" path="1"  />
+		</other-term-dyads>
+	</synonym>
+
+	<synonym kinTerm="n̄_yɛ̄n̄tɔ̄ɔ">
+		<other-term>n̄_yɛ̄n̄tɔ̄ɔ_kpīɛ̄mɔ</other-term>
+		<pc-strings-covered>HuWi </pc-strings-covered>
+		<kinTerm-dyads>
+			<dyad kinTerm="n̄_yɛ̄n̄tɔ̄ɔ" pcString="HuWi" level="0" kinTermType="0" addrOrRef="0" ego="2" alter="5" path="1"  />
+			<dyad kinTerm="n̄_yɛ̄n̄tɔ̄ɔ" pcString="HuWi" level="0" kinTermType="0" addrOrRef="0" ego="5" alter="2" path="1"  />
+			<dyad kinTerm="n̄_yɛ̄n̄tɔ̄ɔ" pcString="HuWi" level="0" kinTermType="0" addrOrRef="0" ego="2" alter="6" path="1"  />
+			<dyad kinTerm="n̄_yɛ̄n̄tɔ̄ɔ" pcString="HuWi" level="0" kinTermType="0" addrOrRef="0" ego="6" alter="2" path="1"  />
+			<dyad kinTerm="n̄_yɛ̄n̄tɔ̄ɔ" pcString="HuWi" level="0" kinTermType="0" addrOrRef="0" ego="6" alter="5" path="1"  />
+			<dyad kinTerm="n̄_yɛ̄n̄tɔ̄ɔ" pcString="HuWi" level="0" kinTermType="0" addrOrRef="0" ego="5" alter="6" path="1"  />
+		</kinTerm-dyads>
+		<other-term-dyads>
+			<dyad kinTerm="n̄_yɛ̄n̄tɔ̄ɔ" pcString="HuWi" level="0" kinTermType="0" addrOrRef="0" ego="5" alter="2" path="1"  />
+			<dyad kinTerm="n̄_yɛ̄n̄tɔ̄ɔ" pcString="HuWi" level="0" kinTermType="0" addrOrRef="0" ego="6" alter="2" path="1"  />
+			<dyad kinTerm="n̄_yɛ̄n̄tɔ̄ɔ" pcString="HuWi" level="0" kinTermType="0" addrOrRef="0" ego="6" alter="5" path="1"  />
+		</other-term-dyads>
+	</synonym>
+
+</silkin-issues>
+</SIL_KinData>

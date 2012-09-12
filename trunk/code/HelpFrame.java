@@ -17,12 +17,14 @@ import java.util.Arrays;
 public class HelpFrame extends JFrame implements HyperlinkListener {
 
     static HelpFrame help = null;
-    static final int START = 0, CHART = 1, SUGGEST = 2, PREFS = 3, THEORY_EDIT = 4;
+    static final int START = 0, CHART = 1, SUGGEST = 2, PREFS = 3, 
+            THEORY_EDIT = 4, CONTEXT = 5;
     static String[] filenames = {"Start.html", "Chart.html",
-        "Suggs.html", "Prefs.html", "HornClause.html"};    
+        "Suggs.html", "Prefs.html", "HornClause.html", "ContextEdit.html"};    
     static String[] titles = {"Getting Started", 
-        "Drawing and Editing Genealogy Charts", "Suggestions", "Preferences", "Editing Definitions"};    
-    String[] pathNames = new String[5];
+        "Drawing and Editing Genealogy Charts", "Suggestions", "Preferences", 
+        "Editing Definitions", "Editing The Context"};    
+    String[] pathNames = new String[6];
     ArrayList<HyperlinkEvent> stack = new ArrayList<HyperlinkEvent>();
     ArrayList<String> titleStack = new ArrayList<String>();
     int stackPtr = 0;
@@ -109,21 +111,58 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
     }
     
     boolean backable() {
-        if (stack.size() > 1) return true;
-        else return false;
+        return (stack.size() > 1);
+    }
+    
+    /* This method is needed only for Windows 7 (& Vista?) users.
+     * Win7 delivers only the relative address (instead of complete pathname)
+     * when the User clicks on a hyperlink with href="a relative address."
+     * A Mac delivers the absolute pathname no matter how the HTML href is
+     * written. So this methods looks for simple relative addresses (e.g.
+     * '/Chart.html') and makes them absolute. All other pathnames are
+     * unchanged.
+     */
+    HyperlinkEvent purify(HyperlinkEvent oldEvent) {
+        String path = oldEvent.getURL().getFile();
+        if (path.startsWith("/")) {
+            String fileName = path.substring(1), 
+                   absolutePath = "";
+            for (int i=0; i < filenames.length; i++) {
+                if (filenames[i].equals(fileName)) {
+                    absolutePath = pathNames[i];
+                    break;
+                }
+            }
+            if (!absolutePath.isEmpty()) {
+                String section = oldEvent.getURL().getRef();
+                HyperlinkEvent newEvent = null;
+                try {
+                    URL newLoc = new URL("file", "", -1, absolutePath + "#" + section);
+                    newEvent = new HyperlinkEvent("Request for " + absolutePath + " #" + section,
+                            HyperlinkEvent.EventType.ACTIVATED, newLoc, "#" + section);
+                } catch (Exception ex) {
+                    String msg = "Error encountered displaying " + absolutePath + "#" + section;
+                    msg += "\nReason: " + ex;
+                    MainPane.displayError(msg, "Malformed URL", JOptionPane.ERROR_MESSAGE);
+                }
+                return newEvent;
+            }
+        }
+        return oldEvent;
     }
       
     //  Method implementing HyperLinkListener. Runs when hyperlink clicked.
     public void hyperlinkUpdate(HyperlinkEvent event) {
         if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
             try {
-                helpTextPane.setPage(event.getURL());
+                HyperlinkEvent pureEvent = purify(event);                
+                helpTextPane.setPage(pureEvent.getURL());
                 if (updateStack) {
-                    stack.add(0, event);
+                    stack.add(0, pureEvent);
                     backBtn.setEnabled(true);
                     fwdBtn.setEnabled(false);
                     stackPtr = 0;
-                    String pth = event.getURL().getFile(),
+                    String pth = pureEvent.getURL().getFile(),
                            ttl = findTitle(pth);
                     topTitle.setText(ttl);
                     titleStack.add(0, ttl);
@@ -279,6 +318,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
         // SubMenus
             startSubMenu = new JMenu();
             chartSubMenu = new JMenu();
+            contextSubMenu = new JMenu();
             suggsSubMenu = new JMenu();
             prefsSubMenu = new JMenu();
             theoryEditSubMenu = new JMenu();
@@ -291,6 +331,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             dyadsItem = new JMenuItem();
             reservedItem = new JMenuItem();
             commentsItem = new JMenuItem();
+//          Chart Sub-Menus
             datesItem = new JMenuItem();
             egoAlterItem = new JMenuItem();
             labelItem = new JMenuItem();
@@ -299,8 +340,16 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             movingItem = new JMenuItem();
             deleteRelItem = new JMenuItem();
             deletePeopleItem = new JMenuItem();
+//          Context Editor Sub-Menus
+            definitionItem = new JMenuItem();
+            editorItem = new JMenuItem();
+            deletedRecsItem = new JMenuItem();
+            udpsItem = new JMenuItem();
+            editTheoryItem = new JMenuItem();
+//          Suggestions Sub-Menus
             getSuggsItem = new JMenuItem();
             actSuggsItem = new JMenuItem();
+//          Preferences Sub-Menus
             prefIntroItem = new JMenuItem();
             ignorableItem = new JMenuItem();
             maxItem = new JMenuItem();
@@ -311,6 +360,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             nameCaptureItem = new JMenuItem();
             snapToGridItem = new JMenuItem();
             linkPriorityItem = new JMenuItem();
+//          Theory Edit Sub-Menus
             layoutItem = new JMenuItem();
             tutorialItem = new JMenuItem();
             rulesItem = new JMenuItem();
@@ -472,7 +522,56 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
                 }
             });
             chartSubMenu.add(deletePeopleItem);
+            
+//  Context Editor SubMenu
+            contextSubMenu.setText("Context Editor");
+            add(contextSubMenu);
+            
+            definitionItem.setText("What Is A Context?");
+            definitionItem.addActionListener(new ActionListener() {
 
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(CONTEXT, "definition");
+                }
+            });
+            contextSubMenu.add(definitionItem);
+            
+            editorItem.setText("The Context Editor");
+            editorItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(CONTEXT, "editor");
+                }
+            });
+            contextSubMenu.add(editorItem);
+            
+            deletedRecsItem.setText("Deleted Records");
+            deletedRecsItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(CONTEXT, "deleted-records");
+                }
+            });
+            contextSubMenu.add(deletedRecsItem);
+            
+            udpsItem.setText("User-Defined Properties");
+            udpsItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(CONTEXT, "UDPs");
+                }
+            });
+            contextSubMenu.add(udpsItem);
+            
+            editTheoryItem.setText("Editing A Domain Theory");
+            editTheoryItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(CONTEXT, "EditTheory");
+                }
+            });
+            contextSubMenu.add(editTheoryItem);
+            editTheoryItem = new JMenuItem();                      
 
  // Suggestions SubMenu       
             suggsSubMenu.setText("Suggestions");
@@ -679,6 +778,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
         
         private JMenu startSubMenu;
         private JMenu chartSubMenu;
+        private JMenu contextSubMenu;
         private JMenu suggsSubMenu;
         private JMenu prefsSubMenu;
         private JMenu theoryEditSubMenu;
@@ -719,5 +819,10 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
         private JMenuItem sampleSessionItem;
         private JMenuItem variableGenItem;
         private JMenuItem editCommentsItem;
+        private JMenuItem definitionItem;
+        private JMenuItem editorItem;
+        private JMenuItem deletedRecsItem;
+        private JMenuItem udpsItem;
+        private JMenuItem editTheoryItem;
     }
 }

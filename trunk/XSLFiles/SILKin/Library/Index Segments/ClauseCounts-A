@@ -1,0 +1,431 @@
+Agta:aka	2	2	2	2	2	2	2	2	2	2
+Agta:ama	1	1	1	1	1	1	1	1	1	1
+Agta:amay	0	2	4	12	20	20	20	20	20	20
+Agta:anak	2	2	2	2	2	2	2	2	2	2
+Agta:aneng	0	4	12	28	60	124	252	252	252	252
+Agta:apo	0	8	40	88	152	280	536	536	536	536
+Agta:asawa	2	2	2	2	2	2	2	2	2	2
+Agta:balai	0	0	12	36	68	68	68	68	68	68
+Agta:dada	0	2	4	12	20	20	20	20	20	20
+Agta:idas	0	0	4	4	20	20	84	84	84	84
+Agta:ina	1	1	1	1	1	1	1	1	1	1
+Agta:kayong	0	6	6	30	30	126	126	126	126	126
+Agta:manugeng	0	6	30	46	62	62	126	126	126	126
+Agta:pensan	0	0	8	8	40	40	40	40	40	40
+Agta:wadi	2	2	2	2	2	2	2	2	2	2
+Berik:abwai	0	8	24	48	112	208	208	208	208	208
+Berik:aiya	2	2	10	10	42	42	42	42	42	42
+Berik:anggwa	1	1	1	1	1	1	1	1	1	1
+Berik:asalasala	0	0	16	48	96	224	416	416	416	416
+Berik:ebo	0	4	8	12	28	44	108	172	172	172
+Berik:ginau	0	6	14	22	54	86	86	86	86	86
+Berik:iye	1	5	7	15	23	55	87	87	87	87
+Berik:maame	0	1	2	6	10	22	34	34	34	34
+Berik:muna	0	2	4	8	16	32	64	64	64	64
+Berik:musa	0	4	4	20	20	84	84	84	84	84
+Berik:nausa	0	4	4	20	20	84	84	84	84	84
+Berik:nemeltene	0	2	4	12	20	52	52	52	52	52
+Berik:niye	0	5	8	18	28	64	68	68	68	68
+Berik:oso	2	2	10	10	42	42	42	42	42	42
+Berik:tane	2	2	8	8	32	32	32	32	32	32
+Berik:tane_gitowai	1	3	7	15	31	31	31	31	31	31
+Berik:tane_yafintowai	1	3	7	15	31	31	31	31	31	31
+Berik:uwa	1	4	5	7	9	13	17	17	17	17
+Berik:wi	1	1	1	1	1	1	1	1	1	1
+Cayuga:ahgeahseh	0	0	4	4	12	12	12	12	12	12
+Cayuga:dayakeneyaseh	2	2	2	2	2	2	2	2	2	2
+Cayuga:hagaah	1	3	5	5	9	9	9	9	9	9
+Cayuga:hagasaah	0	1	3	3	3	3	3	3	3	3
+Cayuga:hahawuk	1	4	4	16	16	64	64	64	64	64
+Cayuga:hanih	1	2	2	3	3	4	4	4	4	4
+Cayuga:hano	0	1	1	1	1	1	1	1	1	1
+Cayuga:hayadra	0	2	10	18	34	66	130	130	130	130
+Cayuga:hayaho	0	2	2	6	6	22	22	22	22	22
+Cayuga:hayuhwada	0	1	1	5	5	21	21	21	21	21
+Cayuga:hocnonese	0	1	3	3	3	3	3	3	3	3
+Cayuga:hocsote	0	2	12	20	36	68	68	68	68	68
+Cayuga:kagaah	1	3	5	5	9	9	9	9	9	9
+Cayuga:kahaneah	0	0	1	1	1	1	1	1	1	1
+Cayuga:kahawuk	1	4	4	16	16	64	64	64	64	64
+Cayuga:kano	0	1	1	1	1	1	1	1	1	1
+Cayuga:kasayuh	0	1	3	3	3	3	3	3	3	3
+Cayuga:kayadra	0	2	10	18	34	66	130	130	130	130
+Cayuga:kayaho	0	1	1	1	1	1	1	1	1	1
+Cayuga:kayawuhda	0	1	1	5	5	21	21	21	21	21
+Cayuga:knoese	0	0	1	1	1	1	1	1	1	1
+Cayuga:knoha	1	3	3	11	11	43	43	43	43	43
+Cayuga:kuhjeah	1	3	5	5	9	9	9	9	9	9
+Cayuga:kuhnoese	0	1	1	1	1	1	1	1	1	1
+Cayuga:kuhnoseh	0	1	1	5	5	21	21	21	21	21
+Cayuga:ocsote	0	2	12	20	36	68	68	68	68	68
+Cayuga:ongasaah	0	1	3	3	3	3	3	3	3	3
+Cayuga:uhgeahnea	0	1	1	5	5	21	21	21	21	21
+Cayuga:uhgeahneo	0	4	4	12	12	44	44	44	44	44
+Cayuga:uhjeah	1	3	5	5	9	9	9	9	9	9
+Cayuga:uncnahose	0	3	5	5	5	5	5	5	5	5
+Cogui(Adr):augui	0	2	10	26	58	90	90	90	90	90
+Cogui(Adr):augui_dueba	0	2	10	26	58	90	90	90	90	90
+Cogui(Adr):augui_sukkua	0	2	10	26	58	90	90	90	90	90
+Cogui(Adr):duwe	1	5	13	29	45	45	45	45	45	45
+Cogui(Adr):gagi_zhakka	0	0	2	4	8	16	16	16	16	16
+Cogui(Adr):jaba	1	5	13	29	61	93	93	93	93	93
+Cogui(Adr):jaku	0	1	2	4	8	8	8	8	8	8
+Cogui(Adr):jasu	1	5	13	29	45	45	45	45	45	45
+Cogui(Adr):jate	1	5	13	29	61	93	93	93	93	93
+Cogui(Adr):jate_zhakka	0	1	2	4	8	8	8	8	8	8
+Cogui(Adr):jualbi	0	2	10	26	58	90	90	90	90	90
+Cogui(Adr):juazgui_zhakka	0	0	2	4	8	16	16	16	16	16
+Cogui(Adr):juazi	0	2	6	14	30	30	30	30	30	30
+Cogui(Adr):juazi_zhakka	0	0	4	12	28	60	60	60	60	60
+Cogui(Adr):maushi	0	0	4	20	52	116	180	180	180	180
+Cogui(Adr):munzhi	1	4	10	22	46	62	62	62	62	62
+Cogui(Adr):nani	2	10	26	58	90	90	90	90	90	90
+Cogui(Adr):nauwa_duwe	0	0	0	8	40	104	104	104	104	104
+Cogui(Adr):nauwa_jasu	0	0	0	8	40	104	168	168	168	168
+Cogui(Adr):nauwa_nani	0	0	0	16	80	208	272	272	272	272
+Cogui(Adr):nauwa_nu	0	0	0	8	40	104	104	104	104	104
+Cogui(Adr):nema	0	1	1	1	1	1	1	1	1	1
+Cogui(Adr):noma	0	2	10	26	58	90	90	90	90	90
+Cogui(Adr):noma_dueba	0	2	10	26	58	90	90	90	90	90
+Cogui(Adr):noma_sukkua	0	2	10	26	58	90	90	90	90	90
+Cogui(Adr):nuhu	1	5	13	29	45	45	45	45	45	45
+Cogui(Adr):sewa	2	2	2	2	2	2	2	2	2	2
+Cogui(Adr):sukkua	1	4	10	22	46	62	62	62	62	62
+Cogui(Adr):zuwi	0	2	10	26	58	90	90	90	90	90
+Cogui:augui	0	2	10	26	58	90	90	90	90	90
+Cogui:augui_dueba	0	2	10	26	58	90	90	90	90	90
+Cogui:augui_sukkua	0	2	10	26	58	90	90	90	90	90
+Cogui:duwe	1	5	13	29	45	45	45	45	45	45
+Cogui:gagi	0	2	2	2	2	2	2	2	2	2
+Cogui:gagi_wezhu	0	0	4	12	28	60	60	60	60	60
+Cogui:gagi_zhakka	0	0	2	6	14	30	30	30	30	30
+Cogui:jaba	1	1	1	1	1	1	1	1	1	1
+Cogui:jaku	0	1	3	7	15	15	15	15	15	15
+Cogui:jasu	1	5	13	29	45	45	45	45	45	45
+Cogui:jate	1	1	1	1	1	1	1	1	1	1
+Cogui:jate_zhakka	0	1	3	7	15	15	15	15	15	15
+Cogui:jualbi	0	2	10	26	58	90	90	90	90	90
+Cogui:juazgui	0	2	2	2	2	2	2	2	2	2
+Cogui:juazgui_dueba	0	0	4	12	28	60	60	60	60	60
+Cogui:juazgui_zhakka	0	0	2	6	14	30	30	30	30	30
+Cogui:juazi	0	2	6	14	30	30	30	30	30	30
+Cogui:juazi_zhakka	0	0	4	12	28	60	60	60	60	60
+Cogui:mama	0	2	6	14	30	30	30	30	30	30
+Cogui:maushi	0	0	4	20	52	116	180	180	180	180
+Cogui:munzhi	1	1	1	1	1	1	1	1	1	1
+Cogui:munzhi_zhakka	0	1	3	7	15	15	15	15	15	15
+Cogui:nani	2	10	26	58	90	90	90	90	90	90
+Cogui:nauwa_duwe	0	0	4	20	52	116	116	116	116	116
+Cogui:nauwa_jasu	0	0	4	20	52	116	180	180	180	180
+Cogui:nauwa_nani	0	0	8	40	104	232	296	296	296	296
+Cogui:nauwa_nu	0	0	4	20	52	116	116	116	116	116
+Cogui:nema	0	1	1	1	1	1	1	1	1	1
+Cogui:noma	0	2	10	26	58	90	90	90	90	90
+Cogui:noma_dueba	0	2	10	26	58	90	90	90	90	90
+Cogui:noma_sukkua	0	2	10	26	58	90	90	90	90	90
+Cogui:nu	1	5	13	29	45	45	45	45	45	45
+Cogui:saxa	0	2	6	14	30	30	30	30	30	30
+Cogui:sewa	2	2	2	2	2	2	2	2	2	2
+Cogui:sukkua	1	1	1	1	1	1	1	1	1	1
+Cogui:sukkualdakka	0	1	3	7	15	15	15	15	15	15
+Cogui:tukua	0	4	12	28	60	60	60	60	60	60
+Cogui:zuwi	0	2	10	26	58	90	90	90	90	90
+Coreguaje:a_cho	2	2	9	19	25	41	49	49	49	49
+Coreguaje:a_chu	2	2	9	19	25	41	49	49	49	49
+Coreguaje:cha_cha	0	3	4	8	10	16	16	24	24	24
+Coreguaje:chiio	2	5	7	15	19	31	33	35	35	35
+Coreguaje:chiiu	2	5	7	15	19	31	33	35	35	35
+Coreguaje:cho_jeo	2	2	9	19	25	41	49	81	81	81
+Coreguaje:cho_jeu	2	2	9	19	25	41	49	81	81	81
+Coreguaje:cu_eo	0	2	8	12	24	24	40	40	40	40
+Coreguaje:cu_eu	0	2	8	10	22	26	44	44	44	44
+Coreguaje:ja_ko	1	3	5	10	12	20	24	24	24	24
+Coreguaje:ja_ku	1	2	2	5	7	13	13	13	13	13
+Coreguaje:je_oo	0	6	6	14	18	34	34	58	58	58
+Coreguaje:je_ou	0	6	6	14	18	34	34	58	58	58
+Coreguaje:jutao	0	2	2	5	7	12	12	12	12	12
+Coreguaje:jutau	0	2	2	5	7	12	12	12	12	12
+Coreguaje:najeo	0	4	16	22	44	46	48	48	48	48
+Coreguaje:najeu	0	4	16	22	44	46	48	48	48	48
+Coreguaje:pu_ko	0	2	2	5	7	13	13	21	21	21
+Coreguaje:rujo	1	1	1	1	1	1	1	1	1	1
+Coreguaje:u_chao	0	3	4	8	10	15	15	15	15	15
+Coreguaje:u_chau	0	3	4	8	10	15	15	15	15	15
+Coreguaje:uju	1	1	1	1	1	1	1	1	1	1
+Coreguaje:vao	0	4	12	20	36	36	52	52	52	52
+Coreguaje:vau	0	4	12	16	32	40	60	60	60	60
+Crow-1:brother[eq]	1	3	5	6	10	16	24	28	34	38
+Crow-1:brother[eq]1	1	4	7	10	19	30	44	50	54	54
+Crow-1:brother[eq]1a	1	2	4	7	11	17	24	27	33	37
+Crow-1:brother[eq]2	1	4	8	11	16	26	40	46	53	57
+Crow-1:brother[eq]a	1	1	3	4	5	8	11	13	17	19
+Crow-1:father[eq]	1	3	6	9	12	21	32	37	40	40
+Crow-1:mother[eq]	2	4	5	10	16	23	36	44	51	52
+Crow-1:sister[eq]	1	1	3	6	10	14	20	24	26	26
+Crow-1:sister[eq]1	1	2	4	9	14	21	29	31	35	37
+Crow-27:ahha	1	3	9	20	38	54	76	76	76	76
+Crow-27:bachena	1	2	4	6	7	11	12	12	12	12
+Crow-27:bachuka	1	5	10	18	24	32	33	33	33	33
+Crow-27:bakooa	0	1	1	1	1	1	1	1	1	1
+Crow-27:basachete	1	3	5	6	10	11	11	11	11	11
+Crow-27:basakana	0	6	30	86	190	270	270	270	270	270
+Crow-27:basana	0	1	1	1	1	1	1	1	1	1
+Crow-27:basoka	1	4	6	7	11	12	12	12	12	12
+Crow-27:bazakat	1	3	5	6	10	11	11	11	11	11
+Crow-27:bazana	1	4	7	13	18	22	28	28	28	28
+Crow-27:boosha	0	2	4	7	10	16	21	23	23	23
+Crow-27:booshagana	0	1	1	1	1	1	1	1	1	1
+Crow-27:boscheta	0	1	1	1	1	1	1	1	1	1
+Crow-27:bosmeakunista	0	2	7	13	22	33	42	52	58	58
+Crow-27:botsasa	1	5	7	10	11	15	16	16	16	16
+Crow-27:botsoka	0	0	1	3	3	3	3	3	3	3
+Crow-27:botzenopache	0	0	2	2	2	2	2	2	2	2
+Crow-27:busbapeta	0	4	20	56	124	216	304	330	350	350
+Crow-27:buspahea	0	0	2	6	14	14	14	14	14	14
+Crow-27:buswena	1	3	5	6	10	11	11	11	11	11
+Crow-27:ekea	1	5	9	15	22	37	48	50	50	50
+Crow-27:esacheka	0	1	1	1	1	1	1	1	1	1
+Crow-27:manaka	0	1	2	4	6	7	11	12	12	12
+Crow-27:manazha	0	1	3	5	6	10	11	11	11	11
+Crow-27:mazhe	0	1	1	1	1	1	1	1	1	1
+Crow-27:meeka	1	4	7	13	18	22	28	28	28	28
+Crow-27:menuphissaka	0	6	30	86	190	270	270	270	270	270
+Crow-27:mooa	1	2	2	2	2	2	2	2	2	2
+Crow-27:mooaka	0	1	6	12	23	33	44	56	61	62
+Crow-27:nakmea	1	6	15	26	44	63	79	97	102	103
+Crow-2:ahha	1	4	10	19	35	50	68	68	68	68
+Crow-2:bachena	1	2	4	6	7	11	12	12	12	12
+Crow-2:bachuka	2	9	18	35	50	65	83	88	89	89
+Crow-2:bakooa	0	1	1	1	1	1	1	1	1	1
+Crow-2:basachete	1	4	9	14	21	27	32	33	33	33
+Crow-2:basoka	1	3	5	6	10	11	11	11	11	11
+Crow-2:bazakat	1	4	9	14	21	27	32	33	33	33
+Crow-2:bazana	1	4	7	13	18	22	28	28	28	28
+Crow-2:boosha	0	2	4	7	10	16	21	23	23	23
+Crow-2:booshagana	0	1	1	1	1	1	1	1	1	1
+Crow-2:boscheta	0	1	1	1	1	1	1	1	1	1
+Crow-2:bosmeakunista	0	2	7	13	22	33	42	52	58	58
+Crow-2:botsasa	1	6	15	26	44	63	79	97	102	103
+Crow-2:botzenopache	0	0	2	2	2	2	2	2	2	2
+Crow-2:buswena	1	3	5	6	10	11	11	11	11	11
+Crow-2:ekea	1	5	10	18	26	45	57	59	59	59
+Crow-2:manaka	0	1	2	4	6	7	11	12	12	12
+Crow-2:manazha	0	1	4	9	14	21	27	32	33	33
+Crow-2:mazhe	0	1	1	1	1	1	1	1	1	1
+Crow-2:meeka	1	5	11	22	32	43	55	60	61	61
+Crow-2:mooa	1	2	4	6	7	11	12	12	12	12
+Crow-2:mooaka	0	1	6	12	23	33	44	56	61	62
+Crow-2:nakmea	1	6	15	26	44	63	79	97	102	103
+Cubeo(Adr):ami_co	4	6	8	14	14	14	14	14	14	14
+Cubeo(Adr):ami_yo	4	6	8	14	14	14	14	14	14	14
+Cubeo(Adr):baco	1	1	1	1	1	1	1	1	1	1
+Cubeo(Adr):buchu	4	4	4	4	4	4	4	4	4	4
+Cubeo(Adr):buco	1	1	1	1	1	1	1	1	1	1
+Cubeo(Adr):bucu	1	1	1	1	1	1	1	1	1	1
+Cubeo(Adr):bucuru	2	2	2	2	2	2	2	2	2	2
+Cubeo(Adr):chima	0	0	2	6	26	58	114	178	210	274
+Cubeo(Adr):jibuwaimo	0	1	1	1	1	1	1	1	1	1
+Cubeo(Adr):jibuwaimu	0	1	1	1	1	1	1	1	1	1
+Cubeo(Adr):jicapenumo	0	2	6	10	22	22	22	22	22	22
+Cubeo(Adr):jicapenumu	0	2	6	10	22	22	22	22	22	22
+Cubeo(Adr):jichimaco	0	0	2	6	26	58	114	146	178	178
+Cubeo(Adr):jichimacu	0	0	2	6	26	58	114	178	210	274
+Cubeo(Adr):jicoyumu	0	2	2	2	2	2	2	2	2	2
+Cubeo(Adr):jitebuco	0	0	2	4	6	12	12	12	12	12
+Cubeo(Adr):jitebucu	0	0	2	4	6	12	12	12	12	12
+Cubeo(Adr):jiwemo	0	2	2	2	2	2	2	2	2	2
+Cubeo(Adr):juai_co	1	7	21	37	81	89	89	89	89	89
+Cubeo(Adr):juai_yo	1	7	21	37	81	89	89	89	89	89
+Cubeo(Adr):neco	0	2	18	70	150	246	246	246	246	246
+Cubeo(Adr):necuyo	0	2	18	70	150	246	246	246	246	246
+Cubeo(Adr):paco	0	1	4	8	16	22	26	26	26	26
+Cubeo(Adr):pacu	1	1	1	1	1	1	1	1	1	1
+Cubeo(Adr):pacu_yo	0	1	4	8	16	22	26	26	26	26
+Cubeo(Adr):parajico	0	4	32	112	216	360	360	360	360	360
+Cubeo(Adr):parajicu	0	4	32	112	216	360	360	360	360	360
+Cubeo(Adr):pari_mo	0	2	8	10	26	34	34	66	66	66
+Cubeo(Adr):pari_yo	0	2	8	10	26	34	34	66	66	66
+Cubeo(Adr):parimo	0	3	10	16	34	48	56	88	104	104
+Cubeo(Adr):pariyo	0	3	10	16	34	48	56	88	104	104
+Cubeo(Adr):yure_buwado	0	1	1	1	1	1	1	1	1	1
+Cubeo(Adr):yure_buwayu	0	1	1	1	1	1	1	1	1	1
+Cubeo:jibuwaimo	0	1	1	1	1	1	1	1	1	1
+Cubeo:jibuwaimu	0	1	1	1	1	1	1	1	1	1
+Cubeo:jicapenumo	0	2	6	10	22	22	22	22	22	22
+Cubeo:jicapenumu	0	2	6	10	22	22	22	22	22	22
+Cubeo:jichimaco	0	0	2	2	22	30	54	102	134	134
+Cubeo:jichimacu	0	0	2	2	22	30	54	102	134	134
+Cubeo:jicoyumu	0	2	2	2	2	2	2	2	2	2
+Cubeo:jimaco	1	1	1	1	1	1	1	1	1	1
+Cubeo:jimacu	1	1	1	1	1	1	1	1	1	1
+Cubeo:jimamico	4	6	8	14	14	14	14	14	14	14
+Cubeo:jimamicu	4	6	8	14	14	14	14	14	14	14
+Cubeo:jimarepaco	1	1	1	1	1	1	1	1	1	1
+Cubeo:jimarepacu	1	1	1	1	1	1	1	1	1	1
+Cubeo:jineco	0	2	18	70	150	246	246	246	246	246
+Cubeo:jinecuyo	0	2	18	70	150	246	246	246	246	246
+Cubeo:jipaco	1	1	1	1	1	1	1	1	1	1
+Cubeo:jipacoi_marepacu	0	1	1	1	1	1	1	1	1	1
+Cubeo:jipacomaco	0	1	4	8	16	22	26	26	26	26
+Cubeo:jipacu	1	1	1	1	1	1	1	1	1	1
+Cubeo:jipacui_marepaco	0	1	1	1	1	1	1	1	1	1
+Cubeo:jipacumacu	0	1	4	8	16	22	26	26	26	26
+Cubeo:jiparameco	0	4	32	112	216	360	360	360	360	360
+Cubeo:jiparamecu	0	4	32	112	216	360	360	360	360	360
+Cubeo:jiparamoco	0	1	2	6	10	34	58	90	122	122
+Cubeo:jiparamocu	0	1	2	6	10	34	58	90	122	122
+Cubeo:jiparimo	0	3	6	10	12	18	26	26	42	42
+Cubeo:jipariyo	0	3	6	10	12	18	26	26	42	42
+Cubeo:jitebuco	0	0	2	4	6	12	12	12	12	12
+Cubeo:jitebucu	0	0	2	4	6	12	12	12	12	12
+Cubeo:jiwaco	0	3	12	18	42	66	66	66	66	66
+Cubeo:jiwacu	0	3	12	18	42	66	66	66	66	66
+Cubeo:jiwemo	0	2	2	2	2	2	2	2	2	2
+Cubeo:jiyoco	4	6	8	14	18	18	18	18	18	18
+Cubeo:jiyocu	4	6	8	14	18	18	18	18	18	18
+Cubeo:jiyuico	0	1	2	6	10	34	58	90	122	122
+Cubeo:jiyuicu	0	1	2	6	10	34	66	98	130	162
+Cubeo:legal_spouse	2	2	2	2	2	2	2	2	2	2
+Cubeo:nujemaco	0	2	8	16	32	44	44	44	44	44
+Cubeo:nujemacu	0	2	8	16	32	44	44	44	44	44
+Cubeo:preferred_spouse	0	0	4	4	44	60	140	236	236	364
+Dravidian:akka	1	1	5	13	29	29	29	29	29	29
+Dravidian:amma	1	1	1	1	1	1	1	1	1	1
+Dravidian:annan	1	1	5	13	29	29	29	29	29	29
+Dravidian:appa	1	1	1	1	1	1	1	1	1	1
+Dravidian:attai	0	3	6	10	22	22	22	22	22	22
+Dravidian:attan	0	3	7	15	31	55	55	55	55	55
+Dravidian:cinnamma	0	1	4	8	20	20	20	20	20	20
+Dravidian:cinnappa	0	1	4	8	20	20	20	20	20	20
+Dravidian:kolunti	0	3	7	15	31	55	55	55	55	55
+Dravidian:maccinan	0	3	7	15	31	55	55	55	55	55
+Dravidian:makal	1	3	7	15	31	55	79	79	79	79
+Dravidian:makan	1	3	7	15	31	55	79	79	79	79
+Dravidian:maman	0	3	6	10	22	22	22	22	22	22
+Dravidian:mappillai	1	1	1	1	1	1	1	1	1	1
+Dravidian:marumakal	0	3	7	15	31	55	79	79	79	79
+Dravidian:marumakan	0	3	7	15	31	55	79	79	79	79
+Dravidian:mayni	0	3	7	15	31	55	55	55	55	55
+Dravidian:pattan	0	2	10	18	34	66	66	66	66	66
+Dravidian:patti	0	2	10	18	34	66	66	66	66	66
+Dravidian:pencati	1	1	1	1	1	1	1	1	1	1
+Dravidian:peran	0	2	8	12	28	44	44	44	44	44
+Dravidian:periyamma	0	1	4	8	20	20	20	20	20	20
+Dravidian:periyappa	0	1	4	8	20	20	20	20	20	20
+Dravidian:petti	0	2	8	12	28	44	44	44	44	44
+Dravidian:tampi	1	1	5	13	29	29	29	29	29	29
+Dravidian:tankacci	1	1	5	13	29	29	29	29	29	29
+English:ancestor	2	6	14	14	14	14	14	14	14	14
+English:aunt	0	2	4	4	4	4	4	4	4	4
+English:brother_in_law	0	3	5	5	5	5	5	5	5	5
+English:dad	1	1	1	1	1	1	1	1	1	1
+English:daughter_dear	1	1	1	1	1	1	1	1	1	1
+English:daughter_in_law	0	1	1	1	1	1	1	1	1	1
+English:ex_husband	2	2	2	2	2	2	2	2	2	2
+English:ex_wife	2	2	2	2	2	2	2	2	2	2
+English:father_in_law	0	2	2	2	2	2	2	2	2	2
+English:first_cousin	0	0	8	8	8	8	8	8	8	8
+English:first_cousin_once_removed	0	0	0	16	16	16	16	16	16	16
+English:granddaughter	0	2	2	2	2	2	2	2	2	2
+English:granddaughter_in_law	0	0	2	2	2	2	2	2	2	2
+English:grandfather	0	2	2	2	2	2	2	2	2	2
+English:grandmother	0	2	2	2	2	2	2	2	2	2
+English:grandparent	0	4	4	4	4	4	4	4	4	4
+English:grandson	0	2	2	2	2	2	2	2	2	2
+English:grandson_in_law	0	0	2	2	2	2	2	2	2	2
+English:greataunt	0	0	4	8	8	8	8	8	8	8
+English:greatgranddaughter	0	0	4	4	4	4	4	4	4	4
+English:greatgrandfather	0	0	4	4	4	4	4	4	4	4
+English:greatgrandmother	0	0	4	4	4	4	4	4	4	4
+English:greatgrandparent	0	0	8	8	8	8	8	8	8	8
+English:greatgrandson	0	0	4	4	4	4	4	4	4	4
+English:greatuncle	0	0	4	8	8	8	8	8	8	8
+English:hubby	1	1	1	1	1	1	1	1	1	1
+English:kiddie	2	2	2	2	2	2	2	2	2	2
+English:late_father	1	1	1	1	1	1	1	1	1	1
+English:mom	1	1	1	1	1	1	1	1	1	1
+English:mother_in_law	0	2	2	2	2	2	2	2	2	2
+English:nephew	0	2	6	6	6	6	6	6	6	6
+English:niece	0	2	6	6	6	6	6	6	6	6
+English:second_cousin	0	0	0	0	32	32	32	32	32	32
+English:sister_in_law	0	3	5	5	5	5	5	5	5	5
+English:son_in_law	0	1	1	1	1	1	1	1	1	1
+English:sonny	1	1	1	1	1	1	1	1	1	1
+English:step_son_in_law	0	0	1	1	1	1	1	1	1	1
+English:uncle	0	2	4	4	4	4	4	4	4	4
+English:wifey	1	1	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:ahnana	1	1	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:ahtata	1	1	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:aiyugga	0	1	2	2	2	2	2	2	2	2
+Eskimo Baffin Bay:angayua	2	2	2	2	2	2	2	2	2	2
+Eskimo Baffin Bay:angayukcha	0	4	4	4	4	4	4	4	4	4
+Eskimo Baffin Bay:angoecha	0	1	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:angugga	0	1	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:annecha	0	2	2	2	2	2	2	2	2	2
+Eskimo Baffin Bay:anninga	1	1	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:atchunga	0	1	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:augaougwa	0	0	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:aunekcha	0	1	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:engota	0	4	20	52	116	180	308	308	308	308
+Eskimo Baffin Bay:enningah	1	1	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:etuah	0	2	14	22	22	22	22	22	22	22
+Eskimo Baffin Bay:iega	0	4	4	12	12	12	12	12	12	12
+Eskimo Baffin Bay:ieingga	0	0	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:illoa	0	0	8	8	8	8	8	8	8	8
+Eskimo Baffin Bay:illunga	0	0	8	8	8	8	8	8	8	8
+Eskimo Baffin Bay:innikcha	0	1	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:kuneaga	0	0	0	4	4	4	4	4	4	4
+Eskimo Baffin Bay:kungeaga	0	2	2	6	6	6	6	6	6	6
+Eskimo Baffin Bay:naya	1	1	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:nayukcha	0	2	2	2	2	2	2	2	2	2
+Eskimo Baffin Bay:ningaongwa	0	2	4	8	8	8	8	8	8	8
+Eskimo Baffin Bay:ningeowa	0	2	14	22	22	22	22	22	22	22
+Eskimo Baffin Bay:nooaga	0	2	2	10	10	10	10	10	10	10
+Eskimo Baffin Bay:nugleunga	1	1	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:nuka	1	1	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:nukaha	1	1	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:ookooaga	0	2	4	8	8	8	8	8	8	8
+Eskimo Baffin Bay:pennecha	0	1	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:punningah	1	1	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:shakinga	0	2	2	2	2	2	2	2	2	2
+Eskimo Baffin Bay:shukiaga	0	2	2	2	2	2	2	2	2	2
+Eskimo Baffin Bay:ukka	0	1	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:ukuunga	0	0	1	1	1	1	1	1	1	1
+Eskimo Baffin Bay:ungaga	0	2	2	10	10	10	10	10	10	10
+Eskimo Baffin Bay:weyoogwa	0	2	2	10	10	10	10	10	10	10
+Eskimo Baffin Bay:winga	1	1	1	1	1	1	1	1	1	1
+Eskimo Greenland:ajaga	0	1	1	1	1	1	1	1	1	1
+Eskimo Greenland:akaga	0	1	1	1	1	1	1	1	1	1
+Eskimo Greenland:alekara	1	1	1	1	1	1	1	1	1	1
+Eskimo Greenland:anaga	0	2	2	2	2	2	2	2	2	2
+Eskimo Greenland:ananaga	1	1	1	1	1	1	1	1	1	1
+Eskimo Greenland:angaga	0	3	3	3	3	3	3	3	3	3
+Eskimo Greenland:angajosnora	0	0	1	1	1	1	1	1	1	1
+Eskimo Greenland:angajuga	2	2	2	2	2	2	2	2	2	2
+Eskimo Greenland:angutigssara	0	1	1	1	1	1	1	1	1	1
+Eskimo Greenland:aniga	1	1	1	1	1	1	1	1	1	1
+Eskimo Greenland:arkaluara	1	1	1	1	1	1	1	1	1	1
+Eskimo Greenland:arnagssara	0	1	1	1	1	1	1	1	1	1
+Eskimo Greenland:ataga	0	2	2	2	2	2	2	2	2	2
+Eskimo Greenland:atataga	1	1	1	1	1	1	1	1	1	1
+Eskimo Greenland:atsaga	0	1	1	1	1	1	1	1	1	1
+Eskimo Greenland:ernera	1	1	1	1	1	1	1	1	1	1
+Eskimo Greenland:ernigssara	0	1	1	1	1	1	1	1	1	1
+Eskimo Greenland:ernutaekiutiga	0	0	8	8	8	8	8	8	8	8
+Eskimo Greenland:ernutara	0	4	4	4	4	4	4	4	4	4
+Eskimo Greenland:igdlora	0	0	8	8	8	8	8	8	8	8
+Eskimo Greenland:kangiara	0	2	2	2	2	2	2	2	2	2
+Eskimo Greenland:najuga	1	1	1	1	1	1	1	1	1	1
+Eskimo Greenland:nakara	2	2	2	2	2	2	2	2	2	2
+Eskimo Greenland:natangutigssara	0	4	4	4	4	4	4	4	4	4
+Eskimo Greenland:ningauga	0	2	3	3	3	3	3	3	3	3
+Eskimo Greenland:nuaraluara	0	2	2	2	2	2	2	2	2	2
+Eskimo Greenland:nuliara	1	1	1	1	1	1	1	1	1	1
+Eskimo Greenland:panigssara	0	1	1	1	1	1	1	1	1	1
+Eskimo Greenland:panniga	1	1	1	1	1	1	1	1	1	1
+Eskimo Greenland:sakiahsiara	0	2	2	2	2	2	2	2	2	2
+Eskimo Greenland:sakiatsiara	0	2	2	2	2	2	2	2	2	2
+Eskimo Greenland:sakiga	0	4	4	4	4	4	4	4	4	4
+Eskimo Greenland:ujoruga	0	2	2	2	2	2	2	2	2	2
+Eskimo Greenland:ukuara	0	2	3	3	3	3	3	3	3	3
+Eskimo Greenland:uviga	1	1	1	1	1	1	1	1	1	1

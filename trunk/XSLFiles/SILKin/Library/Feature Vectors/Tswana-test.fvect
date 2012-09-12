@@ -1,0 +1,13 @@
+Tswana-test
+false
+0
+false
+2.7027028
+8.1081085
+[elder(arg0, Alter), elder(arg0, arg1), gender(arg0, arg1), younger(arg0, arg1), younger(Alter, arg1), elder(Alter, arg1)]
+[elder(arg0, Alter), younger(Alter, Ego), elder(Alter, Ego), elder(Ego, Alter), younger(Alter, arg1), elder(Alter, arg1)]
+2.0679612
+true
+false
+[BroDa_BroSo_FaBroSoDa_FaBroSoSo, Bro_FaBroDa_FaBroSo_HuWi_Sis, Bro_FaBroDa_FaBroSo_Sis, Da, DaDa_DaSo_SoDa_SoSo, DaHu, Da_So, Fa, FaBroC_FaFaBroSoC_FaFaSisDaC_FaMoBroDaC_FaMoSisSoC_MoFaBroDaC_MoFaSisSoC_MoMoBroSoC_MoMoMoSisDaDaDa_MoMoSisDaC_MoMoSisDaDa_MoSisC_MoSisDa_MoSisSo, FaBro_FaFaBroSo, FaBro_FaFa_MoFa, FaFaBro, FaFaBroDa_FaSis, FaFaSis, FaMoBro, FaMoSis, FaSisDa_FaSisSo_MoBroDa_MoBroSo, Hbro_Hsis, Hu, HuBro_HuFa_HuMo_HuSis, Hu_Wi, Mo, MoBro_MoFaBroSo, MoFaBro, MoFaSis, MoMoBro, MoMoMoSisDaDaDa_MoMoSisDaDa_MoSisDa_MoSisSo, MoMoSis, MoSisDaDa, MoSisDaDa_MoSisDaSo_MoSisSoDa_MoSisSoSo, SisDa_SisSo, So, SoWi, Stfa, Wi, WiBro_WiFa_WiMo_WiSis]
+[C, CC, CSp, Hsib, P, PPPSibCCC_PPSibCC_PSibC, PPSib, PPSibC_PSib, PP_PSib, PSibC, PSibCC, PSibCC_SibC, PSibC_Sib, PSibC_Sib_SpSp, SibC, Sp, SpP_SpSib, Stp]

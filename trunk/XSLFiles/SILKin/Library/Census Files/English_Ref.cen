@@ -1,0 +1,629 @@
+Dec 2, 2003
+Context for English language is:
+70 individuals and 27 families registered.
+
+Individuals:
+#0: Ego (M)  (M), born Jan 1, 1970.
+First name = null.  Surname = Ego.
+Kin Terms: Ego .
+     BirthFamily: 0
+     Marriages:
+     Family#4: I-0,  I-11
+     Family#10: I-0,  I-22
+     Family#26: I-0,  I-69
+
+#1: ancestor, dad, late_father (M)  (M), born Jan 1, 1949 & died Apr 15, 1977.
+First name = null.  Surname = *&^%$.
+Kin Terms: ancestor dad late_father .
+Kin Term Name History: ancestor:0 dad:0 late_father:0 ancestor:0 dad:0 late_father:0 .
+     BirthFamily: 1
+     Marriages:
+     Family#0: I-1,  I-2
+     Family#19: I-1,  I-44
+
+#2: mom, ancestor (F)  (F), born Jan 1, 1949.
+First name = Presumed.  Surname = Spouse.
+Kin Terms: mom ancestor .
+Kin Term Name History: mom:0 ancestor:0 mom:0 .
+     Marriages:
+     Family#0: I-1,  I-2
+
+#3: ancestor, grandfather, grandparent (M)  (M), born Jan 1, 1928.
+First name = null.  Surname = *&^%$.
+Kin Terms: ancestor grandfather grandparent .
+Kin Term Name History: ancestor:1 grandfather:0 grandparent:0 ancestor:1 grandparent:0 grandfather:0 .
+     BirthFamily: 2
+     Marriages:
+     Family#1: I-3,  I-4
+
+#4: grandmother, ancestor, grandparent (F)  (F), born Jan 1, 1928.
+First name = Presumed.  Surname = Spouse.
+Kin Terms: grandmother ancestor grandparent .
+Kin Term Name History: grandmother:0 ancestor:1 grandparent:0 grandmother:0 .
+     Marriages:
+     Family#1: I-3,  I-4
+
+#5: ancestor, greatgrandfather, greatgrandparent (M)  (M), born Jan 1, 1907.
+First name = null.  Surname = *&^%$.
+Kin Terms: ancestor greatgrandfather greatgrandparent .
+Kin Term Name History: ancestor:2 greatgrandfather:0 greatgrandparent:0 ancestor:2 greatgrandparent:0 greatgrandfather:0 .
+     Marriages:
+     Family#2: I-5,  I-6
+
+#6: greatgrandmother, ancestor, greatgrandparent (F)  (F), born Jan 1, 1907.
+First name = Presumed.  Surname = Spouse.
+Kin Terms: greatgrandmother ancestor greatgrandparent .
+Kin Term Name History: greatgrandmother:0 ancestor:2 greatgrandparent:0 greatgrandmother:0 .
+     Marriages:
+     Family#2: I-5,  I-6
+
+#7: aunt (F)  (F), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+Kin Terms: aunt .
+Kin Term Name History: aunt:0 aunt:0 .
+     BirthFamily: 1
+     Marriages:
+     Family#25: I-68,  I-7
+
+#8: uncle (M)  (M), born Jan 1, 1951.
+First name = null.  Surname = *&^%$.
+Kin Terms: uncle .
+Kin Term Name History: uncle:0 uncle:0 .
+     BirthFamily: 1
+     Marriages:
+     Family#3: I-8,  I-9
+
+#9: aunt (F)  (F), born Jan 1, 1951.
+First name = null.  Surname = *&^%$.
+Kin Terms: aunt .
+Kin Term Name History: aunt:1 aunt:1 .
+     Marriages:
+     Family#3: I-8,  I-9
+
+#10: brother, brother_in_law (M)  (M), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+Kin Terms: brother brother_in_law .
+Kin Term Name History: brother:0 brother_in_law:3 brother_in_law:7 brother_in_law:11 brother:0 brother_in_law:3 brother_in_law:7 brother_in_law:11 .
+     BirthFamily: 0
+     Marriages:
+     Family#8: I-10,  I-19
+
+#11: ex_wife (F)  (F), born Jan 1, 1970 & died Apr 15, 1994.
+First name = null.  Surname = *&^%$.
+Kin Terms: ex_wife .
+Kin Term Name History: ex_wife:1 ex_wife:1 .
+     BirthFamily: 5
+     Marriages:
+     Family#4: I-0,  I-11
+
+#12: mother_in_law (F)  (F), born Jan 1, 1949.
+First name = null.  Surname = *&^%$.
+Kin Terms: mother_in_law .
+Kin Term Name History: mother_in_law:0 mother_in_law:0 .
+     Marriages:
+     Family#5: I-13,  I-12
+
+#13: father_in_law (M)  (M), born Jan 1, 1949.
+First name = Presumed.  Surname = Spouse.
+Kin Terms: father_in_law .
+Kin Term Name History: father_in_law:0 father_in_law:0 .
+     Marriages:
+     Family#5: I-13,  I-12
+     Family#24: I-13,  I-63
+
+#14: brother_in_law, sib_gen (M)  (M), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+Kin Terms: brother_in_law sib_gen .
+Kin Term Name History: brother_in_law:0 brother_in_law:4 brother_in_law:8 sib_gen:0 brother_in_law:0 brother_in_law:4 brother_in_law:8 sib_gen:0 .
+     BirthFamily: 5
+     Marriages:
+     Family#9: I-14,  I-20
+
+#15: sister, sister_in_law (F)  (F), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+Kin Terms: sister sister_in_law .
+Kin Term Name History: sister:0 sister_in_law:3 sister_in_law:7 sister_in_law:11 sister:0 sister_in_law:3 sister_in_law:7 sister_in_law:11 .
+     BirthFamily: 0
+     Marriages:
+     Family#6: I-16,  I-15
+
+#16: brother_in_law (M)  (M), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+Kin Terms: brother_in_law .
+Kin Term Name History: brother_in_law:1 brother_in_law:5 brother_in_law:9 brother_in_law:1 brother_in_law:5 brother_in_law:9 .
+     Marriages:
+     Family#6: I-16,  I-15
+
+#17: sib_gen, sister_in_law (F)  (F), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+Kin Terms: sib_gen sister_in_law .
+Kin Term Name History: sib_gen:1 sister_in_law:0 sister_in_law:4 sister_in_law:8 sib_gen:1 sister_in_law:0 sister_in_law:4 sister_in_law:8 .
+     BirthFamily: 5
+     Marriages:
+     Family#7: I-18,  I-17
+
+#18: brother_in_law (M)  (M), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+Kin Terms: brother_in_law .
+Kin Term Name History: brother_in_law:2 brother_in_law:6 brother_in_law:10 brother_in_law:2 brother_in_law:6 brother_in_law:10 .
+     Marriages:
+     Family#7: I-18,  I-17
+
+#19: sister_in_law (F)  (F), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+Kin Terms: sister_in_law .
+Kin Term Name History: sister_in_law:1 sister_in_law:5 sister_in_law:9 sister_in_law:1 sister_in_law:5 sister_in_law:9 .
+     Marriages:
+     Family#8: I-10,  I-19
+
+#20: sister_in_law (F)  (F), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+Kin Terms: sister_in_law .
+Kin Term Name History: sister_in_law:2 sister_in_law:6 sister_in_law:10 sister_in_law:2 sister_in_law:6 sister_in_law:10 .
+     Marriages:
+     Family#9: I-14,  I-20
+
+#21: daughter_dear, kiddie (F)  (F), born Jan 1, 1991.
+First name = null.  Surname = *&^%$.
+Kin Terms: daughter_dear kiddie .
+Kin Term Name History: daughter_dear:0 kiddie:0 daughter_dear:0 .
+     BirthFamily: 4
+
+#22: ex_wife (F)  (F), born Jan 1, 1970.
+First name = null.  Surname = *&^%$.
+Kin Terms: ex_wife .
+Kin Term Name History: ex_wife:0 .
+     Marriages:
+     Family#10: I-0,  I-22
+
+#23: No Defined Term  (?), born Jan 1, 1952.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 1
+     Marriages:
+     Family#11: I-23,  I-24
+
+#24: No Defined Term  (?), born Jan 1, 1952.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#11: I-23,  I-24
+
+#25: first_cousin  (?), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+Kin Terms: first_cousin .
+Kin Term Name History: first_cousin:0 first_cousin:0 first_cousin:0 .
+     BirthFamily: 11
+
+#26: No Defined Term  (?), born Jan 1, 1929.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 2
+     Marriages:
+     Family#12: I-26,  I-27
+
+#27: No Defined Term  (?), born Jan 1, 1929.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#12: I-26,  I-27
+
+#28: first_cousin_once_removed  (?), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+Kin Terms: first_cousin_once_removed .
+Kin Term Name History: first_cousin_once_removed:0 first_cousin_once_removed:0 first_cousin_once_removed:0 .
+     BirthFamily: 12
+     Marriages:
+     Family#22: I-28,  I-56
+
+#29: kiddie  (?), born Jan 1, 1992.
+First name = null.  Surname = *&^%$.
+Kin Terms: kiddie .
+Kin Term Name History: kiddie:0 kiddie:0 .
+     BirthFamily: 4
+     Marriages:
+     Family#13: I-29,  I-30
+
+#30: No Defined Term  (?), born Jan 1, 1992.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#13: I-29,  I-30
+
+#31: grandchild  (?), born Jan 1, 2013.
+First name = null.  Surname = *&^%$.
+Kin Terms: grandchild .
+Kin Term Name History: grandchild:0 grandchild:0 .
+     BirthFamily: 13
+     Marriages:
+     Family#17: I-31,  I-39
+
+#32: granddaughter, grandchild (F)  (F), born Jan 1, 2014.
+First name = null.  Surname = *&^%$.
+Kin Terms: granddaughter grandchild .
+Kin Term Name History: granddaughter:0 grandchild:0 granddaughter:0 .
+     BirthFamily: 13
+     Marriages:
+     Family#15: I-35,  I-32
+
+#33: grandson, grandchild (M)  (M), born Jan 1, 2015.
+First name = null.  Surname = *&^%$.
+Kin Terms: grandson grandchild .
+Kin Term Name History: grandson:0 grandchild:0 grandson:0 .
+     BirthFamily: 13
+     Marriages:
+     Family#14: I-33,  I-34
+
+#34: granddaughter_in_law (F)  (F), born Jan 1, 2015.
+First name = null.  Surname = *&^%$.
+Kin Terms: granddaughter_in_law .
+Kin Term Name History: granddaughter_in_law:0 granddaughter_in_law:0 .
+     Marriages:
+     Family#14: I-33,  I-34
+
+#35: grandson_in_law (M)  (M), born Jan 1, 2014.
+First name = null.  Surname = *&^%$.
+Kin Terms: grandson_in_law .
+Kin Term Name History: grandson_in_law:0 grandson_in_law:0 .
+     Marriages:
+     Family#15: I-35,  I-32
+
+#36: greataunt (F)  (F), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+Kin Terms: greataunt .
+Kin Term Name History: greataunt:0 greataunt:0 .
+     BirthFamily: 2
+     Marriages:
+     Family#18: I-42,  I-36
+
+#37: greatuncle (M)  (M), born Jan 1, 1931.
+First name = null.  Surname = *&^%$.
+Kin Terms: greatuncle .
+Kin Term Name History: greatuncle:0 greatuncle:0 .
+     BirthFamily: 2
+     Marriages:
+     Family#16: I-37,  I-38
+
+#38: greataunt (F)  (F), born Jan 1, 1931.
+First name = null.  Surname = *&^%$.
+Kin Terms: greataunt .
+Kin Term Name History: greataunt:1 greataunt:1 .
+     Marriages:
+     Family#16: I-37,  I-38
+
+#39: No Defined Term  (?), born Jan 1, 2013.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#17: I-31,  I-39
+
+#40: greatgranddaughter (F)  (F), born Jan 1, 2034.
+First name = null.  Surname = *&^%$.
+Kin Terms: greatgranddaughter .
+Kin Term Name History: greatgranddaughter:0 greatgranddaughter:0 .
+     BirthFamily: 17
+
+#41: greatgrandson (M)  (M), born Jan 1, 2035.
+First name = null.  Surname = *&^%$.
+Kin Terms: greatgrandson .
+Kin Term Name History: greatgrandson:0 greatgrandson:0 .
+     BirthFamily: 17
+
+#42: greatuncle (M)  (M), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+Kin Terms: greatuncle .
+Kin Term Name History: greatuncle:1 greatuncle:1 .
+     Marriages:
+     Family#18: I-42,  I-36
+
+#43: brother (M)  (M), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+Kin Terms: brother .
+Kin Term Name History: brother:0 .
+     BirthFamily: 0
+
+#44: step_mother (F)  (F), born Jan 1, 1949 & died Apr 15, 1966.
+First name = null.  Surname = *&^%$.
+Kin Terms: step_mother .
+Kin Term Name History: step_mother:0 .
+     Marriages:
+     Family#19: I-1,  I-44
+
+#45: half_brother (M)  (M), born Jan 1, 1966.
+First name = null.  Surname = *&^%$.
+Kin Terms: half_brother .
+Kin Term Name History: half_brother:0 half_brother:0 .
+     BirthFamily: 19
+
+#46: sister (F)  (F), born Jan 1, 1974.
+First name = null.  Surname = *&^%$.
+Kin Terms: sister .
+Kin Term Name History: sister:0 .
+     BirthFamily: 0
+
+#47: half_sister (F)  (F), born Jan 1, 1966.
+First name = null.  Surname = *&^%$.
+Kin Terms: half_sister .
+Kin Term Name History: half_sister:0 half_sister:0 .
+     BirthFamily: 19
+
+#48: No Defined Term  (?), born Jan 1, 1975.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 0
+     Marriages:
+     Family#20: I-48,  I-49
+
+#49: No Defined Term  (?), born Jan 1, 1975.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#20: I-48,  I-49
+
+#50: nephew (M)  (M), born Jan 1, 1996.
+First name = null.  Surname = *&^%$.
+Kin Terms: nephew .
+Kin Term Name History: nephew:0 nephew:0 nephew:0 .
+     BirthFamily: 20
+
+#51: No Defined Term  (?), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 5
+     Marriages:
+     Family#21: I-51,  I-52
+
+#52: No Defined Term  (?), born Jan 1, 1973.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#21: I-51,  I-52
+
+#53: nephew (M)  (M), born Jan 1, 1994.
+First name = null.  Surname = *&^%$.
+Kin Terms: nephew .
+Kin Term Name History: nephew:1 nephew:1 nephew:1 .
+     BirthFamily: 21
+
+#54: niece (F)  (F), born Jan 1, 1997.
+First name = null.  Surname = *&^%$.
+Kin Terms: niece .
+Kin Term Name History: niece:0 niece:0 niece:0 .
+     BirthFamily: 20
+
+#55: niece (F)  (F), born Jan 1, 1995.
+First name = null.  Surname = *&^%$.
+Kin Terms: niece .
+Kin Term Name History: niece:1 niece:1 niece:1 .
+     BirthFamily: 21
+
+#56: No Defined Term  (?), born Jan 1, 1950.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#22: I-28,  I-56
+
+#57: old_extinguished_flame, second_cousin (F)  (F), born Jan 1, 1971 & died Apr 15, 1992.
+First name = null.  Surname = *&^%$.
+Kin Terms: old_extinguished_flame second_cousin .
+Kin Term Name History: old_extinguished_flame:0 second_cousin:0 second_cousin:0 old_extinguished_flame:0 old_extinguished_flame:0 .
+     BirthFamily: 22
+
+#58: old_extinguished_flame, second_cousin (F)  (F), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+Kin Terms: old_extinguished_flame second_cousin .
+Kin Term Name History: old_extinguished_flame:1 second_cousin:0 second_cousin:0 old_extinguished_flame:1 old_extinguished_flame:1 .
+     BirthFamily: 22
+     Marriages:
+     Family#23: I-59,  I-58
+
+#59: No Defined Term (M)  (M), born Jan 1, 1972.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#23: I-59,  I-58
+
+#60: prospective_wife, second_cousin (F)  (F), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+Kin Terms: prospective_wife second_cousin .
+Kin Term Name History: prospective_wife:0 second_cousin:0 second_cousin:0 prospective_wife:0 prospective_wife:0 .
+     BirthFamily: 22
+
+#61: second_cousin  (?), born Jan 1, 1974.
+First name = null.  Surname = *&^%$.
+Kin Terms: second_cousin .
+Kin Term Name History: second_cousin:0 second_cousin:0 second_cousin:0 .
+     BirthFamily: 22
+
+#62: brother_in_law, sib_gen (M)  (M), born Jan 1, 1974.
+First name = null.  Surname = *&^%$.
+Kin Terms: brother_in_law sib_gen .
+Kin Term Name History: brother_in_law:0 sib_gen:0 .
+     BirthFamily: 5
+
+#63: No Defined Term (F)  (F), born Jan 1, 1949 & died Apr 15, 1966.
+First name = null.  Surname = *&^%$.
+     Marriages:
+     Family#24: I-13,  I-63
+
+#64: sib_gen (M)  (M), born Jan 1, 1966.
+First name = null.  Surname = *&^%$.
+Kin Terms: sib_gen .
+Kin Term Name History: sib_gen:2 sib_gen:2 .
+     BirthFamily: 24
+
+#65: sib_gen, sister_in_law (F)  (F), born Jan 1, 1975.
+First name = null.  Surname = *&^%$.
+Kin Terms: sib_gen sister_in_law .
+Kin Term Name History: sib_gen:1 sister_in_law:0 .
+     BirthFamily: 5
+
+#66: sib_gen (F)  (F), born Jan 1, 1966.
+First name = null.  Surname = *&^%$.
+Kin Terms: sib_gen .
+Kin Term Name History: sib_gen:3 sib_gen:3 .
+     BirthFamily: 24
+
+#67: sonny, kiddie (M)  (M), born Jan 1, 1993.
+First name = null.  Surname = *&^%$.
+Kin Terms: sonny kiddie .
+Kin Term Name History: sonny:0 kiddie:0 sonny:0 .
+     BirthFamily: 4
+
+#68: uncle (M)  (M), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+Kin Terms: uncle .
+Kin Term Name History: uncle:1 uncle:1 .
+     Marriages:
+     Family#25: I-68,  I-7
+
+#69: wifey (F)  (F), born Jan 1, 1970.
+First name = null.  Surname = *&^%$.
+Kin Terms: wifey .
+Kin Term Name History: wifey:0 wifey:0 .
+     Marriages:
+     Family#26: I-0,  I-69
+
+
+Families:
+0: Jun 10, 1967
+     H =  #1, W = #2.
+     6 children.
+        #0 (M).
+        #10 (M).
+        #15 (F).
+        #43 (M).
+        #46 (F).
+        #48 (?).
+
+1: Jun 10, 1946
+     H =  #3, W = #4.
+     4 children.
+        #1 (M).
+        #7 (F).
+        #8 (M).
+        #23 (?).
+
+2: Jun 10, 1925
+     H =  #5, W = #6.
+     4 children.
+        #3 (M).
+        #26 (?).
+        #36 (F).
+        #37 (M).
+
+3: Jun 10, 1969
+     H =  #8, W = #9.
+     0 children.
+
+4: Jun 10, 1988
+     H =  #0, W = #11.
+     3 children.
+        #21 (F).
+        #29 (?).
+        #67 (M).
+
+5: Jun 10, 1967
+     H =  #13, W = #12.
+     6 children.
+        #11 (F).
+        #14 (M).
+        #17 (F).
+        #51 (?).
+        #62 (M).
+        #65 (F).
+
+6: Jun 10, 1990
+     H =  #16, W = #15.
+     0 children.
+
+7: Jun 10, 1990
+     H =  #18, W = #17.
+     0 children.
+
+8: Jun 10, 1989
+     H =  #10, W = #19.
+     0 children.
+
+9: Jun 10, 1989
+     H =  #14, W = #20.
+     0 children.
+
+10: Jun 10, 1997 to Oct 1, 1998
+     H =  #0, W = #22.
+     0 children.
+
+11: Jun 10, 1970
+     H =  #23, W = #24.
+     1 child.
+        #25 (?).
+
+12: Jun 10, 1947
+     H =  #26, W = #27.
+     1 child.
+        #28 (?).
+
+13: Jun 10, 2010
+     H =  #29, W = #30.
+     3 children.
+        #31 (?).
+        #32 (F).
+        #33 (M).
+
+14: Jun 10, 2033
+     H =  #33, W = #34.
+     0 children.
+
+15: Jun 10, 2032
+     H =  #35, W = #32.
+     0 children.
+
+16: Jun 10, 1949
+     H =  #37, W = #38.
+     0 children.
+
+17: Jun 10, 2031
+     H =  #31, W = #39.
+     2 children.
+        #40 (F).
+        #41 (M).
+
+18: Jun 10, 1948
+     H =  #42, W = #36.
+     0 children.
+
+19: Jun 10, 1965
+     H =  #1, W = #44.
+     2 children.
+        #45 (M).
+        #47 (F).
+
+20: Jun 10, 1993
+     H =  #48, W = #49.
+     2 children.
+        #50 (M).
+        #54 (F).
+
+21: Jun 10, 1991
+     H =  #51, W = #52.
+     2 children.
+        #53 (M).
+        #55 (F).
+
+22: Jun 10, 1968
+     H =  #28, W = #56.
+     4 children.
+        #57 (F).
+        #58 (F).
+        #60 (F).
+        #61 (?).
+
+23: Jun 10, 1990 to Oct 1, 1991
+     H =  #59, W = #58.
+     0 children.
+
+24: Jun 10, 1965
+     H =  #13, W = #63.
+     2 children.
+        #64 (M).
+        #66 (F).
+
+25: Jun 10, 1968
+     H =  #68, W = #7.
+     0 children.
+
+26: Jun 10, 2004
+     H =  #0, W = #69.
+     0 children.
+
+
+-------End------
+

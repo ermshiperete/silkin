@@ -34,7 +34,7 @@ public class MainPane extends JFrame implements ActionListener {
     public static JDesktopPane desktop;
     public static MainPane topPane;
     public static int testSerialNmbr;
-    public static int buildNmbr = 11;
+    public static int buildNmbr = 15;
     public static int NUMBER_OF_EGOS = 4;
     public static boolean fill_In_Flag = false;
     private JMenuBar menuBar = new JMenuBar();
@@ -2243,7 +2243,7 @@ public class MainPane extends JFrame implements ActionListener {
         activity.log = log;
         String logDate = UDate.today();
         log.append("########### Log of activity, errors, and warnings encountered on " + logDate + ".\n");
-        log.append("########### Version 1.0, build # " + buildNmbr + ".\n");
+        log.append("########### Version 1.1, build # " + buildNmbr + ".\n");
         JScrollPane logroll = new JScrollPane(log);
         logroll.setMinimumSize(new Dimension(250, 45));
         logroll.setMaximumSize(new Dimension(850, 500));

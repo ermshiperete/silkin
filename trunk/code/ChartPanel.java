@@ -92,7 +92,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         KinshipEditor_MouseUp(e);
         dragged = false;
         if (!reSizInds.isEmpty()) {
-            checkArea(reSizInds);
+            checkIndArea(reSizInds);
             reSizInds.clear();
         }
         if (!reSizFams.isEmpty()) {
@@ -474,45 +474,50 @@ public class ChartPanel extends JPanel implements MouseInputListener {
     void checkFamArea(ArrayList<Family> fams) {
         int minX = 1000000, minY = 1000000, maxX = -1, maxY = -1, maxSz = -1;
         for (Family f : fams) {
-            int sz = f.getSize();
-            if (sz > maxSz) {
-                maxSz = sz;
-            }
-            if (f.location.x < minX) {
-                minX = f.location.x;
-            }
-            if (f.location.y < minY) {
-                minY = f.location.y;
-            }
-            if (f.location.x + sz > maxX) {
-                maxX = f.location.x + sz;
-            }
-            if (f.location.y + sz > maxY) {
-                maxY = f.location.y + sz;
+
+            if (!f.deleted) {
+                int sz = f.getSize();
+                if (sz > maxSz) {
+                    maxSz = sz;
+                }
+                if (f.location.x < minX) {
+                    minX = f.location.x;
+                }
+                if (f.location.y < minY) {
+                    minY = f.location.y;
+                }
+                if (f.location.x + sz > maxX) {
+                    maxX = f.location.x + sz;
+                }
+                if (f.location.y + sz > maxY) {
+                    maxY = f.location.y + sz;
+                }
             }
         }
         int wide = maxX - minX, high = maxY - minY;
         checkArea(minX, minY, wide, high, maxSz);
     }
 
-    void checkArea(ArrayList<Individual> people) {
+    void checkIndArea(ArrayList<Individual> people) {
         int minX = 1000000, minY = 1000000, maxX = -1, maxY = -1, maxSz = -1;
         for (Individual ind : people) {
-            int sz = ind.getSize();
-            if (sz > maxSz) {
-                maxSz = sz;
-            }
-            if (ind.location.x < minX) {
-                minX = ind.location.x;
-            }
-            if (ind.location.y < minY) {
-                minY = ind.location.y;
-            }
-            if (ind.location.x + sz > maxX) {
-                maxX = ind.location.x + sz;
-            }
-            if (ind.location.y + sz > maxY) {
-                maxY = ind.location.y + sz;
+            if (!ind.deleted) {
+                int sz = ind.getSize();
+                if (sz > maxSz) {
+                    maxSz = sz;
+                }
+                if (ind.location.x < minX) {
+                    minX = ind.location.x;
+                }
+                if (ind.location.y < minY) {
+                    minY = ind.location.y;
+                }
+                if (ind.location.x + sz > maxX) {
+                    maxX = ind.location.x + sz;
+                }
+                if (ind.location.y + sz > maxY) {
+                    maxY = ind.location.y + sz;
+                }
             }
         }
         int wide = maxX - minX, high = maxY - minY;
@@ -523,7 +528,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         // if bottom or right has inadequate margin, add extra space
         resize = false;
         int desiredWidth = left + wide + (4 * sz),
-                desiredHeight = top + high + (4 * sz);
+            desiredHeight = top + high + (4 * sz);
         if (desiredWidth > area.width) {
             area.width = desiredWidth;
             resize = true;
@@ -991,20 +996,10 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                     whichKnot = which;
                 }
                 Family fam = Marriage.knots.get(whichKnot);
-                Individual person = (fam.husband != null ? fam.husband : fam.wife);
-                try {
-                    fam.delete();
-                    if (person != null) {
-                        removePersonAndRecomputeNodes(person, fam);
-                    }
-                } catch (KSInternalErrorException ksiee) {
-                    String msg = ksiee.getMessage(),
-                            ttl = "Marriage Deletion Attempt Rejected.";
-                    JOptionPane.showMessageDialog(parent, msg, ttl, JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-                fam.location = new Point(-100, -100);
+                fam.delete();
                 fam.delMarriage();
+                removePersonAndRecomputeNodes(fam.husband, fam);
+                fam.location = new Point(-100, -100);
                 whichKnot = -1;
                 dirty = true;
                 repaint();
@@ -1121,24 +1116,24 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         } else if (fam.children.contains(ix)) {
             fam.children.remove(ix);
         }
-        int savedEgo = parent.getCurrentEgo();        
+        int savedEgo = parent.getCurrentEgo();
         parent.rebuildKTMatrixEtc();
         parent.changeEgo(savedEgo);
         // re-attach nodes in Ego's row of KTM
         TreeMap<Integer, Node> egoRow = parent.ktm.getRow(savedEgo);
         Iterator rowIter = egoRow.entrySet().iterator();
         while (rowIter.hasNext()) {
-            Map.Entry entry = (Map.Entry)rowIter.next();
-            Integer altInt = (Integer)entry.getKey();
-            Node nod = (Node)entry.getValue();
+            Map.Entry entry = (Map.Entry) rowIter.next();
+            Integer altInt = (Integer) entry.getKey();
+            Node nod = (Node) entry.getValue();
             nod.indiv.node = nod;
         }
         recomputingDyads = false;
         try {
-            if ((Context.current.domTheoryRefExists() && 
-                    !Context.current.domTheoryRef().issuesForUser.isEmpty())
-                || (Context.current.domTheoryAdrExists() && 
-                    !Context.current.domTheoryAdr().issuesForUser.isEmpty())) {
+            if ((Context.current.domTheoryRefExists()
+                    && !Context.current.domTheoryRef().issuesForUser.isEmpty())
+                    || (Context.current.domTheoryAdrExists()
+                    && !Context.current.domTheoryAdr().issuesForUser.isEmpty())) {
                 String msg = "The Suggestions from prior learning sessions may\n"
                         + "contain references to " + ix.name + " that are\n"
                         + " no longer valid. If so, you should Get New Suggestions.\n";
@@ -1360,6 +1355,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         originY = 0;
         Context.current = null;
         Library.contextUnderConstruction = null;
+        MainPane.curr_CUC_Editor = null;
         saveFile = null;
         parent.getPPanel().clearEgoBox();
         parent.infoPerson = null;
@@ -1607,11 +1603,69 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             parent.setTitle("Editing: " + frameTitle);
             //  We read in some people, so update egoChoiceBox
             parent.getPPanel().rebuildEgoBox();
+            checkSizeOfChart(ctxt);
             loading = false;
             setPreferredSize(area);
             revalidate();
             repaint();
         }
+    }
+    
+    void checkSizeOfChart(Context ctxt) {
+    //  Set size of Chart to ideal for this diagram
+        int minX = 1000000, minY = 1000000, maxX = -1, 
+            maxY = -1, maxSz = -1, sz = 20;
+        for (Individual ind : ctxt.individualCensus) {
+            if (!ind.deleted) {
+                sz = ind.getSize();
+                if (sz > maxSz) {
+                    maxSz = sz;
+                }
+                if (ind.location.x < minX) {
+                    minX = ind.location.x;
+                }
+                if (ind.location.y < minY) {
+                    minY = ind.location.y;
+                }
+                if (ind.location.x + sz > maxX) {
+                    maxX = ind.location.x + sz;
+                }
+                if (ind.location.y + sz > maxY) {
+                    maxY = ind.location.y + sz;
+                }
+            }
+        }
+        for (Family f : ctxt.familyCensus) {
+            if (!f.deleted) {
+                sz = f.getSize();
+                if (f.location.x < minX) {
+                    minX = f.location.x;
+                }
+                if (f.location.y < minY) {
+                    minY = f.location.y;
+                }
+                if (f.location.x + sz > maxX) {
+                    maxX = f.location.x + sz;
+                }
+                if (f.location.y + sz > maxY) {
+                    maxY = f.location.y + sz;
+                }
+            }
+        }
+        Point idealTopLeft = gridSnap(new Point(2 * sz, 2 * sz));
+        int adjustX = idealTopLeft.x - minX,
+            adjustY = idealTopLeft.y - minY,
+            idealWidth = maxX - minX + (3 * idealTopLeft.x) + adjustX,
+            idealHeight = maxY - minY + (3 * idealTopLeft.y) + adjustY;
+        if (adjustX != 0 || adjustY != 0) {
+            for (Individual ind : ctxt.individualCensus) {
+                ind.adjustLocation(adjustX, adjustY);
+            }
+            for (Family f : ctxt.familyCensus) {
+                f.adjustLocation(adjustX, adjustY);
+            }
+        }
+        area.setSize(idealWidth, idealHeight);
     }
 
     String getCurrentUser(JFrame parentFrame, String paneTitle) throws KSInternalErrorException {

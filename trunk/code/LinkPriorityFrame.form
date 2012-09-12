@@ -37,25 +37,25 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="row2Dn" min="-2" pref="28" max="-2" attributes="0"/>
-                                  <Component id="row3Dn" min="-2" pref="28" max="-2" attributes="0"/>
-                                  <Component id="row4Dn" min="-2" pref="28" max="-2" attributes="0"/>
-                                  <Component id="row6Dn" min="-2" pref="28" max="-2" attributes="0"/>
-                                  <Component id="row5Dn" min="-2" pref="28" max="-2" attributes="0"/>
-                                  <Component id="row7Dn" min="-2" pref="28" max="-2" attributes="0"/>
+                                  <Component id="row2Dn" min="-2" max="-2" attributes="0"/>
+                                  <Component id="row3Dn" min="-2" max="-2" attributes="0"/>
+                                  <Component id="row4Dn" min="-2" max="-2" attributes="0"/>
+                                  <Component id="row6Dn" min="-2" max="-2" attributes="0"/>
+                                  <Component id="row5Dn" min="-2" max="-2" attributes="0"/>
+                                  <Component id="row7Dn" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="row2Up" alignment="0" min="-2" pref="28" max="-2" attributes="0"/>
-                                  <Component id="row3Up" alignment="0" min="-2" pref="28" max="-2" attributes="0"/>
-                                  <Component id="row4Up" alignment="0" min="-2" pref="28" max="-2" attributes="0"/>
-                                  <Component id="row5Up" alignment="0" min="-2" pref="28" max="-2" attributes="0"/>
-                                  <Component id="row6Up" alignment="0" min="-2" pref="28" max="-2" attributes="0"/>
-                                  <Component id="row7Up" alignment="0" min="-2" pref="28" max="-2" attributes="0"/>
-                                  <Component id="row8Up" alignment="0" min="-2" pref="28" max="-2" attributes="0"/>
+                                  <Component id="row2Up" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="row3Up" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="row4Up" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="row5Up" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="row6Up" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="row7Up" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="row8Up" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Component id="row1Dn" alignment="0" min="-2" pref="28" max="-2" attributes="0"/>
+                          <Component id="row1Dn" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -95,7 +95,7 @@
                       <Component id="doneBtn" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="51" max="32767" attributes="0"/>
+              <EmptySpace pref="37" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

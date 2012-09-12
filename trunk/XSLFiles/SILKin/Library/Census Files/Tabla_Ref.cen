@@ -1,0 +1,4423 @@
+Oct 27, 2003
+Context for "Tabla" language is:
+504 individuals and 219 families registered.
+
+Individuals:
+#0: Ego (M)  (M), born Jan 1, 1970.
+First name = null.  Surname = Ego.
+Kin Terms: Ego .
+     BirthFamily: 13
+     Marriages:
+     Family#0: I-0,  I-1
+
+#1: mire (F)  (F), born Jan 1, 1970.
+First name = null.  Surname = *&^%$.
+Kin Terms: mire .
+Kin Term Name History: mire:0 mire:0 .
+     BirthFamily: 1
+     Marriages:
+     Family#0: I-0,  I-1
+
+#2: desang  (?), born Jan 1, 1949.
+First name = null.  Surname = *&^%$.
+Kin Terms: desang .
+Kin Term Name History: desang:0 desang:0 .
+     BirthFamily: 2
+     Marriages:
+     Family#1: I-2,  I-3
+
+#3: desang  (?), born Jan 1, 1949.
+First name = Presumed.  Surname = Spouse.
+Kin Terms: desang .
+Kin Term Name History: desang:0 .
+     Marriages:
+     Family#1: I-2,  I-3
+
+#4:   [sese] (M)  (M), born Jan 1, 1928.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:5 sese:15 sese:5 sese:15 .
+     BirthFamily: 3
+     Marriages:
+     Family#2: I-4,  I-5
+
+#5:   [kemeng] (F)  (F), born Jan 1, 1928.
+First name = Presumed.  Surname = Spouse.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:5 kemeng:15 kemeng:5 kemeng:15 .
+     Marriages:
+     Family#2: I-4,  I-5
+
+#6:   [desang]  (?), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: desang .
+Kin Term Name History: desang:1 desang:1 desang:1 .
+     BirthFamily: 2
+     Marriages:
+     Family#31: I-6,  I-67
+
+#7: No Defined Term  (?), born Jan 1, 1907.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 5
+     Marriages:
+     Family#3: I-7,  I-8
+
+#8: No Defined Term  (?), born Jan 1, 1907.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#3: I-7,  I-8
+
+#9: No Defined Term  (?), born Jan 1, 1929.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 3
+     Marriages:
+     Family#4: I-9,  I-10
+
+#10: No Defined Term  (?), born Jan 1, 1929.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#4: I-9,  I-10
+
+#11:   [desang]  (?), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: desang .
+Kin Term Name History: desang:2 desang:2 desang:2 .
+     BirthFamily: 4
+     Marriages:
+     Family#32: I-11,  I-69
+
+#12: No Defined Term  (?), born Jan 1, 1886.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 8
+     Marriages:
+     Family#5: I-12,  I-13
+
+#13: No Defined Term  (?), born Jan 1, 1886.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#5: I-12,  I-13
+
+#14: No Defined Term  (?), born Jan 1, 1908.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 5
+     Marriages:
+     Family#6: I-14,  I-15
+
+#15: No Defined Term  (?), born Jan 1, 1908.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#6: I-14,  I-15
+
+#16: No Defined Term  (?), born Jan 1, 1929.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 6
+     Marriages:
+     Family#7: I-16,  I-17
+
+#17: No Defined Term  (?), born Jan 1, 1929.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#7: I-16,  I-17
+
+#18:   [desang]  (?), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: desang .
+Kin Term Name History: desang:3 desang:3 desang:3 .
+     BirthFamily: 7
+     Marriages:
+     Family#33: I-18,  I-71
+
+#19: No Defined Term  (?), born Jan 1, 1865.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 106
+     Marriages:
+     Family#8: I-19,  I-20
+
+#20: No Defined Term  (?), born Jan 1, 1865.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#8: I-19,  I-20
+
+#21: No Defined Term  (?), born Jan 1, 1887.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 8
+     Marriages:
+     Family#9: I-21,  I-22
+
+#22: No Defined Term  (?), born Jan 1, 1887.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#9: I-21,  I-22
+
+#23: No Defined Term  (?), born Jan 1, 1908.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 9
+     Marriages:
+     Family#10: I-23,  I-24
+
+#24: No Defined Term  (?), born Jan 1, 1908.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#10: I-23,  I-24
+
+#25: No Defined Term  (?), born Jan 1, 1929.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 10
+     Marriages:
+     Family#11: I-25,  I-26
+
+#26: No Defined Term  (?), born Jan 1, 1929.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#11: I-25,  I-26
+
+#27:   [desang]  (?), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: desang .
+Kin Term Name History: desang:4 desang:4 desang:4 .
+     BirthFamily: 11
+
+#28: yei (F)  (F), born Jan 1, 1991.
+First name = null.  Surname = *&^%$.
+Kin Terms: yei .
+Kin Term Name History: yei:0 .
+     BirthFamily: 0
+     Marriages:
+     Family#12: I-29,  I-28
+
+#29: desang (M)  (M), born Jan 1, 1991.
+First name = null.  Surname = *&^%$.
+Kin Terms: desang .
+Kin Term Name History: desang:5 desang:5 .
+     Marriages:
+     Family#12: I-29,  I-28
+
+#30: memai (M)  (M), born Jan 1, 1949.
+First name = null.  Surname = *&^%$.
+Kin Terms: memai .
+Kin Term Name History: memai:0 memai:0 .
+     BirthFamily: 16
+     Marriages:
+     Family#13: I-30,  I-31
+
+#31: nameng (F)  (F), born Jan 1, 1949.
+First name = Presumed.  Surname = Spouse.
+Kin Terms: nameng .
+Kin Term Name History: nameng:0 nameng:0 .
+     BirthFamily: 118
+     Marriages:
+     Family#13: I-30,  I-31
+
+#32: metona  (?), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+Kin Terms: metona .
+Kin Term Name History: metona:0 metona:0 metona:0 .
+     BirthFamily: 13
+     Marriages:
+     Family#14: I-32,  I-33
+
+#33: No Defined Term  (?), born Jan 1, 1971.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#14: I-32,  I-33
+
+#34: No Defined Term (F)  (F), born Jan 1, 1992.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 14
+     Marriages:
+     Family#15: I-35,  I-34
+
+#35:   [desang] (M)  (M), born Jan 1, 1992.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: desang .
+Kin Term Name History: desang:6 desang:6 desang:6 .
+     Marriages:
+     Family#15: I-35,  I-34
+
+#36: sese (M)  (M), born Jan 1, 1928.
+First name = null.  Surname = *&^%$.
+Kin Terms: sese .
+Kin Term Name History: sese:0 sese:10 sese:0 sese:10 .
+     BirthFamily: 20
+     Marriages:
+     Family#16: I-36,  I-37
+
+#37: kemeng (F)  (F), born Jan 1, 1928.
+First name = Presumed.  Surname = Spouse.
+Kin Terms: kemeng .
+Kin Term Name History: kemeng:0 kemeng:10 kemeng:0 kemeng:10 .
+     Marriages:
+     Family#16: I-36,  I-37
+
+#38: No Defined Term  (?), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 16
+     Marriages:
+     Family#17: I-38,  I-39
+
+#39: No Defined Term  (?), born Jan 1, 1950.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#17: I-38,  I-39
+
+#40: No Defined Term  (?), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 17
+     Marriages:
+     Family#18: I-40,  I-41
+
+#41: No Defined Term  (?), born Jan 1, 1971.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#18: I-40,  I-41
+
+#42: No Defined Term (F)  (F), born Jan 1, 1992.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 18
+     Marriages:
+     Family#19: I-43,  I-42
+
+#43:   [desang] (M)  (M), born Jan 1, 1992.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: desang .
+Kin Term Name History: desang:7 desang:7 desang:7 .
+     Marriages:
+     Family#19: I-43,  I-42
+
+#44: kasi_kasi  (?), born Jan 1, 1907.
+First name = null.  Surname = *&^%$.
+Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:0 kasi_kasi:0 .
+     BirthFamily: 25
+     Marriages:
+     Family#20: I-44,  I-45
+
+#45: kasi_kasi  (?), born Jan 1, 1907.
+First name = Presumed.  Surname = Spouse.
+Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:0 .
+     Marriages:
+     Family#20: I-44,  I-45
+
+#46: No Defined Term  (?), born Jan 1, 1929.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 20
+     Marriages:
+     Family#21: I-46,  I-47
+
+#47: No Defined Term  (?), born Jan 1, 1929.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#21: I-46,  I-47
+
+#48: No Defined Term  (?), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 21
+     Marriages:
+     Family#22: I-48,  I-49
+
+#49: No Defined Term  (?), born Jan 1, 1950.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#22: I-48,  I-49
+
+#50: No Defined Term  (?), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 22
+     Marriages:
+     Family#23: I-50,  I-51
+
+#51: No Defined Term  (?), born Jan 1, 1971.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#23: I-50,  I-51
+
+#52: No Defined Term (F)  (F), born Jan 1, 1992.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 23
+     Marriages:
+     Family#24: I-53,  I-52
+
+#53:   [desang] (M)  (M), born Jan 1, 1992.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: desang .
+Kin Term Name History: desang:8 desang:8 desang:8 .
+     Marriages:
+     Family#24: I-53,  I-52
+
+#54: ye_yepe  (?), born Jan 1, 1886.
+First name = null.  Surname = *&^%$.
+Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:0 ye_yepe:0 .
+     BirthFamily: 38
+     Marriages:
+     Family#25: I-54,  I-55
+
+#55: ye_yepe  (?), born Jan 1, 1886.
+First name = Presumed.  Surname = Spouse.
+Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:0 .
+     Marriages:
+     Family#25: I-54,  I-55
+
+#56:   [kasi_kasi]  (?), born Jan 1, 1908.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:1 kasi_kasi:1 kasi_kasi:1 .
+     BirthFamily: 25
+     Marriages:
+     Family#26: I-56,  I-57
+
+#57: No Defined Term  (?), born Jan 1, 1908.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#26: I-56,  I-57
+
+#58: No Defined Term  (?), born Jan 1, 1929.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 26
+     Marriages:
+     Family#27: I-58,  I-59
+
+#59: No Defined Term  (?), born Jan 1, 1929.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#27: I-58,  I-59
+
+#60: No Defined Term  (?), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 27
+     Marriages:
+     Family#28: I-60,  I-61
+
+#61: No Defined Term  (?), born Jan 1, 1950.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#28: I-60,  I-61
+
+#62: No Defined Term  (?), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 28
+     Marriages:
+     Family#29: I-62,  I-63
+
+#63: No Defined Term  (?), born Jan 1, 1971.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#29: I-62,  I-63
+
+#64: No Defined Term (F)  (F), born Jan 1, 1992.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 29
+     Marriages:
+     Family#30: I-65,  I-64
+
+#65:   [desang] (M)  (M), born Jan 1, 1992.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: desang .
+Kin Term Name History: desang:9 desang:9 desang:9 .
+     Marriages:
+     Family#30: I-65,  I-64
+
+#66: desmo (M)  (M), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+Kin Terms: desmo .
+Kin Term Name History: desmo:0 desmo:1 desmo:14 desmo:0 desmo:0 desmo:1 desmo:1 desmo:14 desmo:14 .
+     BirthFamily: 1
+
+#67: No Defined Term  (?), born Jan 1, 1950.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#31: I-6,  I-67
+
+#68:   [desmo] (M)  (M), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: desmo .
+Kin Term Name History: desmo:2 desmo:15 desmo:2 desmo:2 desmo:15 desmo:15 .
+     BirthFamily: 31
+
+#69: No Defined Term  (?), born Jan 1, 1950.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#32: I-11,  I-69
+
+#70:   [desmo] (M)  (M), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: desmo .
+Kin Term Name History: desmo:3 desmo:16 desmo:3 desmo:3 desmo:16 desmo:16 .
+     BirthFamily: 32
+
+#71: No Defined Term  (?), born Jan 1, 1950.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#33: I-18,  I-71
+
+#72:   [desmo] (M)  (M), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: desmo .
+Kin Term Name History: desmo:4 desmo:17 desmo:4 desmo:4 desmo:17 desmo:17 .
+     BirthFamily: 33
+
+#73: mengke, metona, nero (F)  (F), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+Kin Terms: mengke metona nero .
+Kin Term Name History: mengke:0 mengke:1 metona:0 metona:0 nero:0 nero:0 nero:0 nero:0 mengke:0 mengke:0 mengke:1 mengke:1 .
+     BirthFamily: 13
+     Marriages:
+     Family#34: I-74,  I-73
+
+#74: desmo (M)  (M), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+Kin Terms: desmo .
+Kin Term Name History: desmo:5 desmo:9 desmo:10 desmo:5 desmo:5 desmo:9 desmo:9 desmo:10 desmo:10 .
+     Marriages:
+     Family#34: I-74,  I-73
+
+#75:   [mengke] (F)  (F), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: mengke .
+Kin Term Name History: mengke:2 mengke:2 mengke:2 .
+     BirthFamily: 17
+     Marriages:
+     Family#35: I-76,  I-75
+
+#76:   [desmo] (M)  (M), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: desmo .
+Kin Term Name History: desmo:6 desmo:11 desmo:6 desmo:6 desmo:11 desmo:11 .
+     Marriages:
+     Family#35: I-76,  I-75
+
+#77:   [mengke] (F)  (F), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: mengke .
+Kin Term Name History: mengke:3 mengke:3 mengke:3 .
+     BirthFamily: 22
+     Marriages:
+     Family#36: I-78,  I-77
+
+#78:   [desmo] (M)  (M), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: desmo .
+Kin Term Name History: desmo:7 desmo:12 desmo:7 desmo:7 desmo:12 desmo:12 .
+     Marriages:
+     Family#36: I-78,  I-77
+
+#79:   [mengke] (F)  (F), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: mengke .
+Kin Term Name History: mengke:4 mengke:4 mengke:4 .
+     BirthFamily: 28
+     Marriages:
+     Family#37: I-80,  I-79
+
+#80:   [desmo] (M)  (M), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: desmo .
+Kin Term Name History: desmo:8 desmo:13 desmo:8 desmo:8 desmo:13 desmo:13 .
+     Marriages:
+     Family#37: I-80,  I-79
+
+#81: didi  (?), born Jan 1, 1865.
+First name = null.  Surname = *&^%$.
+Kin Terms: didi .
+Kin Term Name History: didi:0 didi:0 .
+     BirthFamily: 39
+     Marriages:
+     Family#38: I-81,  I-82
+
+#82: didi  (?), born Jan 1, 1865.
+First name = Presumed.  Surname = Spouse.
+Kin Terms: didi .
+Kin Term Name History: didi:0 .
+     Marriages:
+     Family#38: I-81,  I-82
+
+#83: yupu_yupu  (?), born Jan 1, 1844.
+First name = null.  Surname = *&^%$.
+Kin Terms: yupu_yupu .
+Kin Term Name History: yupu_yupu:0 yupu_yupu:0 .
+     BirthFamily: 40
+     Marriages:
+     Family#39: I-83,  I-84
+
+#84: yupu_yupu  (?), born Jan 1, 1844.
+First name = Presumed.  Surname = Spouse.
+Kin Terms: yupu_yupu .
+Kin Term Name History: yupu_yupu:0 .
+     Marriages:
+     Family#39: I-83,  I-84
+
+#85:   [didi]  (?), born Jan 1, 1866.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: didi .
+Kin Term Name History: didi:1 didi:1 didi:1 .
+     BirthFamily: 39
+     Marriages:
+     Family#101: I-85,  I-216
+
+#86: No Defined Term  (?), born Jan 1, 1823.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 42
+     Marriages:
+     Family#40: I-86,  I-87
+
+#87: No Defined Term  (?), born Jan 1, 1823.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#40: I-86,  I-87
+
+#88:   [yupu_yupu]  (?), born Jan 1, 1845.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yupu_yupu .
+Kin Term Name History: yupu_yupu:1 yupu_yupu:1 yupu_yupu:1 .
+     BirthFamily: 40
+     Marriages:
+     Family#41: I-88,  I-89
+
+#89: No Defined Term  (?), born Jan 1, 1845.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#41: I-88,  I-89
+
+#90:   [didi]  (?), born Jan 1, 1866.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: didi .
+Kin Term Name History: didi:2 didi:2 didi:2 .
+     BirthFamily: 41
+     Marriages:
+     Family#103: I-90,  I-220
+
+#91: No Defined Term  (?), born Jan 1, 1802.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 45
+     Marriages:
+     Family#42: I-91,  I-92
+
+#92: No Defined Term  (?), born Jan 1, 1802.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#42: I-91,  I-92
+
+#93: No Defined Term  (?), born Jan 1, 1824.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 42
+     Marriages:
+     Family#43: I-93,  I-94
+
+#94: No Defined Term  (?), born Jan 1, 1824.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#43: I-93,  I-94
+
+#95:   [yupu_yupu]  (?), born Jan 1, 1845.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yupu_yupu .
+Kin Term Name History: yupu_yupu:2 yupu_yupu:2 yupu_yupu:2 .
+     BirthFamily: 43
+     Marriages:
+     Family#44: I-95,  I-96
+
+#96: No Defined Term  (?), born Jan 1, 1845.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#44: I-95,  I-96
+
+#97:   [didi]  (?), born Jan 1, 1866.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: didi .
+Kin Term Name History: didi:3 didi:3 didi:3 .
+     BirthFamily: 44
+     Marriages:
+     Family#205: I-97,  I-471
+
+#98: No Defined Term  (?), born Jan 1, 1781.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 210
+     Marriages:
+     Family#45: I-98,  I-99
+
+#99: No Defined Term  (?), born Jan 1, 1781.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#45: I-98,  I-99
+
+#100: No Defined Term  (?), born Jan 1, 1803.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 45
+     Marriages:
+     Family#46: I-100,  I-101
+
+#101: No Defined Term  (?), born Jan 1, 1803.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#46: I-100,  I-101
+
+#102: No Defined Term  (?), born Jan 1, 1824.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 46
+     Marriages:
+     Family#47: I-102,  I-103
+
+#103: No Defined Term  (?), born Jan 1, 1824.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#47: I-102,  I-103
+
+#104:   [yupu_yupu]  (?), born Jan 1, 1845.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yupu_yupu .
+Kin Term Name History: yupu_yupu:3 yupu_yupu:3 yupu_yupu:3 .
+     BirthFamily: 47
+     Marriages:
+     Family#48: I-104,  I-105
+
+#105: No Defined Term  (?), born Jan 1, 1845.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#48: I-104,  I-105
+
+#106:   [didi]  (?), born Jan 1, 1866.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: didi .
+Kin Term Name History: didi:4 didi:4 didi:4 .
+     BirthFamily: 48
+
+#107: yei  (?), born Jan 1, 1992.
+First name = null.  Surname = *&^%$.
+Kin Terms: yei .
+Kin Term Name History: yei:0 yei:0 .
+     BirthFamily: 0
+     Marriages:
+     Family#49: I-107,  I-108
+
+#108: No Defined Term  (?), born Jan 1, 1992.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#49: I-107,  I-108
+
+#109: doti  (?), born Jan 1, 2013.
+First name = null.  Surname = *&^%$.
+Kin Terms: doti .
+Kin Term Name History: doti:0 doti:0 .
+     BirthFamily: 49
+     Marriages:
+     Family#50: I-109,  I-110
+
+#110:   [doti] (F)  (F), born Jan 1, 2013.
+First name = Presumed.  Surname = Spouse.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:5 doti:15 doti:5 doti:15 doti:15 .
+     Marriages:
+     Family#50: I-109,  I-110
+     Family#69: I-152,  I-110
+
+#111: kasi_kasi  (?), born Jan 1, 2034.
+First name = null.  Surname = *&^%$.
+Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:5 kasi_kasi:5 .
+     BirthFamily: 50
+     Marriages:
+     Family#51: I-111,  I-112
+
+#112: No Defined Term  (?), born Jan 1, 2034.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#51: I-111,  I-112
+
+#113: ye_yepe  (?), born Jan 1, 2055.
+First name = null.  Surname = *&^%$.
+Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:5 ye_yepe:5 .
+     BirthFamily: 51
+     Marriages:
+     Family#52: I-113,  I-114
+
+#114: No Defined Term  (?), born Jan 1, 2055.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#52: I-113,  I-114
+
+#115: didi  (?), born Jan 1, 2076.
+First name = null.  Surname = *&^%$.
+Kin Terms: didi .
+Kin Term Name History: didi:5 didi:5 .
+     BirthFamily: 52
+     Marriages:
+     Family#214: I-115,  I-494
+
+#116: No Defined Term  (?), born Jan 1, 1993.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 14
+     Marriages:
+     Family#53: I-116,  I-117
+
+#117: No Defined Term  (?), born Jan 1, 1993.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#53: I-116,  I-117
+
+#118:   [doti]  (?), born Jan 1, 2014.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:1 doti:1 doti:1 .
+     BirthFamily: 53
+     Marriages:
+     Family#54: I-118,  I-119
+
+#119:   [doti] (F)  (F), born Jan 1, 2014.
+First name = Presumed.  Surname = Spouse.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:6 doti:16 doti:6 doti:6 doti:16 doti:16 doti:16 doti:16 .
+     Marriages:
+     Family#54: I-118,  I-119
+     Family#70: I-153,  I-119
+
+#120:   [kasi_kasi]  (?), born Jan 1, 2035.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:6 kasi_kasi:6 kasi_kasi:6 .
+     BirthFamily: 54
+     Marriages:
+     Family#55: I-120,  I-121
+
+#121: No Defined Term  (?), born Jan 1, 2035.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#55: I-120,  I-121
+
+#122:   [ye_yepe]  (?), born Jan 1, 2056.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:6 ye_yepe:6 ye_yepe:6 .
+     BirthFamily: 55
+     Marriages:
+     Family#56: I-122,  I-123
+
+#123: No Defined Term  (?), born Jan 1, 2056.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#56: I-122,  I-123
+
+#124:   [didi]  (?), born Jan 1, 2077.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: didi .
+Kin Term Name History: didi:6 didi:6 didi:6 .
+     BirthFamily: 56
+     Marriages:
+     Family#215: I-124,  I-496
+
+#125: No Defined Term  (?), born Jan 1, 1993.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 18
+     Marriages:
+     Family#57: I-125,  I-126
+
+#126: No Defined Term  (?), born Jan 1, 1993.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#57: I-125,  I-126
+
+#127:   [doti]  (?), born Jan 1, 2014.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:2 doti:2 doti:2 .
+     BirthFamily: 57
+     Marriages:
+     Family#58: I-127,  I-128
+
+#128:   [doti] (F)  (F), born Jan 1, 2014.
+First name = Presumed.  Surname = Spouse.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:7 doti:17 doti:7 doti:7 doti:17 doti:17 doti:17 doti:17 .
+     Marriages:
+     Family#58: I-127,  I-128
+     Family#71: I-154,  I-128
+
+#129:   [kasi_kasi]  (?), born Jan 1, 2035.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:7 kasi_kasi:7 kasi_kasi:7 .
+     BirthFamily: 58
+     Marriages:
+     Family#59: I-129,  I-130
+
+#130: No Defined Term  (?), born Jan 1, 2035.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#59: I-129,  I-130
+
+#131:   [ye_yepe]  (?), born Jan 1, 2056.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:7 ye_yepe:7 ye_yepe:7 .
+     BirthFamily: 59
+     Marriages:
+     Family#60: I-131,  I-132
+
+#132: No Defined Term  (?), born Jan 1, 2056.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#60: I-131,  I-132
+
+#133:   [didi]  (?), born Jan 1, 2077.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: didi .
+Kin Term Name History: didi:7 didi:7 didi:7 .
+     BirthFamily: 60
+     Marriages:
+     Family#216: I-133,  I-498
+
+#134: No Defined Term  (?), born Jan 1, 1993.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 23
+     Marriages:
+     Family#61: I-134,  I-135
+
+#135: No Defined Term  (?), born Jan 1, 1993.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#61: I-134,  I-135
+
+#136:   [doti]  (?), born Jan 1, 2014.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:3 doti:3 doti:3 .
+     BirthFamily: 61
+     Marriages:
+     Family#62: I-136,  I-137
+
+#137:   [doti] (F)  (F), born Jan 1, 2014.
+First name = Presumed.  Surname = Spouse.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:8 doti:18 doti:8 doti:8 doti:18 doti:18 doti:18 doti:18 .
+     Marriages:
+     Family#62: I-136,  I-137
+     Family#72: I-155,  I-137
+
+#138:   [kasi_kasi]  (?), born Jan 1, 2035.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:8 kasi_kasi:8 kasi_kasi:8 .
+     BirthFamily: 62
+     Marriages:
+     Family#63: I-138,  I-139
+
+#139: No Defined Term  (?), born Jan 1, 2035.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#63: I-138,  I-139
+
+#140:   [ye_yepe]  (?), born Jan 1, 2056.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:8 ye_yepe:8 ye_yepe:8 .
+     BirthFamily: 63
+     Marriages:
+     Family#64: I-140,  I-141
+
+#141: No Defined Term  (?), born Jan 1, 2056.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#64: I-140,  I-141
+
+#142:   [didi]  (?), born Jan 1, 2077.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: didi .
+Kin Term Name History: didi:8 didi:8 didi:8 .
+     BirthFamily: 64
+     Marriages:
+     Family#217: I-142,  I-500
+
+#143: No Defined Term  (?), born Jan 1, 1993.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 29
+     Marriages:
+     Family#65: I-143,  I-144
+
+#144: No Defined Term  (?), born Jan 1, 1993.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#65: I-143,  I-144
+
+#145:   [doti]  (?), born Jan 1, 2014.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:4 doti:4 doti:4 .
+     BirthFamily: 65
+     Marriages:
+     Family#66: I-145,  I-146
+
+#146:   [doti] (F)  (F), born Jan 1, 2014.
+First name = Presumed.  Surname = Spouse.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:9 doti:19 doti:9 doti:9 doti:19 doti:19 doti:19 doti:19 .
+     Marriages:
+     Family#66: I-145,  I-146
+     Family#73: I-156,  I-146
+
+#147:   [kasi_kasi]  (?), born Jan 1, 2035.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:9 kasi_kasi:9 kasi_kasi:9 .
+     BirthFamily: 66
+     Marriages:
+     Family#67: I-147,  I-148
+
+#148: No Defined Term  (?), born Jan 1, 2035.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#67: I-147,  I-148
+
+#149:   [ye_yepe]  (?), born Jan 1, 2056.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:9 ye_yepe:9 ye_yepe:9 .
+     BirthFamily: 67
+     Marriages:
+     Family#68: I-149,  I-150
+
+#150: No Defined Term  (?), born Jan 1, 2056.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#68: I-149,  I-150
+
+#151:   [didi]  (?), born Jan 1, 2077.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: didi .
+Kin Term Name History: didi:9 didi:9 didi:9 .
+     BirthFamily: 68
+     Marriages:
+     Family#218: I-151,  I-502
+
+#152:   [doti] (M)  (M), born Jan 1, 2013 & died Apr 15, 2034.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:10 doti:10 .
+     Marriages:
+     Family#69: I-152,  I-110
+
+#153:   [doti] (M)  (M), born Jan 1, 2014 & died Apr 15, 2035.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:11 doti:11 doti:11 .
+     Marriages:
+     Family#70: I-153,  I-119
+
+#154:   [doti] (M)  (M), born Jan 1, 2014 & died Apr 15, 2035.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:12 doti:12 doti:12 .
+     Marriages:
+     Family#71: I-154,  I-128
+
+#155:   [doti] (M)  (M), born Jan 1, 2014 & died Apr 15, 2035.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:13 doti:13 doti:13 .
+     Marriages:
+     Family#72: I-155,  I-137
+
+#156:   [doti] (M)  (M), born Jan 1, 2014 & died Apr 15, 2035.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:14 doti:14 doti:14 .
+     Marriages:
+     Family#73: I-156,  I-146
+
+#157: No Defined Term  (?), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 1
+     Marriages:
+     Family#74: I-157,  I-158
+
+#158: No Defined Term  (?), born Jan 1, 1972.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#74: I-157,  I-158
+
+#159:   [yei]  (?), born Jan 1, 1993.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yei .
+Kin Term Name History: yei:6 yei:6 yei:6 .
+     BirthFamily: 74
+     Marriages:
+     Family#75: I-159,  I-160
+
+#160: No Defined Term  (?), born Jan 1, 1993.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#75: I-159,  I-160
+
+#161:   [doti] (M)  (M), born Jan 1, 2014.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:24 doti:24 doti:32 doti:32 .
+     BirthFamily: 75
+     Marriages:
+     Family#76: I-161,  I-162
+
+#162:   [doti] (F)  (F), born Jan 1, 2014.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:20 doti:20 doti:20 doti:28 doti:28 .
+     Marriages:
+     Family#76: I-161,  I-162
+
+#163: No Defined Term  (?), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 31
+     Marriages:
+     Family#77: I-163,  I-164
+
+#164: No Defined Term  (?), born Jan 1, 1972.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#77: I-163,  I-164
+
+#165:   [yei]  (?), born Jan 1, 1993.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yei .
+Kin Term Name History: yei:7 yei:7 yei:7 .
+     BirthFamily: 77
+     Marriages:
+     Family#78: I-165,  I-166
+
+#166: No Defined Term  (?), born Jan 1, 1993.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#78: I-165,  I-166
+
+#167:   [doti] (M)  (M), born Jan 1, 2014.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:25 doti:25 doti:33 doti:33 .
+     BirthFamily: 78
+     Marriages:
+     Family#79: I-167,  I-168
+
+#168:   [doti] (F)  (F), born Jan 1, 2014.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:21 doti:21 doti:21 doti:29 doti:29 .
+     Marriages:
+     Family#79: I-167,  I-168
+
+#169: No Defined Term  (?), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 32
+     Marriages:
+     Family#80: I-169,  I-170
+
+#170: No Defined Term  (?), born Jan 1, 1972.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#80: I-169,  I-170
+
+#171:   [yei]  (?), born Jan 1, 1993.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yei .
+Kin Term Name History: yei:8 yei:8 yei:8 .
+     BirthFamily: 80
+     Marriages:
+     Family#81: I-171,  I-172
+
+#172: No Defined Term  (?), born Jan 1, 1993.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#81: I-171,  I-172
+
+#173:   [doti] (M)  (M), born Jan 1, 2014.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:26 doti:26 doti:34 doti:34 .
+     BirthFamily: 81
+     Marriages:
+     Family#82: I-173,  I-174
+
+#174:   [doti] (F)  (F), born Jan 1, 2014.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:22 doti:22 doti:22 doti:30 doti:30 .
+     Marriages:
+     Family#82: I-173,  I-174
+
+#175: No Defined Term  (?), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 33
+     Marriages:
+     Family#83: I-175,  I-176
+
+#176: No Defined Term  (?), born Jan 1, 1972.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#83: I-175,  I-176
+
+#177:   [yei]  (?), born Jan 1, 1993.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yei .
+Kin Term Name History: yei:9 yei:9 yei:9 .
+     BirthFamily: 83
+     Marriages:
+     Family#84: I-177,  I-178
+
+#178: No Defined Term  (?), born Jan 1, 1993.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#84: I-177,  I-178
+
+#179:   [doti] (M)  (M), born Jan 1, 2014.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:27 doti:27 doti:35 doti:35 .
+     BirthFamily: 84
+     Marriages:
+     Family#85: I-179,  I-180
+
+#180:   [doti] (F)  (F), born Jan 1, 2014.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:23 doti:23 doti:23 doti:31 doti:31 .
+     Marriages:
+     Family#85: I-179,  I-180
+
+#181:   [doti] (M)  (M), born Jan 1, 2015.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:24 doti:24 doti:24 doti:32 doti:32 .
+     BirthFamily: 75
+     Marriages:
+     Family#86: I-181,  I-182
+
+#182:   [doti]  (?), born Jan 1, 2015.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:20 .
+     Marriages:
+     Family#86: I-181,  I-182
+
+#183:   [doti] (M)  (M), born Jan 1, 2015.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:25 doti:25 doti:25 doti:33 doti:33 .
+     BirthFamily: 78
+     Marriages:
+     Family#87: I-183,  I-184
+
+#184:   [doti]  (?), born Jan 1, 2015.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:21 .
+     Marriages:
+     Family#87: I-183,  I-184
+
+#185:   [doti] (M)  (M), born Jan 1, 2015.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:26 doti:26 doti:26 doti:34 doti:34 .
+     BirthFamily: 81
+     Marriages:
+     Family#88: I-185,  I-186
+
+#186:   [doti]  (?), born Jan 1, 2015.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:22 .
+     Marriages:
+     Family#88: I-185,  I-186
+
+#187:   [doti] (M)  (M), born Jan 1, 2015.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:27 doti:27 doti:27 doti:35 doti:35 .
+     BirthFamily: 84
+     Marriages:
+     Family#89: I-187,  I-188
+
+#188:   [doti]  (?), born Jan 1, 2015.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:23 .
+     Marriages:
+     Family#89: I-187,  I-188
+
+#189:   [doti]  (?), born Jan 1, 2016.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:32 doti:24 doti:24 doti:32 doti:32 .
+     BirthFamily: 75
+     Marriages:
+     Family#90: I-189,  I-190
+
+#190:   [doti]  (?), born Jan 1, 2016.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:28 doti:20 doti:20 doti:28 doti:28 .
+     Marriages:
+     Family#90: I-189,  I-190
+
+#191:   [doti]  (?), born Jan 1, 2016.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:33 doti:25 doti:25 doti:33 doti:33 .
+     BirthFamily: 78
+     Marriages:
+     Family#91: I-191,  I-192
+
+#192:   [doti]  (?), born Jan 1, 2016.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:29 doti:21 doti:21 doti:29 doti:29 .
+     Marriages:
+     Family#91: I-191,  I-192
+
+#193:   [doti]  (?), born Jan 1, 2016.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:34 doti:26 doti:26 doti:34 doti:34 .
+     BirthFamily: 81
+     Marriages:
+     Family#92: I-193,  I-194
+
+#194:   [doti]  (?), born Jan 1, 2016.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:30 doti:22 doti:22 doti:30 doti:30 .
+     Marriages:
+     Family#92: I-193,  I-194
+
+#195:   [doti]  (?), born Jan 1, 2016.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:35 doti:27 doti:27 doti:35 doti:35 .
+     BirthFamily: 84
+     Marriages:
+     Family#93: I-195,  I-196
+
+#196:   [doti]  (?), born Jan 1, 2016.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doti .
+Kin Term Name History: doti:31 doti:23 doti:23 doti:31 doti:31 .
+     Marriages:
+     Family#93: I-195,  I-196
+
+#197: eneng (F)  (F), born Jan 1, 1951.
+First name = null.  Surname = *&^%$.
+Kin Terms: eneng .
+Kin Term Name History: eneng:0 eneng:1 eneng:0 eneng:0 eneng:1 eneng:1 .
+     BirthFamily: 16
+     Marriages:
+     Family#94: I-198,  I-197
+
+#198: No Defined Term (M)  (M), born Jan 1, 1951.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#94: I-198,  I-197
+
+#199: doto (M)  (M), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+Kin Terms: doto .
+Kin Term Name History: doto:0 doto:1 doto:0 doto:0 doto:1 doto:1 .
+     BirthFamily: 94
+
+#200:   [eneng] (F)  (F), born Jan 1, 1951.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: eneng .
+Kin Term Name History: eneng:2 eneng:2 eneng:2 .
+     BirthFamily: 21
+     Marriages:
+     Family#95: I-201,  I-200
+
+#201: No Defined Term (M)  (M), born Jan 1, 1951.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#95: I-201,  I-200
+
+#202:   [doto] (M)  (M), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doto .
+Kin Term Name History: doto:2 doto:2 doto:2 .
+     BirthFamily: 95
+
+#203:   [eneng] (F)  (F), born Jan 1, 1951.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: eneng .
+Kin Term Name History: eneng:3 eneng:3 eneng:3 .
+     BirthFamily: 27
+     Marriages:
+     Family#96: I-204,  I-203
+
+#204: No Defined Term (M)  (M), born Jan 1, 1951.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#96: I-204,  I-203
+
+#205:   [doto] (M)  (M), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doto .
+Kin Term Name History: doto:3 doto:3 doto:3 .
+     BirthFamily: 96
+
+#206:   [ye_yepe]  (?), born Jan 1, 1887.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:1 ye_yepe:1 ye_yepe:1 .
+     BirthFamily: 38
+     Marriages:
+     Family#97: I-206,  I-207
+
+#207: No Defined Term  (?), born Jan 1, 1887.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#97: I-206,  I-207
+
+#208:   [kasi_kasi]  (?), born Jan 1, 1908.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:2 kasi_kasi:2 kasi_kasi:2 .
+     BirthFamily: 97
+     Marriages:
+     Family#98: I-208,  I-209
+
+#209: No Defined Term  (?), born Jan 1, 1908.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#98: I-208,  I-209
+
+#210: No Defined Term  (?), born Jan 1, 1929.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 98
+     Marriages:
+     Family#99: I-210,  I-211
+
+#211: No Defined Term  (?), born Jan 1, 1929.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#99: I-210,  I-211
+
+#212:   [eneng] (F)  (F), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: eneng .
+Kin Term Name History: eneng:4 eneng:4 eneng:4 .
+     BirthFamily: 99
+     Marriages:
+     Family#100: I-213,  I-212
+
+#213: No Defined Term (M)  (M), born Jan 1, 1950.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#100: I-213,  I-212
+
+#214:   [doto] (M)  (M), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: doto .
+Kin Term Name History: doto:4 doto:4 doto:4 .
+     BirthFamily: 100
+
+#215: metona  (?), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+Kin Terms: metona .
+Kin Term Name History: dumbu:0 metona:0 metona:0 .
+     BirthFamily: 13
+
+#216: No Defined Term  (?), born Jan 1, 1866.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#101: I-85,  I-216
+
+#217:   [ye_yepe]  (?), born Jan 1, 1887.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:2 ye_yepe:2 ye_yepe:2 .
+     BirthFamily: 101
+     Marriages:
+     Family#102: I-217,  I-218
+
+#218: No Defined Term  (?), born Jan 1, 1887.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#102: I-217,  I-218
+
+#219:   [kasi_kasi]  (?), born Jan 1, 1908.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:3 kasi_kasi:3 kasi_kasi:3 .
+     BirthFamily: 102
+     Marriages:
+     Family#105: I-219,  I-227
+
+#220: No Defined Term  (?), born Jan 1, 1866.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#103: I-90,  I-220
+
+#221:   [ye_yepe]  (?), born Jan 1, 1887.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:3 ye_yepe:3 ye_yepe:3 .
+     BirthFamily: 103
+     Marriages:
+     Family#104: I-221,  I-222
+
+#222: No Defined Term  (?), born Jan 1, 1887.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#104: I-221,  I-222
+
+#223:   [kasi_kasi]  (?), born Jan 1, 1908.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:4 kasi_kasi:4 kasi_kasi:4 .
+     BirthFamily: 104
+
+#224:   [kemeng] (F)  (F), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:1 kemeng:11 kemeng:1 kemeng:1 kemeng:11 kemeng:11 .
+     BirthFamily: 20
+     Marriages:
+     Family#185: I-422,  I-224
+
+#225:   [kemeng] (F)  (F), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:2 kemeng:12 kemeng:2 kemeng:2 kemeng:12 kemeng:12 .
+     BirthFamily: 26
+     Marriages:
+     Family#186: I-423,  I-225
+
+#226:   [kemeng] (F)  (F), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:3 kemeng:13 kemeng:3 kemeng:3 kemeng:13 kemeng:13 .
+     BirthFamily: 98
+     Marriages:
+     Family#187: I-424,  I-226
+
+#227: No Defined Term  (?), born Jan 1, 1908.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#105: I-219,  I-227
+
+#228:   [kemeng] (F)  (F), born Jan 1, 1929.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:4 kemeng:14 kemeng:4 kemeng:4 kemeng:14 kemeng:14 .
+     BirthFamily: 105
+     Marriages:
+     Family#188: I-425,  I-228
+
+#229:   [kemeng] (F)  (F), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:6 kemeng:16 kemeng:6 kemeng:6 kemeng:16 kemeng:16 .
+     BirthFamily: 3
+     Marriages:
+     Family#181: I-418,  I-229
+
+#230:   [kemeng] (F)  (F), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:7 kemeng:17 kemeng:7 kemeng:7 kemeng:17 kemeng:17 .
+     BirthFamily: 6
+     Marriages:
+     Family#182: I-419,  I-230
+
+#231:   [kemeng] (F)  (F), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:8 kemeng:18 kemeng:8 kemeng:8 kemeng:18 kemeng:18 .
+     BirthFamily: 10
+     Marriages:
+     Family#183: I-420,  I-231
+
+#232: No Defined Term  (?), born Jan 1, 1844.
+First name = null.  Surname = *&^%$.
+     Marriages:
+     Family#106: I-232,  I-233
+
+#233: No Defined Term  (?), born Jan 1, 1844.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#106: I-232,  I-233
+
+#234: No Defined Term  (?), born Jan 1, 1866.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 106
+     Marriages:
+     Family#107: I-234,  I-235
+
+#235: No Defined Term  (?), born Jan 1, 1866.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#107: I-234,  I-235
+
+#236: No Defined Term  (?), born Jan 1, 1887.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 107
+     Marriages:
+     Family#108: I-236,  I-237
+
+#237: No Defined Term  (?), born Jan 1, 1887.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#108: I-236,  I-237
+
+#238: No Defined Term  (?), born Jan 1, 1908.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 108
+     Marriages:
+     Family#109: I-238,  I-239
+
+#239: No Defined Term  (?), born Jan 1, 1908.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#109: I-238,  I-239
+
+#240:   [kemeng] (F)  (F), born Jan 1, 1929.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:9 kemeng:19 kemeng:9 kemeng:9 kemeng:19 kemeng:19 .
+     BirthFamily: 109
+     Marriages:
+     Family#184: I-421,  I-240
+
+#241:   [sese] (M)  (M), born Jan 1, 1931.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:6 sese:16 sese:6 sese:6 sese:16 sese:16 .
+     BirthFamily: 3
+     Marriages:
+     Family#110: I-241,  I-242
+
+#242:   [kemeng] (F)  (F), born Jan 1, 1931.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:20 kemeng:28 kemeng:20 kemeng:20 kemeng:28 kemeng:28 .
+     Marriages:
+     Family#110: I-241,  I-242
+
+#243:   [sese] (M)  (M), born Jan 1, 1931.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:7 sese:17 sese:7 sese:7 sese:17 sese:17 .
+     BirthFamily: 6
+     Marriages:
+     Family#111: I-243,  I-244
+
+#244:   [kemeng] (F)  (F), born Jan 1, 1931.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:21 kemeng:29 kemeng:21 kemeng:21 kemeng:29 kemeng:29 .
+     Marriages:
+     Family#111: I-243,  I-244
+
+#245:   [sese] (M)  (M), born Jan 1, 1931.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:8 sese:18 sese:8 sese:8 sese:18 sese:18 .
+     BirthFamily: 10
+     Marriages:
+     Family#112: I-245,  I-246
+
+#246:   [kemeng] (F)  (F), born Jan 1, 1931.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:22 kemeng:30 kemeng:22 kemeng:22 kemeng:30 kemeng:30 .
+     Marriages:
+     Family#112: I-245,  I-246
+
+#247:   [sese] (M)  (M), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:9 sese:19 sese:9 sese:9 sese:19 sese:19 .
+     BirthFamily: 109
+     Marriages:
+     Family#113: I-247,  I-248
+
+#248:   [kemeng] (F)  (F), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:23 kemeng:31 kemeng:23 kemeng:23 kemeng:31 kemeng:31 .
+     Marriages:
+     Family#113: I-247,  I-248
+
+#249:   [sese] (M)  (M), born Jan 1, 1931.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:1 sese:11 sese:1 sese:1 sese:11 sese:11 .
+     BirthFamily: 20
+     Marriages:
+     Family#114: I-249,  I-250
+
+#250:   [kemeng] (F)  (F), born Jan 1, 1931.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:24 kemeng:32 kemeng:24 kemeng:24 kemeng:32 kemeng:32 .
+     Marriages:
+     Family#114: I-249,  I-250
+
+#251:   [sese] (M)  (M), born Jan 1, 1931.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:2 sese:12 sese:2 sese:2 sese:12 sese:12 .
+     BirthFamily: 26
+     Marriages:
+     Family#115: I-251,  I-252
+
+#252:   [kemeng] (F)  (F), born Jan 1, 1931.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:25 kemeng:33 kemeng:25 kemeng:25 kemeng:33 kemeng:33 .
+     Marriages:
+     Family#115: I-251,  I-252
+
+#253:   [sese] (M)  (M), born Jan 1, 1931.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:3 sese:13 sese:3 sese:3 sese:13 sese:13 .
+     BirthFamily: 98
+     Marriages:
+     Family#116: I-253,  I-254
+
+#254:   [kemeng] (F)  (F), born Jan 1, 1931.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:26 kemeng:34 kemeng:26 kemeng:26 kemeng:34 kemeng:34 .
+     Marriages:
+     Family#116: I-253,  I-254
+
+#255:   [sese] (M)  (M), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:4 sese:14 sese:4 sese:4 sese:14 sese:14 .
+     BirthFamily: 105
+     Marriages:
+     Family#117: I-255,  I-256
+
+#256:   [kemeng] (F)  (F), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:27 kemeng:35 kemeng:27 kemeng:27 kemeng:35 kemeng:35 .
+     Marriages:
+     Family#117: I-255,  I-256
+
+#257:   [memai] (M)  (M), born Jan 1, 1952.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: memai .
+Kin Term Name History: memai:1 memai:1 memai:1 .
+     BirthFamily: 16
+     Marriages:
+     Family#132: I-257,  I-289
+
+#258:   [memai] (M)  (M), born Jan 1, 1952.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: memai .
+Kin Term Name History: memai:2 memai:2 memai:2 .
+     BirthFamily: 21
+     Marriages:
+     Family#133: I-258,  I-291
+
+#259:   [memai] (M)  (M), born Jan 1, 1952.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: memai .
+Kin Term Name History: memai:3 memai:3 memai:3 .
+     BirthFamily: 27
+     Marriages:
+     Family#134: I-259,  I-293
+
+#260:   [memai] (M)  (M), born Jan 1, 1951.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: memai .
+Kin Term Name History: memai:4 memai:4 memai:4 .
+     BirthFamily: 99
+     Marriages:
+     Family#135: I-260,  I-295
+
+#261: No Defined Term  (?), born Jan 1, 1928.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 120
+     Marriages:
+     Family#118: I-261,  I-262
+
+#262: No Defined Term  (?), born Jan 1, 1928.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#118: I-261,  I-262
+
+#263:   [nameng] (F)  (F), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nameng .
+Kin Term Name History: nameng:1 nameng:1 nameng:1 .
+     BirthFamily: 118
+     Marriages:
+     Family#119: I-264,  I-263
+
+#264:   [memai] (M)  (M), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: memai .
+Kin Term Name History: memai:5 memai:5 memai:5 .
+     Marriages:
+     Family#119: I-264,  I-263
+
+#265: kasi_kasi  (?), born Jan 1, 1907.
+First name = null.  Surname = *&^%$.
+Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:0 .
+     BirthFamily: 123
+     Marriages:
+     Family#120: I-265,  I-266
+
+#266: kasi_kasi  (?), born Jan 1, 1907.
+First name = Presumed.  Surname = Spouse.
+Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:0 .
+     Marriages:
+     Family#120: I-265,  I-266
+
+#267: No Defined Term  (?), born Jan 1, 1929.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 120
+     Marriages:
+     Family#121: I-267,  I-268
+
+#268: No Defined Term  (?), born Jan 1, 1929.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#121: I-267,  I-268
+
+#269:   [nameng] (F)  (F), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nameng .
+Kin Term Name History: nameng:2 nameng:2 nameng:2 .
+     BirthFamily: 121
+     Marriages:
+     Family#122: I-270,  I-269
+
+#270:   [memai] (M)  (M), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: memai .
+Kin Term Name History: memai:6 memai:6 memai:6 .
+     Marriages:
+     Family#122: I-270,  I-269
+
+#271: ye_yepe  (?), born Jan 1, 1886.
+First name = null.  Surname = *&^%$.
+Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:0 .
+     BirthFamily: 127
+     Marriages:
+     Family#123: I-271,  I-272
+
+#272: ye_yepe  (?), born Jan 1, 1886.
+First name = Presumed.  Surname = Spouse.
+Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:0 .
+     Marriages:
+     Family#123: I-271,  I-272
+
+#273:   [kasi_kasi]  (?), born Jan 1, 1908.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:1 kasi_kasi:1 .
+     BirthFamily: 123
+     Marriages:
+     Family#124: I-273,  I-274
+
+#274: No Defined Term  (?), born Jan 1, 1908.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#124: I-273,  I-274
+
+#275: No Defined Term  (?), born Jan 1, 1929.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 124
+     Marriages:
+     Family#125: I-275,  I-276
+
+#276: No Defined Term  (?), born Jan 1, 1929.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#125: I-275,  I-276
+
+#277:   [nameng] (F)  (F), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nameng .
+Kin Term Name History: nameng:3 nameng:3 nameng:3 .
+     BirthFamily: 125
+     Marriages:
+     Family#126: I-278,  I-277
+
+#278:   [memai] (M)  (M), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: memai .
+Kin Term Name History: memai:7 memai:7 memai:7 .
+     Marriages:
+     Family#126: I-278,  I-277
+
+#279: didi  (?), born Jan 1, 1865.
+First name = null.  Surname = *&^%$.
+Kin Terms: didi .
+Kin Term Name History: didi:0 .
+     Marriages:
+     Family#127: I-279,  I-280
+
+#280: didi  (?), born Jan 1, 1865.
+First name = Presumed.  Surname = Spouse.
+Kin Terms: didi .
+Kin Term Name History: didi:0 .
+     Marriages:
+     Family#127: I-279,  I-280
+
+#281:   [ye_yepe]  (?), born Jan 1, 1887.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:1 ye_yepe:1 .
+     BirthFamily: 127
+     Marriages:
+     Family#128: I-281,  I-282
+
+#282: No Defined Term  (?), born Jan 1, 1887.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#128: I-281,  I-282
+
+#283:   [kasi_kasi]  (?), born Jan 1, 1908.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:2 kasi_kasi:2 .
+     BirthFamily: 128
+     Marriages:
+     Family#129: I-283,  I-284
+
+#284: No Defined Term  (?), born Jan 1, 1908.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#129: I-283,  I-284
+
+#285: No Defined Term  (?), born Jan 1, 1929.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 129
+     Marriages:
+     Family#130: I-285,  I-286
+
+#286: No Defined Term  (?), born Jan 1, 1929.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#130: I-285,  I-286
+
+#287:   [nameng] (F)  (F), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nameng .
+Kin Term Name History: nameng:4 nameng:4 nameng:4 .
+     BirthFamily: 130
+     Marriages:
+     Family#131: I-288,  I-287
+
+#288:   [memai] (M)  (M), born Jan 1, 1950.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: memai .
+Kin Term Name History: memai:8 memai:8 memai:8 .
+     Marriages:
+     Family#131: I-288,  I-287
+
+#289:   [nameng] (F)  (F), born Jan 1, 1952.
+First name = Presumed.  Surname = Spouse.
+Extended Kin Terms: nameng .
+Kin Term Name History: nameng:5 nameng:5 nameng:5 .
+     Marriages:
+     Family#132: I-257,  I-289
+
+#290:   [metona, nero]  (?), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: metona nero .
+Kin Term Name History: metona:1 nero:2 metona:1 metona:1 nero:2 nero:2 .
+     BirthFamily: 132
+
+#291:   [nameng] (F)  (F), born Jan 1, 1952.
+First name = Presumed.  Surname = Spouse.
+Extended Kin Terms: nameng .
+Kin Term Name History: nameng:6 nameng:6 nameng:6 .
+     Marriages:
+     Family#133: I-258,  I-291
+
+#292:   [metona]  (?), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: metona .
+Kin Term Name History: metona:2 metona:2 metona:2 .
+     BirthFamily: 133
+
+#293:   [nameng] (F)  (F), born Jan 1, 1952.
+First name = Presumed.  Surname = Spouse.
+Extended Kin Terms: nameng .
+Kin Term Name History: nameng:7 nameng:7 nameng:7 .
+     Marriages:
+     Family#134: I-259,  I-293
+
+#294:   [metona]  (?), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: metona .
+Kin Term Name History: metona:3 metona:3 metona:3 .
+     BirthFamily: 134
+
+#295:   [nameng] (F)  (F), born Jan 1, 1951.
+First name = Presumed.  Surname = Spouse.
+Extended Kin Terms: nameng .
+Kin Term Name History: nameng:8 nameng:8 nameng:8 .
+     Marriages:
+     Family#135: I-260,  I-295
+
+#296:   [metona]  (?), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: metona .
+Kin Term Name History: metona:4 metona:4 metona:4 .
+     BirthFamily: 135
+
+#297:   [metona, mire] (F)  (F), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: metona mire .
+Kin Term Name History: metona:5 mire:1 metona:5 metona:5 mire:1 mire:1 .
+     BirthFamily: 1
+
+#298:   [metona] (F)  (F), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: metona .
+Kin Term Name History: metona:6 metona:6 metona:6 .
+     BirthFamily: 31
+
+#299:   [metona] (F)  (F), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: metona .
+Kin Term Name History: metona:7 metona:7 metona:7 .
+     BirthFamily: 32
+
+#300:   [metona] (F)  (F), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: metona .
+Kin Term Name History: metona:8 metona:8 metona:8 .
+     BirthFamily: 33
+
+#301: metona, nero, mengke (F)  (F), born Jan 1, 1974.
+First name = null.  Surname = *&^%$.
+Kin Terms: metona nero mengke .
+Kin Term Name History: nero:0 metona:0 metona:0 nero:0 nero:0 mengke:0 mengke:0 mengke:1 mengke:1 .
+     BirthFamily: 13
+
+#302: metona, mengke (F)  (F), born Jan 1, 1975.
+First name = null.  Surname = *&^%$.
+Kin Terms: metona mengke .
+Kin Term Name History: metona:0 metona:0 mengke:0 mengke:0 mengke:1 mengke:1 .
+     BirthFamily: 13
+
+#303: nero, yarise, mengke (F)  (F), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+Kin Terms: nero yarise mengke .
+Kin Term Name History: nero:1 nero:1 nero:1 yarise:0 yarise:0 mengke:0 mengke:0 mengke:1 mengke:1 .
+     BirthFamily: 13
+
+#304: yarise, mengke (F)  (F), born Jan 1, 1968.
+First name = null.  Surname = *&^%$.
+Kin Terms: yarise mengke .
+Kin Term Name History: yarise:0 yarise:0 mengke:0 mengke:0 mengke:1 mengke:1 .
+     BirthFamily: 13
+
+#305:   [memai] (M)  (M), born Jan 1, 1953.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: memai .
+Kin Term Name History: memai:1 memai:1 .
+     BirthFamily: 16
+
+#306: eneng (F)  (F), born Jan 1, 1948.
+First name = null.  Surname = *&^%$.
+Kin Terms: eneng .
+Kin Term Name History: eneng:0 eneng:0 eneng:1 eneng:1 .
+     BirthFamily: 16
+     Marriages:
+     Family#136: I-308,  I-306
+
+#307: eneng (F)  (F), born Jan 1, 1947.
+First name = null.  Surname = *&^%$.
+Kin Terms: eneng .
+Kin Term Name History: eneng:0 eneng:0 eneng:1 eneng:1 .
+     BirthFamily: 16
+
+#308: No Defined Term (M)  (M), born Jan 1, 1948.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#136: I-308,  I-306
+
+#309:   [nero]  (?), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero .
+Kin Term Name History: nero:3 nero:3 nero:3 nero:3 nero:3 nero:3 nero:3 .
+     BirthFamily: 136
+
+#310:   [sese] (M)  (M), born Jan 1, 1932.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:1 sese:1 sese:11 sese:11 .
+     BirthFamily: 20
+
+#311: No Defined Term  (?), born Jan 1, 1952.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 114
+     Marriages:
+     Family#137: I-311,  I-312
+
+#312: No Defined Term  (?), born Jan 1, 1952.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#137: I-311,  I-312
+
+#313:   [nero]  (?), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero .
+Kin Term Name History: nero:4 nero:4 nero:4 .
+     BirthFamily: 137
+
+#314:   [kemeng] (F)  (F), born Jan 1, 1927.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:1 kemeng:1 kemeng:11 kemeng:11 .
+     BirthFamily: 20
+     Marriages:
+     Family#138: I-316,  I-314
+
+#315:   [kemeng] (F)  (F), born Jan 1, 1926.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:1 kemeng:1 kemeng:11 kemeng:11 .
+     BirthFamily: 20
+
+#316:   [sese] (M)  (M), born Jan 1, 1927.
+First name = Presumed.  Surname = Spouse.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:24 sese:24 sese:32 sese:32 .
+     Marriages:
+     Family#138: I-316,  I-314
+
+#317: No Defined Term  (?), born Jan 1, 1948.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 138
+     Marriages:
+     Family#139: I-317,  I-318
+
+#318: No Defined Term  (?), born Jan 1, 1948.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#139: I-317,  I-318
+
+#319:   [nero]  (?), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero .
+Kin Term Name History: nero:5 nero:5 nero:5 nero:5 nero:5 nero:5 nero:5 .
+     BirthFamily: 139
+
+#320:   [kasi_kasi] (F)  (F), born Jan 1, 1909.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:1 kasi_kasi:1 .
+     BirthFamily: 25
+     Marriages:
+     Family#140: I-322,  I-320
+
+#321:   [kasi_kasi] (F)  (F), born Jan 1, 1910.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:1 kasi_kasi:1 .
+     BirthFamily: 25
+
+#322: No Defined Term (M)  (M), born Jan 1, 1909.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#140: I-322,  I-320
+
+#323: No Defined Term  (?), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 140
+     Marriages:
+     Family#141: I-323,  I-324
+
+#324: No Defined Term  (?), born Jan 1, 1930.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#141: I-323,  I-324
+
+#325: No Defined Term  (?), born Jan 1, 1951.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 141
+     Marriages:
+     Family#142: I-325,  I-326
+
+#326: No Defined Term  (?), born Jan 1, 1951.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#142: I-325,  I-326
+
+#327:   [nero]  (?), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero .
+Kin Term Name History: nero:6 nero:6 nero:6 nero:6 nero:6 nero:6 nero:6 .
+     BirthFamily: 142
+
+#328:   [kasi_kasi] (F)  (F), born Jan 1, 1906.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:1 kasi_kasi:1 .
+     BirthFamily: 25
+     Marriages:
+     Family#143: I-330,  I-328
+
+#329:   [kasi_kasi] (F)  (F), born Jan 1, 1905.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:1 kasi_kasi:1 .
+     BirthFamily: 25
+
+#330: No Defined Term (M)  (M), born Jan 1, 1906.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#143: I-330,  I-328
+
+#331: No Defined Term  (?), born Jan 1, 1927.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 143
+     Marriages:
+     Family#144: I-331,  I-332
+
+#332: No Defined Term  (?), born Jan 1, 1927.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#144: I-331,  I-332
+
+#333: No Defined Term  (?), born Jan 1, 1948.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 144
+     Marriages:
+     Family#145: I-333,  I-334
+
+#334: No Defined Term  (?), born Jan 1, 1948.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#145: I-333,  I-334
+
+#335:   [nero]  (?), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero .
+Kin Term Name History: nero:7 nero:7 nero:7 nero:7 nero:7 nero:7 nero:7 .
+     BirthFamily: 145
+
+#336:   [ye_yepe] (F)  (F), born Jan 1, 1888.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:1 ye_yepe:1 .
+     BirthFamily: 38
+     Marriages:
+     Family#146: I-338,  I-336
+
+#337:   [ye_yepe] (F)  (F), born Jan 1, 1889.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:1 ye_yepe:1 .
+     BirthFamily: 38
+
+#338: No Defined Term (M)  (M), born Jan 1, 1888.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#146: I-338,  I-336
+
+#339:   [kasi_kasi]  (?), born Jan 1, 1909.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:2 kasi_kasi:2 .
+     BirthFamily: 146
+     Marriages:
+     Family#147: I-339,  I-340
+
+#340: No Defined Term  (?), born Jan 1, 1909.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#147: I-339,  I-340
+
+#341: No Defined Term  (?), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 147
+     Marriages:
+     Family#148: I-341,  I-342
+
+#342: No Defined Term  (?), born Jan 1, 1930.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#148: I-341,  I-342
+
+#343: No Defined Term  (?), born Jan 1, 1951.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 148
+     Marriages:
+     Family#149: I-343,  I-344
+
+#344: No Defined Term  (?), born Jan 1, 1951.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#149: I-343,  I-344
+
+#345:   [nero]  (?), born Jan 1, 1972.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero .
+Kin Term Name History: nero:8 nero:8 nero:8 nero:8 nero:8 nero:8 nero:8 .
+     BirthFamily: 149
+
+#346:   [ye_yepe] (F)  (F), born Jan 1, 1885.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:1 ye_yepe:1 .
+     BirthFamily: 38
+     Marriages:
+     Family#150: I-348,  I-346
+
+#347:   [ye_yepe] (F)  (F), born Jan 1, 1884.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:1 ye_yepe:1 .
+     BirthFamily: 38
+
+#348: No Defined Term (M)  (M), born Jan 1, 1885.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#150: I-348,  I-346
+
+#349:   [kasi_kasi]  (?), born Jan 1, 1906.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:2 kasi_kasi:2 .
+     BirthFamily: 150
+     Marriages:
+     Family#151: I-349,  I-350
+
+#350: No Defined Term  (?), born Jan 1, 1906.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#151: I-349,  I-350
+
+#351: No Defined Term  (?), born Jan 1, 1927.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 151
+     Marriages:
+     Family#152: I-351,  I-352
+
+#352: No Defined Term  (?), born Jan 1, 1927.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#152: I-351,  I-352
+
+#353: No Defined Term  (?), born Jan 1, 1948.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 152
+     Marriages:
+     Family#153: I-353,  I-354
+
+#354: No Defined Term  (?), born Jan 1, 1948.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#153: I-353,  I-354
+
+#355:   [nero]  (?), born Jan 1, 1969.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero .
+Kin Term Name History: nero:9 nero:9 nero:9 nero:9 nero:9 nero:9 nero:9 .
+     BirthFamily: 153
+
+#356: metona, nero (M)  (M), born Jan 1, 1976.
+First name = null.  Surname = *&^%$.
+Kin Terms: metona nero .
+Kin Term Name History: metona:0 metona:0 nero:0 nero:0 .
+     BirthFamily: 13
+     Marriages:
+     Family#154: I-356,  I-358
+
+#357: dumbu, metona (M)  (M), born Jan 1, 1977.
+First name = null.  Surname = *&^%$.
+Kin Terms: dumbu metona .
+Kin Term Name History: dumbu:0 dumbu:0 metona:0 metona:0 .
+     BirthFamily: 13
+
+#358:   [nero] (F)  (F), born Jan 1, 1976.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero .
+Kin Term Name History: nero:10 nero:10 nero:10 .
+     Marriages:
+     Family#154: I-356,  I-358
+
+#359: nero, yarise (M)  (M), born Jan 1, 1967.
+First name = null.  Surname = *&^%$.
+Kin Terms: nero yarise .
+Kin Term Name History: nero:1 nero:1 yarise:0 yarise:0 .
+     BirthFamily: 13
+     Marriages:
+     Family#155: I-359,  I-361
+
+#360: yarise (M)  (M), born Jan 1, 1966.
+First name = null.  Surname = *&^%$.
+Kin Terms: yarise .
+Kin Term Name History: yarise:0 yarise:0 .
+     BirthFamily: 13
+
+#361:   [yarise, nero] (F)  (F), born Jan 1, 1967.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yarise nero .
+Kin Term Name History: nero:11 yarise:5 nero:11 nero:11 yarise:5 yarise:5 .
+     Marriages:
+     Family#155: I-359,  I-361
+
+#362:   [metona, nero] (M)  (M), born Jan 1, 1974.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: metona nero .
+Kin Term Name History: metona:1 metona:1 nero:2 nero:2 .
+     BirthFamily: 132
+     Marriages:
+     Family#156: I-362,  I-363
+
+#363:   [nero] (F)  (F), born Jan 1, 1974.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero .
+Kin Term Name History: nero:12 nero:12 nero:12 .
+     Marriages:
+     Family#156: I-362,  I-363
+
+#364: eneng (F)  (F), born Jan 1, 1946.
+First name = null.  Surname = *&^%$.
+Kin Terms: eneng .
+Kin Term Name History: eneng:0 eneng:0 eneng:1 eneng:1 .
+     BirthFamily: 16
+     Marriages:
+     Family#157: I-366,  I-364
+
+#365: eneng (F)  (F), born Jan 1, 1945.
+First name = null.  Surname = *&^%$.
+Kin Terms: eneng .
+Kin Term Name History: eneng:0 eneng:0 eneng:1 eneng:1 .
+     BirthFamily: 16
+
+#366: No Defined Term (M)  (M), born Jan 1, 1946.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#157: I-366,  I-364
+
+#367: doto  [nero] (M)  (M), born Jan 1, 1967.
+First name = null.  Surname = *&^%$.
+Kin Terms: doto .
+Extended Kin Terms: nero .
+Kin Term Name History: nero:3 nero:3 doto:0 doto:0 doto:1 doto:1 .
+     BirthFamily: 157
+     Marriages:
+     Family#158: I-367,  I-368
+
+#368:   [nero, yarise] (F)  (F), born Jan 1, 1967.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero yarise .
+Kin Term Name History: nero:13 nero:13 nero:13 yarise:6 yarise:6 .
+     Marriages:
+     Family#158: I-367,  I-368
+
+#369:   [nero] (M)  (M), born Jan 1, 1974.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero .
+Kin Term Name History: nero:4 nero:4 .
+     BirthFamily: 137
+     Marriages:
+     Family#159: I-369,  I-370
+
+#370:   [nero] (F)  (F), born Jan 1, 1974.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero .
+Kin Term Name History: nero:14 nero:14 nero:14 .
+     Marriages:
+     Family#159: I-369,  I-370
+
+#371:   [kemeng] (F)  (F), born Jan 1, 1925.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:1 kemeng:1 kemeng:11 kemeng:11 .
+     BirthFamily: 20
+     Marriages:
+     Family#160: I-373,  I-371
+
+#372:   [kemeng] (F)  (F), born Jan 1, 1924.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kemeng .
+Kin Term Name History: kemeng:1 kemeng:1 kemeng:11 kemeng:11 .
+     BirthFamily: 20
+
+#373:   [sese] (M)  (M), born Jan 1, 1925.
+First name = Presumed.  Surname = Spouse.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:24 sese:24 sese:32 sese:32 .
+     Marriages:
+     Family#160: I-373,  I-371
+
+#374: No Defined Term  (?), born Jan 1, 1946.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 160
+     Marriages:
+     Family#161: I-374,  I-375
+
+#375: No Defined Term  (?), born Jan 1, 1946.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#161: I-374,  I-375
+
+#376:   [nero] (M)  (M), born Jan 1, 1967.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero .
+Kin Term Name History: nero:5 nero:5 .
+     BirthFamily: 161
+     Marriages:
+     Family#162: I-376,  I-377
+
+#377:   [nero, yarise] (F)  (F), born Jan 1, 1967.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero yarise .
+Kin Term Name History: nero:15 nero:15 nero:15 yarise:7 yarise:7 .
+     Marriages:
+     Family#162: I-376,  I-377
+
+#378:   [kasi_kasi] (F)  (F), born Jan 1, 1911.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:1 kasi_kasi:1 .
+     BirthFamily: 25
+     Marriages:
+     Family#163: I-380,  I-378
+
+#379:   [kasi_kasi] (F)  (F), born Jan 1, 1912.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:1 kasi_kasi:1 .
+     BirthFamily: 25
+
+#380: No Defined Term (M)  (M), born Jan 1, 1911.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#163: I-380,  I-378
+
+#381: No Defined Term  (?), born Jan 1, 1932.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 163
+     Marriages:
+     Family#164: I-381,  I-382
+
+#382: No Defined Term  (?), born Jan 1, 1932.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#164: I-381,  I-382
+
+#383: No Defined Term  (?), born Jan 1, 1953.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 164
+     Marriages:
+     Family#165: I-383,  I-384
+
+#384: No Defined Term  (?), born Jan 1, 1953.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#165: I-383,  I-384
+
+#385:   [nero] (M)  (M), born Jan 1, 1974.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero .
+Kin Term Name History: nero:6 nero:6 .
+     BirthFamily: 165
+     Marriages:
+     Family#166: I-385,  I-386
+
+#386:   [nero] (F)  (F), born Jan 1, 1974.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero .
+Kin Term Name History: nero:16 nero:16 nero:16 .
+     Marriages:
+     Family#166: I-385,  I-386
+
+#387:   [kasi_kasi] (F)  (F), born Jan 1, 1904.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:1 kasi_kasi:1 .
+     BirthFamily: 25
+     Marriages:
+     Family#167: I-389,  I-387
+
+#388:   [kasi_kasi] (F)  (F), born Jan 1, 1903.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:1 kasi_kasi:1 .
+     BirthFamily: 25
+
+#389: No Defined Term (M)  (M), born Jan 1, 1904.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#167: I-389,  I-387
+
+#390: No Defined Term  (?), born Jan 1, 1925.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 167
+     Marriages:
+     Family#168: I-390,  I-391
+
+#391: No Defined Term  (?), born Jan 1, 1925.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#168: I-390,  I-391
+
+#392: No Defined Term  (?), born Jan 1, 1946.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 168
+     Marriages:
+     Family#169: I-392,  I-393
+
+#393: No Defined Term  (?), born Jan 1, 1946.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#169: I-392,  I-393
+
+#394:   [nero] (M)  (M), born Jan 1, 1967.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero .
+Kin Term Name History: nero:7 nero:7 .
+     BirthFamily: 169
+     Marriages:
+     Family#170: I-394,  I-395
+
+#395:   [nero, yarise] (F)  (F), born Jan 1, 1967.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero yarise .
+Kin Term Name History: nero:17 nero:17 nero:17 yarise:8 yarise:8 .
+     Marriages:
+     Family#170: I-394,  I-395
+
+#396:   [ye_yepe] (F)  (F), born Jan 1, 1890.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:1 ye_yepe:1 .
+     BirthFamily: 38
+     Marriages:
+     Family#171: I-398,  I-396
+
+#397:   [ye_yepe] (F)  (F), born Jan 1, 1891.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:1 ye_yepe:1 .
+     BirthFamily: 38
+
+#398: No Defined Term (M)  (M), born Jan 1, 1890.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#171: I-398,  I-396
+
+#399:   [kasi_kasi]  (?), born Jan 1, 1911.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:2 kasi_kasi:2 .
+     BirthFamily: 171
+     Marriages:
+     Family#172: I-399,  I-400
+
+#400: No Defined Term  (?), born Jan 1, 1911.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#172: I-399,  I-400
+
+#401: No Defined Term  (?), born Jan 1, 1932.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 172
+     Marriages:
+     Family#173: I-401,  I-402
+
+#402: No Defined Term  (?), born Jan 1, 1932.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#173: I-401,  I-402
+
+#403: No Defined Term  (?), born Jan 1, 1953.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 173
+     Marriages:
+     Family#174: I-403,  I-404
+
+#404: No Defined Term  (?), born Jan 1, 1953.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#174: I-403,  I-404
+
+#405:   [nero] (M)  (M), born Jan 1, 1974.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero .
+Kin Term Name History: nero:8 nero:8 .
+     BirthFamily: 174
+     Marriages:
+     Family#175: I-405,  I-406
+
+#406:   [nero] (F)  (F), born Jan 1, 1974.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero .
+Kin Term Name History: nero:18 nero:18 nero:18 .
+     Marriages:
+     Family#175: I-405,  I-406
+
+#407:   [ye_yepe] (F)  (F), born Jan 1, 1883.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:1 ye_yepe:1 .
+     BirthFamily: 38
+     Marriages:
+     Family#176: I-409,  I-407
+
+#408:   [ye_yepe] (F)  (F), born Jan 1, 1882.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:1 ye_yepe:1 .
+     BirthFamily: 38
+
+#409: No Defined Term (M)  (M), born Jan 1, 1883.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#176: I-409,  I-407
+
+#410:   [kasi_kasi]  (?), born Jan 1, 1904.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:2 kasi_kasi:2 .
+     BirthFamily: 176
+     Marriages:
+     Family#177: I-410,  I-411
+
+#411: No Defined Term  (?), born Jan 1, 1904.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#177: I-410,  I-411
+
+#412: No Defined Term  (?), born Jan 1, 1925.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 177
+     Marriages:
+     Family#178: I-412,  I-413
+
+#413: No Defined Term  (?), born Jan 1, 1925.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#178: I-412,  I-413
+
+#414: No Defined Term  (?), born Jan 1, 1946.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 178
+     Marriages:
+     Family#179: I-414,  I-415
+
+#415: No Defined Term  (?), born Jan 1, 1946.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#179: I-414,  I-415
+
+#416:   [nero] (M)  (M), born Jan 1, 1967.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero .
+Kin Term Name History: nero:9 nero:9 .
+     BirthFamily: 179
+     Marriages:
+     Family#180: I-416,  I-417
+
+#417:   [nero] (F)  (F), born Jan 1, 1967.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: nero .
+Kin Term Name History: nero:19 nero:19 nero:19 .
+     Marriages:
+     Family#180: I-416,  I-417
+
+#418:   [sese] (M)  (M), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:20 sese:28 sese:20 sese:20 sese:28 sese:28 .
+     Marriages:
+     Family#181: I-418,  I-229
+
+#419:   [sese] (M)  (M), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:21 sese:29 sese:21 sese:21 sese:29 sese:29 .
+     Marriages:
+     Family#182: I-419,  I-230
+
+#420:   [sese] (M)  (M), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:22 sese:30 sese:22 sese:22 sese:30 sese:30 .
+     Marriages:
+     Family#183: I-420,  I-231
+
+#421:   [sese] (M)  (M), born Jan 1, 1929.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:23 sese:31 sese:23 sese:23 sese:31 sese:31 .
+     Marriages:
+     Family#184: I-421,  I-240
+
+#422:   [sese] (M)  (M), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:24 sese:32 sese:24 sese:24 sese:32 sese:32 .
+     Marriages:
+     Family#185: I-422,  I-224
+
+#423:   [sese] (M)  (M), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:25 sese:33 sese:25 sese:25 sese:33 sese:33 .
+     Marriages:
+     Family#186: I-423,  I-225
+
+#424:   [sese] (M)  (M), born Jan 1, 1930.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:26 sese:34 sese:26 sese:26 sese:34 sese:34 .
+     Marriages:
+     Family#187: I-424,  I-226
+
+#425:   [sese] (M)  (M), born Jan 1, 1929.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: sese .
+Kin Term Name History: sese:27 sese:35 sese:27 sese:27 sese:35 sese:35 .
+     Marriages:
+     Family#188: I-425,  I-228
+
+#426: syo  (?), born Jan 1, 1993.
+First name = null.  Surname = *&^%$.
+Kin Terms: syo .
+Kin Term Name History: syo:0 syo:1 syo:0 syo:0 syo:1 syo:1 .
+     BirthFamily: 34
+
+#427:   [syo]  (?), born Jan 1, 1993.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: syo .
+Kin Term Name History: syo:2 syo:2 syo:2 .
+     BirthFamily: 35
+
+#428:   [syo]  (?), born Jan 1, 1993.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: syo .
+Kin Term Name History: syo:3 syo:3 syo:3 .
+     BirthFamily: 36
+
+#429:   [syo]  (?), born Jan 1, 1993.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: syo .
+Kin Term Name History: syo:4 syo:4 syo:4 .
+     BirthFamily: 37
+
+#430: uai (M)  (M), born Jan 1, 1951.
+First name = null.  Surname = *&^%$.
+Kin Terms: uai .
+Kin Term Name History: uai:0 uai:1 uai:0 uai:0 uai:1 uai:1 .
+     BirthFamily: 118
+
+#431:   [uai] (M)  (M), born Jan 1, 1951.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: uai .
+Kin Term Name History: uai:2 uai:2 uai:2 .
+     BirthFamily: 121
+
+#432:   [uai] (M)  (M), born Jan 1, 1951.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: uai .
+Kin Term Name History: uai:3 uai:3 uai:3 .
+     BirthFamily: 125
+
+#433:   [uai] (M)  (M), born Jan 1, 1951.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: uai .
+Kin Term Name History: uai:4 uai:4 uai:4 .
+     BirthFamily: 130
+
+#434: yarise  (?), born Jan 1, 1965.
+First name = null.  Surname = *&^%$.
+Kin Terms: yarise .
+Kin Term Name History: yarise:0 yarise:0 yarise:0 .
+     BirthFamily: 13
+
+#435:   [memai] (M)  (M), born Jan 1, 1944.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: memai .
+Kin Term Name History: memai:1 memai:1 .
+     BirthFamily: 16
+     Marriages:
+     Family#189: I-435,  I-436
+
+#436:   [nameng] (F)  (F), born Jan 1, 1944.
+First name = Presumed.  Surname = Spouse.
+Extended Kin Terms: nameng .
+Kin Term Name History: nameng:5 nameng:5 .
+     Marriages:
+     Family#189: I-435,  I-436
+
+#437:   [yarise]  (?), born Jan 1, 1965.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yarise .
+Kin Term Name History: yarise:1 yarise:1 yarise:1 .
+     BirthFamily: 189
+
+#438: No Defined Term  (?), born Jan 1, 1923.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 20
+     Marriages:
+     Family#190: I-438,  I-439
+
+#439: No Defined Term  (?), born Jan 1, 1923.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#190: I-438,  I-439
+
+#440:   [memai] (M)  (M), born Jan 1, 1944.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: memai .
+Kin Term Name History: memai:2 memai:2 .
+     BirthFamily: 190
+     Marriages:
+     Family#191: I-440,  I-441
+
+#441:   [nameng] (F)  (F), born Jan 1, 1944.
+First name = Presumed.  Surname = Spouse.
+Extended Kin Terms: nameng .
+Kin Term Name History: nameng:6 nameng:6 .
+     Marriages:
+     Family#191: I-440,  I-441
+
+#442:   [yarise]  (?), born Jan 1, 1965.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yarise .
+Kin Term Name History: yarise:2 yarise:2 yarise:2 .
+     BirthFamily: 191
+
+#443:   [kasi_kasi]  (?), born Jan 1, 1902.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:1 kasi_kasi:1 .
+     BirthFamily: 25
+     Marriages:
+     Family#192: I-443,  I-444
+
+#444: No Defined Term  (?), born Jan 1, 1902.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#192: I-443,  I-444
+
+#445: No Defined Term  (?), born Jan 1, 1923.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 192
+     Marriages:
+     Family#193: I-445,  I-446
+
+#446: No Defined Term  (?), born Jan 1, 1923.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#193: I-445,  I-446
+
+#447:   [memai] (M)  (M), born Jan 1, 1944.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: memai .
+Kin Term Name History: memai:3 memai:3 .
+     BirthFamily: 193
+     Marriages:
+     Family#194: I-447,  I-448
+
+#448:   [nameng] (F)  (F), born Jan 1, 1944.
+First name = Presumed.  Surname = Spouse.
+Extended Kin Terms: nameng .
+Kin Term Name History: nameng:7 nameng:7 .
+     Marriages:
+     Family#194: I-447,  I-448
+
+#449:   [yarise]  (?), born Jan 1, 1965.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yarise .
+Kin Term Name History: yarise:3 yarise:3 yarise:3 .
+     BirthFamily: 194
+
+#450:   [ye_yepe]  (?), born Jan 1, 1881.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:1 ye_yepe:1 .
+     BirthFamily: 38
+     Marriages:
+     Family#195: I-450,  I-451
+
+#451: No Defined Term  (?), born Jan 1, 1881.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#195: I-450,  I-451
+
+#452:   [kasi_kasi]  (?), born Jan 1, 1902.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: kasi_kasi .
+Kin Term Name History: kasi_kasi:2 kasi_kasi:2 .
+     BirthFamily: 195
+     Marriages:
+     Family#196: I-452,  I-453
+
+#453: No Defined Term  (?), born Jan 1, 1902.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#196: I-452,  I-453
+
+#454: No Defined Term  (?), born Jan 1, 1923.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 196
+     Marriages:
+     Family#197: I-454,  I-455
+
+#455: No Defined Term  (?), born Jan 1, 1923.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#197: I-454,  I-455
+
+#456:   [memai] (M)  (M), born Jan 1, 1944.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: memai .
+Kin Term Name History: memai:4 memai:4 .
+     BirthFamily: 197
+     Marriages:
+     Family#198: I-456,  I-457
+
+#457:   [nameng] (F)  (F), born Jan 1, 1944.
+First name = Presumed.  Surname = Spouse.
+Extended Kin Terms: nameng .
+Kin Term Name History: nameng:8 nameng:8 .
+     Marriages:
+     Family#198: I-456,  I-457
+
+#458:   [yarise]  (?), born Jan 1, 1965.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yarise .
+Kin Term Name History: yarise:4 yarise:4 yarise:4 .
+     BirthFamily: 198
+
+#459: No Defined Term  (?), born Jan 1, 1943.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 16
+     Marriages:
+     Family#199: I-459,  I-460
+
+#460: No Defined Term  (?), born Jan 1, 1943.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#199: I-459,  I-460
+
+#461: No Defined Term (M)  (M), born Jan 1, 1964.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 199
+     Marriages:
+     Family#200: I-461,  I-462
+
+#462:   [yarise] (F)  (F), born Jan 1, 1964.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yarise .
+Kin Term Name History: yarise:6 yarise:6 yarise:6 .
+     Marriages:
+     Family#200: I-461,  I-462
+
+#463: No Defined Term  (?), born Jan 1, 1945.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 190
+     Marriages:
+     Family#201: I-463,  I-464
+
+#464: No Defined Term  (?), born Jan 1, 1945.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#201: I-463,  I-464
+
+#465: No Defined Term (M)  (M), born Jan 1, 1966.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 201
+     Marriages:
+     Family#202: I-465,  I-466
+
+#466:   [yarise] (F)  (F), born Jan 1, 1966.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yarise .
+Kin Term Name History: yarise:7 yarise:7 yarise:7 .
+     Marriages:
+     Family#202: I-465,  I-466
+
+#467: No Defined Term  (?), born Jan 1, 1945.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 193
+     Marriages:
+     Family#203: I-467,  I-468
+
+#468: No Defined Term  (?), born Jan 1, 1945.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#203: I-467,  I-468
+
+#469: No Defined Term (M)  (M), born Jan 1, 1966.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 203
+     Marriages:
+     Family#204: I-469,  I-470
+
+#470:   [yarise] (F)  (F), born Jan 1, 1966.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yarise .
+Kin Term Name History: yarise:8 yarise:8 yarise:8 .
+     Marriages:
+     Family#204: I-469,  I-470
+
+#471: No Defined Term  (?), born Jan 1, 1866.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#205: I-97,  I-471
+
+#472:   [ye_yepe]  (?), born Jan 1, 1887.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: ye_yepe .
+Kin Term Name History: ye_yepe:4 ye_yepe:4 ye_yepe:4 .
+     BirthFamily: 205
+
+#473:   [yei]  (?), born Jan 1, 1997.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yei .
+Kin Term Name History: yei:2 yei:2 yei:2 .
+     BirthFamily: 154
+
+#474: No Defined Term (M)  (M), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 17
+     Marriages:
+     Family#206: I-474,  I-475
+
+#475: No Defined Term (F)  (F), born Jan 1, 1973.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#206: I-474,  I-475
+
+#476:   [yei]  (?), born Jan 1, 1994.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yei .
+Kin Term Name History: yei:3 yei:3 yei:3 .
+     BirthFamily: 206
+
+#477: No Defined Term (M)  (M), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 22
+     Marriages:
+     Family#207: I-477,  I-478
+
+#478: No Defined Term (F)  (F), born Jan 1, 1973.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#207: I-477,  I-478
+
+#479:   [yei]  (?), born Jan 1, 1994.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yei .
+Kin Term Name History: yei:4 yei:4 yei:4 .
+     BirthFamily: 207
+
+#480: No Defined Term (M)  (M), born Jan 1, 1973.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 28
+     Marriages:
+     Family#208: I-480,  I-481
+
+#481: No Defined Term (F)  (F), born Jan 1, 1973.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#208: I-480,  I-481
+
+#482:   [yei]  (?), born Jan 1, 1994.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yei .
+Kin Term Name History: yei:5 yei:5 yei:5 .
+     BirthFamily: 208
+
+#483: yei (M)  (M), born Jan 1, 1993.
+First name = null.  Surname = *&^%$.
+Kin Terms: yei .
+Kin Term Name History: yei:0 .
+     BirthFamily: 0
+     Marriages:
+     Family#209: I-483,  I-484
+
+#484:   [yei] (F)  (F), born Jan 1, 1993.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yei .
+Kin Term Name History: yei:10 yei:10 .
+     Marriages:
+     Family#209: I-483,  I-484
+
+#485: No Defined Term  (?), born Jan 1, 1760.
+First name = null.  Surname = *&^%$.
+     Marriages:
+     Family#210: I-485,  I-486
+
+#486: No Defined Term  (?), born Jan 1, 1760.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#210: I-485,  I-486
+
+#487: No Defined Term  (?), born Jan 1, 1782.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 210
+     Marriages:
+     Family#211: I-487,  I-488
+
+#488: No Defined Term  (?), born Jan 1, 1782.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#211: I-487,  I-488
+
+#489: No Defined Term  (?), born Jan 1, 1803.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 211
+     Marriages:
+     Family#212: I-489,  I-490
+
+#490: No Defined Term  (?), born Jan 1, 1803.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#212: I-489,  I-490
+
+#491: No Defined Term  (?), born Jan 1, 1824.
+First name = null.  Surname = *&^%$.
+     BirthFamily: 212
+     Marriages:
+     Family#213: I-491,  I-492
+
+#492: No Defined Term  (?), born Jan 1, 1824.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#213: I-491,  I-492
+
+#493:   [yupu_yupu]  (?), born Jan 1, 1845.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yupu_yupu .
+Kin Term Name History: yupu_yupu:4 yupu_yupu:4 yupu_yupu:4 .
+     BirthFamily: 213
+
+#494: No Defined Term  (?), born Jan 1, 2076.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#214: I-115,  I-494
+
+#495: yupu_yupu  (?), born Jan 1, 2097.
+First name = null.  Surname = *&^%$.
+Kin Terms: yupu_yupu .
+Kin Term Name History: yupu_yupu:5 yupu_yupu:5 .
+     BirthFamily: 214
+
+#496: No Defined Term  (?), born Jan 1, 2077.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#215: I-124,  I-496
+
+#497:   [yupu_yupu]  (?), born Jan 1, 2098.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yupu_yupu .
+Kin Term Name History: yupu_yupu:6 yupu_yupu:6 yupu_yupu:6 .
+     BirthFamily: 215
+
+#498: No Defined Term  (?), born Jan 1, 2077.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#216: I-133,  I-498
+
+#499:   [yupu_yupu]  (?), born Jan 1, 2098.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yupu_yupu .
+Kin Term Name History: yupu_yupu:7 yupu_yupu:7 yupu_yupu:7 .
+     BirthFamily: 216
+
+#500: No Defined Term  (?), born Jan 1, 2077.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#217: I-142,  I-500
+
+#501:   [yupu_yupu]  (?), born Jan 1, 2098.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yupu_yupu .
+Kin Term Name History: yupu_yupu:8 yupu_yupu:8 yupu_yupu:8 .
+     BirthFamily: 217
+
+#502: No Defined Term  (?), born Jan 1, 2077.
+First name = Presumed.  Surname = Spouse.
+     Marriages:
+     Family#218: I-151,  I-502
+
+#503:   [yupu_yupu]  (?), born Jan 1, 2098.
+First name = null.  Surname = *&^%$.
+Extended Kin Terms: yupu_yupu .
+Kin Term Name History: yupu_yupu:9 yupu_yupu:9 yupu_yupu:9 .
+     BirthFamily: 218
+
+
+Families:
+0: Jun 10, 1988
+     H =  #0, W = #1.
+     3 children.
+        #28 (F).
+        #107 (?).
+        #483 (M).
+
+1: Jun 10, 1967
+     H =  #2, W = #3.
+     4 children.
+        #1 (F).
+        #66 (M).
+        #157 (?).
+        #297 (F).
+
+2: Jun 10, 1946
+     H =  #4, W = #5.
+     2 children.
+        #2 (?).
+        #6 (?).
+
+3: Jun 10, 1925
+     H =  #7, W = #8.
+     4 children.
+        #4 (M).
+        #9 (?).
+        #229 (F).
+        #241 (M).
+
+4: Jun 10, 1947
+     H =  #9, W = #10.
+     1 child.
+        #11 (?).
+
+5: Jun 10, 1904
+     H =  #12, W = #13.
+     2 children.
+        #7 (?).
+        #14 (?).
+
+6: Jun 10, 1926
+     H =  #14, W = #15.
+     3 children.
+        #16 (?).
+        #230 (F).
+        #243 (M).
+
+7: Jun 10, 1947
+     H =  #16, W = #17.
+     1 child.
+        #18 (?).
+
+8: Jun 10, 1883
+     H =  #19, W = #20.
+     2 children.
+        #12 (?).
+        #21 (?).
+
+9: Jun 10, 1905
+     H =  #21, W = #22.
+     1 child.
+        #23 (?).
+
+10: Jun 10, 1926
+     H =  #23, W = #24.
+     3 children.
+        #25 (?).
+        #231 (F).
+        #245 (M).
+
+11: Jun 10, 1947
+     H =  #25, W = #26.
+     1 child.
+        #27 (?).
+
+12: Jun 10, 2009
+     H =  #29, W = #28.
+     0 children.
+
+13: Jun 10, 1967
+     H =  #30, W = #31.
+     13 children.
+        #0 (M).
+        #32 (?).
+        #73 (F).
+        #215 (?).
+        #301 (F).
+        #302 (F).
+        #303 (F).
+        #304 (F).
+        #356 (M).
+        #357 (M).
+        #359 (M).
+        #360 (M).
+        #434 (?).
+
+14: Jun 10, 1989
+     H =  #32, W = #33.
+     2 children.
+        #34 (F).
+        #116 (?).
+
+15: Jun 10, 2010
+     H =  #35, W = #34.
+     0 children.
+
+16: Jun 10, 1946
+     H =  #36, W = #37.
+     11 children.
+        #30 (M).
+        #38 (?).
+        #197 (F).
+        #257 (M).
+        #305 (M).
+        #306 (F).
+        #307 (F).
+        #364 (F).
+        #365 (F).
+        #435 (M).
+        #459 (?).
+
+17: Jun 10, 1968
+     H =  #38, W = #39.
+     3 children.
+        #40 (?).
+        #75 (F).
+        #474 (M).
+
+18: Jun 10, 1989
+     H =  #40, W = #41.
+     2 children.
+        #42 (F).
+        #125 (?).
+
+19: Jun 10, 2010
+     H =  #43, W = #42.
+     0 children.
+
+20: Jun 10, 1925
+     H =  #44, W = #45.
+     10 children.
+        #36 (M).
+        #46 (?).
+        #224 (F).
+        #249 (M).
+        #310 (M).
+        #314 (F).
+        #315 (F).
+        #371 (F).
+        #372 (F).
+        #438 (?).
+
+21: Jun 10, 1947
+     H =  #46, W = #47.
+     3 children.
+        #48 (?).
+        #200 (F).
+        #258 (M).
+
+22: Jun 10, 1968
+     H =  #48, W = #49.
+     3 children.
+        #50 (?).
+        #77 (F).
+        #477 (M).
+
+23: Jun 10, 1989
+     H =  #50, W = #51.
+     2 children.
+        #52 (F).
+        #134 (?).
+
+24: Jun 10, 2010
+     H =  #53, W = #52.
+     0 children.
+
+25: Jun 10, 1904
+     H =  #54, W = #55.
+     11 children.
+        #44 (?).
+        #56 (?).
+        #320 (F).
+        #321 (F).
+        #328 (F).
+        #329 (F).
+        #378 (F).
+        #379 (F).
+        #387 (F).
+        #388 (F).
+        #443 (?).
+
+26: Jun 10, 1926
+     H =  #56, W = #57.
+     3 children.
+        #58 (?).
+        #225 (F).
+        #251 (M).
+
+27: Jun 10, 1947
+     H =  #58, W = #59.
+     3 children.
+        #60 (?).
+        #203 (F).
+        #259 (M).
+
+28: Jun 10, 1968
+     H =  #60, W = #61.
+     3 children.
+        #62 (?).
+        #79 (F).
+        #480 (M).
+
+29: Jun 10, 1989
+     H =  #62, W = #63.
+     2 children.
+        #64 (F).
+        #143 (?).
+
+30: Jun 10, 2010
+     H =  #65, W = #64.
+     0 children.
+
+31: Jun 10, 1968
+     H =  #6, W = #67.
+     3 children.
+        #68 (M).
+        #163 (?).
+        #298 (F).
+
+32: Jun 10, 1968
+     H =  #11, W = #69.
+     3 children.
+        #70 (M).
+        #169 (?).
+        #299 (F).
+
+33: Jun 10, 1968
+     H =  #18, W = #71.
+     3 children.
+        #72 (M).
+        #175 (?).
+        #300 (F).
+
+34: Jun 10, 1990
+     H =  #74, W = #73.
+     1 child.
+        #426 (?).
+
+35: Jun 10, 1990
+     H =  #76, W = #75.
+     1 child.
+        #427 (?).
+
+36: Jun 10, 1990
+     H =  #78, W = #77.
+     1 child.
+        #428 (?).
+
+37: Jun 10, 1990
+     H =  #80, W = #79.
+     1 child.
+        #429 (?).
+
+38: Jun 10, 1883
+     H =  #81, W = #82.
+     11 children.
+        #54 (?).
+        #206 (?).
+        #336 (F).
+        #337 (F).
+        #346 (F).
+        #347 (F).
+        #396 (F).
+        #397 (F).
+        #407 (F).
+        #408 (F).
+        #450 (?).
+
+39: Jun 10, 1862
+     H =  #83, W = #84.
+     2 children.
+        #81 (?).
+        #85 (?).
+
+40: Jun 10, 1841
+     H =  #86, W = #87.
+     2 children.
+        #83 (?).
+        #88 (?).
+
+41: Jun 10, 1863
+     H =  #88, W = #89.
+     1 child.
+        #90 (?).
+
+42: Jun 10, 1820
+     H =  #91, W = #92.
+     2 children.
+        #86 (?).
+        #93 (?).
+
+43: Jun 10, 1842
+     H =  #93, W = #94.
+     1 child.
+        #95 (?).
+
+44: Jun 10, 1863
+     H =  #95, W = #96.
+     1 child.
+        #97 (?).
+
+45: Jun 10, 1799
+     H =  #98, W = #99.
+     2 children.
+        #91 (?).
+        #100 (?).
+
+46: Jun 10, 1821
+     H =  #100, W = #101.
+     1 child.
+        #102 (?).
+
+47: Jun 10, 1842
+     H =  #102, W = #103.
+     1 child.
+        #104 (?).
+
+48: Jun 10, 1863
+     H =  #104, W = #105.
+     1 child.
+        #106 (?).
+
+49: Jun 10, 2010
+     H =  #107, W = #108.
+     1 child.
+        #109 (?).
+
+50: Jun 10, 2031
+     H =  #109, W = #110.
+     1 child.
+        #111 (?).
+
+51: Jun 10, 2052
+     H =  #111, W = #112.
+     1 child.
+        #113 (?).
+
+52: Jun 10, 2073
+     H =  #113, W = #114.
+     1 child.
+        #115 (?).
+
+53: Jun 10, 2011
+     H =  #116, W = #117.
+     1 child.
+        #118 (?).
+
+54: Jun 10, 2032
+     H =  #118, W = #119.
+     1 child.
+        #120 (?).
+
+55: Jun 10, 2053
+     H =  #120, W = #121.
+     1 child.
+        #122 (?).
+
+56: Jun 10, 2074
+     H =  #122, W = #123.
+     1 child.
+        #124 (?).
+
+57: Jun 10, 2011
+     H =  #125, W = #126.
+     1 child.
+        #127 (?).
+
+58: Jun 10, 2032
+     H =  #127, W = #128.
+     1 child.
+        #129 (?).
+
+59: Jun 10, 2053
+     H =  #129, W = #130.
+     1 child.
+        #131 (?).
+
+60: Jun 10, 2074
+     H =  #131, W = #132.
+     1 child.
+        #133 (?).
+
+61: Jun 10, 2011
+     H =  #134, W = #135.
+     1 child.
+        #136 (?).
+
+62: Jun 10, 2032
+     H =  #136, W = #137.
+     1 child.
+        #138 (?).
+
+63: Jun 10, 2053
+     H =  #138, W = #139.
+     1 child.
+        #140 (?).
+
+64: Jun 10, 2074
+     H =  #140, W = #141.
+     1 child.
+        #142 (?).
+
+65: Jun 10, 2011
+     H =  #143, W = #144.
+     1 child.
+        #145 (?).
+
+66: Jun 10, 2032
+     H =  #145, W = #146.
+     1 child.
+        #147 (?).
+
+67: Jun 10, 2053
+     H =  #147, W = #148.
+     1 child.
+        #149 (?).
+
+68: Jun 10, 2074
+     H =  #149, W = #150.
+     1 child.
+        #151 (?).
+
+69: Jun 10, 2040
+     H =  #152, W = #110.
+     0 children.
+
+70: Jun 10, 2041
+     H =  #153, W = #119.
+     0 children.
+
+71: Jun 10, 2041
+     H =  #154, W = #128.
+     0 children.
+
+72: Jun 10, 2041
+     H =  #155, W = #137.
+     0 children.
+
+73: Jun 10, 2041
+     H =  #156, W = #146.
+     0 children.
+
+74: Jun 10, 1990
+     H =  #157, W = #158.
+     1 child.
+        #159 (?).
+
+75: Jun 10, 2011
+     H =  #159, W = #160.
+     3 children.
+        #161 (M).
+        #181 (M).
+        #189 (?).
+
+76: Jun 10, 2032
+     H =  #161, W = #162.
+     0 children.
+
+77: Jun 10, 1990
+     H =  #163, W = #164.
+     1 child.
+        #165 (?).
+
+78: Jun 10, 2011
+     H =  #165, W = #166.
+     3 children.
+        #167 (M).
+        #183 (M).
+        #191 (?).
+
+79: Jun 10, 2032
+     H =  #167, W = #168.
+     0 children.
+
+80: Jun 10, 1990
+     H =  #169, W = #170.
+     1 child.
+        #171 (?).
+
+81: Jun 10, 2011
+     H =  #171, W = #172.
+     3 children.
+        #173 (M).
+        #185 (M).
+        #193 (?).
+
+82: Jun 10, 2032
+     H =  #173, W = #174.
+     0 children.
+
+83: Jun 10, 1990
+     H =  #175, W = #176.
+     1 child.
+        #177 (?).
+
+84: Jun 10, 2011
+     H =  #177, W = #178.
+     3 children.
+        #179 (M).
+        #187 (M).
+        #195 (?).
+
+85: Jun 10, 2032
+     H =  #179, W = #180.
+     0 children.
+
+86: Jun 10, 2033
+     H =  #181, W = #182.
+     0 children.
+
+87: Jun 10, 2033
+     H =  #183, W = #184.
+     0 children.
+
+88: Jun 10, 2033
+     H =  #185, W = #186.
+     0 children.
+
+89: Jun 10, 2033
+     H =  #187, W = #188.
+     0 children.
+
+90: Jun 10, 2034
+     H =  #189, W = #190.
+     0 children.
+
+91: Jun 10, 2034
+     H =  #191, W = #192.
+     0 children.
+
+92: Jun 10, 2034
+     H =  #193, W = #194.
+     0 children.
+
+93: Jun 10, 2034
+     H =  #195, W = #196.
+     0 children.
+
+94: Jun 10, 1969
+     H =  #198, W = #197.
+     1 child.
+        #199 (M).
+
+95: Jun 10, 1969
+     H =  #201, W = #200.
+     1 child.
+        #202 (M).
+
+96: Jun 10, 1969
+     H =  #204, W = #203.
+     1 child.
+        #205 (M).
+
+97: Jun 10, 1905
+     H =  #206, W = #207.
+     1 child.
+        #208 (?).
+
+98: Jun 10, 1926
+     H =  #208, W = #209.
+     3 children.
+        #210 (?).
+        #226 (F).
+        #253 (M).
+
+99: Jun 10, 1947
+     H =  #210, W = #211.
+     2 children.
+        #212 (F).
+        #260 (M).
+
+100: Jun 10, 1968
+     H =  #213, W = #212.
+     1 child.
+        #214 (M).
+
+101: Jun 10, 1884
+     H =  #85, W = #216.
+     1 child.
+        #217 (?).
+
+102: Jun 10, 1905
+     H =  #217, W = #218.
+     1 child.
+        #219 (?).
+
+103: Jun 10, 1884
+     H =  #90, W = #220.
+     1 child.
+        #221 (?).
+
+104: Jun 10, 1905
+     H =  #221, W = #222.
+     1 child.
+        #223 (?).
+
+105: Jun 10, 1926
+     H =  #219, W = #227.
+     2 children.
+        #228 (F).
+        #255 (M).
+
+106: Jun 10, 1862
+     H =  #232, W = #233.
+     2 children.
+        #19 (?).
+        #234 (?).
+
+107: Jun 10, 1884
+     H =  #234, W = #235.
+     1 child.
+        #236 (?).
+
+108: Jun 10, 1905
+     H =  #236, W = #237.
+     1 child.
+        #238 (?).
+
+109: Jun 10, 1926
+     H =  #238, W = #239.
+     2 children.
+        #240 (F).
+        #247 (M).
+
+110: Jun 10, 1949
+     H =  #241, W = #242.
+     0 children.
+
+111: Jun 10, 1949
+     H =  #243, W = #244.
+     0 children.
+
+112: Jun 10, 1949
+     H =  #245, W = #246.
+     0 children.
+
+113: Jun 10, 1948
+     H =  #247, W = #248.
+     0 children.
+
+114: Jun 10, 1949
+     H =  #249, W = #250.
+     1 child.
+        #311 (?).
+
+115: Jun 10, 1949
+     H =  #251, W = #252.
+     0 children.
+
+116: Jun 10, 1949
+     H =  #253, W = #254.
+     0 children.
+
+117: Jun 10, 1948
+     H =  #255, W = #256.
+     0 children.
+
+118: Jun 10, 1946
+     H =  #261, W = #262.
+     3 children.
+        #31 (F).
+        #263 (F).
+        #430 (M).
+
+119: Jun 10, 1968
+     H =  #264, W = #263.
+     0 children.
+
+120: Jun 10, 1925
+     H =  #265, W = #266.
+     2 children.
+        #261 (?).
+        #267 (?).
+
+121: Jun 10, 1947
+     H =  #267, W = #268.
+     2 children.
+        #269 (F).
+        #431 (M).
+
+122: Jun 10, 1968
+     H =  #270, W = #269.
+     0 children.
+
+123: Jun 10, 1904
+     H =  #271, W = #272.
+     2 children.
+        #265 (?).
+        #273 (?).
+
+124: Jun 10, 1926
+     H =  #273, W = #274.
+     1 child.
+        #275 (?).
+
+125: Jun 10, 1947
+     H =  #275, W = #276.
+     2 children.
+        #277 (F).
+        #432 (M).
+
+126: Jun 10, 1968
+     H =  #278, W = #277.
+     0 children.
+
+127: Jun 10, 1883
+     H =  #279, W = #280.
+     2 children.
+        #271 (?).
+        #281 (?).
+
+128: Jun 10, 1905
+     H =  #281, W = #282.
+     1 child.
+        #283 (?).
+
+129: Jun 10, 1926
+     H =  #283, W = #284.
+     1 child.
+        #285 (?).
+
+130: Jun 10, 1947
+     H =  #285, W = #286.
+     2 children.
+        #287 (F).
+        #433 (M).
+
+131: Jun 10, 1968
+     H =  #288, W = #287.
+     0 children.
+
+132: Jun 10, 1970
+     H =  #257, W = #289.
+     2 children.
+        #290 (?).
+        #362 (M).
+
+133: Jun 10, 1970
+     H =  #258, W = #291.
+     1 child.
+        #292 (?).
+
+134: Jun 10, 1970
+     H =  #259, W = #293.
+     1 child.
+        #294 (?).
+
+135: Jun 10, 1969
+     H =  #260, W = #295.
+     1 child.
+        #296 (?).
+
+136: Jun 10, 1966
+     H =  #308, W = #306.
+     1 child.
+        #309 (?).
+
+137: Jun 10, 1970
+     H =  #311, W = #312.
+     2 children.
+        #313 (?).
+        #369 (M).
+
+138: Jun 10, 1945
+     H =  #316, W = #314.
+     1 child.
+        #317 (?).
+
+139: Jun 10, 1966
+     H =  #317, W = #318.
+     1 child.
+        #319 (?).
+
+140: Jun 10, 1927
+     H =  #322, W = #320.
+     1 child.
+        #323 (?).
+
+141: Jun 10, 1948
+     H =  #323, W = #324.
+     1 child.
+        #325 (?).
+
+142: Jun 10, 1969
+     H =  #325, W = #326.
+     1 child.
+        #327 (?).
+
+143: Jun 10, 1924
+     H =  #330, W = #328.
+     1 child.
+        #331 (?).
+
+144: Jun 10, 1945
+     H =  #331, W = #332.
+     1 child.
+        #333 (?).
+
+145: Jun 10, 1966
+     H =  #333, W = #334.
+     1 child.
+        #335 (?).
+
+146: Jun 10, 1906
+     H =  #338, W = #336.
+     1 child.
+        #339 (?).
+
+147: Jun 10, 1927
+     H =  #339, W = #340.
+     1 child.
+        #341 (?).
+
+148: Jun 10, 1948
+     H =  #341, W = #342.
+     1 child.
+        #343 (?).
+
+149: Jun 10, 1969
+     H =  #343, W = #344.
+     1 child.
+        #345 (?).
+
+150: Jun 10, 1903
+     H =  #348, W = #346.
+     1 child.
+        #349 (?).
+
+151: Jun 10, 1924
+     H =  #349, W = #350.
+     1 child.
+        #351 (?).
+
+152: Jun 10, 1945
+     H =  #351, W = #352.
+     1 child.
+        #353 (?).
+
+153: Jun 10, 1966
+     H =  #353, W = #354.
+     1 child.
+        #355 (?).
+
+154: Jun 10, 1994
+     H =  #356, W = #358.
+     1 child.
+        #473 (?).
+
+155: Jun 10, 1985
+     H =  #359, W = #361.
+     0 children.
+
+156: Jun 10, 1992
+     H =  #362, W = #363.
+     0 children.
+
+157: Jun 10, 1964
+     H =  #366, W = #364.
+     1 child.
+        #367 (M).
+
+158: Jun 10, 1985
+     H =  #367, W = #368.
+     0 children.
+
+159: Jun 10, 1992
+     H =  #369, W = #370.
+     0 children.
+
+160: Jun 10, 1943
+     H =  #373, W = #371.
+     1 child.
+        #374 (?).
+
+161: Jun 10, 1964
+     H =  #374, W = #375.
+     1 child.
+        #376 (M).
+
+162: Jun 10, 1985
+     H =  #376, W = #377.
+     0 children.
+
+163: Jun 10, 1929
+     H =  #380, W = #378.
+     1 child.
+        #381 (?).
+
+164: Jun 10, 1950
+     H =  #381, W = #382.
+     1 child.
+        #383 (?).
+
+165: Jun 10, 1971
+     H =  #383, W = #384.
+     1 child.
+        #385 (M).
+
+166: Jun 10, 1992
+     H =  #385, W = #386.
+     0 children.
+
+167: Jun 10, 1922
+     H =  #389, W = #387.
+     1 child.
+        #390 (?).
+
+168: Jun 10, 1943
+     H =  #390, W = #391.
+     1 child.
+        #392 (?).
+
+169: Jun 10, 1964
+     H =  #392, W = #393.
+     1 child.
+        #394 (M).
+
+170: Jun 10, 1985
+     H =  #394, W = #395.
+     0 children.
+
+171: Jun 10, 1908
+     H =  #398, W = #396.
+     1 child.
+        #399 (?).
+
+172: Jun 10, 1929
+     H =  #399, W = #400.
+     1 child.
+        #401 (?).
+
+173: Jun 10, 1950
+     H =  #401, W = #402.
+     1 child.
+        #403 (?).
+
+174: Jun 10, 1971
+     H =  #403, W = #404.
+     1 child.
+        #405 (M).
+
+175: Jun 10, 1992
+     H =  #405, W = #406.
+     0 children.
+
+176: Jun 10, 1901
+     H =  #409, W = #407.
+     1 child.
+        #410 (?).
+
+177: Jun 10, 1922
+     H =  #410, W = #411.
+     1 child.
+        #412 (?).
+
+178: Jun 10, 1943
+     H =  #412, W = #413.
+     1 child.
+        #414 (?).
+
+179: Jun 10, 1964
+     H =  #414, W = #415.
+     1 child.
+        #416 (M).
+
+180: Jun 10, 1985
+     H =  #416, W = #417.
+     0 children.
+
+181: Jun 10, 1948
+     H =  #418, W = #229.
+     0 children.
+
+182: Jun 10, 1948
+     H =  #419, W = #230.
+     0 children.
+
+183: Jun 10, 1948
+     H =  #420, W = #231.
+     0 children.
+
+184: Jun 10, 1947
+     H =  #421, W = #240.
+     0 children.
+
+185: Jun 10, 1948
+     H =  #422, W = #224.
+     0 children.
+
+186: Jun 10, 1948
+     H =  #423, W = #225.
+     0 children.
+
+187: Jun 10, 1948
+     H =  #424, W = #226.
+     0 children.
+
+188: Jun 10, 1947
+     H =  #425, W = #228.
+     0 children.
+
+189: Jun 10, 1962
+     H =  #435, W = #436.
+     1 child.
+        #437 (?).
+
+190: Jun 10, 1941
+     H =  #438, W = #439.
+     2 children.
+        #440 (M).
+        #463 (?).
+
+191: Jun 10, 1962
+     H =  #440, W = #441.
+     1 child.
+        #442 (?).
+
+192: Jun 10, 1920
+     H =  #443, W = #444.
+     1 child.
+        #445 (?).
+
+193: Jun 10, 1941
+     H =  #445, W = #446.
+     2 children.
+        #447 (M).
+        #467 (?).
+
+194: Jun 10, 1962
+     H =  #447, W = #448.
+     1 child.
+        #449 (?).
+
+195: Jun 10, 1899
+     H =  #450, W = #451.
+     1 child.
+        #452 (?).
+
+196: Jun 10, 1920
+     H =  #452, W = #453.
+     1 child.
+        #454 (?).
+
+197: Jun 10, 1941
+     H =  #454, W = #455.
+     1 child.
+        #456 (M).
+
+198: Jun 10, 1962
+     H =  #456, W = #457.
+     1 child.
+        #458 (?).
+
+199: Jun 10, 1961
+     H =  #459, W = #460.
+     1 child.
+        #461 (M).
+
+200: Jun 10, 1982
+     H =  #461, W = #462.
+     0 children.
+
+201: Jun 10, 1963
+     H =  #463, W = #464.
+     1 child.
+        #465 (M).
+
+202: Jun 10, 1984
+     H =  #465, W = #466.
+     0 children.
+
+203: Jun 10, 1963
+     H =  #467, W = #468.
+     1 child.
+        #469 (M).
+
+204: Jun 10, 1984
+     H =  #469, W = #470.
+     0 children.
+
+205: Jun 10, 1884
+     H =  #97, W = #471.
+     1 child.
+        #472 (?).
+
+206: Jun 10, 1991
+     H =  #474, W = #475.
+     1 child.
+        #476 (?).
+
+207: Jun 10, 1991
+     H =  #477, W = #478.
+     1 child.
+        #479 (?).
+
+208: Jun 10, 1991
+     H =  #480, W = #481.
+     1 child.
+        #482 (?).
+
+209: Jun 10, 2011
+     H =  #483, W = #484.
+     0 children.
+
+210: Jun 10, 1778
+     H =  #485, W = #486.
+     2 children.
+        #98 (?).
+        #487 (?).
+
+211: Jun 10, 1800
+     H =  #487, W = #488.
+     1 child.
+        #489 (?).
+
+212: Jun 10, 1821
+     H =  #489, W = #490.
+     1 child.
+        #491 (?).
+
+213: Jun 10, 1842
+     H =  #491, W = #492.
+     1 child.
+        #493 (?).
+
+214: Jun 10, 2094
+     H =  #115, W = #494.
+     1 child.
+        #495 (?).
+
+215: Jun 10, 2095
+     H =  #124, W = #496.
+     1 child.
+        #497 (?).
+
+216: Jun 10, 2095
+     H =  #133, W = #498.
+     1 child.
+        #499 (?).
+
+217: Jun 10, 2095
+     H =  #142, W = #500.
+     1 child.
+        #501 (?).
+
+218: Jun 10, 2095
+     H =  #151, W = #502.
+     1 child.
+        #503 (?).
+
+
+-------End------
+

@@ -368,6 +368,9 @@ public class FamilyEditor extends KSJInternalFrame {
             if (e.getActionCommand().equals("un-delete")) {
                 //  This action only fires if the Family is a deleted record.
                 fam.deleted = false;
+                if (fam.location.getX() < 10 || fam.location.getY() < 20) {
+                    fam.location = new Point(10,80);
+                }
                 editor.remove(deleteBox);
                 editor.getBounds(bnds);
                 editor.repaint(bnds);

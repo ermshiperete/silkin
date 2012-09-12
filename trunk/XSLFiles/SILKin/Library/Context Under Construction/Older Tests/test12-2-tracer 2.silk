@@ -1,0 +1,1199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE SIL_KinData>
+<SIL_KinData>
+<parameters>
+  <languageName>"test12-2"</languageName>
+  <theory> "test12-2.thy" </theory>
+  <theory> "test12-2(Adr).thy" </theory>
+  <createDate> "Nov 17, 2010" </createDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <indSerNum> 15</indSerNum> 
+  <famSerNum> 4</famSerNum> 
+  <polygamyPermit> "true"</polygamyPermit> 
+</parameters>
+<editorSettings>
+  <currentEgo> 5 </currentEgo>
+  <editDirectory> "/Users/gary/NetBeansProjects/Library/Context Under Construction" </editDirectory>
+  <origin><x>0</x><y>0</y></origin>
+  <infoPerson>-1</infoPerson>
+  <infoMarriage>-1</infoMarriage>
+  <label>2</label>
+  <ktlabel>1</ktlabel>
+  <editable> "true" </editable>
+  <distinctAdrTerms> "false" </distinctAdrTerms>
+  <maxNoise>25</maxNoise>
+  <ignorable>5</ignorable>
+
+</editorSettings>
+<individualCensus>
+<individual>
+  <serial>0</serial><sex> "Male" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 245 </x> <y>19 </y> </location>
+  <comments> "" </comments>
+  <surname> "" </surname>
+  <firstNames> "Adam" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Nov 17, 2010" </dataChangeDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily> </birthFamily>
+  <marriages> 0 </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>1</serial><sex> "Female" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> -100 </x> <y>-100 </y> </location>
+  <comments> "" </comments>
+  <surname> "M" </surname>
+  <firstNames> "Eve" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Nov 17, 2010" </dataChangeDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <deleted> "true" </deleted>
+  <birthFamily> </birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>2</serial><sex> "Male" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 253 </x> <y>82 </y> </location>
+  <comments> "" </comments>
+  <surname> "" </surname>
+  <firstNames> "Cain" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Dec 2, 2010" </dataChangeDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>0</birthFamily>
+  <marriages> 1 </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>3</serial><sex> "Male" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 339 </x> <y>87 </y> </location>
+  <comments> "" </comments>
+  <surname> "" </surname>
+  <firstNames> "Abel" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Nov 17, 2010" </dataChangeDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>0</birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>4</serial><sex> "Female" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 452 </x> <y>91 </y> </location>
+  <comments> "" </comments>
+  <surname> "" </surname>
+  <firstNames> "Evette" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Nov 17, 2010" </dataChangeDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>0</birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>5</serial><sex> "Female" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 357 </x> <y>18 </y> </location>
+  <comments> "" </comments>
+  <surname> "" </surname>
+  <firstNames> "Eve" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Dec 2, 2010" </dataChangeDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily> </birthFamily>
+  <marriages> 0 </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>6</serial><sex> "Female" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 150 </x> <y>82 </y> </location>
+  <comments> "" </comments>
+  <surname> "Cain" </surname>
+  <firstNames> "Sugar" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Dec 2, 2010" </dataChangeDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>0</birthFamily>
+  <marriages> 1 </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>7</serial><sex> "Male" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 50 </x> <y>149 </y> </location>
+  <comments> "" </comments>
+  <surname> "Cain" </surname>
+  <firstNames> "Light Brown" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Dec 2, 2010" </dataChangeDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>1</birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>8</serial><sex> "Male" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 137 </x> <y>149 </y> </location>
+  <comments> "" </comments>
+  <surname> "Cain" </surname>
+  <firstNames> "Dark Brown" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Dec 2, 2010" </dataChangeDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>1</birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>9</serial><sex> "Female" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 236 </x> <y>148 </y> </location>
+  <comments> "" </comments>
+  <surname> "Cain" </surname>
+  <firstNames> "Granulated" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Dec 2, 2010" </dataChangeDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>1</birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>10</serial><sex> "Female" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 340 </x> <y>146 </y> </location>
+  <comments> "" </comments>
+  <surname> "Cain" </surname>
+  <firstNames> "Powdered" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Dec 2, 2010" </dataChangeDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>1</birthFamily>
+  <marriages> 2 </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>11</serial><sex> "Male" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 585 </x> <y>85 </y> </location>
+  <comments> "" </comments>
+  <surname> "" </surname>
+  <firstNames> "Butter" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Dec 2, 2010" </dataChangeDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>0</birthFamily>
+  <marriages> 2 </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>12</serial><sex> "Female" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 540 </x> <y>207 </y> </location>
+  <comments> "" </comments>
+  <surname> "Frosting" </surname>
+  <firstNames> "Cream" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Dec 2, 2010" </dataChangeDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>2</birthFamily>
+  <marriages> 3 </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>13</serial><sex> "Male" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 419 </x> <y>205 </y> </location>
+  <comments> "" </comments>
+  <surname> "Frosting" </surname>
+  <firstNames> "Vanilla" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Dec 2, 2010" </dataChangeDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily>2</birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>14</serial><sex> "Male" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 651 </x> <y>204 </y> </location>
+  <comments> "" </comments>
+  <surname> "Cake" </surname>
+  <firstNames> "Carrot" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Dec 2, 2010" </dataChangeDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily> </birthFamily>
+  <marriages> 3 </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+</individualCensus>
+<familyCensus>
+<family>
+  <serial>0</serial><location><x>297</x><y>25</y></location>
+  <stats> <type> "Marriage" </type>
+    <begin> "NA" </begin> <end> "NA" </end>
+    <reason> "NA" </reason> </stats>
+  <comments> "" </comments>
+  <deleted>"false"</deleted>
+  <husband>0</husband>
+  <wife>5</wife>
+  <children> 2, 3, 4, 6, 11 </children>
+  <marriageDate> "" </marriageDate>
+  <endDate> null </endDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <dataChangeDate> "Dec 2, 2010" </dataChangeDate>
+</family>
+
+<family>
+  <serial>1</serial><location><x>213</x><y>93</y></location>
+  <stats> <type> "Marriage" </type>
+    <begin> "NA" </begin> <end> "NA" </end>
+    <reason> "NA" </reason> </stats>
+  <comments> "" </comments>
+  <deleted>"false"</deleted>
+  <husband>2</husband>
+  <wife>6</wife>
+  <children> 8, 7, 10, 9 </children>
+  <marriageDate> "" </marriageDate>
+  <endDate> null </endDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <dataChangeDate> "Dec 2, 2010" </dataChangeDate>
+</family>
+
+<family>
+  <serial>2</serial><location><x>480</x><y>154</y></location>
+  <stats> <type> "Marriage" </type>
+    <begin> "NA" </begin> <end> "NA" </end>
+    <reason> "NA" </reason> </stats>
+  <comments> "No Comment" </comments>
+  <deleted>"false"</deleted>
+  <husband>11</husband>
+  <wife>10</wife>
+  <children> 13, 12 </children>
+  <marriageDate> "" </marriageDate>
+  <endDate> null </endDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <dataChangeDate> "Dec 2, 2010" </dataChangeDate>
+</family>
+
+<family>
+  <serial>3</serial><location><x>595</x><y>215</y></location>
+  <stats> <type> "Marriage" </type>
+    <begin> "NA" </begin> <end> "NA" </end>
+    <reason> "NA" </reason> </stats>
+  <comments> "" </comments>
+  <deleted>"false"</deleted>
+  <husband>14</husband>
+  <wife>12</wife>
+  <children>  </children>
+  <marriageDate> "" </marriageDate>
+  <endDate> null </endDate>
+  <dataAuthor> "gm" </dataAuthor>
+  <dataChangeDate> "Dec 2, 2010" </dataChangeDate>
+</family>
+
+</familyCensus>
+<matrix>
+<row>  0
+	<cell> 0 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+	<cell> 2 <pcString> "So" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "So(#2,#0)" </pred>  </miniPreds> <PR> "son"</PR><PA> "son"</PA></cell>
+	<cell> 3 <pcString> "So" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "So(#3,#0)" </pred>  </miniPreds> <PR> "son"</PR><PA> "son"</PA></cell>
+	<cell> 4 <pcString> "Da" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Da(#4,#0)" </pred>  </miniPreds> <PR> "daughter"</PR><PA> "daughter"</PA></cell>
+	<cell> 5 <pcString> "Wi" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Wi(#5,#0)" </pred>  </miniPreds> <PR> "wife"</PR><PA> "wife"</PA></cell>
+	<cell> 6 <pcString> "Da" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Da(#6,#0)" </pred>  </miniPreds> <PR> "daughter"</PR><PA> "daughter"</PA></cell>
+	<cell> 7 <pcString> "SoSo" </pcString> <level> -2 </level>
+		<miniPreds> <pred> "So(#2,#0)" </pred> <pred> "So(#7,#2)" </pred>  </miniPreds> <PR> "grandson"</PR><PA> "grandson"</PA></cell>
+	<cell> 8 <pcString> "SoSo" </pcString> <level> -2 </level>
+		<miniPreds> <pred> "So(#2,#0)" </pred> <pred> "So(#8,#2)" </pred>  </miniPreds> <PR> "grandson"</PR><PA> "grandson"</PA></cell>
+	<cell> 9 <pcString> "SoDa" </pcString> <level> -2 </level>
+		<miniPreds> <pred> "So(#2,#0)" </pred> <pred> "Da(#9,#2)" </pred>  </miniPreds> <PR> "granddaughter"</PR><PA> "granddaughter"</PA></cell>
+	<cell> 10 <pcString> "SoWi" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "So(#11,#0)" </pred> <pred> "Wi(#10,#11)" </pred>  </miniPreds> </cell>
+	<cell> 11 <pcString> "So" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "So(#11,#0)" </pred>  </miniPreds> </cell>
+	<cell> 12 <pcString> "SoDa" </pcString> <level> -2 </level>
+		<miniPreds> <pred> "So(#11,#0)" </pred> <pred> "Da(#12,#11)" </pred>  </miniPreds> </cell>
+	<cell> 13 <pcString> "SoSo" </pcString> <level> -2 </level>
+		<miniPreds> <pred> "So(#11,#0)" </pred> <pred> "So(#13,#11)" </pred>  </miniPreds> </cell>
+	<cell> 14 <pcString> "SoDaHu" </pcString> <level> -2 </level>
+		<miniPreds> <pred> "So(#11,#0)" </pred> <pred> "Da(#12,#11)" </pred> <pred> "Hu(#14,#12)" </pred>  </miniPreds> </cell>
+</row><row>  2
+	<cell> 0 <pcString> "Fa" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#0,#2)" </pred>  </miniPreds> <PR> "father"</PR><PA> "father"</PA></cell>
+	<cell> 2 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+	<cell> 3 <pcString> "Bro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Bro(#3,#2)" </pred>  </miniPreds> <PR> "brother"</PR><PA> "brother"</PA></cell>
+	<cell> 4 <pcString> "Sis" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Sis(#4,#2)" </pred>  </miniPreds> <PR> "sister"</PR><PA> "sister"</PA></cell>
+	<cell> 5 <pcString> "Mo" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Mo(#5,#2)" </pred>  </miniPreds> <PR> "mother"</PR><PA> "mother"</PA></cell>
+	<cell> 6 <pcString> "Wi" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Wi(#6,#2)" </pred>  </miniPreds> </cell>
+	<cell> 7 <pcString> "So" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "So(#7,#2)" </pred>  </miniPreds> <PR> "son"</PR><PA> "son"</PA></cell>
+	<cell> 8 <pcString> "So" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "So(#8,#2)" </pred>  </miniPreds> <PR> "son"</PR><PA> "son"</PA></cell>
+	<cell> 9 <pcString> "Da" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Da(#9,#2)" </pred>  </miniPreds> <PR> "daughter"</PR><PA> "daughter"</PA></cell>
+	<cell> 10 <pcString> "Da" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Da(#10,#2)" </pred>  </miniPreds> <PR> "daughter"</PR><PA> "daughter"</PA></cell>
+	<cell> 11 <pcString> "Bro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Bro(#11,#2)" </pred>  </miniPreds> <PR> "brother"</PR><PA> "brother"</PA></cell>
+	<cell> 12 <pcString> "BroDa" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#11,#2)" </pred> <pred> "Da(#12,#11)" </pred>  </miniPreds> </cell>
+	<cell> 13 <pcString> "BroSo" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#11,#2)" </pred> <pred> "So(#13,#11)" </pred>  </miniPreds> </cell>
+	<cell> 14 <pcString> "BroDaHu" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#11,#2)" </pred> <pred> "Da(#12,#11)" </pred> <pred> "Hu(#14,#12)" </pred>  </miniPreds> </cell>
+</row><row>  3
+	<cell> 0 <pcString> "Fa" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#0,#3)" </pred>  </miniPreds> <PR> "father"</PR><PA> "father"</PA></cell>
+	<cell> 2 <pcString> "Bro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Bro(#2,#3)" </pred>  </miniPreds> <PR> "brother"</PR><PA> "brother"</PA></cell>
+	<cell> 3 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+	<cell> 4 <pcString> "Sis" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Sis(#4,#3)" </pred>  </miniPreds> </cell>
+	<cell> 5 <pcString> "Mo" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Mo(#5,#3)" </pred>  </miniPreds> <PR> "mother"</PR><PA> "mother"</PA></cell>
+	<cell> 6 <pcString> "Sis" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Sis(#6,#3)" </pred>  </miniPreds> </cell>
+	<cell> 7 <pcString> "BroSo" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#2,#3)" </pred> <pred> "So(#7,#2)" </pred>  </miniPreds> <PR> "nephew"</PR><PA> "nephew"</PA></cell>
+	<cell> 8 <pcString> "BroSo" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#2,#3)" </pred> <pred> "So(#8,#2)" </pred>  </miniPreds> </cell>
+	<cell> 9 <pcString> "BroDa" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#2,#3)" </pred> <pred> "Da(#9,#2)" </pred>  </miniPreds> </cell>
+	<cell> 10 <pcString> "BroDa" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#2,#3)" </pred> <pred> "Da(#10,#2)" </pred>  </miniPreds> </cell>
+	<cell> 11 <pcString> "Bro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Bro(#11,#3)" </pred>  </miniPreds> </cell>
+	<cell> 12 <pcString> "BroDa" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#11,#3)" </pred> <pred> "Da(#12,#11)" </pred>  </miniPreds> </cell>
+	<cell> 13 <pcString> "BroSo" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#11,#3)" </pred> <pred> "So(#13,#11)" </pred>  </miniPreds> </cell>
+	<cell> 14 <pcString> "BroDaHu" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#11,#3)" </pred> <pred> "Da(#12,#11)" </pred> <pred> "Hu(#14,#12)" </pred>  </miniPreds> </cell>
+</row><row>  4
+	<cell> 0 <pcString> "Fa" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#0,#4)" </pred>  </miniPreds> <PR> "father"</PR><PA> "father"</PA></cell>
+	<cell> 2 <pcString> "Bro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Bro(#2,#4)" </pred>  </miniPreds> <PR> "brother"</PR><PA> "brother"</PA></cell>
+	<cell> 3 <pcString> "Bro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Bro(#3,#4)" </pred>  </miniPreds> </cell>
+	<cell> 4 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+	<cell> 5 <pcString> "Mo" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Mo(#5,#4)" </pred>  </miniPreds> <PR> "mother"</PR><PA> "mother"</PA></cell>
+	<cell> 6 <pcString> "Sis" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Sis(#6,#4)" </pred>  </miniPreds> </cell>
+	<cell> 7 <pcString> "BroSo" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#2,#4)" </pred> <pred> "So(#7,#2)" </pred>  </miniPreds> <PR> "nephew"</PR><PA> "nephew"</PA></cell>
+	<cell> 8 <pcString> "BroSo" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#2,#4)" </pred> <pred> "So(#8,#2)" </pred>  </miniPreds> </cell>
+	<cell> 9 <pcString> "BroDa" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#2,#4)" </pred> <pred> "Da(#9,#2)" </pred>  </miniPreds> </cell>
+	<cell> 10 <pcString> "BroDa" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#2,#4)" </pred> <pred> "Da(#10,#2)" </pred>  </miniPreds> </cell>
+	<cell> 11 <pcString> "Bro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Bro(#11,#4)" </pred>  </miniPreds> </cell>
+	<cell> 12 <pcString> "BroDa" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#11,#4)" </pred> <pred> "Da(#12,#11)" </pred>  </miniPreds> </cell>
+	<cell> 13 <pcString> "BroSo" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#11,#4)" </pred> <pred> "So(#13,#11)" </pred>  </miniPreds> </cell>
+	<cell> 14 <pcString> "BroDaHu" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#11,#4)" </pred> <pred> "Da(#12,#11)" </pred> <pred> "Hu(#14,#12)" </pred>  </miniPreds> </cell>
+</row><row>  5
+	<cell> 0 <pcString> "Hu" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Hu(#0,#5)" </pred>  </miniPreds> <PR> "husband"</PR><PA> "husband"</PA></cell>
+	<cell> 2 <pcString> "So" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "So(#2,#5)" </pred>  </miniPreds> <PR> "son"</PR><PA> "son"</PA></cell>
+	<cell> 3 <pcString> "So" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "So(#3,#5)" </pred>  </miniPreds> <PR> "son"</PR><PA> "son"</PA></cell>
+	<cell> 4 <pcString> "Da" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Da(#4,#5)" </pred>  </miniPreds> <PR> "daughter"</PR><PA> "daughter"</PA></cell>
+	<cell> 5 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+	<cell> 6 <pcString> "Da" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Da(#6,#5)" </pred>  </miniPreds> <PR> "daughter"</PR><PA> "daughter"</PA></cell>
+	<cell> 7 <pcString> "SoSo" </pcString> <level> -2 </level>
+		<miniPreds> <pred> "So(#2,#5)" </pred> <pred> "So(#7,#2)" </pred>  </miniPreds> <PR> "grandson"</PR><PA> "grandson"</PA></cell>
+	<cell> 8 <pcString> "SoSo" </pcString> <level> -2 </level>
+		<miniPreds> <pred> "So(#2,#5)" </pred> <pred> "So(#8,#2)" </pred>  </miniPreds> <PR> "grandson"</PR><PA> "grandson"</PA></cell>
+	<cell> 9 <pcString> "SoDa" </pcString> <level> -2 </level>
+		<miniPreds> <pred> "So(#2,#5)" </pred> <pred> "Da(#9,#2)" </pred>  </miniPreds> <PR> "granddaughter"</PR><PA> "granddaughter"</PA></cell>
+	<cell> 10 <pcString> "SoDa" </pcString> <level> -2 </level>
+		<miniPreds> <pred> "So(#2,#5)" </pred> <pred> "Da(#10,#2)" </pred>  </miniPreds> <PR> "granddaughter"</PR><PA> "granddaughter"</PA></cell>
+	<cell> 11 <pcString> "So" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "So(#11,#5)" </pred>  </miniPreds> <PR> "son"</PR><PA> "son"</PA></cell>
+	<cell> 12 <pcString> "SoDa" </pcString> <level> -2 </level>
+		<miniPreds> <pred> "So(#11,#5)" </pred> <pred> "Da(#12,#11)" </pred>  </miniPreds> <PR> "granddaughter"</PR><PA> "granddaughter"</PA></cell>
+	<cell> 13 <pcString> "SoSo" </pcString> <level> -2 </level>
+		<miniPreds> <pred> "So(#11,#5)" </pred> <pred> "So(#13,#11)" </pred>  </miniPreds> <PR> "grandson"</PR><PA> "grandson"</PA></cell>
+	<cell> 14 <pcString> "SoDaHu" </pcString> <level> -2 </level>
+		<miniPreds> <pred> "So(#11,#5)" </pred> <pred> "Da(#12,#11)" </pred> <pred> "Hu(#14,#12)" </pred>  </miniPreds> <PR> "grandson_in_law"</PR><PA> "grandson_in_law"</PA></cell>
+</row><row>  6
+	<cell> 0 <pcString> "Fa" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#0,#6)" </pred>  </miniPreds> <PR> "father"</PR><PA> "father"</PA></cell>
+	<cell> 2 <pcString> "Hu" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Hu(#2,#6)" </pred>  </miniPreds> </cell>
+	<cell> 3 <pcString> "Bro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Bro(#3,#6)" </pred>  </miniPreds> </cell>
+	<cell> 4 <pcString> "Sis" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Sis(#4,#6)" </pred>  </miniPreds> </cell>
+	<cell> 5 <pcString> "Mo" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Mo(#5,#6)" </pred>  </miniPreds> <PR> "mother"</PR><PA> "mother"</PA></cell>
+	<cell> 6 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+	<cell> 7 <pcString> "So" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "So(#7,#6)" </pred>  </miniPreds> </cell>
+	<cell> 8 <pcString> "So" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "So(#8,#6)" </pred>  </miniPreds> </cell>
+	<cell> 9 <pcString> "Da" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Da(#9,#6)" </pred>  </miniPreds> </cell>
+	<cell> 10 <pcString> "Da" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Da(#10,#6)" </pred>  </miniPreds> </cell>
+	<cell> 11 <pcString> "Bro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Bro(#11,#6)" </pred>  </miniPreds> </cell>
+	<cell> 12 <pcString> "BroDa" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#11,#6)" </pred> <pred> "Da(#12,#11)" </pred>  </miniPreds> </cell>
+	<cell> 13 <pcString> "BroSo" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#11,#6)" </pred> <pred> "So(#13,#11)" </pred>  </miniPreds> </cell>
+	<cell> 14 <pcString> "BroDaHu" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#11,#6)" </pred> <pred> "Da(#12,#11)" </pred> <pred> "Hu(#14,#12)" </pred>  </miniPreds> </cell>
+</row><row>  7
+	<cell> 0 <pcString> "FaFa" </pcString> <level> 2 </level>
+		<miniPreds> <pred> "Fa(#2,#7)" </pred> <pred> "Fa(#0,#2)" </pred>  </miniPreds> <PR> "grandfather"</PR><PA> "grandfather"</PA></cell>
+	<cell> 2 <pcString> "Fa" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#2,#7)" </pred>  </miniPreds> <PR> "father"</PR><PA> "father"</PA></cell>
+	<cell> 3 <pcString> "FaBro" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#2,#7)" </pred> <pred> "Bro(#3,#2)" </pred>  </miniPreds> <PR> "uncle"</PR><PA> "uncle"</PA></cell>
+	<cell> 4 <pcString> "FaSis" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#2,#7)" </pred> <pred> "Sis(#4,#2)" </pred>  </miniPreds> <PR> "aunt"</PR><PA> "aunt"</PA></cell>
+	<cell> 5 <pcString> "FaMo" </pcString> <level> 2 </level>
+		<miniPreds> <pred> "Fa(#2,#7)" </pred> <pred> "Mo(#5,#2)" </pred>  </miniPreds> <PR> "grandmother"</PR><PA> "grandmother"</PA></cell>
+	<cell> 6 <pcString> "Mo" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Mo(#6,#7)" </pred>  </miniPreds> <PR> "mother"</PR><PA> "mother"</PA></cell>
+	<cell> 7 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+	<cell> 8 <pcString> "Bro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Bro(#8,#7)" </pred>  </miniPreds> <PR> "brother"</PR><PA> "brother"</PA></cell>
+	<cell> 9 <pcString> "Sis" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Sis(#9,#7)" </pred>  </miniPreds> <PR> "sister"</PR><PA> "sister"</PA></cell>
+	<cell> 10 <pcString> "Sis" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Sis(#10,#7)" </pred>  </miniPreds> <PR> "sister"</PR><PA> "sister"</PA></cell>
+	<cell> 11 <pcString> "SisHu" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Sis(#10,#7)" </pred> <pred> "Hu(#11,#10)" </pred>  </miniPreds> <PR> "brother_in_law"</PR><PA> "brother_in_law"</PA></cell>
+	<cell> 12 <pcString> "SisDa" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Sis(#10,#7)" </pred> <pred> "Da(#12,#10)" </pred>  </miniPreds> <PR> "niece"</PR><PA> "niece"</PA></cell>
+	<cell> 13 <pcString> "SisSo" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Sis(#10,#7)" </pred> <pred> "So(#13,#10)" </pred>  </miniPreds> <PR> "nephew"</PR><PA> "nephew"</PA></cell>
+	<cell> 14 <pcString> "SisDaHu" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Sis(#10,#7)" </pred> <pred> "Da(#12,#10)" </pred> <pred> "Hu(#14,#12)" </pred>  </miniPreds> <PR> "nephew"</PR><PA> "nephew"</PA></cell>
+</row><row>  8
+	<cell> 0 <pcString> "FaFa" </pcString> <level> 2 </level>
+		<miniPreds> <pred> "Fa(#2,#8)" </pred> <pred> "Fa(#0,#2)" </pred>  </miniPreds> <PR> "grandfather"</PR><PA> "grandfather"</PA></cell>
+	<cell> 2 <pcString> "Fa" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#2,#8)" </pred>  </miniPreds> <PR> "father"</PR><PA> "father"</PA></cell>
+	<cell> 3 <pcString> "FaBro" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#2,#8)" </pred> <pred> "Bro(#3,#2)" </pred>  </miniPreds> </cell>
+	<cell> 4 <pcString> "FaSis" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#2,#8)" </pred> <pred> "Sis(#4,#2)" </pred>  </miniPreds> </cell>
+	<cell> 5 <pcString> "FaMo" </pcString> <level> 2 </level>
+		<miniPreds> <pred> "Fa(#2,#8)" </pred> <pred> "Mo(#5,#2)" </pred>  </miniPreds> <PR> "grandmother"</PR><PA> "grandmother"</PA></cell>
+	<cell> 6 <pcString> "Mo" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Mo(#6,#8)" </pred>  </miniPreds> </cell>
+	<cell> 7 <pcString> "Bro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Bro(#7,#8)" </pred>  </miniPreds> <PR> "brother"</PR><PA> "brother"</PA></cell>
+	<cell> 8 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+	<cell> 9 <pcString> "Sis" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Sis(#9,#8)" </pred>  </miniPreds> </cell>
+	<cell> 10 <pcString> "Sis" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Sis(#10,#8)" </pred>  </miniPreds> </cell>
+	<cell> 11 <pcString> "FaBro" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#2,#8)" </pred> <pred> "Bro(#11,#2)" </pred>  </miniPreds> </cell>
+	<cell> 12 <pcString> "SisDa" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Sis(#10,#8)" </pred> <pred> "Da(#12,#10)" </pred>  </miniPreds> </cell>
+	<cell> 13 <pcString> "SisSo" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Sis(#10,#8)" </pred> <pred> "So(#13,#10)" </pred>  </miniPreds> </cell>
+	<cell> 14 <pcString> "SisDaHu" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Sis(#10,#8)" </pred> <pred> "Da(#12,#10)" </pred> <pred> "Hu(#14,#12)" </pred>  </miniPreds> </cell>
+</row><row>  9
+	<cell> 0 <pcString> "FaFa" </pcString> <level> 2 </level>
+		<miniPreds> <pred> "Fa(#2,#9)" </pred> <pred> "Fa(#0,#2)" </pred>  </miniPreds> <PR> "grandfather"</PR><PA> "grandfather"</PA></cell>
+	<cell> 2 <pcString> "Fa" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#2,#9)" </pred>  </miniPreds> <PR> "father"</PR><PA> "father"</PA></cell>
+	<cell> 3 <pcString> "FaBro" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#2,#9)" </pred> <pred> "Bro(#3,#2)" </pred>  </miniPreds> </cell>
+	<cell> 4 <pcString> "FaSis" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#2,#9)" </pred> <pred> "Sis(#4,#2)" </pred>  </miniPreds> </cell>
+	<cell> 5 <pcString> "FaMo" </pcString> <level> 2 </level>
+		<miniPreds> <pred> "Fa(#2,#9)" </pred> <pred> "Mo(#5,#2)" </pred>  </miniPreds> <PR> "grandmother"</PR><PA> "grandmother"</PA></cell>
+	<cell> 6 <pcString> "Mo" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Mo(#6,#9)" </pred>  </miniPreds> </cell>
+	<cell> 7 <pcString> "Bro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Bro(#7,#9)" </pred>  </miniPreds> <PR> "brother"</PR><PA> "brother"</PA></cell>
+	<cell> 8 <pcString> "Bro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Bro(#8,#9)" </pred>  </miniPreds> </cell>
+	<cell> 9 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+	<cell> 10 <pcString> "Sis" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Sis(#10,#9)" </pred>  </miniPreds> </cell>
+	<cell> 11 <pcString> "FaBro" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#2,#9)" </pred> <pred> "Bro(#11,#2)" </pred>  </miniPreds> </cell>
+	<cell> 12 <pcString> "SisDa" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Sis(#10,#9)" </pred> <pred> "Da(#12,#10)" </pred>  </miniPreds> </cell>
+	<cell> 13 <pcString> "SisSo" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Sis(#10,#9)" </pred> <pred> "So(#13,#10)" </pred>  </miniPreds> </cell>
+	<cell> 14 <pcString> "SisDaHu" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Sis(#10,#9)" </pred> <pred> "Da(#12,#10)" </pred> <pred> "Hu(#14,#12)" </pred>  </miniPreds> </cell>
+</row><row>  10
+	<cell> 0 <pcString> "FaFa" </pcString> <level> 2 </level>
+		<miniPreds> <pred> "Fa(#2,#10)" </pred> <pred> "Fa(#0,#2)" </pred>  </miniPreds> <PR> "grandfather"</PR><PA> "grandfather"</PA></cell>
+	<cell> 2 <pcString> "Fa" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#2,#10)" </pred>  </miniPreds> <PR> "father"</PR><PA> "father"</PA></cell>
+	<cell> 3 <pcString> "FaBro" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#2,#10)" </pred> <pred> "Bro(#3,#2)" </pred>  </miniPreds> </cell>
+	<cell> 4 <pcString> "FaSis" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#2,#10)" </pred> <pred> "Sis(#4,#2)" </pred>  </miniPreds> </cell>
+	<cell> 5 <pcString> "FaMo" </pcString> <level> 2 </level>
+		<miniPreds> <pred> "Fa(#2,#10)" </pred> <pred> "Mo(#5,#2)" </pred>  </miniPreds> <PR> "grandmother"</PR><PA> "grandmother"</PA></cell>
+	<cell> 6 <pcString> "Mo" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Mo(#6,#10)" </pred>  </miniPreds> </cell>
+	<cell> 7 <pcString> "Bro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Bro(#7,#10)" </pred>  </miniPreds> <PR> "brother"</PR><PA> "brother"</PA></cell>
+	<cell> 8 <pcString> "Bro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Bro(#8,#10)" </pred>  </miniPreds> </cell>
+	<cell> 9 <pcString> "Sis" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Sis(#9,#10)" </pred>  </miniPreds> </cell>
+	<cell> 10 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+	<cell> 11 <pcString> "Hu" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Hu(#11,#10)" </pred>  </miniPreds> </cell>
+	<cell> 12 <pcString> "Da" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Da(#12,#10)" </pred>  </miniPreds> </cell>
+	<cell> 13 <pcString> "So" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "So(#13,#10)" </pred>  </miniPreds> </cell>
+	<cell> 14 <pcString> "DaHu" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Da(#12,#10)" </pred> <pred> "Hu(#14,#12)" </pred>  </miniPreds> </cell>
+</row><row>  11
+	<cell> 0 <pcString> "Fa" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#0,#11)" </pred>  </miniPreds> </cell>
+	<cell> 2 <pcString> "Bro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Bro(#2,#11)" </pred>  </miniPreds> <PR> "brother"</PR><PA> "brother"</PA></cell>
+	<cell> 3 <pcString> "Bro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Bro(#3,#11)" </pred>  </miniPreds> </cell>
+	<cell> 4 <pcString> "Sis" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Sis(#4,#11)" </pred>  </miniPreds> </cell>
+	<cell> 5 <pcString> "Mo" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Mo(#5,#11)" </pred>  </miniPreds> </cell>
+	<cell> 6 <pcString> "Sis" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Sis(#6,#11)" </pred>  </miniPreds> </cell>
+	<cell> 7 <pcString> "WiBro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Wi(#10,#11)" </pred> <pred> "Bro(#7,#10)" </pred>  </miniPreds> <PR> "sister_in_law"</PR><PA> "sister_in_law"</PA></cell>
+	<cell> 8 <pcString> "BroSo" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#2,#11)" </pred> <pred> "So(#8,#2)" </pred>  </miniPreds> </cell>
+	<cell> 9 <pcString> "BroDa" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Bro(#2,#11)" </pred> <pred> "Da(#9,#2)" </pred>  </miniPreds> </cell>
+	<cell> 10 <pcString> "Wi" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Wi(#10,#11)" </pred>  </miniPreds> </cell>
+	<cell> 11 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+	<cell> 12 <pcString> "Da" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Da(#12,#11)" </pred>  </miniPreds> </cell>
+	<cell> 13 <pcString> "So" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "So(#13,#11)" </pred>  </miniPreds> </cell>
+	<cell> 14 <pcString> "DaHu" </pcString> <level> -1 </level>
+		<miniPreds> <pred> "Da(#12,#11)" </pred> <pred> "Hu(#14,#12)" </pred>  </miniPreds> </cell>
+</row><row>  12
+	<cell> 0 <pcString> "FaFa" </pcString> <level> 2 </level>
+		<miniPreds> <pred> "Fa(#11,#12)" </pred> <pred> "Fa(#0,#11)" </pred>  </miniPreds> </cell>
+	<cell> 2 <pcString> "FaBro" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#11,#12)" </pred> <pred> "Bro(#2,#11)" </pred>  </miniPreds> </cell>
+	<cell> 3 <pcString> "FaBro" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#11,#12)" </pred> <pred> "Bro(#3,#11)" </pred>  </miniPreds> </cell>
+	<cell> 4 <pcString> "FaSis" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#11,#12)" </pred> <pred> "Sis(#4,#11)" </pred>  </miniPreds> </cell>
+	<cell> 5 <pcString> "FaMo" </pcString> <level> 2 </level>
+		<miniPreds> <pred> "Fa(#11,#12)" </pred> <pred> "Mo(#5,#11)" </pred>  </miniPreds> </cell>
+	<cell> 6 <pcString> "FaSis" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#11,#12)" </pred> <pred> "Sis(#6,#11)" </pred>  </miniPreds> </cell>
+	<cell> 7 <pcString> "MoBro" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Mo(#10,#12)" </pred> <pred> "Bro(#7,#10)" </pred>  </miniPreds> <PR> "uncle"</PR><PA> "uncle"</PA></cell>
+	<cell> 8 <pcString> "MoBro" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Mo(#10,#12)" </pred> <pred> "Bro(#8,#10)" </pred>  </miniPreds> </cell>
+	<cell> 9 <pcString> "MoSis" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Mo(#10,#12)" </pred> <pred> "Sis(#9,#10)" </pred>  </miniPreds> </cell>
+	<cell> 10 <pcString> "Mo" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Mo(#10,#12)" </pred>  </miniPreds> </cell>
+	<cell> 11 <pcString> "Fa" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#11,#12)" </pred>  </miniPreds> </cell>
+	<cell> 12 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+	<cell> 13 <pcString> "Bro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Bro(#13,#12)" </pred>  </miniPreds> </cell>
+	<cell> 14 <pcString> "Hu" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Hu(#14,#12)" </pred>  </miniPreds> </cell>
+</row><row>  13
+	<cell> 0 <pcString> "FaFa" </pcString> <level> 2 </level>
+		<miniPreds> <pred> "Fa(#11,#13)" </pred> <pred> "Fa(#0,#11)" </pred>  </miniPreds> </cell>
+	<cell> 2 <pcString> "FaBro" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#11,#13)" </pred> <pred> "Bro(#2,#11)" </pred>  </miniPreds> </cell>
+	<cell> 3 <pcString> "FaBro" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#11,#13)" </pred> <pred> "Bro(#3,#11)" </pred>  </miniPreds> </cell>
+	<cell> 4 <pcString> "FaSis" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#11,#13)" </pred> <pred> "Sis(#4,#11)" </pred>  </miniPreds> </cell>
+	<cell> 5 <pcString> "FaMo" </pcString> <level> 2 </level>
+		<miniPreds> <pred> "Fa(#11,#13)" </pred> <pred> "Mo(#5,#11)" </pred>  </miniPreds> </cell>
+	<cell> 6 <pcString> "FaSis" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#11,#13)" </pred> <pred> "Sis(#6,#11)" </pred>  </miniPreds> </cell>
+	<cell> 7 <pcString> "MoBro" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Mo(#10,#13)" </pred> <pred> "Bro(#7,#10)" </pred>  </miniPreds> <PR> "uncle"</PR><PA> "uncle"</PA></cell>
+	<cell> 8 <pcString> "MoBro" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Mo(#10,#13)" </pred> <pred> "Bro(#8,#10)" </pred>  </miniPreds> </cell>
+	<cell> 9 <pcString> "MoSis" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Mo(#10,#13)" </pred> <pred> "Sis(#9,#10)" </pred>  </miniPreds> </cell>
+	<cell> 10 <pcString> "Mo" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Mo(#10,#13)" </pred>  </miniPreds> </cell>
+	<cell> 11 <pcString> "Fa" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Fa(#11,#13)" </pred>  </miniPreds> </cell>
+	<cell> 12 <pcString> "Sis" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Sis(#12,#13)" </pred>  </miniPreds> </cell>
+	<cell> 13 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+	<cell> 14 <pcString> "SisHu" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Sis(#12,#13)" </pred> <pred> "Hu(#14,#12)" </pred>  </miniPreds> </cell>
+</row><row>  14
+	<cell> 0 <pcString> "WiFaFa" </pcString> <level> 2 </level>
+		<miniPreds> <pred> "Wi(#12,#14)" </pred> <pred> "Fa(#11,#12)" </pred> <pred> "Fa(#0,#11)" </pred>  </miniPreds> </cell>
+	<cell> 2 <pcString> "WiFaBro" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Wi(#12,#14)" </pred> <pred> "Fa(#11,#12)" </pred> <pred> "Bro(#2,#11)" </pred>  </miniPreds> </cell>
+	<cell> 3 <pcString> "WiFaBro" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Wi(#12,#14)" </pred> <pred> "Fa(#11,#12)" </pred> <pred> "Bro(#3,#11)" </pred>  </miniPreds> </cell>
+	<cell> 4 <pcString> "WiFaSis" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Wi(#12,#14)" </pred> <pred> "Fa(#11,#12)" </pred> <pred> "Sis(#4,#11)" </pred>  </miniPreds> </cell>
+	<cell> 5 <pcString> "WiFaMo" </pcString> <level> 2 </level>
+		<miniPreds> <pred> "Wi(#12,#14)" </pred> <pred> "Fa(#11,#12)" </pred> <pred> "Mo(#5,#11)" </pred>  </miniPreds> <PR> "grandmother_in_law"</PR><PA> "grandmother_in_law"</PA></cell>
+	<cell> 6 <pcString> "WiFaSis" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Wi(#12,#14)" </pred> <pred> "Fa(#11,#12)" </pred> <pred> "Sis(#6,#11)" </pred>  </miniPreds> </cell>
+	<cell> 7 <pcString> "WiMoBro" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Wi(#12,#14)" </pred> <pred> "Mo(#10,#12)" </pred> <pred> "Bro(#7,#10)" </pred>  </miniPreds> <PR> "uncle"</PR><PA> "uncle"</PA></cell>
+	<cell> 8 <pcString> "WiMoBro" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Wi(#12,#14)" </pred> <pred> "Mo(#10,#12)" </pred> <pred> "Bro(#8,#10)" </pred>  </miniPreds> </cell>
+	<cell> 9 <pcString> "WiMoSis" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Wi(#12,#14)" </pred> <pred> "Mo(#10,#12)" </pred> <pred> "Sis(#9,#10)" </pred>  </miniPreds> </cell>
+	<cell> 10 <pcString> "WiMo" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Wi(#12,#14)" </pred> <pred> "Mo(#10,#12)" </pred>  </miniPreds> </cell>
+	<cell> 11 <pcString> "WiFa" </pcString> <level> 1 </level>
+		<miniPreds> <pred> "Wi(#12,#14)" </pred> <pred> "Fa(#11,#12)" </pred>  </miniPreds> </cell>
+	<cell> 12 <pcString> "Wi" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Wi(#12,#14)" </pred>  </miniPreds> </cell>
+	<cell> 13 <pcString> "WiBro" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Wi(#12,#14)" </pred> <pred> "Bro(#13,#12)" </pred>  </miniPreds> </cell>
+	<cell> 14 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+</row>
+</matrix>
+<dyadsUndefinedRef>
+<dyadKinTerm> "aunt"
+	<kinType> "FaSis"
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="4" path="2" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "brother"
+	<kinType> "Bro"
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="2" alter="3" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="3" alter="2" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="4" alter="2" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="2" alter="11" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="11" alter="2" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="8" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="8" alter="7" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="9" alter="7" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="10" alter="7" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "brother_in_law"
+	<kinType> "SisHu"
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="11" path="10" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "daughter"
+	<kinType> "Da"
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="2" alter="9" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="2" alter="10" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="6" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="4" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="6" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="4" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "father"
+	<kinType> "Fa"
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="2" alter="0" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="3" alter="0" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="2" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="8" alter="2" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="9" alter="2" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="10" alter="2" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="6" alter="0" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="4" alter="0" path="" confirmed="false" challenged="false" />
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="11" alter="0" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "granddaughter"
+	<kinType> "SoDa"
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="10" path="2" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="9" path="2" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="10" path="2" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="9" path="2" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="12" path="11" confirmed="false" challenged="false" />
+	</kinType>
+	<kinType> "SoDaDa"
+<dyad level="-3" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="12" path="2, 10" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "grandfather"
+	<kinType> "FaFa"
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="10" alter="0" path="2" confirmed="false" challenged="false" />
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="9" alter="0" path="2" confirmed="false" challenged="false" />
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="8" alter="0" path="2" confirmed="false" challenged="false" />
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="0" path="2" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "grandmother"
+	<kinType> "FaMo"
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="10" alter="5" path="2" confirmed="false" challenged="false" />
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="9" alter="5" path="2" confirmed="false" challenged="false" />
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="8" alter="5" path="2" confirmed="false" challenged="false" />
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="5" path="2" confirmed="false" challenged="false" />
+<dyad level="3" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="13" alter="5" path="10, 2" confirmed="false" challenged="false" />
+<dyad level="3" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="12" alter="5" path="11" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "grandmother_in_law"
+	<kinType> "WiFaMo"
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="14" alter="5" path="12, 11" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "grandson"
+	<kinType> "SoDaSo"
+<dyad level="-3" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="13" path="2, 10" confirmed="false" challenged="false" />
+	</kinType>
+	<kinType> "SoSo"
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="8" path="2" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="7" path="2" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="8" path="2" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="7" path="2" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="13" path="11" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "grandson_in_law"
+	<kinType> "SoDaHu"
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="14" path="11, 12" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "husband"
+	<kinType> "Hu"
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="0" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "mother"
+	<kinType> "FaSis"
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="6" path="2" confirmed="false" challenged="false" />
+	</kinType>
+	<kinType> "Mo"
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="2" alter="5" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="6" alter="5" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="3" alter="5" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="4" alter="5" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="6" path="" confirmed="false" challenged="false" />
+<dyad level="" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="11" alter="5" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "nephew"
+	<kinType> "BroSo"
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="3" alter="7" path="2" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="4" alter="7" path="2" confirmed="false" challenged="false" />
+	</kinType>
+	<kinType> "SisDaHu"
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="14" path="10, 12" confirmed="false" challenged="false" />
+	</kinType>
+	<kinType> "SisSo"
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="13" path="10" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "niece"
+	<kinType> "SisDa"
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="12" path="10" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "sister"
+	<kinType> "Sis"
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="2" alter="4" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="9" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="10" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "sister_in_law"
+	<kinType> "WiBro"
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="11" alter="7" path="10" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "son"
+	<kinType> "So"
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="2" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="3" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="2" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="2" alter="7" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="2" alter="8" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="3" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="11" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="6" alter="7" path="" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="11" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "uncle"
+	<kinType> "FaBro"
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="3" path="2" confirmed="false" challenged="false" />
+	</kinType>
+	<kinType> "MoBro"
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="13" alter="7" path="10" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="12" alter="7" path="10" confirmed="false" challenged="false" />
+	</kinType>
+	<kinType> "WiMoBro"
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="14" alter="7" path="12, 10" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "wife"
+	<kinType> "Wi"
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="5" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+
+</dyadsUndefinedRef>
+<dyadsDefinedRef>
+
+</dyadsDefinedRef>
+<dyadsUndefinedAddr>
+<dyadKinTerm> "aunt"
+	<kinType> "FaSis"
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="4" path="2" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "brother"
+	<kinType> "Bro"
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="2" alter="3" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="3" alter="2" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="4" alter="2" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="2" alter="11" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="11" alter="2" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="8" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="8" alter="7" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="9" alter="7" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="10" alter="7" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "brother_in_law"
+	<kinType> "SisHu"
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="11" path="10" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "daughter"
+	<kinType> "Da"
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="2" alter="9" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="2" alter="10" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="6" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="4" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="6" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="4" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "father"
+	<kinType> "Fa"
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="2" alter="0" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="3" alter="0" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="2" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="8" alter="2" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="9" alter="2" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="10" alter="2" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="6" alter="0" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="4" alter="0" path="" confirmed="false" challenged="false" />
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="11" alter="0" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "granddaughter"
+	<kinType> "SoDa"
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="10" path="2" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="9" path="2" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="10" path="2" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="9" path="2" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="12" path="11" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "grandfather"
+	<kinType> "FaFa"
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="10" alter="0" path="2" confirmed="false" challenged="false" />
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="9" alter="0" path="2" confirmed="false" challenged="false" />
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="8" alter="0" path="2" confirmed="false" challenged="false" />
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="0" path="2" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "grandmother"
+	<kinType> "FaMo"
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="10" alter="5" path="2" confirmed="false" challenged="false" />
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="9" alter="5" path="2" confirmed="false" challenged="false" />
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="8" alter="5" path="2" confirmed="false" challenged="false" />
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="5" path="2" confirmed="false" challenged="false" />
+<dyad level="3" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="13" alter="5" path="10, 2" confirmed="false" challenged="false" />
+<dyad level="3" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="12" alter="5" path="10, 2" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "grandmother_in_law"
+	<kinType> "WiFaMo"
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="14" alter="5" path="12, 11" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "grandson"
+	<kinType> "SoSo"
+<dyad level="-3" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="13" path="2, 10" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="8" path="2" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="7" path="2" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="8" path="2" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="7" path="2" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="13" path="11" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "grandson_in_law"
+	<kinType> "SoDaHu"
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="14" path="11, 12" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "husband"
+	<kinType> "Hu"
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="0" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "mother"
+	<kinType> "Mo"
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="2" alter="5" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="6" alter="5" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="3" alter="5" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="4" alter="5" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="6" path="" confirmed="false" challenged="false" />
+<dyad level="2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="11" alter="5" path="" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="6" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "nephew"
+	<kinType> "BroSo"
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="3" alter="7" path="2" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="4" alter="7" path="2" confirmed="false" challenged="false" />
+	</kinType>
+	<kinType> "SisDaHu"
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="14" path="10, 12" confirmed="false" challenged="false" />
+	</kinType>
+	<kinType> "SisSo"
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="13" path="10" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "niece"
+	<kinType> "SisDa"
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="12" path="10" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "sister"
+	<kinType> "Sis"
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="2" alter="4" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="9" path="" confirmed="false" challenged="false" />
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="10" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "sister_in_law"
+	<kinType> "WiBro"
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="11" alter="7" path="10" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "son"
+	<kinType> "So"
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="2" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="3" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="2" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="2" alter="7" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="2" alter="8" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="3" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="11" path="" confirmed="false" challenged="false" />
+<dyad level="-1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="6" alter="7" path="" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="5" alter="11" path="" confirmed="false" challenged="false" />
+<dyad level="-2" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="11" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "uncle"
+	<kinType> "FaBro"
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="7" alter="3" path="2" confirmed="false" challenged="false" />
+	</kinType>
+	<kinType> "MoBro"
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="13" alter="7" path="10" confirmed="false" challenged="false" />
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="12" alter="7" path="10" confirmed="false" challenged="false" />
+	</kinType>
+	<kinType> "WiMoBro"
+<dyad level="1" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="14" alter="7" path="12, 10" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "wife"
+	<kinType> "Wi"
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="1" ego="0" alter="5" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+
+</dyadsUndefinedAddr>
+<dyadsDefinedAddr>
+
+</dyadsDefinedAddr>
+
+<kinTypeIndex>
+<entry kt="Bro"> <pair 2,3 /> <pair 2,11 /> <pair 3,11 /> <pair 3,2 /> <pair 4,3 /> <pair 4,11 /> <pair 4,2 /> <pair 6,3 /> <pair 6,11 /> <pair 7,8 /> <pair 8,7 /> <pair 9,8 /> <pair 9,7 /> <pair 10,8 /> <pair 10,7 /> <pair 11,3 /> <pair 11,2 /> <pair 12,13 /> </entry>
+<entry kt="BroDa"> <pair 2,12 /> <pair 3,10 /> <pair 3,9 /> <pair 3,12 /> <pair 4,10 /> <pair 4,9 /> <pair 4,12 /> <pair 6,12 /> <pair 11,9 /> </entry>
+<entry kt="BroDaDa"> <pair 3,12 /> <pair 4,12 /> </entry>
+<entry kt="BroDaDaHu"> <pair 3,14 /> <pair 4,14 /> </entry>
+<entry kt="BroDaHu"> <pair 2,14 /> <pair 3,11 /> <pair 3,14 /> <pair 4,11 /> <pair 4,14 /> <pair 6,14 /> </entry>
+<entry kt="BroDaSo"> <pair 3,13 /> <pair 4,13 /> </entry>
+<entry kt="BroSo"> <pair 2,13 /> <pair 3,8 /> <pair 3,13 /> <pair 3,7 /> <pair 4,8 /> <pair 4,13 /> <pair 4,7 /> <pair 6,13 /> <pair 11,8 /> </entry>
+<entry kt="BroWi"> <pair 6,10 /> <pair 11,6 /> </entry>
+<entry kt="Da"> <pair 0,6 /> <pair 0,4 /> <pair 2,9 /> <pair 2,10 /> <pair 5,4 /> <pair 5,6 /> <pair 6,9 /> <pair 6,10 /> <pair 10,12 /> <pair 11,12 /> </entry>
+<entry kt="DaHu"> <pair 10,14 /> <pair 11,14 /> </entry>
+<entry kt="Fa"> <pair 2,0 /> <pair 3,0 /> <pair 4,0 /> <pair 6,0 /> <pair 7,2 /> <pair 8,2 /> <pair 9,2 /> <pair 10,2 /> <pair 11,0 /> <pair 12,11 /> <pair 13,11 /> </entry>
+<entry kt="FaBro"> <pair 7,3 /> <pair 8,3 /> <pair 8,11 /> <pair 9,3 /> <pair 9,11 /> <pair 10,3 /> <pair 12,2 /> <pair 12,3 /> <pair 13,2 /> <pair 13,3 /> </entry>
+<entry kt="FaBroDa"> <pair 8,12 /> <pair 9,12 /> <pair 12,10 /> <pair 12,9 /> <pair 13,10 /> <pair 13,9 /> </entry>
+<entry kt="FaBroDaHu"> <pair 8,14 /> <pair 9,14 /> </entry>
+<entry kt="FaBroSo"> <pair 8,13 /> <pair 9,13 /> <pair 12,8 /> <pair 13,8 /> </entry>
+<entry kt="FaBroWi"> <pair 8,10 /> <pair 9,10 /> <pair 12,6 /> <pair 13,6 /> </entry>
+<entry kt="FaFa"> <pair 7,0 /> <pair 8,0 /> <pair 9,0 /> <pair 10,0 /> <pair 12,0 /> <pair 13,0 /> </entry>
+<entry kt="FaMo"> <pair 7,5 /> <pair 8,5 /> <pair 9,5 /> <pair 10,5 /> <pair 12,5 /> <pair 13,5 /> </entry>
+<entry kt="FaSis"> <pair 7,4 /> <pair 7,6 /> <pair 8,4 /> <pair 9,4 /> <pair 10,4 /> <pair 10,6 /> <pair 12,4 /> <pair 12,6 /> <pair 13,4 /> <pair 13,6 /> </entry>
+<entry kt="Hu"> <pair 5,0 /> <pair 6,2 /> <pair 10,11 /> <pair 12,14 /> </entry>
+<entry kt="Mo"> <pair 2,5 /> <pair 3,5 /> <pair 4,5 /> <pair 6,5 /> <pair 7,6 /> <pair 8,6 /> <pair 9,6 /> <pair 10,6 /> <pair 11,5 /> <pair 12,10 /> <pair 13,10 /> </entry>
+<entry kt="MoBro"> <pair 12,8 /> <pair 12,7 /> <pair 13,8 /> <pair 13,7 /> </entry>
+<entry kt="MoSis"> <pair 12,9 /> <pair 13,9 /> </entry>
+<entry kt="Sis"> <pair 2,4 /> <pair 3,4 /> <pair 3,6 /> <pair 4,6 /> <pair 6,4 /> <pair 7,10 /> <pair 7,9 /> <pair 8,9 /> <pair 8,10 /> <pair 9,10 /> <pair 10,9 /> <pair 11,4 /> <pair 11,6 /> <pair 13,12 /> </entry>
+<entry kt="SisDa"> <pair 7,12 /> <pair 8,12 /> <pair 9,12 /> </entry>
+<entry kt="SisDaHu"> <pair 7,14 /> <pair 8,14 /> <pair 9,14 /> </entry>
+<entry kt="SisHu"> <pair 7,11 /> <pair 13,14 /> </entry>
+<entry kt="SisSo"> <pair 7,13 /> <pair 8,13 /> <pair 9,13 /> </entry>
+<entry kt="So"> <pair 0,2 /> <pair 0,3 /> <pair 0,11 /> <pair 2,7 /> <pair 2,8 /> <pair 5,11 /> <pair 5,2 /> <pair 5,3 /> <pair 6,8 /> <pair 6,7 /> <pair 10,13 /> <pair 11,13 /> </entry>
+<entry kt="SoDa"> <pair 0,10 /> <pair 0,9 /> <pair 0,12 /> <pair 5,12 /> <pair 5,9 /> <pair 5,10 /> </entry>
+<entry kt="SoDaDa"> <pair 0,12 /> </entry>
+<entry kt="SoDaDaHu"> <pair 0,14 /> </entry>
+<entry kt="SoDaHu"> <pair 0,11 /> <pair 0,14 /> <pair 5,14 /> </entry>
+<entry kt="SoDaSo"> <pair 0,13 /> </entry>
+<entry kt="SoSo"> <pair 0,8 /> <pair 0,7 /> <pair 0,13 /> <pair 5,13 /> <pair 5,7 /> <pair 5,8 /> </entry>
+<entry kt="SoWi"> <pair 0,10 /> </entry>
+<entry kt="Wi"> <pair 0,5 /> <pair 2,6 /> <pair 11,10 /> <pair 14,12 /> </entry>
+<entry kt="WiBro"> <pair 11,7 /> <pair 14,13 /> </entry>
+<entry kt="WiFa"> <pair 14,11 /> </entry>
+<entry kt="WiFaBro"> <pair 14,2 /> <pair 14,3 /> </entry>
+<entry kt="WiFaBroDa"> <pair 14,10 /> <pair 14,9 /> </entry>
+<entry kt="WiFaBroSo"> <pair 14,8 /> </entry>
+<entry kt="WiFaBroWi"> <pair 14,6 /> </entry>
+<entry kt="WiFaFa"> <pair 14,0 /> </entry>
+<entry kt="WiFaMo"> <pair 14,5 /> </entry>
+<entry kt="WiFaSis"> <pair 14,4 /> <pair 14,6 /> </entry>
+<entry kt="WiMo"> <pair 14,10 /> </entry>
+<entry kt="WiMoBro"> <pair 14,8 /> <pair 14,7 /> </entry>
+<entry kt="WiMoSis"> <pair 14,9 /> </entry>
+
+</kinTypeIndex>
+</SIL_KinData>

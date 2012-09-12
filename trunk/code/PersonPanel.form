@@ -75,7 +75,7 @@
                               <Component id="alterLastName" min="-2" pref="119" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="160" max="32767" attributes="0"/>
+                      <EmptySpace pref="167" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -86,10 +86,10 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="alterRefTerm" alignment="0" pref="264" max="32767" attributes="0"/>
-                          <Component id="recipRefTerm" alignment="0" pref="264" max="32767" attributes="0"/>
-                          <Component id="alterAdrTerm" alignment="0" pref="264" max="32767" attributes="0"/>
-                          <Component id="recipAdrTerm" alignment="0" pref="264" max="32767" attributes="0"/>
+                          <Component id="alterRefTerm" alignment="0" pref="275" max="32767" attributes="0"/>
+                          <Component id="recipRefTerm" alignment="0" pref="275" max="32767" attributes="0"/>
+                          <Component id="alterAdrTerm" alignment="0" pref="275" max="32767" attributes="0"/>
+                          <Component id="recipAdrTerm" alignment="0" pref="275" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="93" max="-2" attributes="0"/>
                   </Group>
@@ -99,7 +99,7 @@
                       <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="jScrollPane1" pref="347" max="32767" attributes="0"/>
+                              <Component id="jScrollPane1" pref="354" max="32767" attributes="0"/>
                               <EmptySpace min="20" pref="20" max="20" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
@@ -452,6 +452,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="dataChgDate">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

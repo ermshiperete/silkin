@@ -1,0 +1,4908 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="Silk-status.xsl"?>
+<!DOCTYPE SIL_KinData>
+<SIL_KinData>
+<parameters>
+  <language name="TestThree"/>
+  <createDate value="2011-09-27"/>
+  <dataAuthors>
+	<dataAuthor name="Gary Morris"/>
+  </dataAuthors>
+  <lastDataChangeDate value="2011-10-13"/>
+  <indSerNum>19</indSerNum> 
+  <famSerNum>6</famSerNum> 
+  <polygamyPermit>true</polygamyPermit> 
+</parameters>
+<editorSettings>
+  <currentEgo n="7"/>
+  <editDirectory dir="/Users/gary/Code/SVN Code/Library/Context Under Construction"/>
+  <origin x="0" y="0"/>
+  <area W="865" H="256"/>
+  <infoPerson>2</infoPerson>
+  <infoMarriage>-1</infoMarriage>
+  <label>2</label>
+  <ktlabel>1</ktlabel>
+  <editable>true</editable>
+  <distinctAdrTerms>false</distinctAdrTerms>
+  <maxNoise>20</maxNoise>
+  <ignorable>5</ignorable>
+  <doBaseCBs value="false"/>
+  <doInduction value="false"/>
+  <lastPersonIndexed>18</lastPersonIndexed>
+</editorSettings>
+
+<domain-theory type="Ref">
+	<non-terms>
+		<non-term value="brother"/>
+		<non-term value="children"/>
+		<non-term value="half_brother"/>
+		<non-term value="half_sister"/>
+		<non-term value="parents"/>
+		<non-term value="sibling"/>
+		<non-term value="siblings"/>
+		<non-term value="sister"/>
+		<non-term value="spice"/>
+		<non-term value="step_brother"/>
+		<non-term value="step_daughter"/>
+		<non-term value="step_father"/>
+		<non-term value="step_mother"/>
+		<non-term value="step_sister"/>
+		<non-term value="step_son"/>
+		<non-term value="no__term"/>
+	</non-terms>
+	<levels-of-recursion n="1"/>
+	<theory>
+		<kin-term-def term="brother">
+			<head>brother</head>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>sibling</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>male</predicate>
+						<arg-list>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def term="children">
+			<head>children</head>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def term="half_brother">
+			<head>half_brother</head>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>M</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>F</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>W2</var>
+							<var>F</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>W2</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>F</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>W2</var>
+									<var>M</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>M</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>F</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>H2</var>
+							<var>M</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>H2</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>M</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>H2</var>
+									<var>F</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def term="half_sister">
+			<head>half_sister</head>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>M</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>F</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>W2</var>
+							<var>F</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>W2</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>F</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>W2</var>
+									<var>M</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>M</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>F</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>H2</var>
+							<var>M</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>H2</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>M</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>H2</var>
+									<var>F</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def term="parents">
+			<head>parents</head>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def term="sibling">
+			<head>sibling</head>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>M</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>F</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>child</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>M</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>child</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>F</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>Alter</var>
+									<var>Ego</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def term="siblings">
+			<head>siblings</head>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>brother</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>sister</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def term="sister">
+			<head>sister</head>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>sibling</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>female</predicate>
+						<arg-list>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def term="spice">
+			<head>spice</head>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def term="step_brother">
+			<head>step_brother</head>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>F</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>M</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>H2</var>
+							<var>M</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>H2</var>
+									<var>F</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>W</var>
+							<var>H2</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>W</var>
+									<var>M</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>W</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>H2</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>F</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>M</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>W2</var>
+							<var>F</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>W2</var>
+									<var>M</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>H</var>
+							<var>W2</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>H</var>
+									<var>F</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>H</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>W2</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def term="step_daughter">
+			<head>step_daughter</head>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>spouse</predicate>
+						<arg-list>
+							<var>W</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>spouse</predicate>
+						<arg-list>
+							<var>G</var>
+							<var>W</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>Ego</var>
+									<var>G</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>G</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>W</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def term="step_father">
+			<head>step_father</head>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>F</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>M</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>M</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>Alter</var>
+									<var>F</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def term="step_mother">
+			<head>step_mother</head>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>F</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>M</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>F</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>Alter</var>
+									<var>M</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def term="step_sister">
+			<head>step_sister</head>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>F</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>M</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>H2</var>
+							<var>M</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>H2</var>
+									<var>F</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>W</var>
+							<var>H2</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>W</var>
+									<var>M</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>W</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>H2</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>F</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>M</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>W2</var>
+							<var>F</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>W2</var>
+									<var>M</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>H</var>
+							<var>W2</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>H</var>
+									<var>F</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>H</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>W2</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def term="step_son">
+			<head>step_son</head>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>spouse</predicate>
+						<arg-list>
+							<var>W</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>spouse</predicate>
+						<arg-list>
+							<var>G</var>
+							<var>W</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>Ego</var>
+									<var>G</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>G</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>W</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+	</theory>
+</domain-theory>
+
+<individualCensus>
+<individual n="0"><sex>M</sex>
+  <location x="318" y="121"/>
+  <surname value="Adams"/>
+  <firstNames value="Aaron"/>
+  <dataChangeDate value="2011-10-12"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>1</birthFamily>
+  <marriages>
+    <mar n="0"/>
+  </marriages>
+</individual>
+
+<individual n="1"><sex>F</sex>
+  <location x="399" y="121"/>
+  <surname value="Adams"/>
+  <firstNames value="Betty"/>
+  <dataChangeDate value="2011-10-12"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>2</birthFamily>
+  <marriages>
+    <mar n="0"/>
+  </marriages>
+</individual>
+
+<individual n="2"><sex>M</sex>
+  <location x="253" y="176"/>
+  <comments txt="Test comment."/>
+  <surname value="Adams"/>
+  <firstNames value="Charlie"/>
+  <dataChangeDate value="2011-10-13"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>0</birthFamily>
+  <marriages>  </marriages>
+</individual>
+
+<individual n="3"><sex>F</sex>
+  <location x="337" y="176"/>
+  <surname value="Adams"/>
+  <firstNames value="Dorothy"/>
+  <dataChangeDate value="2011-10-12"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>0</birthFamily>
+  <marriages>  </marriages>
+</individual>
+
+<individual n="4"><sex>F</sex>
+  <location x="420" y="176"/>
+  <surname value="Adams"/>
+  <firstNames value="Eve"/>
+  <dataChangeDate value="2011-10-13"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>0</birthFamily>
+  <marriages>  </marriages>
+</individual>
+
+<individual n="5"><sex>M</sex>
+  <location x="236" y="64"/>
+  <surname value="Adams"/>
+  <firstNames value="Alfonso"/>
+  <dataChangeDate value="2011-10-13"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="1"/>
+  </marriages>
+</individual>
+
+<individual n="6"><sex>F</sex>
+  <location x="311" y="67"/>
+  <surname value="Adams"/>
+  <firstNames value="Barb"/>
+  <dataChangeDate value="2011-10-12"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="1"/>
+  </marriages>
+</individual>
+
+<individual n="7"><sex>M</sex>
+  <location x="407" y="69"/>
+  <surname value="Zeta"/>
+  <firstNames value="Albert"/>
+  <dataChangeDate value="2011-09-29"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="2"/>
+  </marriages>
+</individual>
+
+<individual n="8"><sex>F</sex>
+  <location x="489" y="66"/>
+  <surname value="Zeta"/>
+  <firstNames value="Bertha"/>
+  <dataChangeDate value="2011-09-29"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="2"/>
+  </marriages>
+</individual>
+
+<individual n="9"><sex>M</sex>
+  <location x="167" y="119"/>
+  <surname value="Adams"/>
+  <firstNames value="Bobby"/>
+  <dataChangeDate value="2011-10-12"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>1</birthFamily>
+  <marriages>
+    <mar n="4"/>
+  </marriages>
+</individual>
+
+<individual n="10"><sex>F</sex>
+  <location x="243" y="119"/>
+  <surname value="Adams"/>
+  <firstNames value="Charlene"/>
+  <dataChangeDate value="2011-10-12"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>1</birthFamily>
+  <marriages>  </marriages>
+</individual>
+
+<individual n="11"><sex>M</sex>
+  <location x="462" y="122"/>
+  <surname value="Zeta"/>
+  <firstNames value="Cameron"/>
+  <dataChangeDate value="2011-10-12"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>2</birthFamily>
+  <marriages>
+    <mar n="5"/>
+  </marriages>
+</individual>
+
+<individual n="12"><sex>F</sex>
+  <location x="627" y="119"/>
+  <surname value="Beta"/>
+  <firstNames value="Dottie"/>
+  <dataChangeDate value="2011-10-12"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>2</birthFamily>
+  <marriages>
+    <mar n="3"/>
+  </marriages>
+</individual>
+
+<individual n="13"><sex>M</sex>
+  <location x="715" y="117"/>
+  <surname value="Beta"/>
+  <firstNames value="Adam"/>
+  <dataChangeDate value="2011-10-12"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="3"/>
+  </marriages>
+</individual>
+
+<individual n="14"><sex>M</sex>
+  <location x="629" y="176"/>
+  <surname value="Beta"/>
+  <firstNames value="Gary"/>
+  <dataChangeDate value="2011-10-12"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>3</birthFamily>
+  <marriages>  </marriages>
+</individual>
+
+<individual n="15"><sex>F</sex>
+  <location x="703" y="176"/>
+  <surname value="Beta"/>
+  <firstNames value="Helen"/>
+  <dataChangeDate value="2011-10-12"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>3</birthFamily>
+  <marriages>  </marriages>
+</individual>
+
+<individual n="16"><sex>F</sex>
+  <location x="785" y="174"/>
+  <surname value="Beta"/>
+  <firstNames value="Isabelle"/>
+  <dataChangeDate value="2011-10-12"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>3</birthFamily>
+  <marriages>  </marriages>
+</individual>
+
+<individual n="17"><sex>F</sex>
+  <location x="93" y="121"/>
+  <surname value="Adams"/>
+  <firstNames value="Gertrude"/>
+  <dataChangeDate value="2011-10-12"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="4"/>
+  </marriages>
+</individual>
+
+<individual n="18"><sex>F</sex>
+  <location x="535" y="123"/>
+  <surname value="Zeta"/>
+  <firstNames value="Hattie"/>
+  <dataChangeDate value="2011-10-12"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="5"/>
+  </marriages>
+</individual>
+
+</individualCensus>
+<familyCensus>
+<family n="0">  <location x="357" y="118"/>
+  <reason>NA</reason>
+  <deleted>false</deleted>
+  <husband n="0"/>
+  <wife n="1"/>
+  <children>
+    <kid n="4"/>
+    <kid n="3"/>
+    <kid n="2"/>
+  </children>
+  <dataChangeDate value="2011-09-27"/>
+</family>
+
+<family n="1">  <location x="272" y="66"/>
+  <reason>NA</reason>
+  <deleted>false</deleted>
+  <husband n="5"/>
+  <wife n="6"/>
+  <children>
+    <kid n="0"/>
+    <kid n="9"/>
+    <kid n="10"/>
+  </children>
+  <dataChangeDate value="2011-10-12"/>
+</family>
+
+<family n="2">  <location x="447" y="66"/>
+  <reason>NA</reason>
+  <deleted>false</deleted>
+  <husband n="7"/>
+  <wife n="8"/>
+  <children>
+    <kid n="1"/>
+    <kid n="11"/>
+    <kid n="12"/>
+  </children>
+  <dataChangeDate value="2011-10-12"/>
+</family>
+
+<family n="3">  <location x="669" y="116"/>
+  <reason>NA</reason>
+  <deleted>false</deleted>
+  <husband n="13"/>
+  <wife n="12"/>
+  <children>
+    <kid n="16"/>
+    <kid n="15"/>
+    <kid n="14"/>
+  </children>
+  <dataChangeDate value="2011-10-12"/>
+</family>
+
+<family n="4">  <location x="134" y="115"/>
+  <reason>NA</reason>
+  <deleted>false</deleted>
+  <husband n="9"/>
+  <wife n="17"/>
+  <children>  </children>
+  <dataChangeDate value="2011-10-12"/>
+</family>
+
+<family n="5">  <location x="503" y="119"/>
+  <reason>NA</reason>
+  <deleted>false</deleted>
+  <husband n="11"/>
+  <wife n="18"/>
+  <children>  </children>
+  <dataChangeDate value="2011-10-12"/>
+</family>
+
+</familyCensus>
+<matrix>
+<row ego="0">
+	<cell alter="0"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="1"><pcString>Wi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="1" arg1="0"/> </miniPreds> <PR>wife_term</PR></cell>
+	<cell alter="2"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="2" arg1="0"/> </miniPreds> <PR>son_term</PR></cell>
+	<cell alter="3"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="3" arg1="0"/> </miniPreds> <PR>daughter_term</PR></cell>
+	<cell alter="4"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="4" arg1="0"/> </miniPreds> <PR>daughter_term</PR></cell>
+	<cell alter="5"><pcString>Fa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="5" arg1="0"/> </miniPreds> <PR>dad</PR></cell>
+	<cell alter="6"><pcString>Mo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="6" arg1="0"/> </miniPreds> <PR>mom</PR></cell>
+	<cell alter="7"><pcString>WiFa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Wi" arg0="1" arg1="0"/><pred rel="Fa" arg0="7" arg1="1"/> </miniPreds> <PR>father_in_law</PR></cell>
+	<cell alter="8"><pcString>WiMo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Wi" arg0="1" arg1="0"/><pred rel="Mo" arg0="8" arg1="1"/> </miniPreds> </cell>
+	<cell alter="9"><pcString>Bro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="9" arg1="0"/> </miniPreds> </cell>
+	<cell alter="10"><pcString>Sis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="10" arg1="0"/> </miniPreds> </cell>
+	<cell alter="11"><pcString>WiBro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="1" arg1="0"/><pred rel="Bro" arg0="11" arg1="1"/> </miniPreds> </cell>
+	<cell alter="12"><pcString>WiSis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/> </miniPreds> </cell>
+	<cell alter="13"><pcString>WiSisHu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Hu" arg0="13" arg1="12"/> </miniPreds> </cell>
+	<cell alter="14"><pcString>WiSisSo</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="So" arg0="14" arg1="12"/> </miniPreds> </cell>
+	<cell alter="15"><pcString>WiSisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="15" arg1="12"/> </miniPreds> </cell>
+	<cell alter="16"><pcString>WiSisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="16" arg1="12"/> </miniPreds> </cell>
+	<cell alter="17"><pcString>BroWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="9" arg1="0"/><pred rel="Wi" arg0="17" arg1="9"/> </miniPreds> </cell>
+	<cell alter="18"><pcString>WiBroWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="1" arg1="0"/><pred rel="Bro" arg0="11" arg1="1"/><pred rel="Wi" arg0="18" arg1="11"/> </miniPreds> </cell>
+</row><row ego="1">
+	<cell alter="0"><pcString>Hu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="0" arg1="1"/> </miniPreds> <PR>husband_term</PR></cell>
+	<cell alter="1"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="2"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="2" arg1="1"/> </miniPreds> <PR>son_term</PR></cell>
+	<cell alter="3"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="3" arg1="1"/> </miniPreds> <PR>daughter_term</PR></cell>
+	<cell alter="4"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="4" arg1="1"/> </miniPreds> <PR>daughter_term</PR></cell>
+	<cell alter="5"><pcString>HuFa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Hu" arg0="0" arg1="1"/><pred rel="Fa" arg0="5" arg1="0"/> </miniPreds> </cell>
+	<cell alter="6"><pcString>HuMo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Hu" arg0="0" arg1="1"/><pred rel="Mo" arg0="6" arg1="0"/> </miniPreds> </cell>
+	<cell alter="7"><pcString>Fa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="7" arg1="1"/> </miniPreds> <PR>dad</PR></cell>
+	<cell alter="8"><pcString>Mo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="8" arg1="1"/> </miniPreds> <PR>mom</PR></cell>
+	<cell alter="9"><pcString>HuBro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/> </miniPreds> </cell>
+	<cell alter="10"><pcString>HuSis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="0" arg1="1"/><pred rel="Sis" arg0="10" arg1="0"/> </miniPreds> </cell>
+	<cell alter="11"><pcString>Bro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="11" arg1="1"/> </miniPreds> </cell>
+	<cell alter="12"><pcString>Sis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="12" arg1="1"/> </miniPreds> </cell>
+	<cell alter="13"><pcString>SisHu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="12" arg1="1"/><pred rel="Hu" arg0="13" arg1="12"/> </miniPreds> </cell>
+	<cell alter="14"><pcString>SisSo</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Sis" arg0="12" arg1="1"/><pred rel="So" arg0="14" arg1="12"/> </miniPreds> </cell>
+	<cell alter="15"><pcString>SisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="15" arg1="12"/> </miniPreds> </cell>
+	<cell alter="16"><pcString>SisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="16" arg1="12"/> </miniPreds> </cell>
+	<cell alter="17"><pcString>HuBroWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/><pred rel="Wi" arg0="17" arg1="9"/> </miniPreds> </cell>
+	<cell alter="18"><pcString>BroWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="11" arg1="1"/><pred rel="Wi" arg0="18" arg1="11"/> </miniPreds> </cell>
+</row><row ego="2">
+	<cell alter="0"><pcString>Fa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="0" arg1="2"/> </miniPreds> <PR>daddy</PR></cell>
+	<cell alter="1"><pcString>Mo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="2"/> </miniPreds> <PR>mom</PR></cell>
+	<cell alter="2"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="3"><pcString>Sis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="3" arg1="2"/> </miniPreds> </cell>
+	<cell alter="4"><pcString>Sis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="4" arg1="2"/> </miniPreds> </cell>
+	<cell alter="5"><pcString>FaFa</pcString> <level>2</level>
+		<miniPreds> <pred rel="Fa" arg0="0" arg1="2"/><pred rel="Fa" arg0="5" arg1="0"/> </miniPreds> <PR>grandpa, grandparent</PR></cell>
+	<cell alter="6"><pcString>FaMo</pcString> <level>2</level>
+		<miniPreds> <pred rel="Fa" arg0="0" arg1="2"/><pred rel="Mo" arg0="6" arg1="0"/> </miniPreds> <PR>grandma, grandparent</PR></cell>
+	<cell alter="7"><pcString>MoFa</pcString> <level>2</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="2"/><pred rel="Fa" arg0="7" arg1="1"/> </miniPreds> <PR>grandpa, grandparent</PR></cell>
+	<cell alter="8"><pcString>MoMo</pcString> <level>2</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="2"/><pred rel="Mo" arg0="8" arg1="1"/> </miniPreds> <PR>grandma</PR></cell>
+	<cell alter="9"><pcString>FaBro</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="0" arg1="2"/><pred rel="Bro" arg0="9" arg1="0"/> </miniPreds> <PR>uncle</PR></cell>
+	<cell alter="10"><pcString>FaSis</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="0" arg1="2"/><pred rel="Sis" arg0="10" arg1="0"/> </miniPreds> <PR>aunt</PR></cell>
+	<cell alter="11"><pcString>MoBro</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="2"/><pred rel="Bro" arg0="11" arg1="1"/> </miniPreds> <PR>uncle</PR></cell>
+	<cell alter="12"><pcString>MoSis</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="2"/><pred rel="Sis" arg0="12" arg1="1"/> </miniPreds> <PR>aunt</PR></cell>
+	<cell alter="13"><pcString>MoSisHu</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="2"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Hu" arg0="13" arg1="12"/> </miniPreds> <PR>uncle</PR></cell>
+	<cell alter="14"><pcString>MoSisSo</pcString> <level>0</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="2"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="So" arg0="14" arg1="12"/> </miniPreds> </cell>
+	<cell alter="15"><pcString>MoSisDa</pcString> <level>0</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="2"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="15" arg1="12"/> </miniPreds> </cell>
+	<cell alter="16"><pcString>MoSisDa</pcString> <level>0</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="2"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="16" arg1="12"/> </miniPreds> </cell>
+	<cell alter="17"><pcString>FaBroWi</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="0" arg1="2"/><pred rel="Bro" arg0="9" arg1="0"/><pred rel="Wi" arg0="17" arg1="9"/> </miniPreds> <PR>aunt</PR></cell>
+	<cell alter="18"><pcString>MoBroWi</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="2"/><pred rel="Bro" arg0="11" arg1="1"/><pred rel="Wi" arg0="18" arg1="11"/> </miniPreds> <PR>aunt</PR></cell>
+</row><row ego="3">
+	<cell alter="0"><pcString>Fa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="0" arg1="3"/> </miniPreds> <PR>dad_term</PR></cell>
+	<cell alter="1"><pcString>Mo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="3"/> </miniPreds> <PR>mom</PR></cell>
+	<cell alter="2"><pcString>Bro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="2" arg1="3"/> </miniPreds> </cell>
+	<cell alter="3"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="4"><pcString>Sis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="4" arg1="3"/> </miniPreds> </cell>
+	<cell alter="5"><pcString>FaFa</pcString> <level>2</level>
+		<miniPreds> <pred rel="Fa" arg0="0" arg1="3"/><pred rel="Fa" arg0="5" arg1="0"/> </miniPreds> <PR>grandpa, grandparent</PR></cell>
+	<cell alter="6"><pcString>FaMo</pcString> <level>2</level>
+		<miniPreds> <pred rel="Fa" arg0="0" arg1="3"/><pred rel="Mo" arg0="6" arg1="0"/> </miniPreds> <PR>grandma, grandparent</PR></cell>
+	<cell alter="7"><pcString>MoFa</pcString> <level>2</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="3"/><pred rel="Fa" arg0="7" arg1="1"/> </miniPreds> <PR>grandpa, grandparent</PR></cell>
+	<cell alter="8"><pcString>MoMo</pcString> <level>2</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="3"/><pred rel="Mo" arg0="8" arg1="1"/> </miniPreds> <PR>grandma, grandparent</PR></cell>
+	<cell alter="9"><pcString>FaBro</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="0" arg1="3"/><pred rel="Bro" arg0="9" arg1="0"/> </miniPreds> <PR>uncle</PR></cell>
+	<cell alter="10"><pcString>FaSis</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="0" arg1="3"/><pred rel="Sis" arg0="10" arg1="0"/> </miniPreds> <PR>aunt</PR></cell>
+	<cell alter="11"><pcString>MoBro</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="3"/><pred rel="Bro" arg0="11" arg1="1"/> </miniPreds> <PR>uncle</PR></cell>
+	<cell alter="12"><pcString>MoSis</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="3"/><pred rel="Sis" arg0="12" arg1="1"/> </miniPreds> <PR>aunt</PR></cell>
+	<cell alter="13"><pcString>MoSisHu</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="3"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Hu" arg0="13" arg1="12"/> </miniPreds> <PR>uncle</PR></cell>
+	<cell alter="14"><pcString>MoSisSo</pcString> <level>0</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="3"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="So" arg0="14" arg1="12"/> </miniPreds> </cell>
+	<cell alter="15"><pcString>MoSisDa</pcString> <level>0</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="3"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="15" arg1="12"/> </miniPreds> </cell>
+	<cell alter="16"><pcString>MoSisDa</pcString> <level>0</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="3"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="16" arg1="12"/> </miniPreds> </cell>
+	<cell alter="17"><pcString>FaBroWi</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="0" arg1="3"/><pred rel="Bro" arg0="9" arg1="0"/><pred rel="Wi" arg0="17" arg1="9"/> </miniPreds> <PR>aunt</PR></cell>
+	<cell alter="18"><pcString>MoBroWi</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="3"/><pred rel="Bro" arg0="11" arg1="1"/><pred rel="Wi" arg0="18" arg1="11"/> </miniPreds> <PR>aunt</PR></cell>
+</row><row ego="4">
+	<cell alter="0"><pcString>Fa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="0" arg1="4"/> </miniPreds> <PR>dad_term</PR></cell>
+	<cell alter="1"><pcString>Mo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="4"/> </miniPreds> <PR>mom</PR></cell>
+	<cell alter="2"><pcString>Bro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="2" arg1="4"/> </miniPreds> </cell>
+	<cell alter="3"><pcString>Sis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="3" arg1="4"/> </miniPreds> </cell>
+	<cell alter="4"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="5"><pcString>FaFa</pcString> <level>2</level>
+		<miniPreds> <pred rel="Fa" arg0="0" arg1="4"/><pred rel="Fa" arg0="5" arg1="0"/> </miniPreds> <PR>grandpa, grandparent</PR></cell>
+	<cell alter="6"><pcString>FaMo</pcString> <level>2</level>
+		<miniPreds> <pred rel="Fa" arg0="0" arg1="4"/><pred rel="Mo" arg0="6" arg1="0"/> </miniPreds> <PR>grandma, grandparent</PR></cell>
+	<cell alter="7"><pcString>MoFa</pcString> <level>2</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="4"/><pred rel="Fa" arg0="7" arg1="1"/> </miniPreds> <PR>grandpa, grandparent</PR></cell>
+	<cell alter="8"><pcString>MoMo</pcString> <level>2</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="4"/><pred rel="Mo" arg0="8" arg1="1"/> </miniPreds> <PR>grandma, grandparent</PR></cell>
+	<cell alter="9"><pcString>FaBro</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="0" arg1="4"/><pred rel="Bro" arg0="9" arg1="0"/> </miniPreds> <PR>uncle</PR></cell>
+	<cell alter="10"><pcString>FaSis</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="0" arg1="4"/><pred rel="Sis" arg0="10" arg1="0"/> </miniPreds> <PR>aunt</PR></cell>
+	<cell alter="11"><pcString>MoBro</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="4"/><pred rel="Bro" arg0="11" arg1="1"/> </miniPreds> <PR>uncle</PR></cell>
+	<cell alter="12"><pcString>MoSis</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="4"/><pred rel="Sis" arg0="12" arg1="1"/> </miniPreds> <PR>aunt</PR></cell>
+	<cell alter="13"><pcString>MoSisHu</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="4"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Hu" arg0="13" arg1="12"/> </miniPreds> <PR>uncle</PR></cell>
+	<cell alter="14"><pcString>MoSisSo</pcString> <level>0</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="4"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="So" arg0="14" arg1="12"/> </miniPreds> </cell>
+	<cell alter="15"><pcString>MoSisDa</pcString> <level>0</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="4"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="15" arg1="12"/> </miniPreds> </cell>
+	<cell alter="16"><pcString>MoSisDa</pcString> <level>0</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="4"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="16" arg1="12"/> </miniPreds> </cell>
+	<cell alter="17"><pcString>FaBroWi</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="0" arg1="4"/><pred rel="Bro" arg0="9" arg1="0"/><pred rel="Wi" arg0="17" arg1="9"/> </miniPreds> <PR>aunt</PR></cell>
+	<cell alter="18"><pcString>MoBroWi</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="1" arg1="4"/><pred rel="Bro" arg0="11" arg1="1"/><pred rel="Wi" arg0="18" arg1="11"/> </miniPreds> <PR>aunt</PR></cell>
+</row><row ego="5">
+	<cell alter="0"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="5"/> </miniPreds> </cell>
+	<cell alter="1"><pcString>SoWi</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="5"/><pred rel="Wi" arg0="1" arg1="0"/> </miniPreds> </cell>
+	<cell alter="2"><pcString>SoSo</pcString> <level>-2</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="5"/><pred rel="So" arg0="2" arg1="0"/> </miniPreds> <PR>grandson</PR></cell>
+	<cell alter="3"><pcString>SoDa</pcString> <level>-2</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="5"/><pred rel="Da" arg0="3" arg1="0"/> </miniPreds> </cell>
+	<cell alter="4"><pcString>SoDa</pcString> <level>-2</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="5"/><pred rel="Da" arg0="4" arg1="0"/> </miniPreds> </cell>
+	<cell alter="5"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="6"><pcString>Wi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="6" arg1="5"/> </miniPreds> </cell>
+	<cell alter="7"><pcString>SoWiFa</pcString> <level>0</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="5"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Fa" arg0="7" arg1="1"/> </miniPreds> </cell>
+	<cell alter="8"><pcString>SoWiMo</pcString> <level>0</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="5"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Mo" arg0="8" arg1="1"/> </miniPreds> </cell>
+	<cell alter="9"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="9" arg1="5"/> </miniPreds> </cell>
+	<cell alter="10"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="10" arg1="5"/> </miniPreds> </cell>
+	<cell alter="11"><pcString>SoWiBro</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="5"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Bro" arg0="11" arg1="1"/> </miniPreds> </cell>
+	<cell alter="12"><pcString>SoWiSis</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="5"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/> </miniPreds> </cell>
+	<cell alter="13"><pcString>SoWiSisHu</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="5"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Hu" arg0="13" arg1="12"/> </miniPreds> </cell>
+	<cell alter="14"><pcString>SoWiSisSo</pcString> <level>-2</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="5"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="So" arg0="14" arg1="12"/> </miniPreds> </cell>
+	<cell alter="15"><pcString>SoWiSisDa</pcString> <level>-2</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="5"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="15" arg1="12"/> </miniPreds> </cell>
+	<cell alter="16"><pcString>SoWiSisDa</pcString> <level>-2</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="5"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="16" arg1="12"/> </miniPreds> </cell>
+	<cell alter="17"><pcString>SoWi</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="9" arg1="5"/><pred rel="Wi" arg0="17" arg1="9"/> </miniPreds> </cell>
+	<cell alter="18"><pcString>SoWiBroWi</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="5"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Bro" arg0="11" arg1="1"/><pred rel="Wi" arg0="18" arg1="11"/> </miniPreds> </cell>
+</row><row ego="6">
+	<cell alter="0"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="6"/> </miniPreds> </cell>
+	<cell alter="1"><pcString>SoWi</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="6"/><pred rel="Wi" arg0="1" arg1="0"/> </miniPreds> </cell>
+	<cell alter="2"><pcString>SoSo</pcString> <level>-2</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="6"/><pred rel="So" arg0="2" arg1="0"/> </miniPreds> <PR>grandsop</PR></cell>
+	<cell alter="3"><pcString>SoDa</pcString> <level>-2</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="6"/><pred rel="Da" arg0="3" arg1="0"/> </miniPreds> </cell>
+	<cell alter="4"><pcString>SoDa</pcString> <level>-2</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="6"/><pred rel="Da" arg0="4" arg1="0"/> </miniPreds> </cell>
+	<cell alter="5"><pcString>Hu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="5" arg1="6"/> </miniPreds> </cell>
+	<cell alter="6"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="7"><pcString>SoWiFa</pcString> <level>0</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="6"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Fa" arg0="7" arg1="1"/> </miniPreds> </cell>
+	<cell alter="8"><pcString>SoWiMo</pcString> <level>0</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="6"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Mo" arg0="8" arg1="1"/> </miniPreds> </cell>
+	<cell alter="9"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="9" arg1="6"/> </miniPreds> </cell>
+	<cell alter="10"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="10" arg1="6"/> </miniPreds> </cell>
+	<cell alter="11"><pcString>SoWiBro</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="6"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Bro" arg0="11" arg1="1"/> </miniPreds> </cell>
+	<cell alter="12"><pcString>SoWiSis</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="6"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/> </miniPreds> </cell>
+	<cell alter="13"><pcString>SoWiSisHu</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="6"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Hu" arg0="13" arg1="12"/> </miniPreds> </cell>
+	<cell alter="14"><pcString>SoWiSisSo</pcString> <level>-2</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="6"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="So" arg0="14" arg1="12"/> </miniPreds> </cell>
+	<cell alter="15"><pcString>SoWiSisDa</pcString> <level>-2</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="6"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="15" arg1="12"/> </miniPreds> </cell>
+	<cell alter="16"><pcString>SoWiSisDa</pcString> <level>-2</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="6"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="16" arg1="12"/> </miniPreds> </cell>
+	<cell alter="17"><pcString>SoWi</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="9" arg1="6"/><pred rel="Wi" arg0="17" arg1="9"/> </miniPreds> </cell>
+	<cell alter="18"><pcString>SoWiBroWi</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="0" arg1="6"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Bro" arg0="11" arg1="1"/><pred rel="Wi" arg0="18" arg1="11"/> </miniPreds> </cell>
+</row><row ego="7">
+	<cell alter="0"><pcString>DaHu</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="7"/><pred rel="Hu" arg0="0" arg1="1"/> </miniPreds> <PR>son_in_law</PR></cell>
+	<cell alter="1"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="7"/> </miniPreds> <PR>daughter_term</PR></cell>
+	<cell alter="2"><pcString>DaSo</pcString> <level>-2</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="7"/><pred rel="So" arg0="2" arg1="1"/> </miniPreds> <PR>grandson</PR></cell>
+	<cell alter="3"><pcString>DaDa</pcString> <level>-2</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="7"/><pred rel="Da" arg0="3" arg1="1"/> </miniPreds> </cell>
+	<cell alter="4"><pcString>DaDa</pcString> <level>-2</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="7"/><pred rel="Da" arg0="4" arg1="1"/> </miniPreds> </cell>
+	<cell alter="5"><pcString>DaHuFa</pcString> <level>0</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="7"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Fa" arg0="5" arg1="0"/> </miniPreds> </cell>
+	<cell alter="6"><pcString>DaHuMo</pcString> <level>0</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="7"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Mo" arg0="6" arg1="0"/> </miniPreds> </cell>
+	<cell alter="7"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="8"><pcString>Wi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="8" arg1="7"/> </miniPreds> </cell>
+	<cell alter="9"><pcString>DaHuBro</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="7"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/> </miniPreds> </cell>
+	<cell alter="10"><pcString>DaHuSis</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="7"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Sis" arg0="10" arg1="0"/> </miniPreds> </cell>
+	<cell alter="11"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="11" arg1="7"/> </miniPreds> </cell>
+	<cell alter="12"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="12" arg1="7"/> </miniPreds> </cell>
+	<cell alter="13"><pcString>DaHu</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="12" arg1="7"/><pred rel="Hu" arg0="13" arg1="12"/> </miniPreds> </cell>
+	<cell alter="14"><pcString>DaSo</pcString> <level>-2</level>
+		<miniPreds> <pred rel="Da" arg0="12" arg1="7"/><pred rel="So" arg0="14" arg1="12"/> </miniPreds> <PR>grandson</PR></cell>
+	<cell alter="15"><pcString>DaDa</pcString> <level>-2</level>
+		<miniPreds> <pred rel="Da" arg0="12" arg1="7"/><pred rel="Da" arg0="15" arg1="12"/> </miniPreds> </cell>
+	<cell alter="16"><pcString>DaDa</pcString> <level>-2</level>
+		<miniPreds> <pred rel="Da" arg0="12" arg1="7"/><pred rel="Da" arg0="16" arg1="12"/> </miniPreds> </cell>
+	<cell alter="17"><pcString>DaHuBroWi</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="7"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/><pred rel="Wi" arg0="17" arg1="9"/> </miniPreds> </cell>
+	<cell alter="18"><pcString>SoWi</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="11" arg1="7"/><pred rel="Wi" arg0="18" arg1="11"/> </miniPreds> </cell>
+</row><row ego="8">
+	<cell alter="0"><pcString>DaHu</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="8"/><pred rel="Hu" arg0="0" arg1="1"/> </miniPreds> </cell>
+	<cell alter="1"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="8"/> </miniPreds> </cell>
+	<cell alter="2"><pcString>DaSo</pcString> <level>-2</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="8"/><pred rel="So" arg0="2" arg1="1"/> </miniPreds> <PR>grandson</PR></cell>
+	<cell alter="3"><pcString>DaDa</pcString> <level>-2</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="8"/><pred rel="Da" arg0="3" arg1="1"/> </miniPreds> </cell>
+	<cell alter="4"><pcString>DaDa</pcString> <level>-2</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="8"/><pred rel="Da" arg0="4" arg1="1"/> </miniPreds> </cell>
+	<cell alter="5"><pcString>DaHuFa</pcString> <level>0</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="8"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Fa" arg0="5" arg1="0"/> </miniPreds> </cell>
+	<cell alter="6"><pcString>DaHuMo</pcString> <level>0</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="8"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Mo" arg0="6" arg1="0"/> </miniPreds> </cell>
+	<cell alter="7"><pcString>Hu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="7" arg1="8"/> </miniPreds> </cell>
+	<cell alter="8"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="9"><pcString>DaHuBro</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="8"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/> </miniPreds> </cell>
+	<cell alter="10"><pcString>DaHuSis</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="8"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Sis" arg0="10" arg1="0"/> </miniPreds> </cell>
+	<cell alter="11"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="11" arg1="8"/> </miniPreds> </cell>
+	<cell alter="12"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="12" arg1="8"/> </miniPreds> </cell>
+	<cell alter="13"><pcString>DaHu</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="12" arg1="8"/><pred rel="Hu" arg0="13" arg1="12"/> </miniPreds> </cell>
+	<cell alter="14"><pcString>DaSo</pcString> <level>-2</level>
+		<miniPreds> <pred rel="Da" arg0="12" arg1="8"/><pred rel="So" arg0="14" arg1="12"/> </miniPreds> <PR>grandson</PR></cell>
+	<cell alter="15"><pcString>DaDa</pcString> <level>-2</level>
+		<miniPreds> <pred rel="Da" arg0="12" arg1="8"/><pred rel="Da" arg0="15" arg1="12"/> </miniPreds> </cell>
+	<cell alter="16"><pcString>DaDa</pcString> <level>-2</level>
+		<miniPreds> <pred rel="Da" arg0="12" arg1="8"/><pred rel="Da" arg0="16" arg1="12"/> </miniPreds> </cell>
+	<cell alter="17"><pcString>DaHuBroWi</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="1" arg1="8"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/><pred rel="Wi" arg0="17" arg1="9"/> </miniPreds> </cell>
+	<cell alter="18"><pcString>SoWi</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="11" arg1="8"/><pred rel="Wi" arg0="18" arg1="11"/> </miniPreds> </cell>
+</row><row ego="9">
+	<cell alter="0"><pcString>Bro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="9"/> </miniPreds> </cell>
+	<cell alter="1"><pcString>BroWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/> </miniPreds> </cell>
+	<cell alter="2"><pcString>BroSo</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="9"/><pred rel="So" arg0="2" arg1="0"/> </miniPreds> </cell>
+	<cell alter="3"><pcString>BroDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="9"/><pred rel="Da" arg0="3" arg1="0"/> </miniPreds> </cell>
+	<cell alter="4"><pcString>BroDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="9"/><pred rel="Da" arg0="4" arg1="0"/> </miniPreds> </cell>
+	<cell alter="5"><pcString>Fa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="5" arg1="9"/> </miniPreds> <PR>daddy</PR></cell>
+	<cell alter="6"><pcString>Mo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="6" arg1="9"/> </miniPreds> <PR>mom</PR></cell>
+	<cell alter="7"><pcString>BroWiFa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Fa" arg0="7" arg1="1"/> </miniPreds> </cell>
+	<cell alter="8"><pcString>BroWiMo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Mo" arg0="8" arg1="1"/> </miniPreds> </cell>
+	<cell alter="9"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="10"><pcString>Sis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="10" arg1="9"/> </miniPreds> </cell>
+	<cell alter="11"><pcString>BroWiBro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Bro" arg0="11" arg1="1"/> </miniPreds> </cell>
+	<cell alter="12"><pcString>BroWiSis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/> </miniPreds> </cell>
+	<cell alter="13"><pcString>BroWiSisHu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Hu" arg0="13" arg1="12"/> </miniPreds> </cell>
+	<cell alter="14"><pcString>BroWiSisSo</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="So" arg0="14" arg1="12"/> </miniPreds> </cell>
+	<cell alter="15"><pcString>BroWiSisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="15" arg1="12"/> </miniPreds> </cell>
+	<cell alter="16"><pcString>BroWiSisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="16" arg1="12"/> </miniPreds> </cell>
+	<cell alter="17"><pcString>Wi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="17" arg1="9"/> </miniPreds> </cell>
+	<cell alter="18"><pcString>BroWiBroWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Bro" arg0="11" arg1="1"/><pred rel="Wi" arg0="18" arg1="11"/> </miniPreds> </cell>
+</row><row ego="10">
+	<cell alter="0"><pcString>Bro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="10"/> </miniPreds> </cell>
+	<cell alter="1"><pcString>BroWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="10"/><pred rel="Wi" arg0="1" arg1="0"/> </miniPreds> </cell>
+	<cell alter="2"><pcString>BroSo</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="10"/><pred rel="So" arg0="2" arg1="0"/> </miniPreds> </cell>
+	<cell alter="3"><pcString>BroDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="10"/><pred rel="Da" arg0="3" arg1="0"/> </miniPreds> </cell>
+	<cell alter="4"><pcString>BroDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="10"/><pred rel="Da" arg0="4" arg1="0"/> </miniPreds> </cell>
+	<cell alter="5"><pcString>Fa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="5" arg1="10"/> </miniPreds> <PR>dad</PR></cell>
+	<cell alter="6"><pcString>Mo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="6" arg1="10"/> </miniPreds> <PR>mom</PR></cell>
+	<cell alter="7"><pcString>BroWiFa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="10"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Fa" arg0="7" arg1="1"/> </miniPreds> </cell>
+	<cell alter="8"><pcString>BroWiMo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="10"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Mo" arg0="8" arg1="1"/> </miniPreds> </cell>
+	<cell alter="9"><pcString>Bro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="9" arg1="10"/> </miniPreds> </cell>
+	<cell alter="10"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="11"><pcString>BroWiBro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="10"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Bro" arg0="11" arg1="1"/> </miniPreds> </cell>
+	<cell alter="12"><pcString>BroWiSis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="10"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/> </miniPreds> </cell>
+	<cell alter="13"><pcString>BroWiSisHu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="10"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Hu" arg0="13" arg1="12"/> </miniPreds> </cell>
+	<cell alter="14"><pcString>BroWiSisSo</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="10"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="So" arg0="14" arg1="12"/> </miniPreds> </cell>
+	<cell alter="15"><pcString>BroWiSisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="10"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="15" arg1="12"/> </miniPreds> </cell>
+	<cell alter="16"><pcString>BroWiSisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="10"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="16" arg1="12"/> </miniPreds> </cell>
+	<cell alter="17"><pcString>BroWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="9" arg1="10"/><pred rel="Wi" arg0="17" arg1="9"/> </miniPreds> </cell>
+	<cell alter="18"><pcString>BroWiBroWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="0" arg1="10"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Bro" arg0="11" arg1="1"/><pred rel="Wi" arg0="18" arg1="11"/> </miniPreds> </cell>
+</row><row ego="11">
+	<cell alter="0"><pcString>SisHu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="11"/><pred rel="Hu" arg0="0" arg1="1"/> </miniPreds> </cell>
+	<cell alter="1"><pcString>Sis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="11"/> </miniPreds> </cell>
+	<cell alter="2"><pcString>SisSo</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="11"/><pred rel="So" arg0="2" arg1="1"/> </miniPreds> </cell>
+	<cell alter="3"><pcString>SisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="11"/><pred rel="Da" arg0="3" arg1="1"/> </miniPreds> </cell>
+	<cell alter="4"><pcString>SisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="11"/><pred rel="Da" arg0="4" arg1="1"/> </miniPreds> </cell>
+	<cell alter="5"><pcString>SisHuFa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="11"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Fa" arg0="5" arg1="0"/> </miniPreds> </cell>
+	<cell alter="6"><pcString>SisHuMo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="11"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Mo" arg0="6" arg1="0"/> </miniPreds> </cell>
+	<cell alter="7"><pcString>Fa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="7" arg1="11"/> </miniPreds> <PR>daddy</PR></cell>
+	<cell alter="8"><pcString>Mo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="8" arg1="11"/> </miniPreds> <PR>mom</PR></cell>
+	<cell alter="9"><pcString>SisHuBro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="11"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/> </miniPreds> </cell>
+	<cell alter="10"><pcString>SisHuSis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="11"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Sis" arg0="10" arg1="0"/> </miniPreds> </cell>
+	<cell alter="11"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="12"><pcString>Sis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="12" arg1="11"/> </miniPreds> </cell>
+	<cell alter="13"><pcString>SisHu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="12" arg1="11"/><pred rel="Hu" arg0="13" arg1="12"/> </miniPreds> </cell>
+	<cell alter="14"><pcString>SisSo</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Sis" arg0="12" arg1="11"/><pred rel="So" arg0="14" arg1="12"/> </miniPreds> </cell>
+	<cell alter="15"><pcString>SisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Sis" arg0="12" arg1="11"/><pred rel="Da" arg0="15" arg1="12"/> </miniPreds> </cell>
+	<cell alter="16"><pcString>SisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Sis" arg0="12" arg1="11"/><pred rel="Da" arg0="16" arg1="12"/> </miniPreds> </cell>
+	<cell alter="17"><pcString>SisHuBroWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="11"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/><pred rel="Wi" arg0="17" arg1="9"/> </miniPreds> </cell>
+	<cell alter="18"><pcString>Wi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="18" arg1="11"/> </miniPreds> </cell>
+</row><row ego="12">
+	<cell alter="0"><pcString>SisHu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/> </miniPreds> </cell>
+	<cell alter="1"><pcString>Sis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="12"/> </miniPreds> </cell>
+	<cell alter="2"><pcString>SisSo</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="12"/><pred rel="So" arg0="2" arg1="1"/> </miniPreds> </cell>
+	<cell alter="3"><pcString>SisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="12"/><pred rel="Da" arg0="3" arg1="1"/> </miniPreds> </cell>
+	<cell alter="4"><pcString>SisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="12"/><pred rel="Da" arg0="4" arg1="1"/> </miniPreds> </cell>
+	<cell alter="5"><pcString>SisHuFa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Fa" arg0="5" arg1="0"/> </miniPreds> </cell>
+	<cell alter="6"><pcString>SisHuMo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Mo" arg0="6" arg1="0"/> </miniPreds> </cell>
+	<cell alter="7"><pcString>Fa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="7" arg1="12"/> </miniPreds> <PR>dad</PR></cell>
+	<cell alter="8"><pcString>Mo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="8" arg1="12"/> </miniPreds> <PR>mom</PR></cell>
+	<cell alter="9"><pcString>SisHuBro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/> </miniPreds> </cell>
+	<cell alter="10"><pcString>SisHuSis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Sis" arg0="10" arg1="0"/> </miniPreds> </cell>
+	<cell alter="11"><pcString>Bro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="11" arg1="12"/> </miniPreds> </cell>
+	<cell alter="12"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="13"><pcString>Hu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="13" arg1="12"/> </miniPreds> </cell>
+	<cell alter="14"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="14" arg1="12"/> </miniPreds> </cell>
+	<cell alter="15"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="15" arg1="12"/> </miniPreds> </cell>
+	<cell alter="16"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="16" arg1="12"/> </miniPreds> </cell>
+	<cell alter="17"><pcString>SisHuBroWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/><pred rel="Wi" arg0="17" arg1="9"/> </miniPreds> </cell>
+	<cell alter="18"><pcString>BroWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="11" arg1="12"/><pred rel="Wi" arg0="18" arg1="11"/> </miniPreds> </cell>
+</row><row ego="13">
+	<cell alter="0"><pcString>WiSisHu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="12" arg1="13"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/> </miniPreds> </cell>
+	<cell alter="1"><pcString>WiSis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="12" arg1="13"/><pred rel="Sis" arg0="1" arg1="12"/> </miniPreds> </cell>
+	<cell alter="2"><pcString>WiSisSo</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Wi" arg0="12" arg1="13"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="So" arg0="2" arg1="1"/> </miniPreds> </cell>
+	<cell alter="3"><pcString>WiSisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Wi" arg0="12" arg1="13"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Da" arg0="3" arg1="1"/> </miniPreds> </cell>
+	<cell alter="4"><pcString>WiSisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Wi" arg0="12" arg1="13"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Da" arg0="4" arg1="1"/> </miniPreds> </cell>
+	<cell alter="5"><pcString>WiSisHuFa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Wi" arg0="12" arg1="13"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Fa" arg0="5" arg1="0"/> </miniPreds> </cell>
+	<cell alter="6"><pcString>WiSisHuMo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Wi" arg0="12" arg1="13"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Mo" arg0="6" arg1="0"/> </miniPreds> </cell>
+	<cell alter="7"><pcString>WiFa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Wi" arg0="12" arg1="13"/><pred rel="Fa" arg0="7" arg1="12"/> </miniPreds> </cell>
+	<cell alter="8"><pcString>WiMo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Wi" arg0="12" arg1="13"/><pred rel="Mo" arg0="8" arg1="12"/> </miniPreds> </cell>
+	<cell alter="9"><pcString>WiSisHuBro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="12" arg1="13"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/> </miniPreds> </cell>
+	<cell alter="10"><pcString>WiSisHuSis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="12" arg1="13"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Sis" arg0="10" arg1="0"/> </miniPreds> </cell>
+	<cell alter="11"><pcString>WiBro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="12" arg1="13"/><pred rel="Bro" arg0="11" arg1="12"/> </miniPreds> </cell>
+	<cell alter="12"><pcString>Wi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="12" arg1="13"/> </miniPreds> </cell>
+	<cell alter="13"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="14"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="14" arg1="13"/> </miniPreds> </cell>
+	<cell alter="15"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="15" arg1="13"/> </miniPreds> </cell>
+	<cell alter="16"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="16" arg1="13"/> </miniPreds> </cell>
+	<cell alter="17"><pcString>WiSisHuBroWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="12" arg1="13"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/><pred rel="Wi" arg0="17" arg1="9"/> </miniPreds> </cell>
+	<cell alter="18"><pcString>WiBroWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="12" arg1="13"/><pred rel="Bro" arg0="11" arg1="12"/><pred rel="Wi" arg0="18" arg1="11"/> </miniPreds> </cell>
+</row><row ego="14">
+	<cell alter="0"><pcString>MoSisHu</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="14"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/> </miniPreds> <PR>uncle</PR></cell>
+	<cell alter="1"><pcString>MoSis</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="14"/><pred rel="Sis" arg0="1" arg1="12"/> </miniPreds> <PR>aunt</PR></cell>
+	<cell alter="2"><pcString>MoSisSo</pcString> <level>0</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="14"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="So" arg0="2" arg1="1"/> </miniPreds> </cell>
+	<cell alter="3"><pcString>MoSisDa</pcString> <level>0</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="14"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Da" arg0="3" arg1="1"/> </miniPreds> </cell>
+	<cell alter="4"><pcString>MoSisDa</pcString> <level>0</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="14"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Da" arg0="4" arg1="1"/> </miniPreds> </cell>
+	<cell alter="5"><pcString>MoSisHuFa</pcString> <level>2</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="14"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Fa" arg0="5" arg1="0"/> </miniPreds> </cell>
+	<cell alter="6"><pcString>MoSisHuMo</pcString> <level>2</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="14"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Mo" arg0="6" arg1="0"/> </miniPreds> </cell>
+	<cell alter="7"><pcString>MoFa</pcString> <level>2</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="14"/><pred rel="Fa" arg0="7" arg1="12"/> </miniPreds> <PR>grandpa, grandparent</PR></cell>
+	<cell alter="8"><pcString>MoMo</pcString> <level>2</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="14"/><pred rel="Mo" arg0="8" arg1="12"/> </miniPreds> <PR>grandma, grandparent</PR></cell>
+	<cell alter="9"><pcString>MoSisHuBro</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="14"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/> </miniPreds> </cell>
+	<cell alter="10"><pcString>MoSisHuSis</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="14"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Sis" arg0="10" arg1="0"/> </miniPreds> </cell>
+	<cell alter="11"><pcString>MoBro</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="14"/><pred rel="Bro" arg0="11" arg1="12"/> </miniPreds> <PR>uncle</PR></cell>
+	<cell alter="12"><pcString>Mo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="14"/> </miniPreds> <PR>mom</PR></cell>
+	<cell alter="13"><pcString>Fa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="13" arg1="14"/> </miniPreds> <PR>dad</PR></cell>
+	<cell alter="14"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="15"><pcString>Sis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="15" arg1="14"/> </miniPreds> </cell>
+	<cell alter="16"><pcString>Sis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="16" arg1="14"/> </miniPreds> </cell>
+	<cell alter="17"><pcString>MoSisHuBroWi</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="14"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/><pred rel="Wi" arg0="17" arg1="9"/> </miniPreds> </cell>
+	<cell alter="18"><pcString>MoBroWi</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="14"/><pred rel="Bro" arg0="11" arg1="12"/><pred rel="Wi" arg0="18" arg1="11"/> </miniPreds> <PR>aunt</PR></cell>
+</row><row ego="15">
+	<cell alter="0"><pcString>MoSisHu</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="15"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/> </miniPreds> <PR>uncle</PR></cell>
+	<cell alter="1"><pcString>MoSis</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="15"/><pred rel="Sis" arg0="1" arg1="12"/> </miniPreds> <PR>aunt</PR></cell>
+	<cell alter="2"><pcString>MoSisSo</pcString> <level>0</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="15"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="So" arg0="2" arg1="1"/> </miniPreds> </cell>
+	<cell alter="3"><pcString>MoSisDa</pcString> <level>0</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="15"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Da" arg0="3" arg1="1"/> </miniPreds> </cell>
+	<cell alter="4"><pcString>MoSisDa</pcString> <level>0</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="15"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Da" arg0="4" arg1="1"/> </miniPreds> </cell>
+	<cell alter="5"><pcString>MoSisHuFa</pcString> <level>2</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="15"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Fa" arg0="5" arg1="0"/> </miniPreds> </cell>
+	<cell alter="6"><pcString>MoSisHuMo</pcString> <level>2</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="15"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Mo" arg0="6" arg1="0"/> </miniPreds> </cell>
+	<cell alter="7"><pcString>MoFa</pcString> <level>2</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="15"/><pred rel="Fa" arg0="7" arg1="12"/> </miniPreds> <PR>grandpa, grandparent</PR></cell>
+	<cell alter="8"><pcString>MoMo</pcString> <level>2</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="15"/><pred rel="Mo" arg0="8" arg1="12"/> </miniPreds> <PR>grandma, grandparent</PR></cell>
+	<cell alter="9"><pcString>MoSisHuBro</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="15"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/> </miniPreds> </cell>
+	<cell alter="10"><pcString>MoSisHuSis</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="15"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Sis" arg0="10" arg1="0"/> </miniPreds> </cell>
+	<cell alter="11"><pcString>MoBro</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="15"/><pred rel="Bro" arg0="11" arg1="12"/> </miniPreds> <PR>uncle</PR></cell>
+	<cell alter="12"><pcString>Mo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="15"/> </miniPreds> <PR>mom</PR></cell>
+	<cell alter="13"><pcString>Fa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="13" arg1="15"/> </miniPreds> <PR>daddy</PR></cell>
+	<cell alter="14"><pcString>Bro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="14" arg1="15"/> </miniPreds> </cell>
+	<cell alter="15"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="16"><pcString>Sis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="16" arg1="15"/> </miniPreds> </cell>
+	<cell alter="17"><pcString>MoSisHuBroWi</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="15"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/><pred rel="Wi" arg0="17" arg1="9"/> </miniPreds> </cell>
+	<cell alter="18"><pcString>MoBroWi</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="15"/><pred rel="Bro" arg0="11" arg1="12"/><pred rel="Wi" arg0="18" arg1="11"/> </miniPreds> <PR>aunt</PR></cell>
+</row><row ego="16">
+	<cell alter="0"><pcString>MoSisHu</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="16"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/> </miniPreds> <PR>uncle</PR></cell>
+	<cell alter="1"><pcString>MoSis</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="16"/><pred rel="Sis" arg0="1" arg1="12"/> </miniPreds> <PR>aunt</PR></cell>
+	<cell alter="2"><pcString>MoSisSo</pcString> <level>0</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="16"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="So" arg0="2" arg1="1"/> </miniPreds> </cell>
+	<cell alter="3"><pcString>MoSisDa</pcString> <level>0</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="16"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Da" arg0="3" arg1="1"/> </miniPreds> </cell>
+	<cell alter="4"><pcString>MoSisDa</pcString> <level>0</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="16"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Da" arg0="4" arg1="1"/> </miniPreds> </cell>
+	<cell alter="5"><pcString>MoSisHuFa</pcString> <level>2</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="16"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Fa" arg0="5" arg1="0"/> </miniPreds> </cell>
+	<cell alter="6"><pcString>MoSisHuMo</pcString> <level>2</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="16"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Mo" arg0="6" arg1="0"/> </miniPreds> </cell>
+	<cell alter="7"><pcString>MoFa</pcString> <level>2</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="16"/><pred rel="Fa" arg0="7" arg1="12"/> </miniPreds> <PR>grandpa, grandparent</PR></cell>
+	<cell alter="8"><pcString>MoMo</pcString> <level>2</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="16"/><pred rel="Mo" arg0="8" arg1="12"/> </miniPreds> <PR>grandma, grandparent</PR></cell>
+	<cell alter="9"><pcString>MoSisHuBro</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="16"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/> </miniPreds> </cell>
+	<cell alter="10"><pcString>MoSisHuSis</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="16"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Sis" arg0="10" arg1="0"/> </miniPreds> </cell>
+	<cell alter="11"><pcString>MoBro</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="16"/><pred rel="Bro" arg0="11" arg1="12"/> </miniPreds> <PR>uncle</PR></cell>
+	<cell alter="12"><pcString>Mo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="16"/> </miniPreds> <PR>mom</PR></cell>
+	<cell alter="13"><pcString>Fa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Fa" arg0="13" arg1="16"/> </miniPreds> <PR>dad</PR></cell>
+	<cell alter="14"><pcString>Bro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Bro" arg0="14" arg1="16"/> </miniPreds> </cell>
+	<cell alter="15"><pcString>Sis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Sis" arg0="15" arg1="16"/> </miniPreds> </cell>
+	<cell alter="16"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="17"><pcString>MoSisHuBroWi</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="16"/><pred rel="Sis" arg0="1" arg1="12"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/><pred rel="Wi" arg0="17" arg1="9"/> </miniPreds> </cell>
+	<cell alter="18"><pcString>MoBroWi</pcString> <level>1</level>
+		<miniPreds> <pred rel="Mo" arg0="12" arg1="16"/><pred rel="Bro" arg0="11" arg1="12"/><pred rel="Wi" arg0="18" arg1="11"/> </miniPreds> <PR>aunt</PR></cell>
+</row><row ego="17">
+	<cell alter="0"><pcString>HuBro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="9" arg1="17"/><pred rel="Bro" arg0="0" arg1="9"/> </miniPreds> </cell>
+	<cell alter="1"><pcString>HuBroWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="9" arg1="17"/><pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/> </miniPreds> </cell>
+	<cell alter="2"><pcString>HuBroSo</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Hu" arg0="9" arg1="17"/><pred rel="Bro" arg0="0" arg1="9"/><pred rel="So" arg0="2" arg1="0"/> </miniPreds> </cell>
+	<cell alter="3"><pcString>HuBroDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Hu" arg0="9" arg1="17"/><pred rel="Bro" arg0="0" arg1="9"/><pred rel="Da" arg0="3" arg1="0"/> </miniPreds> </cell>
+	<cell alter="4"><pcString>HuBroDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Hu" arg0="9" arg1="17"/><pred rel="Bro" arg0="0" arg1="9"/><pred rel="Da" arg0="4" arg1="0"/> </miniPreds> </cell>
+	<cell alter="5"><pcString>HuFa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Hu" arg0="9" arg1="17"/><pred rel="Fa" arg0="5" arg1="9"/> </miniPreds> </cell>
+	<cell alter="6"><pcString>HuMo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Hu" arg0="9" arg1="17"/><pred rel="Mo" arg0="6" arg1="9"/> </miniPreds> </cell>
+	<cell alter="7"><pcString>HuBroWiFa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Hu" arg0="9" arg1="17"/><pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Fa" arg0="7" arg1="1"/> </miniPreds> </cell>
+	<cell alter="8"><pcString>HuBroWiMo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Hu" arg0="9" arg1="17"/><pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Mo" arg0="8" arg1="1"/> </miniPreds> </cell>
+	<cell alter="9"><pcString>Hu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="9" arg1="17"/> </miniPreds> </cell>
+	<cell alter="10"><pcString>HuSis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="9" arg1="17"/><pred rel="Sis" arg0="10" arg1="9"/> </miniPreds> </cell>
+	<cell alter="11"><pcString>HuBroWiBro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="9" arg1="17"/><pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Bro" arg0="11" arg1="1"/> </miniPreds> </cell>
+	<cell alter="12"><pcString>HuBroWiSis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="9" arg1="17"/><pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/> </miniPreds> </cell>
+	<cell alter="13"><pcString>HuBroWiSisHu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="9" arg1="17"/><pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Hu" arg0="13" arg1="12"/> </miniPreds> </cell>
+	<cell alter="14"><pcString>HuBroWiSisSo</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Hu" arg0="9" arg1="17"/><pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="So" arg0="14" arg1="12"/> </miniPreds> </cell>
+	<cell alter="15"><pcString>HuBroWiSisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Hu" arg0="9" arg1="17"/><pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="15" arg1="12"/> </miniPreds> </cell>
+	<cell alter="16"><pcString>HuBroWiSisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Hu" arg0="9" arg1="17"/><pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Sis" arg0="12" arg1="1"/><pred rel="Da" arg0="16" arg1="12"/> </miniPreds> </cell>
+	<cell alter="17"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="18"><pcString>HuBroWiBroWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="9" arg1="17"/><pred rel="Bro" arg0="0" arg1="9"/><pred rel="Wi" arg0="1" arg1="0"/><pred rel="Bro" arg0="11" arg1="1"/><pred rel="Wi" arg0="18" arg1="11"/> </miniPreds> </cell>
+</row><row ego="18">
+	<cell alter="0"><pcString>HuSisHu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="11" arg1="18"/><pred rel="Sis" arg0="1" arg1="11"/><pred rel="Hu" arg0="0" arg1="1"/> </miniPreds> </cell>
+	<cell alter="1"><pcString>HuSis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="11" arg1="18"/><pred rel="Sis" arg0="1" arg1="11"/> </miniPreds> </cell>
+	<cell alter="2"><pcString>HuSisSo</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Hu" arg0="11" arg1="18"/><pred rel="Sis" arg0="1" arg1="11"/><pred rel="So" arg0="2" arg1="1"/> </miniPreds> </cell>
+	<cell alter="3"><pcString>HuSisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Hu" arg0="11" arg1="18"/><pred rel="Sis" arg0="1" arg1="11"/><pred rel="Da" arg0="3" arg1="1"/> </miniPreds> </cell>
+	<cell alter="4"><pcString>HuSisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Hu" arg0="11" arg1="18"/><pred rel="Sis" arg0="1" arg1="11"/><pred rel="Da" arg0="4" arg1="1"/> </miniPreds> </cell>
+	<cell alter="5"><pcString>HuSisHuFa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Hu" arg0="11" arg1="18"/><pred rel="Sis" arg0="1" arg1="11"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Fa" arg0="5" arg1="0"/> </miniPreds> </cell>
+	<cell alter="6"><pcString>HuSisHuMo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Hu" arg0="11" arg1="18"/><pred rel="Sis" arg0="1" arg1="11"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Mo" arg0="6" arg1="0"/> </miniPreds> </cell>
+	<cell alter="7"><pcString>HuFa</pcString> <level>1</level>
+		<miniPreds> <pred rel="Hu" arg0="11" arg1="18"/><pred rel="Fa" arg0="7" arg1="11"/> </miniPreds> </cell>
+	<cell alter="8"><pcString>HuMo</pcString> <level>1</level>
+		<miniPreds> <pred rel="Hu" arg0="11" arg1="18"/><pred rel="Mo" arg0="8" arg1="11"/> </miniPreds> </cell>
+	<cell alter="9"><pcString>HuSisHuBro</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="11" arg1="18"/><pred rel="Sis" arg0="1" arg1="11"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/> </miniPreds> </cell>
+	<cell alter="10"><pcString>HuSisHuSis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="11" arg1="18"/><pred rel="Sis" arg0="1" arg1="11"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Sis" arg0="10" arg1="0"/> </miniPreds> </cell>
+	<cell alter="11"><pcString>Hu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="11" arg1="18"/> </miniPreds> </cell>
+	<cell alter="12"><pcString>HuSis</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="11" arg1="18"/><pred rel="Sis" arg0="12" arg1="11"/> </miniPreds> </cell>
+	<cell alter="13"><pcString>HuSisHu</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="11" arg1="18"/><pred rel="Sis" arg0="12" arg1="11"/><pred rel="Hu" arg0="13" arg1="12"/> </miniPreds> </cell>
+	<cell alter="14"><pcString>HuSisSo</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Hu" arg0="11" arg1="18"/><pred rel="Sis" arg0="12" arg1="11"/><pred rel="So" arg0="14" arg1="12"/> </miniPreds> </cell>
+	<cell alter="15"><pcString>HuSisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Hu" arg0="11" arg1="18"/><pred rel="Sis" arg0="12" arg1="11"/><pred rel="Da" arg0="15" arg1="12"/> </miniPreds> </cell>
+	<cell alter="16"><pcString>HuSisDa</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Hu" arg0="11" arg1="18"/><pred rel="Sis" arg0="12" arg1="11"/><pred rel="Da" arg0="16" arg1="12"/> </miniPreds> </cell>
+	<cell alter="17"><pcString>HuSisHuBroWi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Hu" arg0="11" arg1="18"/><pred rel="Sis" arg0="1" arg1="11"/><pred rel="Hu" arg0="0" arg1="1"/><pred rel="Bro" arg0="9" arg1="0"/><pred rel="Wi" arg0="17" arg1="9"/> </miniPreds> </cell>
+	<cell alter="18"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row>
+</matrix>
+<dyadsUndefinedRef>
+<dyadKinTerm kinTerm="aunt">
+	<kinType type="FaBroWi">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="4" alter="17" path="0, 9" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="3" alter="17" path="0, 9" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="2" alter="17" path="0, 9" />
+	</kinType>
+	<kinType type="FaSis">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="2" alter="10" path="0" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="3" alter="10" path="0" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="4" alter="10" path="0" />
+	</kinType>
+	<kinType type="MoBroWi">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="4" alter="18" path="1, 11" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="3" alter="18" path="1, 11" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="2" alter="18" path="1, 11" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="14" alter="18" path="12, 11" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="15" alter="18" path="12, 11" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="16" alter="18" path="12, 11" />
+	</kinType>
+	<kinType type="MoSis">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="2" alter="12" path="1" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="3" alter="12" path="1" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="4" alter="12" path="1" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="16" alter="1" path="12" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="15" alter="1" path="12" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="14" alter="1" path="12" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="dad">
+	<kinType type="Fa">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="10" alter="5" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="0" alter="5" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="1" alter="7" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="12" alter="7" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="14" alter="13" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="16" alter="13" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="dad_term">
+	<kinType type="Fa">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="3" alter="0" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="4" alter="0" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="daddy">
+	<kinType type="Fa">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="9" alter="5" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="11" alter="7" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="2" alter="0" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="15" alter="13" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="daughter_term">
+	<kinType type="Da">
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="0" alter="3" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="0" alter="4" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="3" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="4" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="7" alter="1" path="" challenged="true" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="father_in_law">
+	<kinType type="WiFa">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="0" alter="7" path="1" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="grandma">
+	<kinType type="FaMo">
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="2" alter="6" path="0" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="3" alter="6" path="0" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="4" alter="6" path="0" />
+	</kinType>
+	<kinType type="MoMo">
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="2" alter="8" path="1" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="16" alter="8" path="12" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="15" alter="8" path="12" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="14" alter="8" path="12" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="4" alter="8" path="1" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="3" alter="8" path="1" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="grandpa">
+	<kinType type="FaFa">
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="2" alter="5" path="0" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="3" alter="5" path="0" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="4" alter="5" path="0" />
+	</kinType>
+	<kinType type="MoFa">
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="2" alter="7" path="1" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="4" alter="7" path="1" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="3" alter="7" path="1" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="14" alter="7" path="12" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="15" alter="7" path="12" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="16" alter="7" path="12" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="grandparent">
+	<kinType type="FaFa">
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="2" alter="5" path="0" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="3" alter="5" path="0" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="4" alter="5" path="0" />
+	</kinType>
+	<kinType type="FaMo">
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="2" alter="6" path="0" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="3" alter="6" path="0" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="4" alter="6" path="0" />
+	</kinType>
+	<kinType type="MoFa">
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="4" alter="7" path="1" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="3" alter="7" path="1" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="2" alter="7" path="1" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="14" alter="7" path="12" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="15" alter="7" path="12" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="16" alter="7" path="12" />
+	</kinType>
+	<kinType type="MoMo">
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="16" alter="8" path="12" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="15" alter="8" path="12" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="14" alter="8" path="12" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="4" alter="8" path="1" />
+<dyad level="2" kinTermType="0" addrOrRef="0" ego="3" alter="8" path="1" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="grandson">
+	<kinType type="DaSo">
+<dyad level="-2" kinTermType="0" addrOrRef="0" ego="7" alter="2" path="1" />
+<dyad level="-2" kinTermType="0" addrOrRef="0" ego="8" alter="2" path="1" />
+<dyad level="-2" kinTermType="0" addrOrRef="0" ego="8" alter="14" path="12" />
+<dyad level="-2" kinTermType="0" addrOrRef="0" ego="7" alter="14" path="12" />
+	</kinType>
+	<kinType type="SoSo">
+<dyad level="-2" kinTermType="0" addrOrRef="0" ego="5" alter="2" path="0" challenged="true" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="grandsop">
+	<kinType type="SoSo">
+<dyad level="-2" kinTermType="0" addrOrRef="0" ego="6" alter="2" path="0" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="husband_term">
+	<kinType type="Hu">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="1" alter="0" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="mom">
+	<kinType type="Mo">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="10" alter="6" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="9" alter="6" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="0" alter="6" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="1" alter="8" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="11" alter="8" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="12" alter="8" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="14" alter="12" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="15" alter="12" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="16" alter="12" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="2" alter="1" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="4" alter="1" path="" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="3" alter="1" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="son_in_law">
+	<kinType type="DaHu">
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="7" alter="0" path="1" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="son_term">
+	<kinType type="So">
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="0" alter="2" path="" />
+<dyad level="-1" kinTermType="0" addrOrRef="0" ego="1" alter="2" path="" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="uncle">
+	<kinType type="FaBro">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="2" alter="9" path="0" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="3" alter="9" path="0" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="4" alter="9" path="0" />
+	</kinType>
+	<kinType type="MoBro">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="4" alter="11" path="1" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="3" alter="11" path="1" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="2" alter="11" path="1" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="14" alter="11" path="12" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="15" alter="11" path="12" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="16" alter="11" path="12" />
+	</kinType>
+	<kinType type="MoSisHu">
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="2" alter="13" path="1, 12" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="3" alter="13" path="1, 12" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="4" alter="13" path="1, 12" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="14" alter="0" path="12, 1" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="15" alter="0" path="12, 1" />
+<dyad level="1" kinTermType="0" addrOrRef="0" ego="16" alter="0" path="12, 1" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm kinTerm="wife_term">
+	<kinType type="Wi">
+<dyad level="0" kinTermType="0" addrOrRef="0" ego="0" alter="1" path="" />
+	</kinType>
+</dyadKinTerm>
+</dyadsUndefinedRef>
+<dyadsDefinedRef>
+</dyadsDefinedRef>
+
+<kinTypeIndex>
+<entry kt="Bro"> <pair from="0" to="9" /><pair from="1" to="11" /><pair from="3" to="2" /><pair from="4" to="2" /><pair from="9" to="0" /><pair from="10" to="0" /><pair from="10" to="9" /><pair from="12" to="11" /><pair from="15" to="14" /><pair from="16" to="14" /></entry>
+<entry kt="BroDa"> <pair from="9" to="4" /><pair from="9" to="3" /><pair from="10" to="4" /><pair from="10" to="3" /></entry>
+<entry kt="BroSo"> <pair from="9" to="2" /><pair from="10" to="2" /></entry>
+<entry kt="BroWi"> <pair from="0" to="17" /><pair from="1" to="18" /><pair from="9" to="1" /><pair from="10" to="1" /><pair from="10" to="17" /><pair from="12" to="18" /></entry>
+<entry kt="BroWiBro"> <pair from="9" to="11" /><pair from="10" to="11" /></entry>
+<entry kt="BroWiBroWi"> <pair from="9" to="18" /><pair from="10" to="18" /></entry>
+<entry kt="BroWiFa"> <pair from="9" to="7" /><pair from="10" to="7" /></entry>
+<entry kt="BroWiMo"> <pair from="9" to="8" /><pair from="10" to="8" /></entry>
+<entry kt="BroWiSis"> <pair from="9" to="12" /><pair from="10" to="12" /></entry>
+<entry kt="BroWiSisDa"> <pair from="9" to="16" /><pair from="9" to="15" /><pair from="10" to="16" /><pair from="10" to="15" /></entry>
+<entry kt="BroWiSisHu"> <pair from="9" to="13" /><pair from="10" to="13" /></entry>
+<entry kt="BroWiSisSo"> <pair from="9" to="14" /><pair from="10" to="14" /></entry>
+<entry kt="Da"> <pair from="0" to="4" /><pair from="0" to="3" /><pair from="1" to="4" /><pair from="1" to="3" /><pair from="5" to="10" /><pair from="6" to="10" /><pair from="7" to="1" /><pair from="7" to="12" /><pair from="8" to="1" /><pair from="8" to="12" /><pair from="12" to="16" /><pair from="12" to="15" /><pair from="13" to="16" /><pair from="13" to="15" /></entry>
+<entry kt="DaDa"> <pair from="7" to="4" /><pair from="7" to="3" /><pair from="7" to="16" /><pair from="7" to="15" /><pair from="8" to="4" /><pair from="8" to="3" /><pair from="8" to="16" /><pair from="8" to="15" /></entry>
+<entry kt="DaHu"> <pair from="7" to="0" /><pair from="7" to="13" /><pair from="8" to="0" /><pair from="8" to="13" /></entry>
+<entry kt="DaHuBro"> <pair from="7" to="9" /><pair from="8" to="9" /></entry>
+<entry kt="DaHuBroWi"> <pair from="7" to="17" /><pair from="8" to="17" /></entry>
+<entry kt="DaHuFa"> <pair from="7" to="5" /><pair from="8" to="5" /></entry>
+<entry kt="DaHuMo"> <pair from="7" to="6" /><pair from="8" to="6" /></entry>
+<entry kt="DaHuSis"> <pair from="7" to="10" /><pair from="8" to="10" /></entry>
+<entry kt="DaSo"> <pair from="7" to="2" /><pair from="7" to="14" /><pair from="8" to="2" /><pair from="8" to="14" /></entry>
+<entry kt="Fa"> <pair from="0" to="5" /><pair from="1" to="7" /><pair from="2" to="0" /><pair from="3" to="0" /><pair from="4" to="0" /><pair from="9" to="5" /><pair from="10" to="5" /><pair from="11" to="7" /><pair from="12" to="7" /><pair from="14" to="13" /><pair from="15" to="13" /><pair from="16" to="13" /></entry>
+<entry kt="FaBro"> <pair from="2" to="9" /><pair from="3" to="9" /><pair from="4" to="9" /></entry>
+<entry kt="FaBroWi"> <pair from="2" to="17" /><pair from="3" to="17" /><pair from="4" to="17" /></entry>
+<entry kt="FaFa"> <pair from="2" to="5" /><pair from="3" to="5" /><pair from="4" to="5" /></entry>
+<entry kt="FaMo"> <pair from="2" to="6" /><pair from="3" to="6" /><pair from="4" to="6" /></entry>
+<entry kt="FaSis"> <pair from="2" to="10" /><pair from="3" to="10" /><pair from="4" to="10" /></entry>
+<entry kt="Hu"> <pair from="1" to="0" /><pair from="6" to="5" /><pair from="8" to="7" /><pair from="12" to="13" /><pair from="17" to="9" /><pair from="18" to="11" /></entry>
+<entry kt="HuBro"> <pair from="1" to="9" /><pair from="17" to="0" /></entry>
+<entry kt="HuBroDa"> <pair from="17" to="4" /><pair from="17" to="3" /></entry>
+<entry kt="HuBroSo"> <pair from="17" to="2" /></entry>
+<entry kt="HuBroWi"> <pair from="1" to="17" /><pair from="17" to="1" /></entry>
+<entry kt="HuBroWiBro"> <pair from="17" to="11" /></entry>
+<entry kt="HuBroWiBroWi"> <pair from="17" to="18" /></entry>
+<entry kt="HuBroWiFa"> <pair from="17" to="7" /></entry>
+<entry kt="HuBroWiMo"> <pair from="17" to="8" /></entry>
+<entry kt="HuBroWiSis"> <pair from="17" to="12" /></entry>
+<entry kt="HuBroWiSisDa"> <pair from="17" to="16" /><pair from="17" to="15" /></entry>
+<entry kt="HuBroWiSisHu"> <pair from="17" to="13" /></entry>
+<entry kt="HuBroWiSisSo"> <pair from="17" to="14" /></entry>
+<entry kt="HuFa"> <pair from="1" to="5" /><pair from="17" to="5" /><pair from="18" to="7" /></entry>
+<entry kt="HuMo"> <pair from="1" to="6" /><pair from="17" to="6" /><pair from="18" to="8" /></entry>
+<entry kt="HuSis"> <pair from="1" to="10" /><pair from="17" to="10" /><pair from="18" to="1" /><pair from="18" to="12" /></entry>
+<entry kt="HuSisDa"> <pair from="18" to="4" /><pair from="18" to="3" /><pair from="18" to="16" /><pair from="18" to="15" /></entry>
+<entry kt="HuSisHu"> <pair from="18" to="0" /><pair from="18" to="13" /></entry>
+<entry kt="HuSisHuBro"> <pair from="18" to="9" /></entry>
+<entry kt="HuSisHuBroWi"> <pair from="18" to="17" /></entry>
+<entry kt="HuSisHuFa"> <pair from="18" to="5" /></entry>
+<entry kt="HuSisHuMo"> <pair from="18" to="6" /></entry>
+<entry kt="HuSisHuSis"> <pair from="18" to="10" /></entry>
+<entry kt="HuSisSo"> <pair from="18" to="2" /><pair from="18" to="14" /></entry>
+<entry kt="Mo"> <pair from="0" to="6" /><pair from="1" to="8" /><pair from="2" to="1" /><pair from="3" to="1" /><pair from="4" to="1" /><pair from="9" to="6" /><pair from="10" to="6" /><pair from="11" to="8" /><pair from="12" to="8" /><pair from="14" to="12" /><pair from="15" to="12" /><pair from="16" to="12" /></entry>
+<entry kt="MoBro"> <pair from="2" to="11" /><pair from="3" to="11" /><pair from="4" to="11" /><pair from="14" to="11" /><pair from="15" to="11" /><pair from="16" to="11" /></entry>
+<entry kt="MoBroWi"> <pair from="2" to="18" /><pair from="3" to="18" /><pair from="4" to="18" /><pair from="14" to="18" /><pair from="15" to="18" /><pair from="16" to="18" /></entry>
+<entry kt="MoFa"> <pair from="2" to="7" /><pair from="3" to="7" /><pair from="4" to="7" /><pair from="14" to="7" /><pair from="15" to="7" /><pair from="16" to="7" /></entry>
+<entry kt="MoMo"> <pair from="2" to="8" /><pair from="3" to="8" /><pair from="4" to="8" /><pair from="14" to="8" /><pair from="15" to="8" /><pair from="16" to="8" /></entry>
+<entry kt="MoSis"> <pair from="2" to="12" /><pair from="3" to="12" /><pair from="4" to="12" /><pair from="14" to="1" /><pair from="15" to="1" /><pair from="16" to="1" /></entry>
+<entry kt="MoSisDa"> <pair from="2" to="16" /><pair from="2" to="15" /><pair from="3" to="16" /><pair from="3" to="15" /><pair from="4" to="16" /><pair from="4" to="15" /><pair from="14" to="4" /><pair from="14" to="3" /><pair from="15" to="4" /><pair from="15" to="3" /><pair from="16" to="4" /><pair from="16" to="3" /></entry>
+<entry kt="MoSisHu"> <pair from="2" to="13" /><pair from="3" to="13" /><pair from="4" to="13" /><pair from="14" to="0" /><pair from="15" to="0" /><pair from="16" to="0" /></entry>
+<entry kt="MoSisHuBro"> <pair from="14" to="9" /><pair from="15" to="9" /><pair from="16" to="9" /></entry>
+<entry kt="MoSisHuBroWi"> <pair from="14" to="17" /><pair from="15" to="17" /><pair from="16" to="17" /></entry>
+<entry kt="MoSisHuFa"> <pair from="14" to="5" /><pair from="15" to="5" /><pair from="16" to="5" /></entry>
+<entry kt="MoSisHuMo"> <pair from="14" to="6" /><pair from="15" to="6" /><pair from="16" to="6" /></entry>
+<entry kt="MoSisHuSis"> <pair from="14" to="10" /><pair from="15" to="10" /><pair from="16" to="10" /></entry>
+<entry kt="MoSisSo"> <pair from="2" to="14" /><pair from="3" to="14" /><pair from="4" to="14" /><pair from="14" to="2" /><pair from="15" to="2" /><pair from="16" to="2" /></entry>
+<entry kt="Sis"> <pair from="0" to="10" /><pair from="1" to="12" /><pair from="2" to="4" /><pair from="2" to="3" /><pair from="3" to="4" /><pair from="4" to="3" /><pair from="9" to="10" /><pair from="11" to="1" /><pair from="11" to="12" /><pair from="12" to="1" /><pair from="14" to="16" /><pair from="14" to="15" /><pair from="15" to="16" /><pair from="16" to="15" /></entry>
+<entry kt="SisDa"> <pair from="1" to="16" /><pair from="1" to="15" /><pair from="11" to="4" /><pair from="11" to="3" /><pair from="11" to="16" /><pair from="11" to="15" /><pair from="12" to="4" /><pair from="12" to="3" /></entry>
+<entry kt="SisHu"> <pair from="1" to="13" /><pair from="11" to="0" /><pair from="11" to="13" /><pair from="12" to="0" /></entry>
+<entry kt="SisHuBro"> <pair from="11" to="9" /><pair from="12" to="9" /></entry>
+<entry kt="SisHuBroWi"> <pair from="11" to="17" /><pair from="12" to="17" /></entry>
+<entry kt="SisHuFa"> <pair from="11" to="5" /><pair from="12" to="5" /></entry>
+<entry kt="SisHuMo"> <pair from="11" to="6" /><pair from="12" to="6" /></entry>
+<entry kt="SisHuSis"> <pair from="11" to="10" /><pair from="12" to="10" /></entry>
+<entry kt="SisSo"> <pair from="1" to="14" /><pair from="11" to="2" /><pair from="11" to="14" /><pair from="12" to="2" /></entry>
+<entry kt="So"> <pair from="0" to="2" /><pair from="1" to="2" /><pair from="5" to="0" /><pair from="5" to="9" /><pair from="6" to="0" /><pair from="6" to="9" /><pair from="7" to="11" /><pair from="8" to="11" /><pair from="12" to="14" /><pair from="13" to="14" /></entry>
+<entry kt="SoDa"> <pair from="5" to="4" /><pair from="5" to="3" /><pair from="6" to="4" /><pair from="6" to="3" /></entry>
+<entry kt="SoSo"> <pair from="5" to="2" /><pair from="6" to="2" /></entry>
+<entry kt="SoWi"> <pair from="5" to="1" /><pair from="5" to="17" /><pair from="6" to="1" /><pair from="6" to="17" /><pair from="7" to="18" /><pair from="8" to="18" /></entry>
+<entry kt="SoWiBro"> <pair from="5" to="11" /><pair from="6" to="11" /></entry>
+<entry kt="SoWiBroWi"> <pair from="5" to="18" /><pair from="6" to="18" /></entry>
+<entry kt="SoWiFa"> <pair from="5" to="7" /><pair from="6" to="7" /></entry>
+<entry kt="SoWiMo"> <pair from="5" to="8" /><pair from="6" to="8" /></entry>
+<entry kt="SoWiSis"> <pair from="5" to="12" /><pair from="6" to="12" /></entry>
+<entry kt="SoWiSisDa"> <pair from="5" to="16" /><pair from="5" to="15" /><pair from="6" to="16" /><pair from="6" to="15" /></entry>
+<entry kt="SoWiSisHu"> <pair from="5" to="13" /><pair from="6" to="13" /></entry>
+<entry kt="SoWiSisSo"> <pair from="5" to="14" /><pair from="6" to="14" /></entry>
+<entry kt="Wi"> <pair from="0" to="1" /><pair from="5" to="6" /><pair from="7" to="8" /><pair from="9" to="17" /><pair from="11" to="18" /><pair from="13" to="12" /></entry>
+<entry kt="WiBro"> <pair from="0" to="11" /><pair from="13" to="11" /></entry>
+<entry kt="WiBroWi"> <pair from="0" to="18" /><pair from="13" to="18" /></entry>
+<entry kt="WiFa"> <pair from="0" to="7" /><pair from="13" to="7" /></entry>
+<entry kt="WiMo"> <pair from="0" to="8" /><pair from="13" to="8" /></entry>
+<entry kt="WiSis"> <pair from="0" to="12" /><pair from="13" to="1" /></entry>
+<entry kt="WiSisDa"> <pair from="0" to="16" /><pair from="0" to="15" /><pair from="13" to="4" /><pair from="13" to="3" /></entry>
+<entry kt="WiSisHu"> <pair from="0" to="13" /><pair from="13" to="0" /></entry>
+<entry kt="WiSisHuBro"> <pair from="13" to="9" /></entry>
+<entry kt="WiSisHuBroWi"> <pair from="13" to="17" /></entry>
+<entry kt="WiSisHuFa"> <pair from="13" to="5" /></entry>
+<entry kt="WiSisHuMo"> <pair from="13" to="6" /></entry>
+<entry kt="WiSisHuSis"> <pair from="13" to="10" /></entry>
+<entry kt="WiSisSo"> <pair from="0" to="14" /><pair from="13" to="2" /></entry>
+
+</kinTypeIndex>
+
+<learning-history type="Ref">
+	<history kinTerm="dad">
+		<accepted-synonym primary="dad" date="2011-10-13" rescinded="true" notes="" synonym="daddy"/>
+		<accepted-synonym primary="dad" date="2011-10-13" rescinded="true" notes="" synonym="daddy"/>
+		<accepted-synonym primary="dad" date="2011-10-13" rescinded="true" notes="" synonym="daddy"/>
+	</history>
+</learning-history>
+
+<silkin-issues type="Reference">
+	<proposed-def kinTerm="aunt">
+		<kin-term-def>
+			<head>aunt</head>
+			<eqcSigExact>FaBroWi_FaSis_MoBroWi_MoSis</eqcSigExact>
+			<eqcSigStruct>PSib_PSibSp</eqcSigStruct>
+			<domain-theory>
+				<language name="English"/>
+				<author name="Gary Morris"/>
+				<create-date value="2003-08-01"/>
+			</domain-theory>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>parents</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>sister</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>parents</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>brother</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+			<expandedDefs>
+				<clause level="1">
+					<pc-string>MoSis</pc-string>
+					<pc-string-structural>PSib</pc-string-structural>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>child</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>child</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>Alter</var>
+									<var>A</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>female</predicate>
+						<arg-list>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="1">
+					<pc-string>FaSis</pc-string>
+					<pc-string-structural>PSib</pc-string-structural>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>child</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>child</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>Alter</var>
+									<var>A</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>female</predicate>
+						<arg-list>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="1">
+					<pc-string>MoBroWi</pc-string>
+					<pc-string-structural>PSibSp</pc-string-structural>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>child</predicate>
+						<arg-list>
+							<var>D</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>child</predicate>
+						<arg-list>
+							<var>D</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>D</var>
+									<var>A</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>male</predicate>
+						<arg-list>
+							<var>D</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>D</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="1">
+					<pc-string>FaBroWi</pc-string>
+					<pc-string-structural>PSibSp</pc-string-structural>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>child</predicate>
+						<arg-list>
+							<var>D</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>child</predicate>
+						<arg-list>
+							<var>D</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>D</var>
+									<var>A</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>male</predicate>
+						<arg-list>
+							<var>D</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>D</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</expandedDefs>
+		</kin-term-def>
+		<kin-term-eqc>
+			<signature-string>FaBroWi_FaSis_MoBroWi_MoSis</signature-string>
+			<prototype>
+				<kin-term-context>
+ 					<kin-term-def>
+						<head>aunt</head>
+						<eqcSigExact>FaBroWi_FaSis_MoBroWi_MoSis</eqcSigExact>
+						<eqcSigStruct>PSib_PSibSp</eqcSigStruct>
+						<domain-theory>
+							<language name="English"/>
+							<author name="Gary Morris"/>
+							<create-date value="2003-08-01"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>parents</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>sister</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+							</clause>
+							<clause level="0">
+								<literal> 
+									<predicate>parents</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>brother</predicate>
+									<arg-list>
+										<var>B</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>B</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="1">
+								<pc-string>MoSis</pc-string>
+								<pc-string-structural>PSib</pc-string-structural>
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>B</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>C</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>child</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>B</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>child</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>C</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>not</predicate>
+									<arg-list>
+										<literal> 
+											<predicate>equal</predicate>
+											<arg-list>
+												<var>Alter</var>
+												<var>A</var>
+											</arg-list>
+										</literal>									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>female</predicate>
+									<arg-list>
+										<var>Alter</var>
+									</arg-list>
+								</literal>
+							</clause>
+							<clause level="1">
+								<pc-string>FaSis</pc-string>
+								<pc-string-structural>PSib</pc-string-structural>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>B</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>C</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>child</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>B</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>child</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>C</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>not</predicate>
+									<arg-list>
+										<literal> 
+											<predicate>equal</predicate>
+											<arg-list>
+												<var>Alter</var>
+												<var>A</var>
+											</arg-list>
+										</literal>									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>female</predicate>
+									<arg-list>
+										<var>Alter</var>
+									</arg-list>
+								</literal>
+							</clause>
+							<clause level="1">
+								<pc-string>MoBroWi</pc-string>
+								<pc-string-structural>PSibSp</pc-string-structural>
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>B</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>C</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>child</predicate>
+									<arg-list>
+										<var>D</var>
+										<var>B</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>child</predicate>
+									<arg-list>
+										<var>D</var>
+										<var>C</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>not</predicate>
+									<arg-list>
+										<literal> 
+											<predicate>equal</predicate>
+											<arg-list>
+												<var>D</var>
+												<var>A</var>
+											</arg-list>
+										</literal>									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>male</predicate>
+									<arg-list>
+										<var>D</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>D</var>
+									</arg-list>
+								</literal>
+							</clause>
+							<clause level="1">
+								<pc-string>FaBroWi</pc-string>
+								<pc-string-structural>PSibSp</pc-string-structural>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>B</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>C</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>child</predicate>
+									<arg-list>
+										<var>D</var>
+										<var>B</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>child</predicate>
+									<arg-list>
+										<var>D</var>
+										<var>C</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>not</predicate>
+									<arg-list>
+										<literal> 
+											<predicate>equal</predicate>
+											<arg-list>
+												<var>D</var>
+												<var>A</var>
+											</arg-list>
+										</literal>									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>male</predicate>
+									<arg-list>
+										<var>D</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>D</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 			</prototype>
+			<members>
+				<kin-term-context>
+ 					<kin-term-def>
+						<head>aunt</head>
+						<eqcSigExact>FaBroWi_FaSis_MoBroWi_MoSis</eqcSigExact>
+						<eqcSigStruct>PSib_PSibSp</eqcSigStruct>
+						<domain-theory>
+							<language name="English"/>
+							<author name="Gary Morris"/>
+							<create-date value="2003-08-01"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>parents</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>sister</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+							</clause>
+							<clause level="0">
+								<literal> 
+									<predicate>parents</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>brother</predicate>
+									<arg-list>
+										<var>B</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>B</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="1">
+								<pc-string>MoSis</pc-string>
+								<pc-string-structural>PSib</pc-string-structural>
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>B</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>C</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>child</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>B</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>child</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>C</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>not</predicate>
+									<arg-list>
+										<literal> 
+											<predicate>equal</predicate>
+											<arg-list>
+												<var>Alter</var>
+												<var>A</var>
+											</arg-list>
+										</literal>									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>female</predicate>
+									<arg-list>
+										<var>Alter</var>
+									</arg-list>
+								</literal>
+							</clause>
+							<clause level="1">
+								<pc-string>FaSis</pc-string>
+								<pc-string-structural>PSib</pc-string-structural>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>B</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>C</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>child</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>B</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>child</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>C</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>not</predicate>
+									<arg-list>
+										<literal> 
+											<predicate>equal</predicate>
+											<arg-list>
+												<var>Alter</var>
+												<var>A</var>
+											</arg-list>
+										</literal>									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>female</predicate>
+									<arg-list>
+										<var>Alter</var>
+									</arg-list>
+								</literal>
+							</clause>
+							<clause level="1">
+								<pc-string>MoBroWi</pc-string>
+								<pc-string-structural>PSibSp</pc-string-structural>
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>B</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>C</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>child</predicate>
+									<arg-list>
+										<var>D</var>
+										<var>B</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>child</predicate>
+									<arg-list>
+										<var>D</var>
+										<var>C</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>not</predicate>
+									<arg-list>
+										<literal> 
+											<predicate>equal</predicate>
+											<arg-list>
+												<var>D</var>
+												<var>A</var>
+											</arg-list>
+										</literal>									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>male</predicate>
+									<arg-list>
+										<var>D</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>D</var>
+									</arg-list>
+								</literal>
+							</clause>
+							<clause level="1">
+								<pc-string>FaBroWi</pc-string>
+								<pc-string-structural>PSibSp</pc-string-structural>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>B</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>C</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>child</predicate>
+									<arg-list>
+										<var>D</var>
+										<var>B</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>child</predicate>
+									<arg-list>
+										<var>D</var>
+										<var>C</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>not</predicate>
+									<arg-list>
+										<literal> 
+											<predicate>equal</predicate>
+											<arg-list>
+												<var>D</var>
+												<var>A</var>
+											</arg-list>
+										</literal>									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>male</predicate>
+									<arg-list>
+										<var>D</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>D</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 			</members>
+		</kin-term-eqc>
+	</proposed-def>
+
+	<synonym kinTerm="dad">
+		<other-term>daddy</other-term>
+		<pc-strings-covered>Fa </pc-strings-covered>
+		<kinTerm-dyads>
+			<dyad kinTerm="dad" pcString="Fa" level="1" kinTermType="0" addrOrRef="0" ego="10" alter="5" path=""  />
+			<dyad kinTerm="dad" pcString="Fa" level="1" kinTermType="0" addrOrRef="0" ego="0" alter="5" path=""  />
+			<dyad kinTerm="dad" pcString="Fa" level="1" kinTermType="0" addrOrRef="0" ego="1" alter="7" path=""  />
+			<dyad kinTerm="dad" pcString="Fa" level="1" kinTermType="0" addrOrRef="0" ego="12" alter="7" path=""  />
+			<dyad kinTerm="dad" pcString="Fa" level="1" kinTermType="0" addrOrRef="0" ego="14" alter="13" path=""  />
+			<dyad kinTerm="dad" pcString="Fa" level="1" kinTermType="0" addrOrRef="0" ego="16" alter="13" path=""  />
+		</kinTerm-dyads>
+		<other-term-dyads>
+			<dyad kinTerm="daddy" pcString="Fa" level="1" kinTermType="0" addrOrRef="0" ego="9" alter="5" path=""  />
+			<dyad kinTerm="daddy" pcString="Fa" level="1" kinTermType="0" addrOrRef="0" ego="11" alter="7" path=""  />
+			<dyad kinTerm="daddy" pcString="Fa" level="1" kinTermType="0" addrOrRef="0" ego="2" alter="0" path=""  />
+			<dyad kinTerm="daddy" pcString="Fa" level="1" kinTermType="0" addrOrRef="0" ego="15" alter="13" path=""  />
+		</other-term-dyads>
+	</synonym>
+
+	<umbrella kinTerm="daddy">
+		<sub-terms>
+			<sub-term> 
+				<sub-kin-term>dad</sub-kin-term>
+				<pc-strings-covered> Fa </pc-strings-covered>
+				<dyads-covered>
+					<dyad kinTerm="dad" pcString="Fa" level="1" kinTermType="0" addrOrRef="0" ego="10" alter="5" path=""  />
+					<dyad kinTerm="dad" pcString="Fa" level="1" kinTermType="0" addrOrRef="0" ego="0" alter="5" path=""  />
+					<dyad kinTerm="dad" pcString="Fa" level="1" kinTermType="0" addrOrRef="0" ego="1" alter="7" path=""  />
+					<dyad kinTerm="dad" pcString="Fa" level="1" kinTermType="0" addrOrRef="0" ego="12" alter="7" path=""  />
+					<dyad kinTerm="dad" pcString="Fa" level="1" kinTermType="0" addrOrRef="0" ego="14" alter="13" path=""  />
+					<dyad kinTerm="dad" pcString="Fa" level="1" kinTermType="0" addrOrRef="0" ego="16" alter="13" path=""  />
+				</dyads-covered>
+				<type>1</type>
+			</sub-term>
+		</sub-terms>
+	</umbrella>
+	<proposed-def kinTerm="daughter_term">
+		<kin-term-def>
+			<head>morwadi</head>
+			<eqcSigExact>Da</eqcSigExact>
+			<eqcSigStruct>C</eqcSigStruct>
+			<domain-theory>
+				<language name="Tswana"/>
+				<polygamyOK />
+				<author name="I. Schapera"/>
+				<create-date value="1950-01-01"/>
+				<citation txt="I. Schapera, 'Kinship and Marriage Among the Tswana' in Radcliffe-Brown and Forde, AFRICAN SYSTEMS OF KINSHIP and MARRIAGE, 1950, Oxford University Press, London"/>
+			</domain-theory>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+			<expandedDefs>
+				<clause level="-1">
+					<pc-string>Da</pc-string>
+					<pc-string-structural>C</pc-string-structural>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</expandedDefs>
+		</kin-term-def>
+		<kin-term-eqc>
+			<signature-string>Da</signature-string>
+			<prototype>
+				<kin-term-context>
+ 					<kin-term-def>
+						<head>morwadi</head>
+						<eqcSigExact>Da</eqcSigExact>
+						<eqcSigStruct>C</eqcSigStruct>
+						<domain-theory>
+							<language name="Tswana"/>
+							<polygamyOK />
+							<author name="I. Schapera"/>
+							<create-date value="1950-01-01"/>
+							<citation txt="I. Schapera, 'Kinship and Marriage Among the Tswana' in Radcliffe-Brown and Forde, AFRICAN SYSTEMS OF KINSHIP and MARRIAGE, 1950, Oxford University Press, London"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>daughter</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="-1">
+								<pc-string>Da</pc-string>
+								<pc-string-structural>C</pc-string-structural>
+								<literal> 
+									<predicate>daughter</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 			</prototype>
+			<members>
+				<kin-term-context>
+ 					<kin-term-def>
+						<head>munzhi</head>
+						<eqcSigExact>Da</eqcSigExact>
+						<eqcSigStruct>C</eqcSigStruct>
+						<domain-theory>
+							<language name="Cogui"/>
+							<polygamyOK />
+							<author name="Linda Gawthorne"/>
+							<create-date value="1985-01-01"/>
+							<citation txt="Linda Gawthorne in SOUTH AMERICAN KINSHIP pp. 35-42"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>daughter</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="-1">
+								<pc-string>Da</pc-string>
+								<pc-string-structural>C</pc-string-structural>
+								<literal> 
+									<predicate>daughter</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 				<kin-term-context>
+ 					<kin-term-def>
+						<head>jimaco</head>
+						<eqcSigExact>Da</eqcSigExact>
+						<eqcSigStruct>C</eqcSigStruct>
+						<domain-theory>
+							<language name="Cubeo"/>
+							<polygamyOK />
+							<author name="Nancy L. Morse"/>
+							<create-date value="1985-01-01"/>
+							<citation txt="Nancy L. Morse in SOUTH AMERICAN KINSHIP pp. 79-91"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>daughter</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="-1">
+								<pc-string>Da</pc-string>
+								<pc-string-structural>C</pc-string-structural>
+								<literal> 
+									<predicate>daughter</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 				<kin-term-context>
+ 					<kin-term-def>
+						<head>buco</head>
+						<eqcSigExact>Da</eqcSigExact>
+						<eqcSigStruct>C</eqcSigStruct>
+						<domain-theory>
+							<language name="Cubeo(Adr)"/>
+							<polygamyOK />
+							<author name="Nancy L. Morse"/>
+							<create-date value="1985-01-01"/>
+							<citation txt="Nancy L. Morse in SOUTH AMERICAN KINSHIP pp. 79-91"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>daughter</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="-1">
+								<pc-string>Da</pc-string>
+								<pc-string-structural>C</pc-string-structural>
+								<literal> 
+									<predicate>daughter</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 			</members>
+		</kin-term-eqc>
+	</proposed-def>
+
+	<proposed-def kinTerm="father_in_law">
+		<kin-term-def>
+			<head>kayim_babam</head>
+			<eqcSigExact>WiFa</eqcSigExact>
+			<eqcSigStruct>SpP</eqcSigStruct>
+			<domain-theory>
+				<language name="Osmanli-Turk"/>
+				<author name="L. H. Morgan"/>
+				<create-date value="1871-01-01"/>
+				<citation txt="Lewis H. Morgan SYSTEMS OF CONSANGUINITY AND AFFINITY OF THE HUMAN FAMILY, 1871 (reprint 1997), University of Nebraska Press, Lincoln"/>
+			</domain-theory>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+			<expandedDefs>
+				<clause level="1">
+					<pc-string>WiFa</pc-string>
+					<pc-string-structural>SpP</pc-string-structural>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</expandedDefs>
+		</kin-term-def>
+		<kin-term-eqc>
+			<signature-string>WiFa</signature-string>
+			<prototype>
+				<kin-term-context>
+ 					<kin-term-def>
+						<head>kayim_babam</head>
+						<eqcSigExact>WiFa</eqcSigExact>
+						<eqcSigStruct>SpP</eqcSigStruct>
+						<domain-theory>
+							<language name="Osmanli-Turk"/>
+							<author name="L. H. Morgan"/>
+							<create-date value="1871-01-01"/>
+							<citation txt="Lewis H. Morgan SYSTEMS OF CONSANGUINITY AND AFFINITY OF THE HUMAN FAMILY, 1871 (reprint 1997), University of Nebraska Press, Lincoln"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="1">
+								<pc-string>WiFa</pc-string>
+								<pc-string-structural>SpP</pc-string-structural>
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 			</prototype>
+			<members>
+				<kin-term-context>
+ 					<kin-term-def>
+						<head>makua_hunaai_kana</head>
+						<eqcSigExact>WiFa</eqcSigExact>
+						<eqcSigStruct>SpP</eqcSigStruct>
+						<domain-theory>
+							<language name="Hawaiian"/>
+							<author name="L. H. Morgan"/>
+							<create-date value="1871-01-01"/>
+							<citation txt="Lewis H. Morgan SYSTEMS OF CONSANGUINITY AND AFFINITY OF THE HUMAN FAMILY, 1871 (reprint 1997), University of Nebraska Press, Lincoln"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="1">
+								<pc-string>WiFa</pc-string>
+								<pc-string-structural>SpP</pc-string-structural>
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 				<kin-term-context>
+ 					<kin-term-def>
+						<head>khesareh</head>
+						<eqcSigExact>WiFa</eqcSigExact>
+						<eqcSigStruct>SpP</eqcSigStruct>
+						<domain-theory>
+							<language name="Magyar"/>
+							<author name="L. H. Morgan"/>
+							<create-date value="1871-01-01"/>
+							<citation txt="Lewis H. Morgan SYSTEMS OF CONSANGUINITY AND AFFINITY OF THE HUMAN FAMILY, 1871 (reprint 1997), University of Nebraska Press, Lincoln"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="1">
+								<pc-string>WiFa</pc-string>
+								<pc-string-structural>SpP</pc-string-structural>
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 				<kin-term-context>
+ 					<kin-term-def>
+						<head>asheahga</head>
+						<eqcSigExact>WiFa</eqcSigExact>
+						<eqcSigStruct>SpP</eqcSigStruct>
+						<domain-theory>
+							<language name="Omaha-19"/>
+							<author name="L. H. Morgan"/>
+							<create-date value="1871-01-01"/>
+							<citation txt="Lewis H. Morgan SYSTEMS OF CONSANGUINITY AND AFFINITY OF THE HUMAN FAMILY, 1871 (reprint 1997), University of Nebraska Press, Lincoln"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="1">
+								<pc-string>WiFa</pc-string>
+								<pc-string-structural>SpP</pc-string-structural>
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>father</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 			</members>
+		</kin-term-eqc>
+	</proposed-def>
+
+	<umbrella kinTerm="grandparent">
+		<sub-terms>
+			<sub-term> 
+				<sub-kin-term>grandma</sub-kin-term>
+				<pc-strings-covered> FaMo, MoMo </pc-strings-covered>
+				<dyads-covered>
+					<dyad kinTerm="grandma" pcString="FaMo" level="2" kinTermType="0" addrOrRef="0" ego="2" alter="6" path="0"  />
+					<dyad kinTerm="grandma" pcString="FaMo" level="2" kinTermType="0" addrOrRef="0" ego="3" alter="6" path="0"  />
+					<dyad kinTerm="grandma" pcString="FaMo" level="2" kinTermType="0" addrOrRef="0" ego="4" alter="6" path="0"  />
+					<dyad kinTerm="grandma" pcString="MoMo" level="2" kinTermType="0" addrOrRef="0" ego="2" alter="8" path="1"  />
+					<dyad kinTerm="grandma" pcString="MoMo" level="2" kinTermType="0" addrOrRef="0" ego="16" alter="8" path="12"  />
+					<dyad kinTerm="grandma" pcString="MoMo" level="2" kinTermType="0" addrOrRef="0" ego="15" alter="8" path="12"  />
+					<dyad kinTerm="grandma" pcString="MoMo" level="2" kinTermType="0" addrOrRef="0" ego="14" alter="8" path="12"  />
+					<dyad kinTerm="grandma" pcString="MoMo" level="2" kinTermType="0" addrOrRef="0" ego="4" alter="8" path="1"  />
+					<dyad kinTerm="grandma" pcString="MoMo" level="2" kinTermType="0" addrOrRef="0" ego="3" alter="8" path="1"  />
+				</dyads-covered>
+				<type>1</type>
+			</sub-term>
+			<sub-term> 
+				<sub-kin-term>grandpa</sub-kin-term>
+				<pc-strings-covered> FaFa, MoFa </pc-strings-covered>
+				<dyads-covered>
+					<dyad kinTerm="grandpa" pcString="FaFa" level="2" kinTermType="0" addrOrRef="0" ego="2" alter="5" path="0"  />
+					<dyad kinTerm="grandpa" pcString="FaFa" level="2" kinTermType="0" addrOrRef="0" ego="3" alter="5" path="0"  />
+					<dyad kinTerm="grandpa" pcString="FaFa" level="2" kinTermType="0" addrOrRef="0" ego="4" alter="5" path="0"  />
+					<dyad kinTerm="grandpa" pcString="MoFa" level="2" kinTermType="0" addrOrRef="0" ego="2" alter="7" path="1"  />
+					<dyad kinTerm="grandpa" pcString="MoFa" level="2" kinTermType="0" addrOrRef="0" ego="4" alter="7" path="1"  />
+					<dyad kinTerm="grandpa" pcString="MoFa" level="2" kinTermType="0" addrOrRef="0" ego="3" alter="7" path="1"  />
+					<dyad kinTerm="grandpa" pcString="MoFa" level="2" kinTermType="0" addrOrRef="0" ego="14" alter="7" path="12"  />
+					<dyad kinTerm="grandpa" pcString="MoFa" level="2" kinTermType="0" addrOrRef="0" ego="15" alter="7" path="12"  />
+					<dyad kinTerm="grandpa" pcString="MoFa" level="2" kinTermType="0" addrOrRef="0" ego="16" alter="7" path="12"  />
+				</dyads-covered>
+				<type>1</type>
+			</sub-term>
+		</sub-terms>
+	</umbrella>
+	<anomaly kinTerm="grandson">
+		<basis-type>definition</basis-type>
+		<anomaly-type>nearMiss</anomaly-type>
+		<questions>
+			<qn text="This 1 dyad seems to break a pattern.  Could the dyad be wrong?"/>
+		</questions>		<basis>
+			<kin-term-def>
+				<head>dikari_no_dikaro</head>
+				<eqcSigExact>DaSo</eqcSigExact>
+				<eqcSigStruct>CC</eqcSigStruct>
+				<domain-theory>
+					<language name="Gujarati"/>
+					<author name="Thomas Trautmann"/>
+					<create-date value="1981-01-01"/>
+					<citation txt="Thomas Trautmann, DRAVIDIAN KINSHIP pp. 126-128"/>
+				</domain-theory>
+				<definitions>
+					<clause level="0">
+						<literal> 
+							<predicate>daughter</predicate>
+							<arg-list>
+								<var>A</var>
+								<var>Ego</var>
+							</arg-list>
+						</literal>
+						<literal> 
+							<predicate>son</predicate>
+							<arg-list>
+								<var>Alter</var>
+								<var>A</var>
+							</arg-list>
+						</literal>
+					</clause>
+				</definitions>
+				<expandedDefs>
+					<clause level="-2">
+						<pc-string>DaSo</pc-string>
+						<pc-string-structural>CC</pc-string-structural>
+						<literal> 
+							<predicate>daughter</predicate>
+							<arg-list>
+								<var>A</var>
+								<var>Ego</var>
+							</arg-list>
+						</literal>
+						<literal> 
+							<predicate>son</predicate>
+							<arg-list>
+								<var>Alter</var>
+								<var>A</var>
+							</arg-list>
+						</literal>
+					</clause>
+				</expandedDefs>
+			</kin-term-def>
+		</basis>
+		<misfits>
+			<dyad kinTerm="grandson" pcString="SoSo" level="-2" kinTermType="0" addrOrRef="0" ego="5" alter="2" path="0"  />
+		</misfits>
+	</anomaly>
+
+	<proposed-def kinTerm="husband_term">
+		<kin-term-def>
+			<head>ndoda_myeni</head>
+			<eqcSigExact>Hu</eqcSigExact>
+			<eqcSigStruct>Sp</eqcSigStruct>
+			<domain-theory>
+				<language name="Zulu"/>
+				<polygamyOK />
+				<author name="Max Gluckman"/>
+				<create-date value="1950-01-01"/>
+				<citation txt="Max Gluckman, 'Kinship and Marriage Among the Lozi of N. Rhodesia and the Zulu of Natal' in Radcliffe-Brown and Forde, AFRICAN SYSTEMS OF KINSHIP AND MARRIAGE, 1950, Oxford University Press, London"/>
+			</domain-theory>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+			<expandedDefs>
+				<clause level="0">
+					<pc-string>Hu</pc-string>
+					<pc-string-structural>Sp</pc-string-structural>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</expandedDefs>
+		</kin-term-def>
+		<kin-term-eqc>
+			<signature-string>Hu</signature-string>
+			<prototype>
+				<kin-term-context>
+ 					<kin-term-def>
+						<head>ndoda_myeni</head>
+						<eqcSigExact>Hu</eqcSigExact>
+						<eqcSigStruct>Sp</eqcSigStruct>
+						<domain-theory>
+							<language name="Zulu"/>
+							<polygamyOK />
+							<author name="Max Gluckman"/>
+							<create-date value="1950-01-01"/>
+							<citation txt="Max Gluckman, 'Kinship and Marriage Among the Lozi of N. Rhodesia and the Zulu of Natal' in Radcliffe-Brown and Forde, AFRICAN SYSTEMS OF KINSHIP AND MARRIAGE, 1950, Oxford University Press, London"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>husband</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="0">
+								<pc-string>Hu</pc-string>
+								<pc-string-structural>Sp</pc-string-structural>
+								<literal> 
+									<predicate>husband</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 			</prototype>
+			<members>
+				<kin-term-context>
+ 					<kin-term-def>
+						<head>anggwa</head>
+						<eqcSigExact>Hu</eqcSigExact>
+						<eqcSigStruct>Sp</eqcSigStruct>
+						<domain-theory>
+							<language name="Berik"/>
+							<polygamyOK />
+							<author name="Peter Westrum"/>
+							<create-date value="1983-01-01"/>
+							<citation txt="Peter Westrum in GODS, HEROES, KINSMEN pp. 273-288"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>husband</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="0">
+								<pc-string>Hu</pc-string>
+								<pc-string-structural>Sp</pc-string-structural>
+								<literal> 
+									<predicate>husband</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 				<kin-term-context>
+ 					<kin-term-def>
+						<head>uju</head>
+						<eqcSigExact>Hu</eqcSigExact>
+						<eqcSigStruct>Sp</eqcSigStruct>
+						<domain-theory>
+							<language name="Coreguaje"/>
+							<author name="Frances Gralow"/>
+							<create-date value="1985-01-01"/>
+							<citation txt="Frances Gralow in SOUTH AMERICAN KINSHIP pp. 43-54"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>husband</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="0">
+								<pc-string>Hu</pc-string>
+								<pc-string-structural>Sp</pc-string-structural>
+								<literal> 
+									<predicate>husband</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 				<kin-term-context>
+ 					<kin-term-def>
+						<head>jimarepacu</head>
+						<eqcSigExact>Hu</eqcSigExact>
+						<eqcSigStruct>Sp</eqcSigStruct>
+						<domain-theory>
+							<language name="Cubeo"/>
+							<polygamyOK />
+							<author name="Nancy L. Morse"/>
+							<create-date value="1985-01-01"/>
+							<citation txt="Nancy L. Morse in SOUTH AMERICAN KINSHIP pp. 79-91"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>husband</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="0">
+								<pc-string>Hu</pc-string>
+								<pc-string-structural>Sp</pc-string-structural>
+								<literal> 
+									<predicate>husband</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 			</members>
+		</kin-term-eqc>
+	</proposed-def>
+
+	<proposed-def kinTerm="mom">
+		<kin-term-def>
+			<head>paco</head>
+			<eqcSigExact>Mo</eqcSigExact>
+			<eqcSigStruct>P</eqcSigStruct>
+			<domain-theory>
+				<language name="Tucano"/>
+				<polygamyOK />
+				<author name="Marie Goehner, Birdie West, and William Merrifield"/>
+				<create-date value="1985-01-01"/>
+				<citation txt="Marie Goehner, Birdie West, and William Merrifield in SOUTH AMERICAN KINSHIP pp. 55-69"/>
+			</domain-theory>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+			<expandedDefs>
+				<clause level="1">
+					<pc-string>Mo</pc-string>
+					<pc-string-structural>P</pc-string-structural>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</expandedDefs>
+		</kin-term-def>
+		<kin-term-eqc>
+			<signature-string>Mo</signature-string>
+			<prototype>
+				<kin-term-context>
+ 					<kin-term-def>
+						<head>paco</head>
+						<eqcSigExact>Mo</eqcSigExact>
+						<eqcSigStruct>P</eqcSigStruct>
+						<domain-theory>
+							<language name="Tucano"/>
+							<polygamyOK />
+							<author name="Marie Goehner, Birdie West, and William Merrifield"/>
+							<create-date value="1985-01-01"/>
+							<citation txt="Marie Goehner, Birdie West, and William Merrifield in SOUTH AMERICAN KINSHIP pp. 55-69"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="1">
+								<pc-string>Mo</pc-string>
+								<pc-string-structural>P</pc-string-structural>
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 			</prototype>
+			<members>
+				<kin-term-context>
+ 					<kin-term-def>
+						<head>ina</head>
+						<eqcSigExact>Mo</eqcSigExact>
+						<eqcSigStruct>P</eqcSigStruct>
+						<domain-theory>
+							<language name="Agta"/>
+							<author name="Tom Headland"/>
+							<create-date value="1987-01-01"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="1">
+								<pc-string>Mo</pc-string>
+								<pc-string-structural>P</pc-string-structural>
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 				<kin-term-context>
+ 					<kin-term-def>
+						<head>jaba</head>
+						<eqcSigExact>Mo</eqcSigExact>
+						<eqcSigStruct>P</eqcSigStruct>
+						<domain-theory>
+							<language name="Cogui"/>
+							<polygamyOK />
+							<author name="Linda Gawthorne"/>
+							<create-date value="1985-01-01"/>
+							<citation txt="Linda Gawthorne in SOUTH AMERICAN KINSHIP pp. 35-42"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="1">
+								<pc-string>Mo</pc-string>
+								<pc-string-structural>P</pc-string-structural>
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 				<kin-term-context>
+ 					<kin-term-def>
+						<head>jipaco</head>
+						<eqcSigExact>Mo</eqcSigExact>
+						<eqcSigStruct>P</eqcSigStruct>
+						<domain-theory>
+							<language name="Cubeo"/>
+							<polygamyOK />
+							<author name="Nancy L. Morse"/>
+							<create-date value="1985-01-01"/>
+							<citation txt="Nancy L. Morse in SOUTH AMERICAN KINSHIP pp. 79-91"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="1">
+								<pc-string>Mo</pc-string>
+								<pc-string-structural>P</pc-string-structural>
+								<literal> 
+									<predicate>mother</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 			</members>
+		</kin-term-eqc>
+	</proposed-def>
+
+	<proposed-def kinTerm="son_in_law">
+		<kin-term-def>
+			<head>buji</head>
+			<eqcSigExact>DaHu</eqcSigExact>
+			<eqcSigStruct>CSp</eqcSigStruct>
+			<domain-theory>
+				<language name="Tucano"/>
+				<polygamyOK />
+				<author name="Marie Goehner, Birdie West, and William Merrifield"/>
+				<create-date value="1985-01-01"/>
+				<citation txt="Marie Goehner, Birdie West, and William Merrifield in SOUTH AMERICAN KINSHIP pp. 55-69"/>
+			</domain-theory>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+			<expandedDefs>
+				<clause level="-1">
+					<pc-string>DaHu</pc-string>
+					<pc-string-structural>CSp</pc-string-structural>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</expandedDefs>
+		</kin-term-def>
+		<kin-term-eqc>
+			<signature-string>DaHu</signature-string>
+			<prototype>
+				<kin-term-context>
+ 					<kin-term-def>
+						<head>buji</head>
+						<eqcSigExact>DaHu</eqcSigExact>
+						<eqcSigStruct>CSp</eqcSigStruct>
+						<domain-theory>
+							<language name="Tucano"/>
+							<polygamyOK />
+							<author name="Marie Goehner, Birdie West, and William Merrifield"/>
+							<create-date value="1985-01-01"/>
+							<citation txt="Marie Goehner, Birdie West, and William Merrifield in SOUTH AMERICAN KINSHIP pp. 55-69"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>daughter</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>husband</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="-1">
+								<pc-string>DaHu</pc-string>
+								<pc-string-structural>CSp</pc-string-structural>
+								<literal> 
+									<predicate>daughter</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>husband</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 			</prototype>
+			<members>
+				<kin-term-context>
+ 					<kin-term-def>
+						<head>son_in_law</head>
+						<eqcSigExact>DaHu</eqcSigExact>
+						<eqcSigStruct>CSp</eqcSigStruct>
+						<domain-theory>
+							<language name="English"/>
+							<author name="Gary Morris"/>
+							<create-date value="2003-08-01"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>daughter</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>husband</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="-1">
+								<pc-string>DaHu</pc-string>
+								<pc-string-structural>CSp</pc-string-structural>
+								<literal> 
+									<predicate>daughter</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>spouse</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 				<kin-term-context>
+ 					<kin-term-def>
+						<head>jamai</head>
+						<eqcSigExact>DaHu</eqcSigExact>
+						<eqcSigStruct>CSp</eqcSigStruct>
+						<domain-theory>
+							<language name="Gujarati"/>
+							<author name="Thomas Trautmann"/>
+							<create-date value="1981-01-01"/>
+							<citation txt="Thomas Trautmann, DRAVIDIAN KINSHIP pp. 126-128"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>dikari</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>husband</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="-1">
+								<pc-string>DaHu</pc-string>
+								<pc-string-structural>CSp</pc-string-structural>
+								<literal> 
+									<predicate>daughter</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>husband</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 				<kin-term-context>
+ 					<kin-term-def>
+						<head>lavareh</head>
+						<eqcSigExact>DaHu</eqcSigExact>
+						<eqcSigStruct>CSp</eqcSigStruct>
+						<domain-theory>
+							<language name="Magyar"/>
+							<author name="L. H. Morgan"/>
+							<create-date value="1871-01-01"/>
+							<citation txt="Lewis H. Morgan SYSTEMS OF CONSANGUINITY AND AFFINITY OF THE HUMAN FAMILY, 1871 (reprint 1997), University of Nebraska Press, Lincoln"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>daughter</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>husband</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="-1">
+								<pc-string>DaHu</pc-string>
+								<pc-string-structural>CSp</pc-string-structural>
+								<literal> 
+									<predicate>daughter</predicate>
+									<arg-list>
+										<var>A</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+								<literal> 
+									<predicate>husband</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>A</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 			</members>
+		</kin-term-eqc>
+	</proposed-def>
+
+	<proposed-def kinTerm="son_term">
+		<kin-term-def>
+			<head>macu</head>
+			<eqcSigExact>So</eqcSigExact>
+			<eqcSigStruct>C</eqcSigStruct>
+			<domain-theory>
+				<language name="Tucano"/>
+				<polygamyOK />
+				<author name="Marie Goehner, Birdie West, and William Merrifield"/>
+				<create-date value="1985-01-01"/>
+				<citation txt="Marie Goehner, Birdie West, and William Merrifield in SOUTH AMERICAN KINSHIP pp. 55-69"/>
+			</domain-theory>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+			<expandedDefs>
+				<clause level="-1">
+					<pc-string>So</pc-string>
+					<pc-string-structural>C</pc-string-structural>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</expandedDefs>
+		</kin-term-def>
+		<kin-term-eqc>
+			<signature-string>So</signature-string>
+			<prototype>
+				<kin-term-context>
+ 					<kin-term-def>
+						<head>macu</head>
+						<eqcSigExact>So</eqcSigExact>
+						<eqcSigStruct>C</eqcSigStruct>
+						<domain-theory>
+							<language name="Tucano"/>
+							<polygamyOK />
+							<author name="Marie Goehner, Birdie West, and William Merrifield"/>
+							<create-date value="1985-01-01"/>
+							<citation txt="Marie Goehner, Birdie West, and William Merrifield in SOUTH AMERICAN KINSHIP pp. 55-69"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>son</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="-1">
+								<pc-string>So</pc-string>
+								<pc-string-structural>C</pc-string-structural>
+								<literal> 
+									<predicate>son</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 			</prototype>
+			<members>
+				<kin-term-context>
+ 					<kin-term-def>
+						<head>sukkua</head>
+						<eqcSigExact>So</eqcSigExact>
+						<eqcSigStruct>C</eqcSigStruct>
+						<domain-theory>
+							<language name="Cogui"/>
+							<polygamyOK />
+							<author name="Linda Gawthorne"/>
+							<create-date value="1985-01-01"/>
+							<citation txt="Linda Gawthorne in SOUTH AMERICAN KINSHIP pp. 35-42"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>son</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="-1">
+								<pc-string>So</pc-string>
+								<pc-string-structural>C</pc-string-structural>
+								<literal> 
+									<predicate>son</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 				<kin-term-context>
+ 					<kin-term-def>
+						<head>jimacu</head>
+						<eqcSigExact>So</eqcSigExact>
+						<eqcSigStruct>C</eqcSigStruct>
+						<domain-theory>
+							<language name="Cubeo"/>
+							<polygamyOK />
+							<author name="Nancy L. Morse"/>
+							<create-date value="1985-01-01"/>
+							<citation txt="Nancy L. Morse in SOUTH AMERICAN KINSHIP pp. 79-91"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>son</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="-1">
+								<pc-string>So</pc-string>
+								<pc-string-structural>C</pc-string-structural>
+								<literal> 
+									<predicate>son</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 				<kin-term-context>
+ 					<kin-term-def>
+						<head>bucu</head>
+						<eqcSigExact>So</eqcSigExact>
+						<eqcSigStruct>C</eqcSigStruct>
+						<domain-theory>
+							<language name="Cubeo(Adr)"/>
+							<polygamyOK />
+							<author name="Nancy L. Morse"/>
+							<create-date value="1985-01-01"/>
+							<citation txt="Nancy L. Morse in SOUTH AMERICAN KINSHIP pp. 79-91"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>son</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="-1">
+								<pc-string>So</pc-string>
+								<pc-string-structural>C</pc-string-structural>
+								<literal> 
+									<predicate>son</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 			</members>
+		</kin-term-eqc>
+	</proposed-def>
+
+	<data-request kinTerm="uncle">
+	<kin-type-dyad>
+		<clause level="1">
+			<pc-string>MoMoSisSo</pc-string>
+			<pc-string-structural>PPSibC</pc-string-structural>
+			<literal> 
+				<predicate>mother</predicate>
+				<arg-list>
+					<var>A</var>
+					<var>Ego</var>
+				</arg-list>
+			</literal>
+			<literal> 
+				<predicate>mother</predicate>
+				<arg-list>
+					<var>B</var>
+					<var>A</var>
+				</arg-list>
+			</literal>
+			<literal> 
+				<predicate>mother</predicate>
+				<arg-list>
+					<var>C</var>
+					<var>B</var>
+				</arg-list>
+			</literal>
+			<literal> 
+				<predicate>father</predicate>
+				<arg-list>
+					<var>D</var>
+					<var>B</var>
+				</arg-list>
+			</literal>
+			<literal> 
+				<predicate>child</predicate>
+				<arg-list>
+					<var>E</var>
+					<var>C</var>
+				</arg-list>
+			</literal>
+			<literal> 
+				<predicate>child</predicate>
+				<arg-list>
+					<var>E</var>
+					<var>D</var>
+				</arg-list>
+			</literal>
+			<literal> 
+				<predicate>not</predicate>
+				<arg-list>
+					<literal> 
+						<predicate>equal</predicate>
+						<arg-list>
+							<var>E</var>
+							<var>B</var>
+						</arg-list>
+					</literal>				</arg-list>
+			</literal>
+			<literal> 
+				<predicate>female</predicate>
+				<arg-list>
+					<var>E</var>
+				</arg-list>
+			</literal>
+			<literal> 
+				<predicate>son</predicate>
+				<arg-list>
+					<var>Alter</var>
+					<var>E</var>
+				</arg-list>
+			</literal>
+		</clause>
+	</kin-type-dyad>
+	<kin-type-dyad>
+		<clause level="1">
+			<pc-string>MoMoSisDaHu</pc-string>
+			<pc-string-structural>PPSibCSp</pc-string-structural>
+			<literal> 
+				<predicate>mother</predicate>
+				<arg-list>
+					<var>A</var>
+					<var>Ego</var>
+				</arg-list>
+			</literal>
+			<literal> 
+				<predicate>mother</predicate>
+				<arg-list>
+					<var>B</var>
+					<var>A</var>
+				</arg-list>
+			</literal>
+			<literal> 
+				<predicate>mother</predicate>
+				<arg-list>
+					<var>C</var>
+					<var>B</var>
+				</arg-list>
+			</literal>
+			<literal> 
+				<predicate>father</predicate>
+				<arg-list>
+					<var>D</var>
+					<var>B</var>
+				</arg-list>
+			</literal>
+			<literal> 
+				<predicate>child</predicate>
+				<arg-list>
+					<var>E</var>
+					<var>C</var>
+				</arg-list>
+			</literal>
+			<literal> 
+				<predicate>child</predicate>
+				<arg-list>
+					<var>E</var>
+					<var>D</var>
+				</arg-list>
+			</literal>
+			<literal> 
+				<predicate>not</predicate>
+				<arg-list>
+					<literal> 
+						<predicate>equal</predicate>
+						<arg-list>
+							<var>E</var>
+							<var>B</var>
+						</arg-list>
+					</literal>				</arg-list>
+			</literal>
+			<literal> 
+				<predicate>female</predicate>
+				<arg-list>
+					<var>E</var>
+				</arg-list>
+			</literal>
+			<literal> 
+				<predicate>daughter</predicate>
+				<arg-list>
+					<var>F</var>
+					<var>E</var>
+				</arg-list>
+			</literal>
+			<literal> 
+				<predicate>wife</predicate>
+				<arg-list>
+					<var>F</var>
+					<var>Alter</var>
+				</arg-list>
+			</literal>
+		</clause>
+	</kin-type-dyad>
+	</data-request>
+	<proposed-def kinTerm="wife_term">
+		<kin-term-def>
+			<head>vinie</head>
+			<eqcSigExact>Wi</eqcSigExact>
+			<eqcSigStruct>Sp</eqcSigStruct>
+			<domain-theory>
+				<language name="Wandamen"/>
+				<polygamyOK />
+				<author name="Rachel Flaming"/>
+				<create-date value="1983-01-01"/>
+				<citation txt="Rachel Flaming in GODS, HEROES, KINSMEN pp. 245-253"/>
+			</domain-theory>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+			<expandedDefs>
+				<clause level="0">
+					<pc-string>Wi</pc-string>
+					<pc-string-structural>Sp</pc-string-structural>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</expandedDefs>
+		</kin-term-def>
+		<kin-term-eqc>
+			<signature-string>Wi</signature-string>
+			<prototype>
+				<kin-term-context>
+ 					<kin-term-def>
+						<head>vinie</head>
+						<eqcSigExact>Wi</eqcSigExact>
+						<eqcSigStruct>Sp</eqcSigStruct>
+						<domain-theory>
+							<language name="Wandamen"/>
+							<polygamyOK />
+							<author name="Rachel Flaming"/>
+							<create-date value="1983-01-01"/>
+							<citation txt="Rachel Flaming in GODS, HEROES, KINSMEN pp. 245-253"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="0">
+								<pc-string>Wi</pc-string>
+								<pc-string-structural>Sp</pc-string-structural>
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 			</prototype>
+			<members>
+				<kin-term-context>
+ 					<kin-term-def>
+						<head>wi</head>
+						<eqcSigExact>Wi</eqcSigExact>
+						<eqcSigStruct>Sp</eqcSigStruct>
+						<domain-theory>
+							<language name="Berik"/>
+							<polygamyOK />
+							<author name="Peter Westrum"/>
+							<create-date value="1983-01-01"/>
+							<citation txt="Peter Westrum in GODS, HEROES, KINSMEN pp. 273-288"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="0">
+								<pc-string>Wi</pc-string>
+								<pc-string-structural>Sp</pc-string-structural>
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 				<kin-term-context>
+ 					<kin-term-def>
+						<head>rujo</head>
+						<eqcSigExact>Wi</eqcSigExact>
+						<eqcSigStruct>Sp</eqcSigStruct>
+						<domain-theory>
+							<language name="Coreguaje"/>
+							<author name="Frances Gralow"/>
+							<create-date value="1985-01-01"/>
+							<citation txt="Frances Gralow in SOUTH AMERICAN KINSHIP pp. 43-54"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="0">
+								<pc-string>Wi</pc-string>
+								<pc-string-structural>Sp</pc-string-structural>
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 				<kin-term-context>
+ 					<kin-term-def>
+						<head>jimarepaco</head>
+						<eqcSigExact>Wi</eqcSigExact>
+						<eqcSigStruct>Sp</eqcSigStruct>
+						<domain-theory>
+							<language name="Cubeo"/>
+							<polygamyOK />
+							<author name="Nancy L. Morse"/>
+							<create-date value="1985-01-01"/>
+							<citation txt="Nancy L. Morse in SOUTH AMERICAN KINSHIP pp. 79-91"/>
+						</domain-theory>
+						<definitions>
+							<clause level="0">
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</definitions>
+						<expandedDefs>
+							<clause level="0">
+								<pc-string>Wi</pc-string>
+								<pc-string-structural>Sp</pc-string-structural>
+								<literal> 
+									<predicate>wife</predicate>
+									<arg-list>
+										<var>Alter</var>
+										<var>Ego</var>
+									</arg-list>
+								</literal>
+							</clause>
+						</expandedDefs>
+					</kin-term-def>				</kin-term-context>
+ 			</members>
+		</kin-term-eqc>
+	</proposed-def>
+
+</silkin-issues>
+</SIL_KinData>

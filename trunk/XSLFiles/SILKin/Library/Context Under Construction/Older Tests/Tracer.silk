@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE SIL_KinData>
+<SIL_KinData>
+<parameters>
+  <languageName>"Tracer"</languageName>
+  <theory> "Tracer.thy" </theory>
+  <theory> "Tracer(Adr).thy" </theory>
+  <createDate> "Dec 23, 2010" </createDate>
+  <dataAuthor> "GDM" </dataAuthor>
+  <indSerNum> 2</indSerNum> 
+  <famSerNum> 1</famSerNum> 
+  <polygamyPermit> "true"</polygamyPermit> 
+</parameters>
+<editorSettings>
+  <currentEgo> 0 </currentEgo>
+  <editDirectory> "/Users/gary/NetBeansProjects/Library/Context Under Construction" </editDirectory>
+  <origin><x>0</x><y>0</y></origin>
+  <infoPerson>-1</infoPerson>
+  <infoMarriage>-1</infoMarriage>
+  <label>2</label>
+  <ktlabel>1</ktlabel>
+  <editable> "true" </editable>
+  <distinctAdrTerms> "false" </distinctAdrTerms>
+  <maxNoise>25</maxNoise>
+  <ignorable>5</ignorable>
+
+</editorSettings>
+<individualCensus>
+<individual>
+  <serial>0</serial><sex> "Male" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 266 </x> <y>116 </y> </location>
+  <comments> "" </comments>
+  <surname> "" </surname>
+  <firstNames> "Adam" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Dec 23, 2010" </dataChangeDate>
+  <dataAuthor> "GDM" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily> </birthFamily>
+  <marriages> 0 </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+<individual>
+  <serial>1</serial><sex> "Female" </sex>
+  <stats> <born> "NA" </born> <died> "NA" </died> </stats>
+  <location> <x> 343 </x> <y>113 </y> </location>
+  <comments> "" </comments>
+  <surname> "" </surname>
+  <firstNames> "Eve" </firstNames>
+  <dateOfBirth> "" </dateOfBirth>
+  <dateOfDeath> "" </dateOfDeath>
+  <dataChangeDate> "Dec 23, 2010" </dataChangeDate>
+  <dataAuthor> "GDM" </dataAuthor>
+  <deleted> "false" </deleted>
+  <birthFamily> </birthFamily>
+  <marriages> 0 </marriages>
+  <userDefinedProperties>
+  </userDefinedProperties>
+  <starLinks>  </starLinks>
+</individual>
+
+</individualCensus>
+<familyCensus>
+<family>
+  <serial>0</serial><location><x>308</x><y>128</y></location>
+  <stats> <type> "Marriage" </type>
+    <begin> "NA" </begin> <end> "NA" </end>
+    <reason> "NA" </reason> </stats>
+  <comments> "" </comments>
+  <deleted>"false"</deleted>
+  <husband>0</husband>
+  <wife>1</wife>
+  <children>  </children>
+  <marriageDate> "" </marriageDate>
+  <endDate> null </endDate>
+  <dataAuthor> "GDM" </dataAuthor>
+  <dataChangeDate> "Dec 23, 2010" </dataChangeDate>
+</family>
+
+</familyCensus>
+<matrix>
+<row>  0
+	<cell> 0 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+	<cell> 1 <pcString> "Wi" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Wi(#1,#0)" </pred>  </miniPreds> <PR> "wife"</PR><PA> "wife"</PA></cell>
+</row><row>  1
+	<cell> 0 <pcString> "Hu" </pcString> <level> 0 </level>
+		<miniPreds> <pred> "Hu(#0,#1)" </pred>  </miniPreds> <PR> "husband"</PR><PA> "husband"</PA></cell>
+	<cell> 1 <pcString> "" </pcString> <level> 0 </level>
+		<PR> "Ego"</PR><PA> "Ego"</PA></cell>
+</row>
+</matrix>
+<dyadsUndefinedRef>
+<dyadKinTerm> "husband"
+	<kinType> "Hu"
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="0" ego="1" alter="0" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "wife"
+	<kinType> "Wi"
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="0" ego="0" alter="1" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+
+</dyadsUndefinedRef>
+<dyadsDefinedRef>
+
+</dyadsDefinedRef>
+<dyadsUndefinedAddr>
+<dyadKinTerm> "husband"
+	<kinType> "Hu"
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="0" ego="1" alter="0" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+<dyadKinTerm> "wife"
+	<kinType> "Wi"
+<dyad level="0" counters="0, 0, 0" kinTermType="0" addrOrRef="0" ego="0" alter="1" path="" confirmed="false" challenged="false" />
+	</kinType>
+</dyadKinTerm>
+
+</dyadsUndefinedAddr>
+<dyadsDefinedAddr>
+
+</dyadsDefinedAddr>
+
+<kinTypeIndex>
+<entry kt="Wi"> <pair ego="0" alter="1" /> </entry>
+
+</kinTypeIndex>
+</SIL_KinData>

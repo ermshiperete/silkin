@@ -237,6 +237,11 @@ public class EditPrefsWindow extends JFrame {
 
         linkPrioritiesHelp.setForeground(new java.awt.Color(255, 0, 0));
         linkPrioritiesHelp.setText("?");
+        linkPrioritiesHelp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                linkPrioritiesHelpActionPerformed(evt);
+            }
+        });
 
         wideLabel.setText("Wide");
 
@@ -289,19 +294,19 @@ public class EditPrefsWindow extends JFrame {
                         .add(layout.createSequentialGroup()
                             .add(ignorableSlider, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                            .add(ignoreHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(ignoreHelp))
                         .add(layout.createSequentialGroup()
                             .add(maxSlider, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                             .add(maxHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                    .add(subpatternHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(inductionHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(subpatternHelp)
+                    .add(inductionHelp)
                     .add(layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, linkPrioritiesHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, snapToGridHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, normalCaptureHelpBtn, 0, 0, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, polygamyHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, Short.MAX_VALUE))
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, linkPrioritiesHelp, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, snapToGridHelp, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, normalCaptureHelpBtn, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, polygamyHelp, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .add(18, 18, 18)
                         .add(wideLabel)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
@@ -313,7 +318,7 @@ public class EditPrefsWindow extends JFrame {
                                 .add(highLabel)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                                 .add(highTxtFld, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -473,7 +478,7 @@ public class EditPrefsWindow extends JFrame {
     }//GEN-LAST:event_birthdateCheckBoxActionPerformed
 
     private void snapToGridHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_snapToGridHelpActionPerformed
-        // TODO add your handling code here:
+        HelpFrame.help.displayPage(HelpFrame.PREFS, "grid");
     }//GEN-LAST:event_snapToGridHelpActionPerformed
 
     private void snapToGridCkBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_snapToGridCkBoxActionPerformed
@@ -544,6 +549,10 @@ public class EditPrefsWindow extends JFrame {
         LinkPriorityFrame lpf = new LinkPriorityFrame();
         lpf.setVisible(true);
     }//GEN-LAST:event_editLinkPrioritiesBtnActionPerformed
+
+    private void linkPrioritiesHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkPrioritiesHelpActionPerformed
+        HelpFrame.help.displayPage(HelpFrame.PREFS, "priority");
+    }//GEN-LAST:event_linkPrioritiesHelpActionPerformed
 
     /**
      * @param args the command line arguments

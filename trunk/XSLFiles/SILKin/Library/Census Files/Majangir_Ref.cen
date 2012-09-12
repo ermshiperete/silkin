@@ -1,0 +1,60 @@
+Nov 29, 2003
+Context for "Majangir" language is:
+6 individuals and 2 families registered.
+
+Individuals:
+#0: Ego (M)  (M), born Jan 1, 1970.
+First name = null.  Surname = Ego.
+Kin Terms: Ego .
+     BirthFamily: 0
+
+#1: epen (M)  (M), born Jan 1, 1949.
+First name = null.  Surname = *&^%$.
+Kin Terms: epen .
+Kin Term Name History: epen:0 .
+     Marriages:
+     Family#0: I-1,  I-2
+     Family#1: I-1,  I-4
+
+#2: emes (F)  (F), born Jan 1, 1949.
+First name = Presumed.  Surname = Spouse.
+Kin Terms: emes .
+Kin Term Name History: emes:0 .
+     Marriages:
+     Family#0: I-1,  I-2
+
+#3: mana  (?), born Jan 1, 1971.
+First name = null.  Surname = *&^%$.
+Kin Terms: mana .
+Kin Term Name History: mana:0 .
+     BirthFamily: 0
+
+#4: maame (F)  (F), born Jan 1, 1949.
+First name = Presumed.  Surname = Spouse.
+Kin Terms: maame .
+Kin Term Name History: maame:2 .
+     Marriages:
+     Family#1: I-1,  I-4
+
+#5: pana  (?), born Jan 1, 1970.
+First name = null.  Surname = *&^%$.
+Kin Terms: pana .
+Kin Term Name History: pana:0 pana:0 .
+     BirthFamily: 1
+
+
+Families:
+0: Jun 10, 1967
+     H =  #1, W = #2.
+     2 children.
+        #0 (M).
+        #3 (?).
+
+1: Jun 10, 1967
+     H =  #1, W = #4.
+     1 child.
+        #5 (?).
+
+
+-------End------
+

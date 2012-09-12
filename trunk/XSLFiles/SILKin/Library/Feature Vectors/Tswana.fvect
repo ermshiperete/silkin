@@ -1,0 +1,13 @@
+Tswana
+false
+0
+false
+0.0
+8.510638
+[younger(Alter, arg1), elder(Alter, arg1), younger(arg0, arg1), elder(arg0, arg1), gender(arg0, arg1), elder(arg0, Ego), younger(arg0, Ego)]
+[gender(arg0, Ego), gender(arg0, Alter), younger(Alter, arg1), elder(Alter, arg1), elder(Alter, Ego), elder(arg0, Ego), younger(arg0, Ego), younger(Alter, Ego)]
+2.097902
+true
+false
+[BroDa_BroSo_FaBroDaDa_FaBroDaSo_FaBroSoDa_FaBroSoSo_SisDa_SisSo_Stda_Stso, BroDa_BroSo_FaBroSoDa_FaBroSoSo, Bro_FaBroDa_FaBroSo_HuWi_Sis, Bro_FaBroDa_FaBroSo_Sis, Da, DaDa_DaSo_SoDa_SoSo, DaHu, Da_So, Fa, FaBroDaDa_FaBroDaSo_SisDa_SisSo, FaBro_FaFaBroSo, FaBro_FaFa_FaFaBro_FaFaBroSo_MoFa_MoFaBro, FaFaBro, FaFaBroDa_FaSis, FaFaSis, FaFaSisDa_FaFaSisSo_FaMoBroDa_FaMoBroSo, FaMoBro, FaMoSis, FaMoSisDa_FaMoSisSo_MoFaBroDa_MoMoSisDa_MoMoSisSo_MoSis_Stmo, FaMo_FaMoSis_FaMoSisDa_FaMoSisSo_MoFaBroDa_MoMo_MoMoSis_MoMoSisDa_MoMoSisSo_MoSis_Stmo, FaSisDaDa_FaSisDaSo_FaSisSoDa_FaSisSoSo_MoBroDaDa_MoBroDaSo_MoBroSoDa_MoBroSoSo, FaSisDa_FaSisSo_MoBroDa_MoBroSo, Hbro_Hsis, Hu, HuBro_HuFa_HuMo_HuSis, HuWi, Hu_Wi, Mo, MoBro_MoFaBroSo, MoFaBro, MoFaSis, MoFaSisDa_MoFaSisSo_MoMoBroDa_MoMoBroSo, MoMoBro, MoMoSis, MoSisDaDa_MoSisDaSo_MoSisSoDa_MoSisSoSo, MoSisDa_MoSisSo, So, SoWi, Stfa, Stmo, Wi, WiBro_WiFa_WiMo_WiSis]
+[C, CC, CSp, Hsib, P, PPSib, PPSibC, PPSibC_PSib, PPSibC_PSib_Stp, PP_PPSib_PPSibC_PSib, PP_PPSib_PPSibC_PSib_Stp, PSibC, PSibCC, PSibCC_SibC, PSibCC_SibC_Stc, PSibC_Sib, PSibC_Sib_SpSp, Sp, SpP_SpSib, SpSp, Stp]

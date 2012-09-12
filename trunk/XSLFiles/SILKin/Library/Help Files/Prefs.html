@@ -1,0 +1,149 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "hht://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Editing Preferences in SILKin</title>
+</head>
+
+<body>
+<a name="intro"></a>
+<h3> Preferences Control Learning and Other Behavior</h3>
+<p>Editing Preferences for a particular context controls the <span style="font-style: italic">Learning Module</span> -- the part of SILKin that makes Suggestions. For more information about the Learning Module and how SILKin makes Suggestions, see <a href="Suggs.html">Help - Suggestions</a>. The bottom two parameters in this window control the behavior of the 'Tab' key when entering data for a Person.
+</p>
+<p>Once you have set the preferences, they are saved in the SILK file and apply only to that file. If you create a new context (i.e. a different language or project), you must set its Preferences seperately.
+</p>
+<p>You can experiment with these parameters. For example: after you gather 
+a fair number of dyads you click on "Get New Suggestions" and get just a
+few proposed definitions for your kin terms. You wonder if you would have
+gotten more (or better) suggestions with different learning parameters. So
+you change a few parameters and then click 'Get New Suggestions' again.
+If you like the results, you can leave the new parameter settings alone and
+work with this set of Suggestions. If you don't like the result, you can put the settings back where they were and click "Get New Suggestions" again. This will recreate the original set of Suggestions.
+</p>
+<a name="ignore"></a>
+<h3> The Ignorable Percentage </h3>
+<p>This parameter controls how many dyads SILKin can ignore as "probable errors" when fitting your data to a definition found in the system Library. If you set this to 5% (the default value), then if 95% of your data matches a Library pattern and 5% does not match, SILKin will suggest the Library definition may be correct in your context. SILKin will not ask you to correct the 5% that don't match; it will just ignore them.
+</p>
+<p>If you set the Ignorable Percentage very low, then it will take a <span style="font-style: italic">lot</span> of correct dyads to overcome just a few erroneous dyads. This will stop SILKin from making Suggestions until you have gathered a lot of dyads; this could waste your efforts.
+</p>
+<p>If you set the Ignorable Percentage very high, then SILKin might ignore a substantial number of dyads in proposing a definition. And those mis-fit
+dyads could be correctly indicating that the Library definition is not a good fit. SILKin could be too quick to make Suggestions. 
+</p>
+<a name="max"></a>
+<h3> The Maximum Percentage </h3>
+<p>This parameter controls how quickly SILKin may suggest that some of your
+dyads are wrong and should be corrected. If you set this to 25% (the default value) SILKin will never assume that a group of dyads are wrong if they constitute 25% or more of your data for that kin term. For example: if 80% of your data fits a Library pattern, the 20% misfits are too many to ignore. But SILKin will consider pointing out the 20% and asking you to verify their accuracy. If you verify (confirm) a particular dyad as correct, SILKin will never question it again (so be sure before you confirm).
+</p>
+<p>If you set Max Percentage very low, then in the early stages of data 
+gathering a few erroneous dyads could stop SILKin from proposing the 
+correct definition; they will be too high a percentage of your data to be
+challenged. This will slow down SILKin's search for a definition and slow
+down the discovery of legitimate errors.
+</p>
+<p>If you set Max Percentage very high, then it will be very quick to challenge your dyads (even correct ones) based on partial matches to Library patterns. This could waste your time confirming data that is correct.
+</p>
+<a name="sub"></a>
+<h3>Sub-Pattern Matches</h3>
+<p>By default, this parameter is set to 'false' (<span style="font-style: italic">i.e.</span> no check-mark). When you first begin gathering dyads, you are hoping that your data will match some definitions in the Library perfectly. If that happens, then it may be useful to read about the culture whose definition also fits your context. You may gain insights about your own target culture (context) by comparing it to the Library context that contributed a definition.
+</p>
+<p>If you have gathered a lot of dyads for a particular kin term and SILKin has not found any matches for that kin term with Library definitions, then perhaps your context has a unique pattern. But it is also possible that in your context the definition of your kin term is a combination of some definitions that can be found in the Library. (Perhaps your context has the concept of 'sibling' but the Library only has patterns for 'brother' or 'sister.') 
+</p>
+<p>When Sub-Pattern Matches is 'true' SILKin will try to 'piece together' a definition of your kin term using components of definitions in the Library. This is often successful. <span style="font-style: italic">However</span> the pieced-together definition may be just what you need, or it may be a cumbersome monstrosity.
+</p>
+<p>You should not permanently check this box until you believe you have some unique kin terms in your context that do not match any definition in the Library. Of course, you can experiment with this parameter; see what happens if you check it and then "Get New Suggestions." If you don't like what you get, un-check it and recreate the original Suggestions.
+</p>
+<a name="induce"></a>
+<h3>Pure Induction</h3>
+<p>By default, this parameter is set to 'false' (<span style="font-style: italic">i.e.</span> no check-mark). Sometimes SILKin cannot find an exact match between the data in your context and a Library definition, and can't even piece one together using components of Library definitions. If this parameter is checked, SILKin will try one last strategy: it will construct a definition from your data. This is a desperate measure, and often results in an unneccesarily complex definition. 
+</p>
+<p>A definition produced by Pure Induction might be unusable by iteslf, but it could show you your data in a new form (<span style="font-style: italic">i.e.</span> Horn Clauses). That new view may give you some ideas or insights. 
+</p>
+<p>Generally you should not permanently check this parameter until you have given up
+on all the other learning strategies SILKin employs. (But you can always experiment.)
+</p>
+<a name="poly"></a>
+<h3>Polygamy</h3>
+<p>A few Library definitions only work with multiple spouses (<span style="font-style: italic">e.g.</span> co-wife). If you know that polygamy is recognized in your context, checking this paramenter can help SILKin look for suitable definitions. It will not restrict SILKin's search to <span style="font-style: italic">only</span> polygamous definitions, but it will allow them.
+</p>
+<a name="capture"></a>
+<h3>Surname & Birth Date Capture</h3>
+<p>When you click on a person in the chart (making them Alter), SILKin initially places your cursor in the first blank field you 'normally' fill in. If the 'Birth Date Normally Captured' box is checked, SILKin will include the birth year field in the group you normally complete; otherwise, SILKin will skip over that field. The same is true for the 'Surname is Normally Captured' box.
+</p>
+<p>You should set these parameters to suit your normal behavior. You can always tab or click into a field that you do not normally complete.
+</p>
+<a name="grid"></a>
+<h3>Snap To Grid</h3>
+<p>Some people, when drawing family tree charts, like to place symbols in <span style="font-style: italic">approximately</span> the right position and then have them 'snap' to the nearest lines on an imaginary screen grid. For example: if the imaginary grid has lines every 30 pixels from left to right, and the User placed a person symbol 175 pixels from the edge, a 'snap to grid' feature would move the symbol to 180 pixels (an even multiple of 30) as soon as the User released the mouse. Likewise for vertical placement.
+</p>
+<p>Because not everyone likes this feature, you can toggle it on or off from the Context Menu or the Edit Prefs window. On the Edit Prefs window you also can adjust the size of the invisible grid. The default values are for grid lines every 40 pixels horizontally, and every 60 pixels vertically. If you set different values, they will be stored in the SILK file for this context and remembered between sessions.
+</p>
+<p>When Snap To Grid is on, it applies to each new symbol created (both Persons and Unions), to all members of a family that are dragged together by a <a href="Chart.html#move">shift-drag</a>, and to entire lineages that are dragged together by an <a href="Chart.html#move">alt-drag</a>. If you toggle Snap To Grid off temporarily, you can drag symbols around the chart and they will not 'snap.' You can then turn Snap To Grid back on, and objects that you dragged will remain where you left them ...<span style="font-style: italic">until they are moved with Snap To Grid turned on.</span>
+</p>
+<p><span style="font-weight: bold">CAUTIONS:</span> If you are going to use Snap To Grid, it is best to turn it on and leave it on. The only time it makes sense to turn it off and 'fine tune' the positions of symbols is if you are preparing to capture a screen shot of a chart. Also, if you are going to change the default grid size it is best to do so early in your project and then leave it alone. If you have a large chart that was drawn with one grid size, then change the grid size, you may find that symbols are now snapping to locations that interfere with other symbols drawn on the old grid. (Remember: objects only snap to the current grid when they're moved.) So experiment with grid size early on or not at all.
+</p>
+<p>Don't worry about making the grid smaller so the chart will fit in the window. Remember that when you <a href="Chart.html#reshape">expand your chart</a> beyond the size of your chart window, scroll bars will appear. Charts may be arbitrarily large.
+</p>
+<a name="priority"></a>
+<h3>Link Priorities</h3>
+<p>Although you seldom see it, SILKin records the kin type of the relationship between each pair of persons in a Context. 
+    The kin types (e.g. mother, brother, step-father) are discovered by tracing all possible paths from Ego to other persons. 
+    The first step in each path is through a linking kinsman, the second step is through that person's linking kinsmen, etc. 
+    The order in which these linking kinsmen are visited is important. By default SILKin visits Ego's father first, then Ego's 
+    mother, as shown below:
+<h4 text-align:center> Default Priority of Links </h4>
+<ul>
+<li> father, mother, parent </li>
+<li> son, daughter, child </li>
+<li> husband, wife, spouse </li>
+<li> brother, sister, sibling </li>
+<li> half-brother, half-sister, half-sibling </li>
+<li> step-father, step-mother, step-parent </li>
+<li> step-brother, step-sister </li>
+<li> step-son, step-daughter </li>
+</ul>
+You will notice that several neuter terms (e.g. parent) are included in this list. Obviously none of the people in your charts will
+have unspecified gender because they are real people. However, when SILKin is doing behind-the-scenes reasoning about kinship, it is
+sometimes necessary to hypothesize people of unspecified gender. Therefore, certain neuter terms are included in the list. Do not worry about them.
+</p>
+<p>
+Ordinarily it does not make much difference in what order the linking kinsmen are visited when analyzing kin types. But in a context where
+people marry relatives, especially if they are cross-generational marriages, there will often be more than one path between Ego and 
+Alter. If one path is shorter, it will always be chosen; it will determine the kin type. But sometimes alternative paths are the same length.
+</p>
+<p>
+<span style="font-weight: bold">For example:</span> if a young woman is encouraged to marry one of her mother's brothers, 
+then her mother's sisters are mother's-sister (which SILKin abbreviates as 'MoSis') and also husband's-sister ('HuSis'). In some 
+societies, the link through the parent would be considered the 'official' kin type, while in other societies the spousal link would 
+take precedence. <span style="font-weight: bold">Or</span>, in your context the female links may take precedence over any links through 
+males.
+</p><p>
+It is impossible to foresee every situation, but SILKin provides a few tools to deal with common variations on the default order in
+which links should be visited. If you click the 'Female First' button SILKin will visit the mother before the father, etc. If you click
+on the up-arrow in any row of the list, that row will be raised one line and those links will be checked earlier. You can use the 
+down-arrow to 'demote' any row so its links will be followed later.
+</p>
+<p>
+On the right end of each row is a 'Priority Group' letter. The priority groups are also used for tie-breaking when there are two kin types
+with the same path length and SILKin must choose one of them as the kin type. If the first linking kinsman in one kin type has a higher 
+priority group than the first linking kinsman in the other kin type, the higher priority link will be chosen. If the first linking
+kinsmen in each type have the same priority, then SILKin will try to break the time based on the second linking kinsmen. If the two
+kin types have the same priority group at each position (for each pair of corresponding kinsmen), then the tie is broken by selecting
+whichever kin type was found first (i.e. whichever path was followed first, according to the list).
+</p>
+<p>
+<span style="font-weight: bold">For example:</span> if the two kin types were mother's-sister ('MoSis') and husband's-sister ('HuSis')
+then according to the default priorities, MoSis would be chosen because parental links ('Fa', 'Mo', and 'P') are in priority group A 
+and spousal links ('Hu', 'Wi', and 'S') are in group B. You may edit the priority groups any way you like. A group letter closer to the
+from of the alphabet will always be chosen over a letter later in the alphabet. Unused letters are OK; you may assign A, B, Q, and Z if
+you like.
+</p><p>
+<span style="font-weight: bold">Remember:</span> the priority of links only matters in a context where people marry close relatives. In
+America, for instance, one may marry a fourth cousin. But the parental path to a fourth cousin will never be as short as the spousal
+path, so no 'tie breaker' will likely ever be needed.
+</p><p>
+Any changes you make to the Link Priorities are tentative until you click 'Done'. If you
+close the editor window before clicking 'Done' your changes will not be saved.
+</p>
+</body>
+</html>

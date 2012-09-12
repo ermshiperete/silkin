@@ -1,0 +1,13 @@
+Mer-test
+false
+0
+false
+0.0
+0.0
+[younger(Alter, arg1), elder(Alter, arg1)]
+[younger(Alter, arg1), elder(Alter, Ego), elder(Alter, arg1), younger(Alter, Ego)]
+1.8433735
+false
+false
+[Bro, BroDa_DaHu_HuBroWiSisHuSisDa_HuFaBroDaDa_HuFaSisDaDa_HuMoBroDaDa_HuMoSisDaDa_HuSisDa_HuSisHuBroDa_SoWi_WiBroWiSisHuSisDa_WiFaBroDaDa_WiFaSisDaDa_WiMoBroDaDa_WiMoSisDaDa_WiSisDa_WiSisHuBroDa, BroSo_HuBroWiSisHuSisSo_HuFaBroDaSo_HuFaSisDaSo_HuMoBroDaSo_HuMoSisDaSo_HuSisHuBroSo_HuSisSo_WiBroWiSisHuSisSo_WiFaBroDaSo_WiFaSisDaSo_WiMoBroDaSo_WiMoSisDaSo_WiSisHuBroSo_WiSisSo, BroWiBroDa_BroWiBroSo_DaHu_HuBroDa_HuBroSo_SoWi_WiBroDa_WiBroSo, Da, DaDa, DaHuFa_SoWiFa, DaHuMo_SoWiMo, DaSo, Fa, FaBro, FaBroDa, FaBroSo, FaFa_MoFa, FaMo_MoMo, FaSisDa, FaSisHu_HuFa_MoBro_WiFa, FaSisSo, Hu, Mo, MoBroDa, MoBroSo, MoSis, MoSisDa, MoSisSo, Sis, SisHu, Sis_WiBroWi, So, SoDa, SoSo, WiBro]
+[C, CC, CSpP, CSp_SibC_SpPSibCC_SpSibC_SpSibSpSibC_SpSibSpSibSpSibC, CSp_SibSpSibC_SpSibC, P, PP, PSib, PSibC, PSib_PSibSp_SpP, Sib, SibC_SpPSibCC_SpSibC_SpSibSpSibC_SpSibSpSibSpSibC, SibSp, Sib_SpSibSp, Sp, SpSib]

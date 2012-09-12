@@ -1,0 +1,13 @@
+Trobriand
+false
+0
+true
+23.076923
+23.076923
+[younger(Alter, arg1), elder(Alter, arg1)]
+[gender(arg0, Ego), gender(arg0, Alter), younger(Alter, Ego), younger(Alter, arg1), elder(Alter, Ego), elder(Alter, arg1)]
+1.2542373
+false
+true
+[**_Bro_HuBro_Sis_WiSis, **_Bro_Sis, BroDa_BroSo_DaDa_DaSo_FaFa_FaMo_FaSis_FaSisDa_MoFa_MoMo_SoDa_SoSo, BroDa_BroSo_Da_SisDa_SisSo_So, BroWi_HuSis, DaHu_HuFa_HuMo_SoWi_WiFa_WiMo, Fa_Fa**_FaBro_FaSisSo_MoSisHu, Hu, MoBro_SisDa_SisSo, Mo_Mo**_MoSis, SisHu_WiBro, Wi]
+[**_Sib, **_Sib_SpSib, CC_PP_PSib_PSibC_SibC, CSp_SpP, C_SibC, PSib_SibC, P_P**_PSib, P_P**_PSib_PSibC_PSibSp, SibSp_SpSib, Sp]

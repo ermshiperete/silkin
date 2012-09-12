@@ -1,0 +1,1481 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="Silk-status.xsl"?>
+<!DOCTYPE SIL_KinData>
+<SIL_KinData>
+<parameters>
+  <language name="Eng_UDP_Demo"/>
+  <comments txt="Created as an example of a messy adoption situation."/>
+  <createDate value="2012-03-18"/>
+  <dataAuthors>
+	<dataAuthor name="Gary Morris"/>
+  </dataAuthors>
+  <lastDataChangeDate value="2012-03-18"/>
+  <indSerNum>19</indSerNum> 
+  <famSerNum>6</famSerNum> 
+  <polygamyPermit>false</polygamyPermit> 
+<userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <typ>individual</typ>
+  <value> </value>
+  <singleValue>false</singleValue>
+  <validEntries>  </validEntries>
+  <defaultValue></defaultValue>
+  <minVal></minVal>
+  <maxVal></maxVal>
+</UDP>
+</userDefinedProperties>
+</parameters>
+<editorSettings>
+  <currentEgo n="0"/>
+  <editDirectory dir="/Users/gary/Code/SVN Code/Library/Context Under Construction"/>
+  <origin x="0" y="0"/>
+  <area W="1067" H="313"/>
+  <infoPerson>15</infoPerson>
+  <infoMarriage>-1</infoMarriage>
+  <label>2</label>
+  <ktlabel>0</ktlabel>
+  <editable>true</editable>
+  <distinctAdrTerms>false</distinctAdrTerms>
+  <maxNoise>25</maxNoise>
+  <ignorable>5</ignorable>
+  <doBaseCBs value="false"/>
+  <doInduction value="false"/>
+</editorSettings>
+
+<domain-theory type="Ref">
+	<author name="Gary Morris"/>
+	<non-terms>
+		<non-term value="brother"/>
+		<non-term value="children"/>
+		<non-term value="half_brother"/>
+		<non-term value="half_sister"/>
+		<non-term value="parents"/>
+		<non-term value="sibling"/>
+		<non-term value="siblings"/>
+		<non-term value="sister"/>
+		<non-term value="spice"/>
+		<non-term value="step_brother"/>
+		<non-term value="step_daughter"/>
+		<non-term value="step_father"/>
+		<non-term value="step_mother"/>
+		<non-term value="step_sister"/>
+		<non-term value="step_son"/>
+	</non-terms>
+	<levels-of-recursion n="1"/>
+	<theory>
+		<kin-term-def non-term="yes">
+			<head>brother</head>
+			<eqcSigExact>Bro</eqcSigExact>
+			<gloss>
+				<element text="brother"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>sibling</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>male</predicate>
+						<arg-list>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>children</head>
+			<eqcSigExact>Da_So</eqcSigExact>
+			<gloss>
+				<element text="daughter"/>
+				<element text="son"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>half_brother</head>
+			<eqcSigExact>Hbro</eqcSigExact>
+			<gloss>
+				<element text="half-brother"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>C</var>
+									<var>A</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>C</var>
+									<var>B</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>half_sister</head>
+			<eqcSigExact>Hsis</eqcSigExact>
+			<gloss>
+				<element text="half-sister"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>C</var>
+									<var>A</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>C</var>
+									<var>B</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>parents</head>
+			<eqcSigExact>Fa_Mo</eqcSigExact>
+			<gloss>
+				<element text="father"/>
+				<element text="mother"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>sibling</head>
+			<eqcSigExact>Sib</eqcSigExact>
+			<gloss>
+				<element text="sibling"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>child</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>child</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>Alter</var>
+									<var>Ego</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>siblings</head>
+			<eqcSigExact>Bro_Sis</eqcSigExact>
+			<gloss>
+				<element text="brother"/>
+				<element text="sister"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>brother</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>sister</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>sister</head>
+			<eqcSigExact>Sis</eqcSigExact>
+			<gloss>
+				<element text="sister"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>sibling</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>female</predicate>
+						<arg-list>
+							<var>Alter</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>spice</head>
+			<eqcSigExact>Hu_Wi</eqcSigExact>
+			<gloss>
+				<element text="husband"/>
+				<element text="wife"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>step_brother</head>
+			<eqcSigExact>Stbro</eqcSigExact>
+			<gloss>
+				<element text="step-brother"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>C</var>
+									<var>A</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>D</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>D</var>
+									<var>B</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>D</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>C</var>
+									<var>B</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>D</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>D</var>
+									<var>A</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>D</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>step_daughter</head>
+			<eqcSigExact>Stda</eqcSigExact>
+			<gloss>
+				<element text="stepdaughter"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>spouse</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>spouse</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>Ego</var>
+									<var>B</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>step_father</head>
+			<eqcSigExact>Stfa</eqcSigExact>
+			<gloss>
+				<element text="stepfather"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>Alter</var>
+									<var>A</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>step_mother</head>
+			<eqcSigExact>Stmo</eqcSigExact>
+			<gloss>
+				<element text="stepmother"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>Alter</var>
+									<var>B</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>step_sister</head>
+			<eqcSigExact>Stsis</eqcSigExact>
+			<gloss>
+				<element text="step-sister"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>C</var>
+									<var>A</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>D</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>D</var>
+									<var>B</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>D</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+				</clause>
+				<clause level="0">
+					<literal> 
+						<predicate>father</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>mother</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>wife</predicate>
+						<arg-list>
+							<var>C</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>C</var>
+									<var>B</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>husband</predicate>
+						<arg-list>
+							<var>D</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>D</var>
+									<var>A</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>D</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>daughter</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>C</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+		<kin-term-def non-term="yes">
+			<head>step_son</head>
+			<eqcSigExact>Stso</eqcSigExact>
+			<gloss>
+				<element text="stepson"/>
+			</gloss>
+			<definitions>
+				<clause level="0">
+					<literal> 
+						<predicate>spouse</predicate>
+						<arg-list>
+							<var>A</var>
+							<var>Ego</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>spouse</predicate>
+						<arg-list>
+							<var>B</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>not</predicate>
+						<arg-list>
+							<literal> 
+								<predicate>equal</predicate>
+								<arg-list>
+									<var>Ego</var>
+									<var>B</var>
+								</arg-list>
+							</literal>						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>B</var>
+						</arg-list>
+					</literal>
+					<literal> 
+						<predicate>son</predicate>
+						<arg-list>
+							<var>Alter</var>
+							<var>A</var>
+						</arg-list>
+					</literal>
+				</clause>
+			</definitions>
+		</kin-term-def>
+	</theory>
+</domain-theory>
+
+<individualCensus>
+<individual n="0"><sex>M</sex>
+  <location x="330" y="98"/>
+  <surname value="Smith"/>
+  <firstNames value="Tom"/>
+  <dateOfBirth value="1945-02-02"/>
+  <dataChangeDate value="2012-03-18"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="0"/>
+    <mar n="2"/>
+  </marriages>
+  <userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <value>#9, #10 </value>
+</UDP>
+  </userDefinedProperties>
+</individual>
+
+<individual n="1"><sex>F</sex>
+  <location x="272" y="98"/>
+  <surname value="Smith"/>
+  <firstNames value="Carol"/>
+  <dataChangeDate value="2012-03-18"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="0"/>
+  </marriages>
+  <userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <value> </value>
+</UDP>
+  </userDefinedProperties>
+</individual>
+
+<individual n="2"><sex>M</sex>
+  <location x="245" y="160"/>
+  <surname value="Smith"/>
+  <firstNames value="Adam"/>
+  <dateOfBirth value="1965-09-01"/>
+  <dateOfDeath value="1988-03-18"/>
+  <dataChangeDate value="2012-03-18"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>0</birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <value> </value>
+</UDP>
+  </userDefinedProperties>
+</individual>
+
+<individual n="3"><sex>F</sex>
+  <location x="329" y="160"/>
+  <surname value="Smith"/>
+  <firstNames value="Barbara"/>
+  <dateOfBirth value="1968-07-21"/>
+  <dateOfDeath value="1992-09-01"/>
+  <dataChangeDate value="2012-03-18"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>0</birthFamily>
+  <marriages>
+    <mar n="1"/>
+  </marriages>
+  <userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <value> </value>
+</UDP>
+  </userDefinedProperties>
+</individual>
+
+<individual n="4"><sex>M</sex>
+  <location x="409" y="162"/>
+  <surname value="Jones"/>
+  <firstNames value="James"/>
+  <dateOfBirth value="1964-08-26"/>
+  <dataChangeDate value="2012-03-18"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="1"/>
+  </marriages>
+  <userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <value> </value>
+</UDP>
+  </userDefinedProperties>
+</individual>
+
+<individual n="5"><sex>M</sex>
+  <location x="357" y="224"/>
+  <surname value="Jones"/>
+  <firstNames value="Junior"/>
+  <dateOfBirth value="1992-02-06"/>
+  <dataChangeDate value="2012-03-18"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>1</birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <value> </value>
+</UDP>
+  </userDefinedProperties>
+</individual>
+
+<individual n="6"><sex>F</sex>
+  <location x="413" y="98"/>
+  <surname value="Smith"/>
+  <firstNames value="Suzy"/>
+  <dataChangeDate value="2012-03-18"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="2"/>
+  </marriages>
+  <userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <value> </value>
+</UDP>
+  </userDefinedProperties>
+</individual>
+
+<individual n="7"><sex>M</sex>
+  <location x="685" y="103"/>
+  <surname value="Adams"/>
+  <firstNames value="Sam"/>
+  <dataChangeDate value="2012-03-18"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="3"/>
+  </marriages>
+  <userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <value> </value>
+</UDP>
+  </userDefinedProperties>
+</individual>
+
+<individual n="8"><sex>F</sex>
+  <location x="787" y="103"/>
+  <surname value="Adams"/>
+  <firstNames value="Juanita"/>
+  <dataChangeDate value="2012-03-18"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="3"/>
+  </marriages>
+  <userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <value> </value>
+</UDP>
+  </userDefinedProperties>
+</individual>
+
+<individual n="9"><sex>F</sex>
+  <location x="655" y="167"/>
+  <surname value="Carson"/>
+  <firstNames value="Connie"/>
+  <dataChangeDate value="2012-03-18"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>3</birthFamily>
+  <marriages>
+    <mar n="4"/>
+  </marriages>
+  <userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <value> </value>
+</UDP>
+  </userDefinedProperties>
+</individual>
+
+<individual n="10"><sex>F</sex>
+  <location x="826" y="166"/>
+  <surname value="Dawson"/>
+  <firstNames value="Debbie"/>
+  <dataChangeDate value="2012-03-18"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>3</birthFamily>
+  <marriages>
+    <mar n="5"/>
+  </marriages>
+  <userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <value> </value>
+</UDP>
+  </userDefinedProperties>
+</individual>
+
+<individual n="11"><sex>M</sex>
+  <location x="584" y="164"/>
+  <surname value="Carson"/>
+  <firstNames value="Kit"/>
+  <dataChangeDate value="2012-03-18"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="4"/>
+  </marriages>
+  <userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <value> </value>
+</UDP>
+  </userDefinedProperties>
+</individual>
+
+<individual n="12"><sex>F</sex>
+  <location x="581" y="230"/>
+  <surname value="Carson"/>
+  <firstNames value="Florence"/>
+  <dataChangeDate value="2012-03-18"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>4</birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <value> </value>
+</UDP>
+  </userDefinedProperties>
+</individual>
+
+<individual n="13"><sex>F</sex>
+  <location x="659" y="230"/>
+  <surname value=""/>
+  <firstNames value="Grace Carson"/>
+  <dataChangeDate value="2012-03-18"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>4</birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <value> </value>
+</UDP>
+  </userDefinedProperties>
+</individual>
+
+<individual n="14"><sex>M</sex>
+  <location x="902" y="165"/>
+  <surname value="Dawson"/>
+  <firstNames value="David"/>
+  <dataChangeDate value="2012-03-18"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily> </birthFamily>
+  <marriages>
+    <mar n="5"/>
+  </marriages>
+  <userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <value> </value>
+</UDP>
+  </userDefinedProperties>
+</individual>
+
+<individual n="15"><sex>M</sex>
+  <location x="775" y="233"/>
+  <surname value="Dawson"/>
+  <firstNames value="Henry"/>
+  <dataChangeDate value="2012-03-18"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>5</birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <value> </value>
+</UDP>
+  </userDefinedProperties>
+</individual>
+
+<individual n="16"><sex>M</sex>
+  <location x="845" y="232"/>
+  <surname value="Dawson"/>
+  <firstNames value="John"/>
+  <dataChangeDate value="2012-03-18"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>5</birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <value> </value>
+</UDP>
+  </userDefinedProperties>
+</individual>
+
+<individual n="17"><sex>F</sex>
+  <location x="922" y="231"/>
+  <surname value="Dawson"/>
+  <firstNames value="Katy"/>
+  <dataChangeDate value="2012-03-18"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>5</birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <value> </value>
+</UDP>
+  </userDefinedProperties>
+</individual>
+
+<individual n="18"><sex>F</sex>
+  <location x="985" y="231"/>
+  <surname value="Dawson"/>
+  <firstNames value="Nancy"/>
+  <dataChangeDate value="2012-03-18"/>
+  <dataAuthor name="Gary Morris"/>
+  <deleted>false</deleted>
+  <birthFamily>5</birthFamily>
+  <marriages>  </marriages>
+  <userDefinedProperties>
+<UDP>
+<propertyName>*adoptedKids</propertyName>
+  <value> </value>
+</UDP>
+  </userDefinedProperties>
+</individual>
+
+</individualCensus>
+<familyCensus>
+<family n="0">  <location x="303" y="94"/>
+  <reason>NA</reason>
+  <deleted>false</deleted>
+  <husband n="0"/>
+  <wife n="1"/>
+  <children>
+    <kid n="3"/>
+    <kid n="2"/>
+  </children>
+  <marriageDate value="1965-01-02"/>
+  <endDate value="1991-12-06"/>
+  <dataAuthor name="Gary Morris"/>
+  <dataChangeDate value="2012-03-18"/>
+</family>
+
+<family n="1">  <location x="373" y="157"/>
+  <reason>Death</reason>
+  <deleted>false</deleted>
+  <husband n="4"/>
+  <wife n="3"/>
+  <children>
+    <kid n="5"/>
+  </children>
+  <marriageDate value="1989-08-25"/>
+  <endDate value="1992-09-01"/>
+  <dataAuthor name="Gary Morris"/>
+  <dataChangeDate value="2012-03-18"/>
+</family>
+
+<family n="2">  <location x="372" y="94"/>
+  <reason>NA</reason>
+  <deleted>false</deleted>
+  <husband n="0"/>
+  <wife n="6"/>
+  <children>  </children>
+  <dataAuthor name="Gary Morris"/>
+  <dataChangeDate value="2012-03-18"/>
+</family>
+
+<family n="3">  <location x="732" y="100"/>
+  <reason>NA</reason>
+  <deleted>false</deleted>
+  <husband n="7"/>
+  <wife n="8"/>
+  <children>
+    <kid n="10"/>
+    <kid n="9"/>
+  </children>
+  <endDate value="1980"/>
+  <dataAuthor name="Gary Morris"/>
+  <dataChangeDate value="2012-03-18"/>
+</family>
+
+<family n="4">  <location x="618" y="162"/>
+  <reason>NA</reason>
+  <deleted>false</deleted>
+  <husband n="11"/>
+  <wife n="9"/>
+  <children>
+    <kid n="13"/>
+    <kid n="12"/>
+  </children>
+  <dataAuthor name="Gary Morris"/>
+  <dataChangeDate value="2012-03-18"/>
+</family>
+
+<family n="5">  <location x="864" y="161"/>
+  <reason>NA</reason>
+  <deleted>false</deleted>
+  <husband n="14"/>
+  <wife n="10"/>
+  <children>
+    <kid n="15"/>
+    <kid n="16"/>
+    <kid n="17"/>
+    <kid n="18"/>
+  </children>
+  <dataAuthor name="Gary Morris"/>
+  <dataChangeDate value="2012-03-18"/>
+</family>
+
+</familyCensus>
+<matrix>
+<row ego="0">
+	<cell alter="0"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+	<cell alter="1"><pcString>Wi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="1" arg1="0"/> </miniPreds> </cell>
+	<cell alter="2"><pcString>So</pcString> <level>-1</level>
+		<miniPreds> <pred rel="So" arg0="2" arg1="0"/> </miniPreds> </cell>
+	<cell alter="3"><pcString>Da</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="3" arg1="0"/> </miniPreds> </cell>
+	<cell alter="4"><pcString>DaHu</pcString> <level>-1</level>
+		<miniPreds> <pred rel="Da" arg0="3" arg1="0"/><pred rel="Hu" arg0="4" arg1="3"/> </miniPreds> </cell>
+	<cell alter="5"><pcString>DaSo</pcString> <level>-2</level>
+		<miniPreds> <pred rel="Da" arg0="3" arg1="0"/><pred rel="So" arg0="5" arg1="3"/> </miniPreds> </cell>
+	<cell alter="6"><pcString>Wi</pcString> <level>0</level>
+		<miniPreds> <pred rel="Wi" arg0="6" arg1="0"/> </miniPreds> </cell>
+</row><row ego="1">
+	<cell alter="1"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="2">
+	<cell alter="2"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="3">
+	<cell alter="3"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="4">
+	<cell alter="4"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="5">
+	<cell alter="5"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="6">
+	<cell alter="6"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="7">
+	<cell alter="7"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="8">
+	<cell alter="8"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="9">
+	<cell alter="9"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="10">
+	<cell alter="10"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="11">
+	<cell alter="11"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="12">
+	<cell alter="12"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="13">
+	<cell alter="13"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="14">
+	<cell alter="14"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="15">
+	<cell alter="15"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="16">
+	<cell alter="16"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="17">
+	<cell alter="17"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row><row ego="18">
+	<cell alter="18"><pcString></pcString> <level>0</level>
+		<PR>Ego</PR></cell>
+</row>
+</matrix>
+<dyadsUndefinedRef>
+</dyadsUndefinedRef>
+<dyadsDefinedRef>
+</dyadsDefinedRef>
+
+<kinTypeIndex>
+<entry kt="Da"> <pair from="0" to="3" /></entry>
+<entry kt="DaHu"> <pair from="0" to="4" /></entry>
+<entry kt="DaSo"> <pair from="0" to="5" /></entry>
+<entry kt="So"> <pair from="0" to="2" /></entry>
+<entry kt="Wi"> <pair from="0" to="1" /><pair from="0" to="6" /></entry>
+
+</kinTypeIndex>
+</SIL_KinData>

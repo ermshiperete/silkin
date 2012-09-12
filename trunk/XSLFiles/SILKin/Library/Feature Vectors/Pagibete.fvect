@@ -1,0 +1,13 @@
+Pagibete
+false
+0
+false
+2.7777777
+2.7777777
+[elder(Alter, arg1), younger(Alter, arg1), younger(arg0, arg1), elder(arg0, arg1)]
+[elder(Alter, arg1), younger(Alter, arg1)]
+1.661017
+false
+false
+[Bro, BroWi, Da, DaDa_DaSo_FaFa_FaMo_HuFaFa_HuFaMo_HuMoFa_HuMoMo_MoFa_MoMo_SoDa_SoSo_WiFaMo_WiMoFa, Fa, FaBro, FaBroSo_FaSisSo_MoBroSo_MoSisSo, FaBroWi, FaFaBro_FaMoBro_MoFaBro_MoMoBro, FaSis, FaSisHu, FaSisHu_Hu, FaSisSo, HuBro, HuFa_MoSisHu_WiFa, HuMo_WiMo, HuSis, Mo, MoBro, MoBroWi, MoSis, Sis, SisHu, So, Wi, WiBro, WiFaFa, WiMoMo, WiSis]
+[C, CC_PP_SpPP, P, PPSib, PSib, PSibC, PSibSp, PSibSp_Sp, PSibSp_SpP, Sib, SibSp, Sp, SpP, SpPP, SpSib]

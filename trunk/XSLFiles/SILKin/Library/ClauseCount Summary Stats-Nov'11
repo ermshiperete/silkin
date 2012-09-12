@@ -1,0 +1,244 @@
+Library Directory is: /Users/gary/Code/SVN Code/Library/
+Making Indexes for Agta
+Making Indexes for Berik
+Making Indexes for Cayuga
+Making Indexes for Cogui
+Making Indexes for Cogui(Adr)
+Making Indexes for Coreguaje
+Making Indexes for Crow-1
+Making Indexes for Crow-2
+Making Indexes for Crow-27
+Making Indexes for Cubeo
+Making Indexes for Cubeo(Adr)
+Making Indexes for Dravidian
+Making Indexes for English
+Making Indexes for Eskimo Baffin Bay
+Making Indexes for Eskimo Greenland
+ClauseIndex Size:
+	3,889 kin types
+	8,806 EQCs
+	18,892 clauses
+EQC Sizes:
+	   1:  3,622
+	 2-4:  4,487
+	5-10:  656
+	 11+:  41
+
+BaseClauseIndex Size:
+	466 kin types
+	665 EQCs
+	885 clauses
+EQC Sizes:
+	   1:  563
+	 2-4:  89
+	5-10:  11
+	 11+:  2
+
+
+wrote KinTerm Signature Tree (full) with 282 EQCs.
+
+wrote KinTerm Signature Tree (compact) with 78 EQCs.
+
+Wrote ClauseCounts for 431 Language:KinTerm pairs.
+run:
+Library Directory is: /Users/gary/Code/SVN Code/Library/
+Making Indexes for Guahibo
+Making Indexes for Gujarati
+Making Indexes for Hawaiian
+Making Indexes for Hawaiian-Pure
+Making Indexes for Hindi
+Making Indexes for Iau
+Making Indexes for Iroquois-7
+Making Indexes for Kayabi
+Making Indexes for Keriera
+Making Indexes for Keriera Australian
+Making Indexes for Magyar
+Making Indexes for Mairasi
+Making Indexes for Majangir
+ClauseIndex Size:
+	3,676 kin types
+	8,011 EQCs
+	13,264 clauses
+EQC Sizes:
+	   1:  5,491
+	 2-4:  2,123
+	5-10:  381
+	 11+:  16
+
+BaseClauseIndex Size:
+	540 kin types
+	707 EQCs
+	922 clauses
+EQC Sizes:
+	   1:  617
+	 2-4:  72
+	5-10:  14
+	 11+:  4
+
+
+wrote KinTerm Signature Tree (full) with 381 EQCs.
+
+wrote KinTerm Signature Tree (compact) with 78 EQCs.
+
+Wrote ClauseCounts for 509 Language:KinTerm pairs.
+Making Indexes for Marathi
+Making Indexes for Mer
+Making Indexes for Mohawk
+Making Indexes for Omaha-1 Partial
+Making Indexes for Omaha-19
+Making Indexes for Omaha-2
+Making Indexes for Omaha-3 Partial
+Making Indexes for Omaha-69
+Making Indexes for Omaha-82
+Making Indexes for Oneida
+Making Indexes for Onondaga
+Making Indexes for Osmanli-Turk
+Making Indexes for Pagibete
+ClauseIndex Size:
+	2,800 kin types
+	6,011 EQCs
+	10,425 clauses
+EQC Sizes:
+	   1:  4,419
+	 2-4:  1,112
+	5-10:  468
+	 11+:  12
+
+BaseClauseIndex Size:
+	404 kin types
+	529 EQCs
+	778 clauses
+EQC Sizes:
+	   1:  438
+	 2-4:  67
+	5-10:  23
+	 11+:  1
+
+
+wrote KinTerm Signature Tree (full) with 275 EQCs.
+
+wrote KinTerm Signature Tree (compact) with 64 EQCs.
+
+Wrote ClauseCounts for 404 Language:KinTerm pairs.
+Making Indexes for Paumari
+Making Indexes for Paumari(Adr)
+Making Indexes for Seneca
+Making Indexes for Seneca-1
+Making Indexes for Surui
+Making Indexes for Surui(Adr)
+Making Indexes for Tabla
+Making Indexes for Trobriand
+Making Indexes for Tswana
+Making Indexes for Tucano
+Making Indexes for Tuscarora
+Making Indexes for Wandamen
+Making Indexes for Zulu
+ClauseIndex Size:
+	2,847 kin types
+	6,476 EQCs
+	11,354 clauses
+EQC Sizes:
+	   1:  4,276
+	 2-4:  1,849
+	5-10:  320
+	 11+:  31
+
+BaseClauseIndex Size:
+	369 kin types
+	524 EQCs
+	687 clauses
+EQC Sizes:
+	   1:  459
+	 2-4:  52
+	5-10:  11
+	 11+:  2
+
+
+wrote KinTerm Signature Tree (full) with 266 EQCs.
+
+wrote KinTerm Signature Tree (compact) with 51 EQCs.
+
+Wrote ClauseCounts for 342 Language:KinTerm pairs.
+=============================================================
+run:
+Library Directory is: /Users/gary/Code/SVN Code/Library/
+
+Wrote ClauseCounts for 1686 Language:KinTerm pairs.
+Wrote /Users/gary/Code/SVN Code/Library/ClauseCounts
+Wrote predEncodings.
+Wrote predDecodings.
+Done merging /Users/gary/Code/SVN Code/Library/Index Segments/ClauseIndex-B
+ClauseIndex Size:
+	5,336 kin types
+	13,363 EQCs
+	32,156 clauses
+EQC Sizes:
+	   1:  6,693
+	 2-4:  4,927
+	5-10:  1,469
+	 11+:  274
+
+Done merging /Users/gary/Code/SVN Code/Library/Index Segments/ClauseIndex-C
+ClauseIndex Size:
+	6,043 kin types
+	16,934 EQCs
+	42,581 clauses
+EQC Sizes:
+	   1:  9,130
+	 2-4:  5,858
+	5-10:  1,260
+	 11+:  686
+
+Done merging /Users/gary/Code/SVN Code/Library/Index Segments/ClauseIndex-D
+ClauseIndex Size:
+	6,380 kin types
+	20,336 EQCs
+	53,935 clauses
+EQC Sizes:
+	   1:  11,748
+	 2-4:  6,217
+	5-10:  1,388
+	 11+:  983
+
+Wrote /Users/gary/Code/SVN Code/Library/ClauseIndex
+Done merging /Users/gary/Code/SVN Code/Library/Index Segments/BaseCBIndex-B
+ClauseIndex Size:
+	886 kin types
+	1,222 EQCs
+	1,807 clauses
+EQC Sizes:
+	   1:  1,033
+	 2-4:  145
+	5-10:  33
+	 11+:  11
+
+Done merging /Users/gary/Code/SVN Code/Library/Index Segments/BaseCBIndex-C
+ClauseIndex Size:
+	1,129 kin types
+	1,520 EQCs
+	2,585 clauses
+EQC Sizes:
+	   1:  1,232
+	 2-4:  204
+	5-10:  59
+	 11+:  25
+
+Done merging /Users/gary/Code/SVN Code/Library/Index Segments/BaseCBIndex-D
+ClauseIndex Size:
+	1,330 kin types
+	1,833 EQCs
+	3,272 clauses
+EQC Sizes:
+	   1:  1,487
+	 2-4:  240
+	5-10:  72
+	 11+:  34
+
+Wrote /Users/gary/Code/SVN Code/Library/BaseCBIndex
+Done merging /Users/gary/Code/SVN Code/Library/Index Segments/KinTermSigTree-B
+Done merging /Users/gary/Code/SVN Code/Library/Index Segments/KinTermSigTree-C
+Done merging /Users/gary/Code/SVN Code/Library/Index Segments/KinTermSigTree-D
+
+wrote KinTerm Signature Tree (full) with 977 EQCs.
+
+wrote KinTerm Signature Tree (compact) with 247 EQCs.

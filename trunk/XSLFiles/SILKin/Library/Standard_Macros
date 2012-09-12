@@ -1,0 +1,59 @@
+;;  24 predicates are defined as Primitives (constraints or single-link relations):
+
+;;  father, mother, parent, child
+;;  husband, wife, spouse,
+;;  son, daughter, male, female,
+;;  elder, younger, equal, not, 
+;;  divorced, dead, gender, 
+;;  lessThan, greaterThan, lessOrEql 
+;;  greaterOrEql, contains, allowCreation
+;;
+;;	The following 15 non-primitive predicates are standard definitions, shared by all Library kinship systems.
+;;	They may not be redefined.
+
+;;  sibling = Full brother or sister.  Both parents are shared.
+sibling(Alter, Ego) :-  mother(M, Ego), father(F, Ego), child(Alter, M), child(Alter, F), not(equal(Alter, Ego)).
+
+brother(Alter, Ego) :-  sibling(Alter, Ego), male(Alter).
+			   
+sister(Alter, Ego) :-  sibling(Alter, Ego), female(Alter).
+
+siblings(Alter, Ego) :-  brother(Alter, Ego).
+                     |   sister(Alter, Ego).
+
+;;	Half-Siblings share 1 parent
+half_brother(Alter, Ego) :-  mother(M, Ego), father(F, Ego), wife(W2, F), son(Alter, W2), son(Alter, F), not(equal(W2, M)).
+                         |   mother(M, Ego), father(F, Ego), husband(H2, M), son(Alter, H2), son(Alter, M), not(equal(H2, F)).
+
+half_sister(Alter, Ego) :-  mother(M, Ego), father(F, Ego), wife(W2, F), daughter(Alter, W2), daughter(Alter, F), not(equal(W2, M)).
+                        |   mother(M, Ego), father(F, Ego), husband(H2, M), daughter(Alter, H2), daughter(Alter, M), not(equal(H2, F)).
+
+;;	Step-siblings share no parents
+step_brother(Alter, Ego) :-  father(F, Ego), mother(M, Ego), husband(H2, M), not(equal(H2, F)), wife(W, H2), not(equal(W, M)), son(Alter, W), son(Alter, H2).
+                         |   father(F, Ego), mother(M, Ego), wife(W2, F), not(equal(W2, M)), husband(H, W2), not(equal(H, F)), son(Alter, H), son(Alter, W2).
+
+step_sister(Alter, Ego) :-  father(F, Ego), mother(M, Ego), husband(H2, M), not(equal(H2, F)), wife(W, H2), not(equal(W, M)), daughter(Alter, W), daughter(Alter, H2).
+                        |   father(F, Ego), mother(M, Ego), wife(W2, F), not(equal(W2, M)), husband(H, W2), not(equal(H, F)), daughter(Alter, H), daughter(Alter, W2).
+			   
+spice(Alter, Ego) :-  husband(Alter, Ego).
+                  |   wife(Alter, Ego).
+
+parents(Alter, Ego) :-  mother(Alter, Ego).
+                    |   father(Alter, Ego).
+
+children(Alter, Ego) :-  son(Alter, Ego).
+                     |   daughter(Alter, Ego).
+
+step_father(Alter, Ego) :-  father(F, Ego), mother(M, Ego), husband(Alter, M), not(equal(Alter, F)).
+
+
+step_mother(Alter, Ego) :-  father(F, Ego), mother(M, Ego), wife(Alter, F), not(equal(Alter, M)).
+
+
+;;  NOTE:   We use the term step_child to mean "child of my current spouse and their former spouse"
+;;		    In English, that term extends to my spouse's "child of former spouse & their former spouse"
+;;			but we do NOT adopt that meaning here.
+step_son(Alter, Ego) :-  spouse(W, Ego), spouse(G, W), not(equal(Ego, G)), son(Alter, G), son(Alter, W).
+
+step_daughter(Alter, Ego) :-  spouse(W, Ego), spouse(G, W), not(equal(Ego, G)), daughter(Alter, G), daughter(Alter, W).
+								

@@ -1,0 +1,3509 @@
+########### Log of activity, errors, and warnings encountered on Nov 17, 2010.
+########### Build # Alpha 1.
+
+########### Log of activity, errors, and warnings encountered on Nov 17, 2010.
+########### Build # Alpha 1.
+
+########### Log of activity, errors, and warnings encountered on Nov 17, 2010.
+########### Build # Alpha 1.
+
+########### Log of activity, errors, and warnings encountered on Nov 24, 2010.
+########### Build # Alpha 1.
+
+########### Log of activity, errors, and warnings encountered on Nov 24, 2010.
+########### Build # Alpha 1.
+
+########### Log of activity, errors, and warnings encountered on Nov 24, 2010.
+########### Build # Alpha 1.
+
+########### Log of activity, errors, and warnings encountered on Nov 24, 2010.
+########### Build # Alpha 1.
+This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'
+########### Log of activity, errors, and warnings encountered on Nov 24, 2010.
+########### Build # Alpha 1.
+
+########### Log of activity, errors, and warnings encountered on Nov 24, 2010.
+########### Build # Alpha 1.
+
+########### Log of activity, errors, and warnings encountered on Nov 24, 2010.
+########### Build # Alpha 1.
+While editing a context, JavaSystemException: UserContext File Not Found:
+java.io.InvalidClassException: Context; local class incompatible: stream classdesc serialVersionUID = -7087797918141786060, local class serialVersionUID = 2749521510889621833
+
+While editing a context, java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on Nov 24, 2010.
+########### Build # Alpha 1.
+PROBLEM with Cubeo:  Logical error in: male(Ego), mother(A, Ego), father(B, Ego), child(C, A), child(C, B), not(equal(C, Ego)), gender(D, Ego), gender(E, C), not(equal(D, E)), daughter(Alter, C).
+  Lvl=-1,  PC=5, S=0, *=0.  {SisDa}  [Expansion Path: jiyuico:0, cross_gen<aux>11gs:0, sibling:0].
+RECOMMENDATION: Correct or remove this clause from domain theory.
+                 Then delete this theory from the Library & re-add it.
+
+
+########### Log of activity, errors, and warnings encountered on Dec 1, 2010.
+########### Build # Alpha 1.
+
+########### Log of activity, errors, and warnings encountered on Dec 1, 2010.
+########### Build # Alpha 1.
+
+########### Log of activity, errors, and warnings encountered on Dec 2, 2010.
+########### Build # Alpha 1.
+This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'
+########### Log of activity, errors, and warnings encountered on Dec 6, 2010.
+########### Build # Alpha 1.
+
+########### Log of activity, errors, and warnings encountered on Dec 6, 2010.
+########### Build # Alpha 1.
+
+########### Log of activity, errors, and warnings encountered on Dec 6, 2010.
+########### Build # Alpha 1.
+
+########### Log of activity, errors, and warnings encountered on Dec 7, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 8, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 8, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 14, 2010.
+########### Build # Alpha 2.
+Error writing SILK & .ctxt files: java.io.NotSerializableException: KinTypeIndex
+########### Log of activity, errors, and warnings encountered on Dec 14, 2010.
+########### Build # Alpha 2.
+While reading test12-2.silk
+KSParsingErrorException: ERROR: Found '>' (an illegal character).  State = 0
+799:	<entry kt="Da"> <pair ego="0" alter="6" /> <pair ego="0" alter="4" />  </entry>
+
+########### Log of activity, errors, and warnings encountered on Dec 15, 2010.
+########### Build # Alpha 2.
+Error writing SILK & .ctxt files: java.io.NotSerializableException: KinTypeIndexWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#10's node in 0's row has a different PCString.
+Old string: SoDa  new string: SoWiWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#11's node in 0's row has a different PCString.
+Old string: SoDaHu  new string: SoWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#12's node in 0's row has a different PCString.
+Old string: SoDaDa  new string: SoDaWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#13's node in 0's row has a different PCString.
+Old string: SoDaSo  new string: SoSoWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#14's node in 0's row has a different PCString.
+Old string: SoDaDaHu  new string: SoDaHuError writing SILK & .ctxt files: java.io.NotSerializableException: KinTypeIndex
+########### Log of activity, errors, and warnings encountered on Dec 15, 2010.
+########### Build # Alpha 2.
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#10's node in 0's row has a different PCString.
+Old string: SoDa  new string: SoWiWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#11's node in 0's row has a different PCString.
+Old string: SoDaHu  new string: SoWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#12's node in 0's row has a different PCString.
+Old string: SoDaDa  new string: SoDaWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#13's node in 0's row has a different PCString.
+Old string: SoDaSo  new string: SoSoWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#14's node in 0's row has a different PCString.
+Old string: SoDaDaHu  new string: SoDaHuWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#10's node in 5's row has a different PCString.
+Old string: SoDa  new string: SoWiWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#11's node in 5's row has a different PCString.
+Old string: SoDaHu  new string: SoWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#12's node in 5's row has a different PCString.
+Old string: SoDaDa  new string: SoDaWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#13's node in 5's row has a different PCString.
+Old string: SoDaSo  new string: SoSoWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#14's node in 5's row has a different PCString.
+Old string: SoDaDaHu  new string: SoDaHuWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#10's node in 0's row has a different PCString.
+Old string: SoWi  new string: SoDa
+########### Log of activity, errors, and warnings encountered on Dec 15, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 15, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 15, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 15, 2010.
+########### Build # Alpha 2.
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#6's node in 7's row has a different PCString.
+Old string: FaSis  new string: MoWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#11's node in 5's row has a different PCString.
+Old string: SoDaHu  new string: SoWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#12's node in 5's row has a different PCString.
+Old string: SoDaDa  new string: SoDaWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#13's node in 5's row has a different PCString.
+Old string: SoDaSo  new string: SoSoWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#14's node in 5's row has a different PCString.
+Old string: SoDaDaHu  new string: SoDaHu
+########### Log of activity, errors, and warnings encountered on Dec 15, 2010.
+########### Build # Alpha 2.
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#5's node in 12's row has a different PCString.
+Old string: MoFaMo  new string: FaMo
+########### Log of activity, errors, and warnings encountered on Dec 15, 2010.
+########### Build # Alpha 2.
+While reading test12-2.silk
+KSParsingErrorException: parseIndividual creating an individual with out-of-sequence serial number: 1
+Current = flag: </serial>
+On Line # 30  Character Position: 11 of /Users/gary/NetBeansProjects/Library/Context Under Construction/test12-2.silk
+  <serial>1</serial><sex> "Male" </sex>
+########### Log of activity, errors, and warnings encountered on Dec 15, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 16, 2010.
+########### Build # Alpha 2.
+While editing a context, JavaSystemException: UserContext File Not Found:
+java.io.InvalidClassException: Context; local class incompatible: stream classdesc serialVersionUID = -7087797918141786060, local class serialVersionUID = 2713516682107737354
+
+While editing a context, java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on Dec 17, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 17, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 17, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 17, 2010.
+########### Build # Alpha 2.
+While making a PC String for Cubeo(Adr), ami_co: 12,
+found no logical path from Ego to Alter.While making a PC String for Cubeo(Adr), ami_co: 13,
+found no logical path from Ego to Alter.
+########### Log of activity, errors, and warnings encountered on Dec 20, 2010.
+########### Build # Alpha 2.
+PROBLEM with Dravidian:  Attempt to over-write existing Domain Theory (Reference) for language English
+RECOMMENDATION: To replace an existing theory, delete the old version, then add the new version.
+
+
+########### Log of activity, errors, and warnings encountered on Dec 20, 2010.
+########### Build # Alpha 2.
+While making a PC String for Trobriand, ina: 2,
+found no logical path from Ego to Alter.
+########### Log of activity, errors, and warnings encountered on Dec 21, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 21, 2010.
+########### Build # Alpha 2.
+While editing a context, JavaSystemException: UserContext File Not Found:
+java.io.InvalidClassException: Context; local class incompatible: stream classdesc serialVersionUID = -7087797918141786060, local class serialVersionUID = 2713516682107737354
+
+While editing a context, java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on Dec 21, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 21, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 22, 2010.
+########### Build # Alpha 2.
+PROBLEM: During Index generation, nullKSInternalErrorException: WARNING: Base clause Hindi:bhabhi:1 has no non-duplicative expansions.  Re
+move or fix it.
+RECOMMENDATION: DeBug!
+
+
+########### Log of activity, errors, and warnings encountered on Dec 22, 2010.
+########### Build # Alpha 2.
+PROBLEM: During Index generation, nullKSInternalErrorException: WARNING: Base clause Hindi:bhanja:2 has no non-duplicative expansions.  Re
+move or fix it.
+RECOMMENDATION: DeBug!
+
+
+########### Log of activity, errors, and warnings encountered on Dec 22, 2010.
+########### Build # Alpha 2.
+PROBLEM: During Index generation, nullKSInternalErrorException: WARNING: Base clause Hindi:bhanji:2 has no non-duplicative expansions.  Re
+move or fix it.
+RECOMMENDATION: DeBug!
+
+
+########### Log of activity, errors, and warnings encountered on Dec 22, 2010.
+########### Build # Alpha 2.
+PROBLEM: During Index generation, nullKSInternalErrorException: WARNING: Base clause Hindi:tau:1 has no non-duplicative expansions.  Remov
+e or fix it.
+RECOMMENDATION: DeBug!
+
+
+########### Log of activity, errors, and warnings encountered on Dec 22, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 22, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 22, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 23, 2010.
+########### Build # Alpha 2.
+This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'
+########### Log of activity, errors, and warnings encountered on Dec 23, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 23, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 23, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 23, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Dec 23, 2010.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 7, 2011.
+########### Build # Alpha 2.
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#7's node in 6's row has a different PCString.
+Old string: BroSo  new string: SoWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#0's node in 11's row has a different PCString.
+Old string: WiFaFa  new string: FaWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#5's node in 11's row has a different PCString.
+Old string: WiFaMo  new string: MoWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#5's node in 12's row has a different PCString.
+Old string: MoFaMo  new string: FaMoWhile copying kin terms from old row to new row in ChangeEgo(), 
+Serial#5's node in 13's row has a different PCString.
+Old string: MoFaMo  new string: FaMo
+########### Log of activity, errors, and warnings encountered on Jan 7, 2011.
+########### Build # Alpha 2.
+
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#7's node in 6's row has a different PCString.
+Old string: BroSo  new string: So
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#0's node in 11's row has a different PCString.
+Old string: WiFaFa  new string: Fa
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#5's node in 11's row has a different PCString.
+Old string: WiFaMo  new string: Mo
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#5's node in 12's row has a different PCString.
+Old string: MoFaMo  new string: FaMo
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#5's node in 13's row has a different PCString.
+Old string: MoFaMo  new string: FaMo
+########### Log of activity, errors, and warnings encountered on Jan 7, 2011.
+########### Build # Alpha 2.
+
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#7's node in 6's row has a different PCString.
+Old string: BroSo  new string: So
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#0's node in 11's row has a different PCString.
+Old string: WiFaFa  new string: Fa
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#5's node in 11's row has a different PCString.
+Old string: WiFaMo  new string: Mo
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#5's node in 12's row has a different PCString.
+Old string: MoFaMo  new string: FaMo
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#5's node in 13's row has a different PCString.
+Old string: MoFaMo  new string: FaMo
+########### Log of activity, errors, and warnings encountered on Jan 13, 2011.
+########### Build # Alpha 2.
+This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'
+########### Log of activity, errors, and warnings encountered on Jan 13, 2011.
+########### Build # Alpha 2.
+While reading EngTest.silk
+KSParsingErrorException: parseHdrOpts2 seeking 'author' 'date' 'polygamyOK' 'citation' 'non_term' 'recursiveLevels' 'userDefinedProperties' 'synonyms' 'umbrellas' 'overlaps' or 'partial'.
+Current = symbol: issues
+On Line # 5  Character Position: 1 of /Users/gary/NetBeansProjects/Library/Context Under Construction/EngTest.thy
+(issues, 
+########### Log of activity, errors, and warnings encountered on Jan 13, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 13, 2011.
+########### Build # Alpha 2.
+
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#10's node in 0's row has a different PCString.
+Old string: SoWi  new string: SoDa
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#7's node in 6's row has a different PCString.
+Old string: BroSo  new string: So
+########### Log of activity, errors, and warnings encountered on Jan 13, 2011.
+########### Build # Alpha 2.
+
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#10's node in 0's row has a different PCString.
+Old string: SoWi  new string: SoDa
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#7's node in 6's row has a different PCString.
+Old string: BroSo  new string: So
+########### Log of activity, errors, and warnings encountered on Jan 13, 2011.
+########### Build # Alpha 2.
+While reading test12-2.silk
+KSParsingErrorException: parseHdrOpts2 seeking 'author' 'date' 'polygamyOK' 'citation' 'non_term' 'recursiveLevels' 'userDefinedProperties' 'synonyms' 'umbrellas' 'overlaps' or 'partial'.
+Current = symbol: issues
+On Line # 5  Character Position: 1 of /Users/gary/NetBeansProjects/Library/Context Under Construction/test12-2.thy
+(issues, 
+########### Log of activity, errors, and warnings encountered on Jan 13, 2011.
+########### Build # Alpha 2.
+While reading test12-2.silk
+java.lang.StringIndexOutOfBoundsException: String index out of range: -7
+########### Log of activity, errors, and warnings encountered on Jan 13, 2011.
+########### Build # Alpha 2.
+
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#10's node in 0's row has a different PCString.
+Old string: SoWi  new string: SoDa
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#7's node in 6's row has a different PCString.
+Old string: BroSo  new string: So
+########### Log of activity, errors, and warnings encountered on Jan 13, 2011.
+########### Build # Alpha 2.
+
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#7's node in 6's row has a different PCString.
+Old string: BroSo  new string: So
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#0's node in 11's row has a different PCString.
+Old string: WiFaFa  new string: Fa
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#5's node in 11's row has a different PCString.
+Old string: WiFaMo  new string: Mo
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#5's node in 12's row has a different PCString.
+Old string: MoFaMo  new string: FaMo
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#5's node in 13's row has a different PCString.
+Old string: MoFaMo  new string: FaMo
+########### Log of activity, errors, and warnings encountered on Jan 14, 2011.
+########### Build # Alpha 2.
+
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#7's node in 6's row has a different PCString.
+Old string: BroSo  new string: So
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#0's node in 11's row has a different PCString.
+Old string: WiFaFa  new string: Fa
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#5's node in 11's row has a different PCString.
+Old string: WiFaMo  new string: Mo
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#5's node in 12's row has a different PCString.
+Old string: MoFaMo  new string: FaMo
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#5's node in 13's row has a different PCString.
+Old string: MoFaMo  new string: FaMo
+########### Log of activity, errors, and warnings encountered on Jan 17, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 17, 2011.
+########### Build # Alpha 2.
+While reading EngTest.silk
+KSParsingErrorException: parseHdrOpts2 seeking 'author' 'date' 'polygamyOK' 'citation' 'non_term' 'recursiveLevels' 'userDefinedProperties' 'synonyms' 'umbrellas' 'overlaps' or 'partial'.
+Current = symbol: issues
+On Line # 5  Character Position: 1 of /Users/gary/NetBeansProjects/Library/Context Under Construction/EngTest(Adr).thy
+(issues, 
+########### Log of activity, errors, and warnings encountered on Jan 17, 2011.
+########### Build # Alpha 2.
+This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'
+########### Log of activity, errors, and warnings encountered on Jan 17, 2011.
+########### Build # Alpha 2.
+This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'This is a test of the write-log-on-close feature.If this works I should see a write after 'quit.'
+########### Log of activity, errors, and warnings encountered on Jan 17, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 18, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 18, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 18, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 18, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 18, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 18, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 18, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 19, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 19, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 19, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 20, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 21, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 21, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 21, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 21, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 21, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 21, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 24, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Jan 25, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 1, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 3, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 3, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 4, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 4, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 4, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 4, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 4, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 4, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 4, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 4, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 4, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 4, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 4, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 4, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 4, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 4, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 4, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 7, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 10, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 10, 2011.
+########### Build # Alpha 2.
+While reading EngTest with Suggestions.silk
+KSParsingErrorException: parseKTD_EQC seeking tag '</unused-clauses>'.
+Current = tag: </kin-term-eqc>
+On Line # 2730  Character Position: 0 of /Users/gary/NetBeansProjects/Library/Context Under Construction/EngTest with Suggestions.silk
+		<request-date> "Feb 4, 2011" </request-date>
+########### Log of activity, errors, and warnings encountered on Feb 10, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 10, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 10, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 10, 2011.
+########### Build # Alpha 2.
+While reading EngTest with Suggestions.silk
+KSParsingErrorException: parseSubTerm seeking comma or '</pc-strings-covered>'.
+Current = comma: ,
+On Line # 2108  Character Position: 31 of /Users/gary/NetBeansProjects/Library/Context Under Construction/EngTest with Suggestions.silk
+					<dyad level="2" addrOrRef="1" ego="2" alter="6" path="0" />
+########### Log of activity, errors, and warnings encountered on Feb 10, 2011.
+########### Build # Alpha 2.
+While reading EngTest with Suggestions.silk
+KSParsingErrorException: parseSubTerm seeking comma or '</pc-strings-covered>'.
+Current = comma: ,
+On Line # 2108  Character Position: 31 of /Users/gary/NetBeansProjects/Library/Context Under Construction/EngTest with Suggestions.silk
+					<dyad level="2" addrOrRef="1" ego="2" alter="6" path="0" />
+########### Log of activity, errors, and warnings encountered on Feb 10, 2011.
+########### Build # Alpha 2.
+While reading EngTest with Suggestions.silk
+KSParsingErrorException: parseSubTerm seeking the flag <sub-kin-term>
+Current = tag: <sub-term>
+On Line # 2120  Character Position: 0 of /Users/gary/NetBeansProjects/Library/Context Under Construction/EngTest with Suggestions.silk
+				<sub-kin-term> "grandmother" </sub-kin-term>
+########### Log of activity, errors, and warnings encountered on Feb 10, 2011.
+########### Build # Alpha 2.
+While reading EngTest with Suggestions.silk
+KSParsingErrorException: parseSubTerm seeking the flag <sub-kin-term>
+Current = tag: <sub-term>
+On Line # 2120  Character Position: 0 of /Users/gary/NetBeansProjects/Library/Context Under Construction/EngTest with Suggestions.silk
+				<sub-kin-term> "grandmother" </sub-kin-term>
+########### Log of activity, errors, and warnings encountered on Feb 11, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 11, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 11, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 11, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 12, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 12, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 12, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 12, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 12, 2011.
+########### Build # Alpha 2.
+While reading EngTest-After-Removal.silk
+java.lang.NullPointerException
+########### Log of activity, errors, and warnings encountered on Feb 13, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 14, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 14, 2011.
+########### Build # Alpha 2.
+While reading EngTest-After-Removal-2.silk
+java.lang.NullPointerException
+########### Log of activity, errors, and warnings encountered on Feb 14, 2011.
+########### Build # Alpha 2.
+While re-loading the Suggestions from prior learning sessions,
+we encountered references to a person or relationship that is
+ no longer valid. Those references were ignored, but this may
+make some Suggestions seem illogical. If so, Get New Suggestions.
+
+
+
+########### Log of activity, errors, and warnings encountered on Feb 14, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 14, 2011.
+########### Build # Alpha 2.
+The Suggestions from prior learning sessions may contain
+references to Frank  that are
+ no longer valid. If so, you should Get New Suggestions.
+
+
+
+########### Log of activity, errors, and warnings encountered on Feb 15, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 15, 2011.
+########### Build # Alpha 2.
+The Suggestions from prior learning sessions may contain
+references to Boat Wright that are
+ no longer valid. If so, you should Get New Suggestions.
+
+
+
+########### Log of activity, errors, and warnings encountered on Feb 17, 2011.
+########### Build # Alpha 2.
+The Suggestions from prior learning sessions may contain
+references to Consumer Wright that are
+ no longer valid. If so, you should Get New Suggestions.
+
+
+The Suggestions from prior learning sessions may contain
+references to States Wright that are
+ no longer valid. If so, you should Get New Suggestions.
+
+
+
+########### Log of activity, errors, and warnings encountered on Feb 17, 2011.
+########### Build # Alpha 2.
+The Suggestions from prior learning sessions may contain
+references to States Wright that are
+ no longer valid. If so, you should Get New Suggestions.
+
+
+
+########### Log of activity, errors, and warnings encountered on Feb 17, 2011.
+########### Build # Alpha 2.
+The Suggestions from prior learning sessions may
+contain references to States Wright that are
+ no longer valid. If so, you should Get New Suggestions.
+
+
+
+########### Log of activity, errors, and warnings encountered on Feb 17, 2011.
+########### Build # Alpha 2.
+The Suggestions from prior learning sessions may
+contain references to States Wright that are
+ no longer valid. If so, you should Get New Suggestions.
+
+
+
+########### Log of activity, errors, and warnings encountered on Feb 17, 2011.
+########### Build # Alpha 2.
+The Suggestions from prior learning sessions may
+contain references to States Wright that are
+ no longer valid. If so, you should Get New Suggestions.
+
+
+
+########### Log of activity, errors, and warnings encountered on Feb 17, 2011.
+########### Build # Alpha 2.
+The Suggestions from prior learning sessions may
+contain references to Always Wright that are
+ no longer valid. If so, you should Get New Suggestions.
+
+
+
+########### Log of activity, errors, and warnings encountered on Feb 17, 2011.
+########### Build # Alpha 2.
+The Suggestions from prior learning sessions may
+contain references to States Wright that are
+ no longer valid. If so, you should Get New Suggestions.
+
+
+
+########### Log of activity, errors, and warnings encountered on Feb 17, 2011.
+########### Build # Alpha 2.
+The Suggestions from prior learning sessions may
+contain references to Boat Wright that are
+ no longer valid. If so, you should Get New Suggestions.
+
+
+
+########### Log of activity, errors, and warnings encountered on Feb 17, 2011.
+########### Build # Alpha 2.
+The Suggestions from prior learning sessions may
+contain references to States Wright that are
+ no longer valid. If so, you should Get New Suggestions.
+
+
+
+########### Log of activity, errors, and warnings encountered on Feb 18, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 18, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 18, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 18, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 18, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 18, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 19, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 19, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 19, 2011.
+########### Build # Alpha 2.
+While reading EngTest with Extra Aunts.silk
+KSParsingErrorException: parseKAESParameters seeking the flag '<area>'. 
+Current = flag: <infoPerson>
+On Line # 18  Character Position: 0 of /Users/gary/NetBeansProjects/Library/Context Under Construction/EngTest with Extra Aunts.silk
+  <infoPerson>-1</infoPerson>
+########### Log of activity, errors, and warnings encountered on Feb 19, 2011.
+########### Build # Alpha 2.
+While re-loading the Suggestions from prior learning sessions,
+we encountered references to a person or relationship that is
+ no longer valid. Those references were ignored, but this may
+make some Suggestions seem illogical. If so, Get New Suggestions.
+
+
+
+########### Log of activity, errors, and warnings encountered on Feb 19, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 19, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 19, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 19, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 19, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 19, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 19, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 19, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 19, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 20, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 20, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 20, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 20, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 20, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 20, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 20, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 20, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 21, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 21, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 22, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 22, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 22, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 23, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 25, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 25, 2011.
+########### Build # Alpha 2.
+SILKin learning INTERNAL failure: KSInternalErrorException: SILKin did not try to learn any new kin terms; not enough dyads per kin type.
+########### Log of activity, errors, and warnings encountered on Feb 25, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 26, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 26, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 26, 2011.
+########### Build # Alpha 2.
+While reading EngTest with Suggestions.silk
+KSParsingErrorException: parseKTD_Ptr had read error seeking a KTD: 
+java.lang.NullPointerException
+Current = tag: <domain-theory>
+On Line # 2062  Character Position: 0 of /Users/gary/NetBeansProjects/Library/Context Under Construction/EngTest with Suggestions.silk
+						<languageName> "Pagibete" </languageName>
+
+
+########### Log of activity, errors, and warnings encountered on Feb 26, 2011.
+########### Build # Alpha 2.
+While reading EngTest with Suggestions.silk
+KSParsingErrorException: parseKTD_Ptr had read error seeking a KTD: 
+KSParsingErrorException: Specified kinTerm 'null' not found.
+Current = tag: </domain-theory>
+On Line # 2066  Character Position: 0 of /Users/gary/NetBeansProjects/Library/Context Under Construction/EngTest with Suggestions.silk
+					</domain-theory>
+
+
+########### Log of activity, errors, and warnings encountered on Feb 26, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 26, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 26, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+You must name a project and 
+create data before getting suggestions.
+
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+You must name a project, create data, and get
+suggestions before you can view any suggestions.
+
+You must name a project, create data, and get
+suggestions before you can view any suggestions.
+
+You must name a project and 
+create data before getting suggestions.
+
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Feb 28, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 1, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 1, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 1, 2011.
+########### Build # Alpha 2.
+You must name a project and 
+create data before getting suggestions.
+
+SILKin learning INTERNAL failure: KSInternalErrorException: SILKin did not try to learn any new kin terms; not enough dyads per kin type.
+
+You must name a project, create data, and get
+suggestions before you can view any suggestions.
+
+
+########### Log of activity, errors, and warnings encountered on Mar 1, 2011.
+########### Build # Alpha 2.
+While reading agfd.silk
+KSParsingErrorException: parseDataChg unable to parse null as a date.
+Current = string: null
+On Line # 102  Character Position: 18 of /Users/gary/NetBeansProjects/Library/Context Under Construction/agfd.silk
+  <dataChangeDate> "null" </dataChangeDate>
+
+
+########### Log of activity, errors, and warnings encountered on Mar 1, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 1, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 1, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 1, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 1, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 1, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 1, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 1, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 1, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 1, 2011.
+########### Build # Alpha 2.
+While reading agfd.silk
+KSParsingErrorException: parseDataChg unable to parse null as a date.
+Current = string: null
+On Line # 102  Character Position: 18 of /Users/gary/NetBeansProjects/Library/Context Under Construction/agfd.silk
+  <dataChangeDate> "null" </dataChangeDate>
+
+
+########### Log of activity, errors, and warnings encountered on Mar 1, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 1, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 2, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 2, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 2, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 3, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 3, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 3, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 3, 2011.
+########### Build # Alpha 2.
+While reading Adam-and-Eve.silk
+java.lang.NullPointerException
+
+SILKin learning INTERNAL failure: KSInternalErrorException: SILKin did not try to learn any new kin terms; not enough dyads per kin type.
+
+
+########### Log of activity, errors, and warnings encountered on Mar 3, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 3, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 3, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 3, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 3, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 3, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 3, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 3, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 3, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 4, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 4, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 4, 2011.
+########### Build # Alpha 2.
+While fleshing out a KTD for daughter-in-law
+hit internal error: java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on Mar 4, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 4, 2011.
+########### Build # Alpha 2.
+While reading Adam-and-EveTextPane.silk
+KSParsingErrorException: ERROR: Found '﻿' (an illegal character).  State = 0
+1:	﻿<?xml version="1.0" encoding="UTF-8" ?>
+
+
+While reading EngTest with Suggestions.silk
+KSParsingErrorException: ERROR: Found '-' (an illegal character).  State = 3
+10:	daughter-in-law(Alter, Ego) :-  son(A, Ego), wife(Alter, A).
+
+
+While reading EngTest with Extra Aunts.silk
+KSParsingErrorException: ERROR: Found '-' (an illegal character).  State = 3
+10:	daughter-in-law(Alter, Ego) :-  son(A, Ego), wife(Alter, A).
+
+
+
+########### Log of activity, errors, and warnings encountered on Mar 5, 2011.
+########### Build # Alpha 2.
+While reading Adam-and-EveTextPane.silk
+KSParsingErrorException: ERROR: Found '﻿' (an illegal character).  State = 0
+1:	﻿<?xml version="1.0" encoding="UTF-8" ?>
+
+
+While reading EngTest with Extra Aunts.silk
+KSParsingErrorException: ERROR: Found '-' (an illegal character).  State = 3
+10:	daughter-in-law(Alter, Ego) :-  son(A, Ego), wife(Alter, A).
+
+
+
+########### Log of activity, errors, and warnings encountered on Mar 5, 2011.
+########### Build # Alpha 2.
+While reading EngTest with Extra Aunts.silk
+KSParsingErrorException: ERROR: Found '-' (an illegal character).  State = 3
+10:	daughter-in-law(Alter, Ego) :-  son(A, Ego), wife(Alter, A).
+
+
+
+########### Log of activity, errors, and warnings encountered on Mar 5, 2011.
+########### Build # Alpha 2.
+While reading EngTest with Suggestions.silk
+KSParsingErrorException: ERROR: Found '-' (an illegal character).  State = 3
+10:	daughter-in-law(Alter, Ego) :-  son(A, Ego), wife(Alter, A).
+
+
+
+########### Log of activity, errors, and warnings encountered on Mar 5, 2011.
+########### Build # Alpha 2.
+While reading UnicodeTest-Out.silk
+KSParsingErrorException: ERROR: Found '﻿' (an illegal character).  State = 0
+1:	﻿<?xml version="1.0" encoding="UTF-8" ?>
+
+
+
+########### Log of activity, errors, and warnings encountered on Mar 5, 2011.
+########### Build # Alpha 2.
+While reading UnicodeWriteFromNetBeans.silk
+KSParsingErrorException: ERROR: Found '﻿' (an illegal character).  State = 0
+1:	﻿<?xml version="1.0" encoding="UTF-8" ?>
+
+
+
+########### Log of activity, errors, and warnings encountered on Mar 5, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 5, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 5, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 5, 2011.
+########### Build # Alpha 2.
+While reading EngTest with Suggestions & Acc-Defs.silk
+KSParsingErrorException: ERROR: Found '-' (an illegal character).  State = 3
+10:	daughter-in-law(Alter, Ego) :-  son(A, Ego), wife(Alter, A).
+
+
+
+########### Log of activity, errors, and warnings encountered on Mar 5, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 5, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 6, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 7, 2011.
+########### Build # Alpha 2.
+While fleshing out a KTD for bro
+hit internal error: KSParsingErrorException: Attempt to re-define kinTerm bro
+in DomainTheory EngTest
+
+
+########### Log of activity, errors, and warnings encountered on Mar 7, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 8, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 8, 2011.
+########### Build # Alpha 2.
+While reading EngTest with Suggestions-Out.silk
+KSParsingErrorException: ERROR: Found '-' (an illegal character).  State = 3
+17:	daughter-in-law(Alter, Ego) :-  son(A, Ego), wife(Alter, A).
+
+
+
+########### Log of activity, errors, and warnings encountered on Mar 8, 2011.
+########### Build # Alpha 2.
+While reading EngTest with Suggestions-Out.silk
+KSParsingErrorException: ERROR: Found '-' (an illegal character).  State = 3
+17:	daughter-in-law(Alter, Ego) :-  son(A, Ego), wife(Alter, A).
+
+
+
+########### Log of activity, errors, and warnings encountered on Mar 8, 2011.
+########### Build # Alpha 2.
+While fleshing out a KTD for daughter_in_law
+hit internal error: KSParsingErrorException: Attempt to re-define kinTerm daughter_in_law
+in DomainTheory EngTest
+
+
+########### Log of activity, errors, and warnings encountered on Mar 8, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 8, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 8, 2011.
+########### Build # Alpha 2.
+Fatal error while creating new context.
+java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on Mar 8, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 8, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 8, 2011.
+########### Build # Alpha 2.
+While fleshing out a KTD for daughter_in_law
+hit internal error: KSParsingErrorException: Attempt to re-define kinTerm daughter_in_law
+in DomainTheory EngTest
+
+
+########### Log of activity, errors, and warnings encountered on Mar 8, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 8, 2011.
+########### Build # Alpha 2.
+While reading EngTest with Processed.silk
+KSParsingErrorException: ERROR: Found '/' (an illegal character).  State = 3
+2051:			<processed>true</processed>
+
+
+
+########### Log of activity, errors, and warnings encountered on Mar 8, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 8, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 8, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 8, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 8, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 8, 2011.
+########### Build # Alpha 2.
+
+########### Log of activity, errors, and warnings encountered on Mar 9, 2011.
+########### Build # Alpha 2.
+While making a PC String for Agta, amay: 2,
+found no logical path from Ego to Alter.While making a PC String for Agta, amay: 3,
+found no logical path from Ego to Alter.While making a PC String for Agta, amay: 4,
+found no logical path from Ego to Alter.While making a PC String for Agta, amay: 5,
+found no logical path from Ego to Alter.While making a PC String for Agta, amay: 6,
+found no logical path from Ego to Alter.While making a PC String for Agta, amay: 7,
+found no logical path from Ego to Alter.While making a PC String for Agta, amay: 8,
+found no logical path from Ego to Alter.While making a PC String for Agta, amay: 9,
+found no logical path from Ego to Alter.While making a PC String for Agta, amay: 10,
+found no logical path from Ego to Alter.While making a PC String for Agta, amay: 11,
+found no logical path from Ego to Alter.While making a PC String for Agta, amay: 12,
+found no logical path from Ego to Alter.While making a PC String for Agta, amay: 13,
+found no logical path from Ego to Alter.While making a PC String for Agta, amay: 14,
+found no logical path from Ego to Alter.While making a PC String for Agta, amay: 15,
+found no logical path from Ego to Alter.While making a PC String for Agta, amay: 16,
+found no logical path from Ego to Alter.While making a PC String for Agta, amay: 17,
+found no logical path from Ego to Alter.While making a PC String for Agta, amay: 18,
+found no logical path from Ego to Alter.While making a PC String for Agta, amay: 19,
+found no logical path from Ego to Alter.
+########### Log of activity, errors, and warnings encountered on Mar 9, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Mar 10, 2011.
+########### Version 1.0, build # 4.
+While reading temp.silk
+java.lang.NullPointerException
+
+While reading temp.silk
+KSParsingErrorException: ERROR: Found '/' (an illegal character).  State = 3
+22329:							<predicate>mother</predicate>
+
+
+
+########### Log of activity, errors, and warnings encountered on Mar 10, 2011.
+########### Version 1.0, build # 4.
+While reading temp.silk
+KSParsingErrorException: parseLiteral seeking an string. 
+Current = symbol: mother
+On Line # 22329  Character Position: 17 of /Users/gary/Desktop/temp.silk
+						<predicate>mother </predicate>
+
+
+########### Log of activity, errors, and warnings encountered on Mar 10, 2011.
+########### Version 1.0, build # 4.
+While reading temp.silk
+KSParsingErrorException: ERROR: Found '<' (an illegal character).  State = 4
+22331:								<var>A</var>
+
+
+
+########### Log of activity, errors, and warnings encountered on Mar 10, 2011.
+########### Version 1.0, build # 4.
+While reading temp.silk
+KSParsingErrorException: ERROR: Found '/' (an illegal character).  State = 3
+23867:							<predicate>spouse</predicate>
+
+
+
+########### Log of activity, errors, and warnings encountered on Mar 10, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Mar 10, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Mar 10, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Mar 10, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Mar 10, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Mar 10, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Mar 10, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Mar 28, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Mar 28, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Mar 28, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Mar 28, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Mar 28, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Mar 29, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Mar 31, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Mar 31, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 15, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 15, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 15, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 15, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 15, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 15, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 15, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 15, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 15, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 15, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 15, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 15, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 17, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 19, 2011.
+########### Version 1.0, build # 4.
+While editing a context, java.lang.NullPointerException
+
+While editing a context, java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on Apr 19, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 19, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 19, 2011.
+########### Version 1.0, build # 4.
+While editing a context, java.lang.NullPointerException
+
+While editing a context, java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on Apr 19, 2011.
+########### Version 1.0, build # 4.
+While reading EngTest with Suggestions.silk
+KSParsingErrorException: parseBody looking for a flag (e.g. 'parameters').
+Current = tagWithAttributes: <silkin-issues type="Reference">
+On Line # 1922  Character Position: 0 of /Users/gary/NetBeansProjects/Library/Context Under Construction/EngTest with Suggestions.silk
+<silkin-issues type="Reference">
+
+
+########### Log of activity, errors, and warnings encountered on Apr 20, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 20, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 20, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 20, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 20, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 21, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 22, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 22, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 22, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 23, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 23, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 23, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 23, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 23, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 23, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 23, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 23, 2011.
+########### Version 1.0, build # 4.
+While reading EngTest with Suggestions Post-XML 3.silk
+KSParsingErrorException: parseRows seeking tags '<row>' or '</matrix>'.
+Current = tagWithAttributes: <row ego="0">
+On Line # 374  Character Position: 0 of /Users/gary/NetBeansProjects/Library/Context Under Construction/EngTest with Suggestions Post-XML 3.silk
+<row ego="0">
+
+
+########### Log of activity, errors, and warnings encountered on Apr 23, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 23, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on Apr 29, 2011.
+########### Version 1.0, build # 4.
+While reading EngTest with Suggestions.silk
+KSParsingErrorException: parseHeader seeking a tag beginning with '<?xml-stylesheet type='. 
+Current = tagWithAttributes: <!DOCTYPE SIL_KinData>
+On Line # 2  Character Position: 0 of /Users/gary/NetBeansProjects/Library/Context Under Construction/EngTest with Suggestions.silk
+<SIL_KinData>
+
+
+########### Log of activity, errors, and warnings encountered on Apr 29, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 2, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 2, 2011.
+########### Version 1.0, build # 4.
+While reading EngTest with Suggestions Post-XML 3.silk
+KSParsingErrorException: parseLiteral seeking an string. 
+Current = symbol: brother
+On Line # 1820  Character Position: 17 of /Users/gary/NetBeansProjects/Library/Context Under Construction/EngTest with Suggestions Post-XML 3.silk
+						<predicate>brother</predicate>
+
+
+########### Log of activity, errors, and warnings encountered on May 2, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 4, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 6, 2011.
+########### Version 1.0, build # 4.
+SILKin learning INTERNAL failure: KSParsingErrorException: parseFlagOrKinTerm seeking a flag or symbol (kinTerm).
+Current = tag: <aux>
+On Line # 5  Character Position: 10 of /Users/gary/NetBeansProjects/Library/Domain Theory Files/Coreguaje.thy
+(non_term, <aux>, brother, children, half_brother, half_sister, parents, sibling, siblings, sister, spice, step_brother, step_daughter, step_father, step_mother, step_sister, step_son) (partial, false) (polygamyOK, false) (address, false) (recursiveLevels, 2)
+
+
+########### Log of activity, errors, and warnings encountered on May 11, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 16, 2011.
+########### Version 1.0, build # 4.
+PROBLEM: During Index generation, nulljava.io.InvalidClassException: Context; local class incompatible: stream classdesc serialVersionUID 
+= 3909312433222416362, local class serialVersionUID = 1948981489368675241
+RECOMMENDATION: DeBug!
+
+PROBLEM: During Index generation, nullKSParsingErrorException: parseTermListPair seeking a comma
+Current = leftParen: (
+On Line # 6  Chara
+cter Position: 19 of /Users/gary/NetBeansProjects/Library/Domain Theory Files/Crow-1.
+thy
+(overlaps, (brother(eq), (brother(eq)1, brother(eq)a, brother(eq)1a, brother(eq)2)),
+ (brother(eq)1, (brother(eq)1a, brother(eq)2, brother(eq)a, brother(eq))), (brother(eq)1a,
+ (brother(eq)1, brother(eq)2, brother(eq)a, brother(eq))), (brother(eq)2, (brother(eq)1,
+ brother(eq)1a, brother(eq)a, brother(eq))), (brother(eq)a, (brother(eq)1, brother(eq)2,
+ brother(eq)1a, brother(eq))), (sister(eq), (sister(eq)1)), (sister(eq)1, (sister(eq))))
+RECOMMENDATION: DeBug!
+
+
+########### Log of activity, errors, and warnings encountered on May 17, 2011.
+########### Version 1.0, build # 4.
+PROBLEM:  Attempting to over-write existing Domain Theory in Library.
+RECOMMENDATION: To replace an existing theory, delete the old version, then add the new version.
+
+
+########### Log of activity, errors, and warnings encountered on May 17, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 17, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 17, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 17, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 17, 2011.
+########### Version 1.0, build # 4.
+Couldn't find file: No HTML file was specified.
+
+
+########### Log of activity, errors, and warnings encountered on May 17, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 18, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 18, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 18, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 18, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 18, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 18, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 18, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 18, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 18, 2011.
+########### Version 1.0, build # 4.
+Error encountered displaying /Users/gary/NetBeansProjects/Library/Suggestions/EngTest.html#5
+
+
+########### Log of activity, errors, and warnings encountered on May 18, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 19, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 19, 2011.
+########### Version 1.0, build # 4.
+Error encountered displaying /Users/gary/NetBeansProjects/Library/Suggestions/EngTest.html#0
+
+Error encountered displaying /Users/gary/NetBeansProjects/Library/Suggestions/EngTest.html#0
+
+
+########### Log of activity, errors, and warnings encountered on May 19, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on May 19, 2011.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-07-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-07-15.
+########### Version 1.0, build # 4.
+While reading EngTest Synthetic5.silk
+KSParsingErrorException: parseCB_Ptrs seeking tags: <named-dyad>, <request-date>, <error>, or <kin-type-dyad>.
+Current = tag: </data-request>
+On Line # 2762  Character Position: 0 of /Users/gary/Code/SVN Code/Library/Context Under Construction/EngTest Synthetic5.silk
+	</data-request>
+
+
+########### Log of activity, errors, and warnings encountered on 2011-07-15.
+########### Version 1.0, build # 4.
+While reading EngTest.silk
+KSParsingErrorException: parseLocation seeking a tag <location ...
+Current = tag: <stats>
+On Line # 32  Character Position: 0 of /Users/gary/Code/SVN Code/Library/Context Under Construction/EngTest.silk
+  <stats> <born>NA</born> <died>NA</died> </stats>
+
+SILKin learning INTERNAL failure: KSParsingErrorException: While parsing createion date: KSDateParseException: Cannot parse 'August 1862' as a date.
+java.text.ParseException: Unparseable date: "August 1862"
+Current = string: August 1862
+On Line # 4  Character Position: 74 of /Users/gary/Code/SVN Code/Library/Domain Theory Files/Eskimo Baffin Bay.thy
+(languageName, "Eskimo Baffin Bay") (author, "Samuel Kleinschmidt") (date, "August 1862") (citation, "Lewis H. Morgan SYSTEMS OF CONSANGUINITY AND AFFINITY OF THE HUMAN FAMILY, 1871 (reprint 1997), University of Nebraska Press, Lincoln") 
+
+SILKin learning INTERNAL failure: KSInternalErrorException: SILKin did not try to learn any new kin terms; not enough dyads per kin type.
+
+
+########### Log of activity, errors, and warnings encountered on 2011-07-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-07-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-07-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-07-18.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-07-18.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-07-18.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-07-19.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-07-23.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-07-23.
+########### Version 1.0, build # 4.
+While reading EngTest Synthetic11.silk
+KSParsingErrorException: parseParameters did not find a dat author (in either format).
+Current = tag: <dataAauthors>
+On Line # 109  Character Position: 0 of /Users/gary/Code/SVN Code/Library/Context Under Construction/EngTest Synthetic11.silk
+  <dataAauthors>
+
+
+########### Log of activity, errors, and warnings encountered on 2011-07-23.
+########### Version 1.0, build # 4.
+While reading EngTest Synthetic11.silk
+KSInternalErrorException: Failure to capture current User's identity.
+
+
+########### Log of activity, errors, and warnings encountered on 2011-07-23.
+########### Version 1.0, build # 4.
+While reading EngTest Synthetic11.silk
+KSInternalErrorException: Failure to capture current User's identity.
+
+
+########### Log of activity, errors, and warnings encountered on 2011-07-23.
+########### Version 1.0, build # 4.
+While reading EngTest Synthetic11.silk
+KSInternalErrorException: Failure to capture current User's identity.
+
+
+########### Log of activity, errors, and warnings encountered on 2011-07-23.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-07-23.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-07-23.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-07-23.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-07-23.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-07-25.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-07-26.
+########### Version 1.0, build # 4.
+While reading EngTest Synthetic13.silk
+KSParsingErrorException: ERROR: Found 'f' (an illegal character).  State = 28
+18:	  			<comment>Accepted for testing purposes.</comment>
+
+
+While reading EngTest Synthetic13.silk
+KSParsingErrorException: parseDefinitions seeking tag '<definitions>'. 
+Current = onePcTag: <comments text="Accepted for testing purposes."/>
+On Line # 18  Character Position: 0 of /Users/gary/Code/SVN Code/Library/Context Under Construction/EngTest Synthetic13.silk
+  			<definitions>
+
+
+########### Log of activity, errors, and warnings encountered on 2011-07-26.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-07-27.
+########### Version 1.0, build # 4.
+While reading EngTest Synthetic13.silk
+KSParsingErrorException: ERROR: Found 'f' (an illegal character).  State = 28
+18:	  			<comment>Accepted for testing purposes.</comment>
+
+
+
+########### Log of activity, errors, and warnings encountered on 2011-07-28.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-07-28.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-08-01.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-08-01.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-08-01.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-08-02.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-08-02.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-08-02.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-08-03.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-08-03.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-08-12.
+########### Version 1.0, build # 4.
+While reading EngTest Synthetic17.silk
+KSParsingErrorException: parseItems seeking tags: <accepted-def..., <rejected-def..., or  </history>
+Current = tagWithAttributes: <umbrella-into-synonyms umbTerm="bro_in_law" date="2011-08-01" newKey="brother_in_law" notes="">
+On Line # 1755  Character Position: 0 of /Users/gary/Code/SVN Code/Library/Context Under Construction/EngTest Synthetic17.silk
+		<umbrella-into-synonyms umbTerm="bro_in_law" date="2011-08-01" newKey="brother_in_law" notes="">
+
+
+########### Log of activity, errors, and warnings encountered on 2011-08-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-08-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-08-15.
+########### Version 1.0, build # 4.
+While reading EngTest Synthetic17.silk
+KSParsingErrorException: parseItems seeking tags: <accepted-def..., <rejected-def..., or  </history>
+Current = tagWithAttributes: <umbrella-into-synonyms umbTerm="bro_in_law" date="2011-08-01" newKey="brother_in_law" notes="">
+On Line # 1755  Character Position: 0 of /Users/gary/Code/SVN Code/Library/Context Under Construction/EngTest Synthetic17.silk
+		<umbrella-into-synonyms umbTerm="bro_in_law" date="2011-08-01" newKey="brother_in_law" notes="">
+
+While reading EngTest Synthetic17.silk
+KSParsingErrorException: parseItems seeking tags: <accepted-def..., <rejected-def..., or  </history>
+Current = tagWithAttributes: <umbrella-into-synonyms umbTerm="bro_in_law" date="2011-08-01" newKey="brother_in_law" notes="">
+On Line # 1755  Character Position: 0 of /Users/gary/Code/SVN Code/Library/Context Under Construction/EngTest Synthetic17.silk
+		<umbrella-into-synonyms umbTerm="bro_in_law" date="2011-08-01" newKey="brother_in_law" notes="">
+
+
+########### Log of activity, errors, and warnings encountered on 2011-08-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-08-16.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-08-16.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-02.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-02.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-07.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-07.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-07.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-07.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-08.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-08.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-08.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-09.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-09.
+########### Version 1.0, build # 4.
+Internal error while accessing terms of reference
+
+
+########### Log of activity, errors, and warnings encountered on 2011-09-09.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-09.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-09.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-10.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-13.
+########### Version 1.0, build # 4.
+While reading EngTest Synthetic20.silk
+KSInternalErrorException: Failure to capture current User's identity.
+
+
+########### Log of activity, errors, and warnings encountered on 2011-09-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-16.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-17.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-17.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-19.
+########### Version 1.0, build # 4.
+While reading EngTest Generated 16-1-Distinct.silk
+KSInternalErrorException: Failure to capture current User's identity.
+
+
+########### Log of activity, errors, and warnings encountered on 2011-09-19.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-19.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-19.
+########### Version 1.0, build # 4.
+You must name a project and 
+create data before getting suggestions.
+
+
+########### Log of activity, errors, and warnings encountered on 2011-09-19.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-19.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-20.
+########### Version 1.0, build # 4.
+Did not find match for dyad: <dyad: #10 is distant_relative of #17 (M) - MoBro: lvl 1>
+
+Did not find match for dyad: <dyad: #10 is moocher of #3 (M) - MoBro: lvl 1>
+
+
+########### Log of activity, errors, and warnings encountered on 2011-09-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-21.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-27.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-27.
+########### Version 1.0, build # 4.
+While reading TestOne.silk
+KSParsingErrorException: parseParameters did not find any domain theory (in either format).
+Current = onePcTag: <createDate value="2011-09-27"/>
+On Line # 7  Character Position: 0 of /Users/gary/Code/SVN Code/Library/Context Under Construction/TestOne.silk
+  <createDate value="2011-09-27"/>
+
+
+########### Log of activity, errors, and warnings encountered on 2011-09-27.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-27.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-29.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-29.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-29.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-29.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-30.
+########### Version 1.0, build # 4.
+While reading TestOne-A-1.silk
+KSParsingErrorException: parseKTD_EQC seeking tag '</unused-clauses>'.
+Current = tagWithAttributes: <clause level="-1">
+On Line # 18144  Character Position: 0 of /Users/gary/Code/SVN Code/Library/Context Under Construction/TestOne-A-1.silk
+					<pc-string>MoBroSoSo</pc-string>
+
+While reading TestOne-A-1.silk
+KSParsingErrorException: parseKTD_EQC seeking tag '</unused-clauses>'.
+Current = tagWithAttributes: <clause level="-1">
+On Line # 18144  Character Position: 0 of /Users/gary/Code/SVN Code/Library/Context Under Construction/TestOne-A-1.silk
+					<pc-string>MoBroSoSo</pc-string>
+
+
+########### Log of activity, errors, and warnings encountered on 2011-09-30.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-30.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-30.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-09-30.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-05.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-05.
+########### Version 1.0, build # 4.
+FYI: Exception while trial-fitting an accepted def.
+java.lang.NullPointerException
+
+FYI: Exception while trial-fitting an accepted def.
+java.lang.NullPointerException
+
+FYI: Exception while trial-fitting an accepted def.
+java.lang.NullPointerException
+
+FYI: Exception while trial-fitting an accepted def.
+java.lang.NullPointerException
+
+FYI: Exception while trial-fitting an accepted def.
+java.lang.NullPointerException
+
+FYI: Exception while trial-fitting an accepted def.
+java.lang.NullPointerException
+
+The Suggestions from prior learning sessions may
+contain references to Do_It Wright that are
+ no longer valid. If so, you should Get New Suggestions.
+
+
+Ref dyads: 166	Adr dyads: 0	ktmTerms: 196 - 20 = 176	ktmCells: 361
+
+Ref dyads: 166	Adr dyads: 0	ktmTerms: 196 - 20 = 176	ktmCells: 361
+
+While reading English.silk
+java.lang.StringIndexOutOfBoundsException: String index out of range: -7
+
+
+########### Log of activity, errors, and warnings encountered on 2011-10-06.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-12.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-12.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-12.
+########### Version 1.0, build # 4.
+SILKin learning module encountered a SYSTEM error: JavaSystemException: Unable to find/create Feature Vector for EngTest
+
+
+########### Log of activity, errors, and warnings encountered on 2011-10-12.
+########### Version 1.0, build # 4.
+Error encountered while searching for a Learning History Item:
+java.lang.NullPointerException
+The issue was ()
+
+
+########### Log of activity, errors, and warnings encountered on 2011-10-12.
+########### Version 1.0, build # 4.
+While fleshing out a KTD for aunt
+hit internal error: java.lang.NullPointerException
+
+While fleshing out a KTD for aunt
+hit internal error: java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on 2011-10-13.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-13.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-13.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-13.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-13.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-13.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-13.
+########### Version 1.0, build # 4.
+Error encountered displaying http://www.anthrotech.com/resources/
+
+
+########### Log of activity, errors, and warnings encountered on 2011-10-13.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-13.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-13.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-15.
+########### Version 1.0, build # 4.
+While reading TestThree-B.silk
+KSParsingErrorException: parseDefinitions seeking tag '<definitions>'. 
+Current = onePcTag: mother's sister"/>
+On Line # 2259  Character Position: 0 of /Users/gary/Code/SVN Code/Library/Context Under Construction/TestThree-B.silk
+			<domain-theory>
+
+
+########### Log of activity, errors, and warnings encountered on 2011-10-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-17.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-17.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-17.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-19.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-19.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-19.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-20.
+########### Version 1.0, build # 4.
+While reading TestThree-C.silk
+KSParsingErrorException: parseKinTermDef seeking end tag '</gloss>'.
+Current = tagWithAttributes: Report this bug! -->
+On Line # 2261  Character Position: 0 of /Users/gary/Code/SVN Code/Library/Context Under Construction/TestThree-C.silk
+Report this bug! -->"/>
+
+
+########### Log of activity, errors, and warnings encountered on 2011-10-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-20.
+########### Version 1.0, build # 4.
+While reading Test-A.silk
+KSParsingErrorException: ERROR: Found '-' (an illegal character).  State = 3
+1488:			<miniPreds> <pred rel="Wi" arg0="6" arg1="17"/><pred rel="Bro" arg0="2" arg1="6"/><pred rel="Da" arg0="9" arg1="2"/><pred rel="So" arg0="13" arg1="9"/> </miniPreds> <PR>ex_petit-neveu</PR></cell>
+
+
+
+########### Log of activity, errors, and warnings encountered on 2011-10-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-20.
+########### Version 1.0, build # 4.
+Ref dyads: 462	Adr dyads: 0	ktmTerms: 780 - 60 = 720	ktmCells: 733
+
+Ref dyads: 462	Adr dyads: 0	ktmTerms: 780 - 60 = 720	ktmCells: 733
+
+
+########### Log of activity, errors, and warnings encountered on 2011-10-20.
+########### Version 1.0, build # 4.
+Ref dyads: 462	Adr dyads: 0	ktmTerms: 780 - 60 = 720	ktmCells: 733
+
+
+########### Log of activity, errors, and warnings encountered on 2011-10-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-20.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-21.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-21.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-21.
+########### Version 1.0, build # 4.
+While reading TestThree.silk
+java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on 2011-10-21.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-21.
+########### Version 1.0, build # 4.
+Ref dyads: 462	Adr dyads: 0	ktmTerms: 780 - 60 = 720	ktmCells: 733
+
+Ref dyads: 462	Adr dyads: 0	ktmTerms: 780 - 60 = 720	ktmCells: 733
+
+
+########### Log of activity, errors, and warnings encountered on 2011-10-21.
+########### Version 1.0, build # 4.
+Ref dyads: 462	Adr dyads: 0	ktmTerms: 780 - 60 = 720	ktmCells: 733
+
+
+########### Log of activity, errors, and warnings encountered on 2011-10-21.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-21.
+########### Version 1.0, build # 4.
+While reading Test-A3.silk
+java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on 2011-10-21.
+########### Version 1.0, build # 4.
+Ref dyads: 462	Adr dyads: 0	ktmTerms: 750 - 30 = 720	ktmCells: 733
+
+Ref dyads: 462	Adr dyads: 0	ktmTerms: 750 - 30 = 720	ktmCells: 733
+
+Ref dyads: 462	Adr dyads: 0	ktmTerms: 750 - 30 = 720	ktmCells: 733
+
+
+########### Log of activity, errors, and warnings encountered on 2011-10-21.
+########### Version 1.0, build # 4.
+Ref dyads: 462	Adr dyads: 0	ktmTerms: 750 - 30 = 720	ktmCells: 736
+
+Ref dyads: 462	Adr dyads: 0	ktmTerms: 750 - 30 = 720	ktmCells: 736
+
+
+########### Log of activity, errors, and warnings encountered on 2011-10-24.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-24.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-24.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-24.
+########### Version 1.0, build # 4.
+While reading TestChars.silk
+java.lang.StringIndexOutOfBoundsException: String index out of range: -20
+
+
+########### Log of activity, errors, and warnings encountered on 2011-10-24.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-24.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-25.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-25.
+########### Version 1.0, build # 4.
+Ref dyads: 462	Adr dyads: 0	ktmTerms: 780 - 60 = 720	ktmCells: 733
+
+
+########### Log of activity, errors, and warnings encountered on 2011-10-27.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-27.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-31.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-31.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-31.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-31.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-31.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-10-31.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-01.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-01.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-01.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-01.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-01.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-01.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-01.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-01.
+########### Version 1.0, build # 4.
+
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#2's node in 5's row has a different PCString.
+Old string: DaHuSisFa  new string: DaHuFa
+
+
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#4's node in 7's row has a different PCString.
+Old string: FaMoDa  new string: FaSis
+
+
+While copying kin terms from old row to new row in ChangeEgo(), 
+Serial#4's node in 8's row has a different PCString.
+Old string: FaMoDa  new string: FaSis
+
+
+########### Log of activity, errors, and warnings encountered on 2011-11-03.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-03.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-03.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-03.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-03.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-03.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-03.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-03.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-04.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-04.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-10.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-11.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-11.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-11.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-14.
+########### Version 1.0, build # 4.
+Cannot find file 'silk-status.xsl' in same directory as SILK file.
+
+
+########### Log of activity, errors, and warnings encountered on 2011-11-14.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-14.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-14.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-14.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-14.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-15.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-16.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-16.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-16.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-17.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-17.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-17.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-21.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-22.
+########### Version 1.0, build # 4.
+While reading TestThree-Simons.silk
+KSParsingErrorException: parseDefinitions seeking tag '<definitions>'. 
+Current = tag: <gloss>
+On Line # 3167  Character Position: 0 of /Volumes/GM HD/Users/gary/Code/SVN Code/Library/Context Under Construction/TestThree-Simons.silk
+               <element text="mother's brother"/>
+
+
+########### Log of activity, errors, and warnings encountered on 2011-11-22.
+########### Version 1.0, build # 4.
+While reading TestThree-Simons.silk
+KSParsingErrorException: parseAnomaly seeking tag '</misfits>'
+Current = onePcTag: path="0"/>
+On Line # 3271  Character Position: 0 of /Volumes/GM HD/Users/gary/Code/SVN Code/Library/Context Under Construction/TestThree-Simons.silk
+            path="0"/>
+
+
+########### Log of activity, errors, and warnings encountered on 2011-11-22.
+########### Version 1.0, build # 4.
+While re-loading the Suggestions from prior learning sessions,
+we encountered references to a person or relationship that is
+ no longer valid. Those references were ignored, but this may
+make some Suggestions seem illogical. If so, Get New Suggestions.
+
+
+Error writing SILK & .ctxt files: java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on 2011-11-22.
+########### Version 1.0, build # 4.
+While reading Claire MQL-new.silk
+java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on 2011-11-22.
+########### Version 1.0, build # 4.
+While reading Claire MQL.silk
+java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on 2011-11-22.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-24.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-24.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-24.
+########### Version 1.0, build # 4.
+While reading Claire MQL-2.silk
+KSParsingErrorException: parseDomTheoryComponents seeking end tag '</theory>'.
+Current = tagWithAttributes: <kin-term-def non-term="yes">
+On Line # 56  Character Position: 0 of /Volumes/GM HD/Users/gary/Code/SVN Code/Library/Context Under Construction/Claire MQL-2.silk
+			<head>brother</head>
+
+
+########### Log of activity, errors, and warnings encountered on 2011-11-24.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-24.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-24.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-24.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-24.
+########### Version 1.0, build # 4.
+Error writing SILK & .ctxt files: java.lang.NullPointerException
+
+Error writing SILK & .ctxt files: java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on 2011-11-24.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-25.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-25.
+########### Version 1.0, build # 4.
+While reading EngTest Synthetic-2.silk
+KSParsingErrorException: parseCB_Ptrs seeking the flag <ego-serial>
+Current = tag: <gloss>
+On Line # 2591  Character Position: 0 of /Users/gary/Code/SVN Code/Library/Context Under Construction/EngTest Synthetic-2.silk
+				<element text="wife's mother's father"/>
+
+
+########### Log of activity, errors, and warnings encountered on 2011-11-25.
+########### Version 1.0, build # 4.
+While reading EngTest Synthetic-2.silk
+KSParsingErrorException: parseAnomaly seeking tag '<barriers />', a ClauseBody, or a KinTermDef.
+Current = tagWithAttributes: <kin-term-def term="funky_unky">
+On Line # 5033  Character Position: 0 of /Users/gary/Code/SVN Code/Library/Context Under Construction/EngTest Synthetic-2.silk
+			<kin-term-def term="funky_unky">
+
+
+########### Log of activity, errors, and warnings encountered on 2011-11-25.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-25.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-25.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-25.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-25.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-28.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-28.
+########### Version 1.0, build # 4.
+PROBLEM:  Attempting to over-write existing Domain Theory in Library.
+RECOMMENDATION: To replace an existing theory, delete the old version, then add the new version.
+
+PROBLEM:  Attempt to over-write existing Domain Theory (Address) for language Cogui(Adr)
+RECOMMENDATION: To replace an existing theory, delete the old version, then add the new version.
+
+
+########### Log of activity, errors, and warnings encountered on 2011-11-28.
+########### Version 1.0, build # 4.
+While deleting Library files:
+java.io.FileNotFoundException: /Users/gary/Code/SVN Code/Library/Contexts/Cogui.ctxt (No such file or directory)
+
+
+########### Log of activity, errors, and warnings encountered on 2011-11-28.
+########### Version 1.0, build # 4.
+While making a PC String for Cogui(Adr), augui: 1,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 2,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 3,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 4,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 5,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 6,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 7,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 8,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 9,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 10,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 11,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 12,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 13,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 14,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 15,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 16,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 17,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 18,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 19,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 20,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 21,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 22,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 23,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 24,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 25,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 26,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 27,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 28,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 29,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 30,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 31,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 32,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 33,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 34,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 35,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 36,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 37,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 38,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 39,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 40,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 41,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 42,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 43,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 44,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 47,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 48,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 49,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 50,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 51,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 52,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 53,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 54,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 55,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 56,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 57,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 58,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 59,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 60,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 61,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 62,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 63,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 64,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 65,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 66,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 67,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 68,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 69,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 70,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 71,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 72,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 73,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 74,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 75,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 77,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 78,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 79,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 80,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 81,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 82,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 83,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 84,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 85,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 86,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 87,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 88,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 89,
+found no logical path from Ego to Alter.
+########### Log of activity, errors, and warnings encountered on 2011-11-28.
+########### Version 1.0, build # 4.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-29.
+########### Version 1.0, build # 11.
+While making a PC String for Cogui(Adr), augui: 1,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 2,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 3,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 4,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 5,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 6,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 7,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 8,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 9,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 10,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 11,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 12,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 13,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 14,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 15,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 16,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 17,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 18,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 19,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 20,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 21,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 22,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 23,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 24,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 25,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 26,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 27,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 28,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 29,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 30,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 31,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 32,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 33,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 34,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 35,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 36,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 37,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 38,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 39,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 40,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 41,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 42,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 43,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 44,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 47,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 48,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 49,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 50,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 51,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 52,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 53,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 54,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 55,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 56,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 57,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 58,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 59,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 60,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 61,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 62,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 63,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 64,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 65,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 66,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 67,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 68,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 69,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 70,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 71,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 72,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 73,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 74,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 75,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 77,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 78,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 79,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 80,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 81,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 82,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 83,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 84,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 85,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 86,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 87,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 88,
+found no logical path from Ego to Alter.While making a PC String for Cogui(Adr), augui: 89,
+found no logical path from Ego to Alter.
+########### Log of activity, errors, and warnings encountered on 2011-11-29.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-29.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-30.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-30.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-30.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-30.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-30.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-30.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-30.
+########### Version 1.0, build # 11.
+While reading Level-Test 1-5.silk
+KSParsingErrorException: parseHeader seeking the tag '<!DOCTYPE SIL_KinData>'. 
+Current = tagWithAttributes: <?xml-stylesheet type="text/xsl" href="Silk-status.xsl"?>
+On Line # 2  Character Position: 0 of /Users/gary/Code/SVN Code/Library/Context Under Construction/Level-Test 1-5.silk
+<!DOCTYPE SIL_KinData>
+
+
+########### Log of activity, errors, and warnings encountered on 2011-11-30.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-30.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-30.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-30.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-30.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-11-30.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-01.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-02.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-02.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-02.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-02.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-02.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-02.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-02.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-16.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-23.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-26.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-26.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-26.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-26.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-26.
+########### Version 1.0, build # 11.
+Ref dyads: 190	Adr dyads: 0	ktmTerms: 209 - 38 = 171	ktmCells: 150
+
+
+########### Log of activity, errors, and warnings encountered on 2011-12-26.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-26.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-26.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-26.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-26.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-26.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-26.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2011-12-28.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-02.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-02.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-03.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-04.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-10.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-10.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-10.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-10.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-10.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-13.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-13.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-13.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-14.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-14.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-14.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-14.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-15.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-16.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-16.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-16.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-16.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-16.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-16.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-16.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-16.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-22.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-22.
+########### Version 1.0, build # 11.
+While reading EngTest Synthetic with EIP.silk
+java.lang.IndexOutOfBoundsException: Index: 20, Size: 20
+
+
+########### Log of activity, errors, and warnings encountered on 2012-02-23.
+########### Version 1.0, build # 11.
+While reading EngTest Synthetic with EIP.silk
+java.lang.IndexOutOfBoundsException: Index: 20, Size: 20
+
+
+########### Log of activity, errors, and warnings encountered on 2012-02-24.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-24.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-02-25.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-01.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-01.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-02.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-02.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-02.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-05.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-05.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-05.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-05.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-05.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-05.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-05.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-05.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-05.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-06.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-06.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-07.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-09.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-09.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-09.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-09.
+########### Version 1.0, build # 11.
+Error writing SILK & .ctxt files: java.lang.NullPointerException
+
+Ref dyads: 70	Adr dyads: 0	ktmTerms: 87 - 18 = 69	ktmCells: 264
+
+
+########### Log of activity, errors, and warnings encountered on 2012-03-14.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-16.
+########### Version 1.0, build # 11.
+Cannot find file 'Claire MQL_22.html' in Suggestions directory.
+Nor can we find Claire MQL .html.
+Perhaps you should Get New Suggestions.
+
+
+########### Log of activity, errors, and warnings encountered on 2012-03-16.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-16.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-16.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-18.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-03-24.
+########### Version 1.0, build # 11.
+While reading EngTest3.silk
+KSParsingErrorException: parseUDPs seeking a flag: '</UDP>' or '</parameters>'. 
+Current = tag: <userDefinedProperties>
+On Line # 1831  Character Position: 0 of /Users/gary/Code/SVN Code/Library/Context Under Construction/EngTest3.silk
+  <userDefinedProperties>
+
+
+########### Log of activity, errors, and warnings encountered on 2012-04-23.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-04-23.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-04-24.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-04.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-06.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-06.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-07.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-07.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-07.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-25.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-25.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-25.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-25.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-25.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-26.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-26.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-26.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-26.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-26.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-27.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-27.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-29.
+########### Version 1.0, build # 11.
+Error writing SILK & .ctxt files: java.lang.NullPointerException
+
+Error writing SILK & .ctxt files: java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on 2012-06-29.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-06-29.
+########### Version 1.0, build # 11.
+While reading CrossGenMarriage-Write Test.silk
+KSParsingErrorException: parseLinkPriorities seeking a tag <link ...
+Current = tag: </linkPriorities>
+On Line # 48  Character Position: 0 of /Users/gary/Code/SVN Code/Library/Context Under Construction/CrossGenMarriage-Write Test.silk
+</editorSettings>
+
+
+########### Log of activity, errors, and warnings encountered on 2012-06-29.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-02.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-02.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-02.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-03.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-03.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-03.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-03.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-04.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-04.
+########### Version 1.0, build # 11.
+Error writing SILK & .ctxt files: java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on 2012-07-04.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-05.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-05.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-05.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-06.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-06.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-06.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-08.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-08.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-08.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-13.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-13.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-13.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-13.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-13.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-13.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-13.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-13.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-13.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-14.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-14.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-14.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-14.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-14.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-14.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-14.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-14.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-14.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-14.
+########### Version 1.0, build # 11.
+Illegal entry for Priority: 7.
+Must enter a letter.
+
+Illegal entry for Priority: *.
+Must enter a letter.
+
+
+########### Log of activity, errors, and warnings encountered on 2012-07-16.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-16.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-17.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-17.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-17.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-18.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-18.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-19.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-19.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-19.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-19.
+########### Version 1.0, build # 11.
+PROBLEM:  Logical error in: wife(A, Ego), mother(B, A), father(C, A), child(Alter, B), child(Alter, C), not(equal(Alter, A)), female(Alter), younger(Alter, A).
+.
+  Lvl=0,  PC=4, S=1, *=0.  {WiSis}  [Expansion Path: bwada:1, sister:0, sibling:0]
+RECOMMENDATION: Correct or remove this clause from domain theory.
+                 Then delete this theory from the Library & re-add it.
+
+PROBLEM:  Attempt to over-write existing Domain Theory (Reference) for language Trobriand
+RECOMMENDATION: To replace an existing theory, delete the old version, then add the new version.
+
+
+########### Log of activity, errors, and warnings encountered on 2012-07-20.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-25.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-27.
+########### Version 1.0, build # 11.
+While editing a context, java.lang.NullPointerException
+
+While editing a context, java.lang.NullPointerException
+
+While editing a context, java.lang.NullPointerException
+
+While editing a context, java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on 2012-07-27.
+########### Version 1.0, build # 11.
+While editing a context, java.lang.NullPointerException
+
+While editing a context, java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on 2012-07-27.
+########### Version 1.0, build # 11.
+While editing a context, java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on 2012-07-27.
+########### Version 1.0, build # 11.
+While editing a context, java.lang.NullPointerException
+
+While editing a context, java.lang.NullPointerException
+
+Sorry.  Your default value of lion is not valid.
+You have Restricted Values for this UDP.
+Please try again.
+########### Log of activity, errors, and warnings encountered on 2012-07-27.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-27.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-27.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-27.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-27.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-27.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-27.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-27.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-27.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-27.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-27.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-28.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-28.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-28.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-28.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-28.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-07-31.
+########### Version 1.0, build # 11.
+The Suggestions from prior learning sessions may
+contain references to Arti Intelligence that are
+ no longer valid. If so, you should Get New Suggestions.
+
+
+
+########### Log of activity, errors, and warnings encountered on 2012-07-31.
+########### Version 1.0, build # 11.
+While re-loading the Suggestions from prior learning sessions,
+we encountered references to a person or relationship that is
+ no longer valid. Those references were ignored, but this may
+make some Suggestions seem illogical. If so, Get New Suggestions.
+
+
+The Suggestions from prior learning sessions may
+contain references to Central Intelligence that are
+ no longer valid. If so, you should Get New Suggestions.
+
+
+Ref dyads: 165	Adr dyads: 0	ktmTerms: 186 - 20 = 166	ktmCells: 362
+
+
+########### Log of activity, errors, and warnings encountered on 2012-07-31.
+########### Version 1.0, build # 11.
+FYI: Exception while trial-fitting an accepted def.
+java.lang.NullPointerException
+
+FYI: Exception while trial-fitting an accepted def.
+java.lang.NullPointerException
+
+
+########### Log of activity, errors, and warnings encountered on 2012-08-03.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-08-10.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-08-10.
+########### Version 1.0, build # 11.
+
+########### Log of activity, errors, and warnings encountered on 2012-08-10.
+########### Version 1.0, build # 11.
+

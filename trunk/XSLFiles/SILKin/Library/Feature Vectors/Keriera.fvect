@@ -1,0 +1,13 @@
+Keriera
+false
+0
+false
+21.73913
+0.0
+[gender(arg0, arg1)]
+[gender(arg0, Ego), gender(arg0, Alter), elder(Alter, Ego), younger(Alter, Ego)]
+2.014706
+false
+false
+[BroDaDa_BroDaSo_DaDaHu_DaSoWi_FaMo_FaMoSis_HuMoMo_MoFaSis_SisSoDa_SisSoSo_SoDa_SoSo_WiMoMo, BroDaDa_BroDaSo_DaDa_DaSo_FaMoBro_HuFaFa_MoFa_MoFaBro_SisSoDa_SisSoSo_SoDaHu_SoSoWi_WiFaFa, BroDa_Da_SisDa, BroDa_HuBroDa_HuSisDa_SoWi, BroSoDa_BroSoSo_DaDaHu_DaSoWi_FaFa_FaFaBro_HuMoFa_MoMoBro_SisDaDa_SisDaSo_SoDa_SoSo_WiMoFa, BroSoDa_BroSoSo_DaDa_DaSo_FaFaSis_HuFaMo_MoMo_MoMoSis_SisDaDa_SisDaSo_SoDaHu_SoSoWi_WiFaMo, BroSo_DaHu_FaBroWi_FaSis_HuBroSo_WiMo, BroSo_SisSo_So, BroWi, BroWi_FaSisDa_HuSis_MoBroDa, Bro_FaBroSo_MoSisSo, DaHu_SisSo_WiSisSo, FaBroDa_MoSisDa_Sis, FaBroWi_FaSis_HuMo, FaSisDa_FaSisSo_Hu_HuBro_MoBroDa_MoBroSo_SisHu_Wi_WiSis, FaSisSo_MoBroSo_SisHu_WiBro, Fa_FaBro_FaSisHu_HuMoBro_MoBroWiBro_SisHuMoBro_WiMoBro, HuFaSis_Mo_MoBroWi_MoSis_WiFaSis, HuFa_MoBro_MoSisHu_WiFa, SisDa_SoWi_WiSisDa, Wi]
+[CC_CCSp_PP_PPSib_SibCC_SpPP, CSp_PSib_PSibSp_SibC_SpP_SpSibC, CSp_SibC_SpSibC, C_SibC, PSibC_Sib, PSibC_SibSp_SpSib, PSibC_SibSp_Sp_SpSib, PSib_PSibSp_SpP, P_PSib_PSibSp_PSibSpSib_SibSpPSib_SpPSib, P_PSib_PSibSp_SpPSib, SibSp, Sp]

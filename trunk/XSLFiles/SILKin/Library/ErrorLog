@@ -1,0 +1,881 @@
+########### Log of errors and warnings encountered on Nov 5, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nulljava.io.FileNotFoundException: /Users/morris/Code/Library/Test Cases/-Logs & Charts/Cogui(Adr)-618-3
+.ldt (No such file or directory)
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 5, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nulljava.io.InvalidClassException: org.SIL.kin.DomainTheory; local class incompatible: stream classdesc 
+serialVersionUID = 4076854732180379223, local class serialVersionUID = -6401772432360095986
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 8, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nulljava.io.InvalidClassException: org.SIL.kin.DomainTheory; local class incompatible: stream classdesc 
+serialVersionUID = -4367128682389328078, local class serialVersionUID = 6751232393822697498
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 9, 2007.
+PROBLEM: During Leave One Out,
+nullorg.SIL.kin.KSInternalErrorException: Non-primitive predicate found in Literal.fillInNames_bool.
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 16, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nullorg.SIL.kin.KSInternalErrorException: Ego, Alter, or Chain of relations ruined in CB:pcStringReducti
+on.
+for  gagi_zhakka:0
+[gagi_zhakka:0, spice:1, step_mother:0]
+Old = [Wi(#761,#0),
+ Fa(#763,#761), Mo(#762,#761), Wi(#0,#763)].	New = [Wi(#761,#0), Mo(#0,#761), Mo(#762,#761)]
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 19, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nulljava.io.InvalidClassException: org.SIL.kin.DomainTheory; local class incompatible: stream classdesc 
+serialVersionUID = -6293440757933057988, local class serialVersionUID = 5148266275937196554
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 21, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nulljava.io.InvalidClassException: org.SIL.kin.DomainTheory; local class incompatible: stream classdesc 
+serialVersionUID = 2730610312539486288, local class serialVersionUID = -1066207150875835595
+RECOMMENDATION: DeBug!
+
+PROBLEM: During Leave One Out,
+nullorg.SIL.kin.KSBadHornClauseException: Undefined predicate 'gen<aux>51Agnatic' used in a definition.
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 23, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nullorg.SIL.kin.KSInternalErrorException: DT.lits2PCs found illegal predicate named = male
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 27, 2007.
+PROBLEM:  Illegal kinType 'child' in predToSymbol.
+RECOMMENDATION: To replace an existing theory, delete the old version, then add the new version.
+
+
+########### Log of errors and warnings encountered on Nov 27, 2007.
+PROBLEM:  Illegal kinType 'not' in predToSymbol.
+RECOMMENDATION: To replace an existing theory, delete the old version, then add the new version.
+
+
+########### Log of errors and warnings encountered on Nov 27, 2007.
+PROBLEM:  Ego, Alter, or Chain of relations ruined in CB:pcStringReduction.
+for  a_cho:0
+[]
+Old = [Mo(P%35,Ego), Mo(M%38,P%35), Fa(F%39,P%35), C(H%36,M%38), C(H%36,F%39)].	New = [Mo(P%35,Ego), Sib(H%36,P%35)]
+RECOMMENDATION: To replace an existing theory, delete the old version, then add the new version.
+
+
+########### Log of errors and warnings encountered on Nov 27, 2007.
+PROBLEM:  Ego, Alter, or Chain of relations ruined in CB:pcStringReduction.
+for  a_cho:0
+[]
+Old = [Mo(P,Ego), Mo(GP,P), Mo(GGP,GP), Mo(P%144,GGP), Mo(P%149,P%144), Mo(M%153,P%149), Fa(F%154,P%149), C(Alter,M%153)].	New = [Mo(P,Ego), Mo(GP,P), Mo(GGP,GP), Mo(P%144,GGP), Mo(P%149,P%144), Sib(Alter,P%149), Fa(F%154,P%149)]
+RECOMMENDATION: To replace an existing theory, delete the old version, then add the new version.
+
+
+########### Log of errors and warnings encountered on Nov 27, 2007.
+PROBLEM:  CB.kid2Pred given illegal PC_Str 'Mo'.
+RECOMMENDATION: To replace an existing theory, delete the old version, then add the new version.
+
+
+########### Log of errors and warnings encountered on Nov 28, 2007.
+PROBLEM: During Index generation, nullorg.SIL.kin.KSInternalErrorException: WARNING: Base clause Agta:balai:5 has no non-duplicative expan
+sions.  Remove or fix it.
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 28, 2007.
+PROBLEM: During Test 1,
+nullorg.SIL.kin.KSInternalErrorException: Out-of-Sequence expansion number = cross_gen<aux>02:0
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 28, 2007.
+PROBLEM: During Test 1,
+nullorg.SIL.kin.KSInternalErrorException: Out-of-Sequence expansion number = cross_gen<aux>02:0
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 28, 2007.
+PROBLEM: During Index generation, nullorg.SIL.kin.KSInternalErrorException: WARNING: Base clause Marathi:mehuna:5 has no non-duplicative e
+xpansions.  Remove or fix it.
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 28, 2007.
+PROBLEM: During Index generation, nullorg.SIL.kin.KSInternalErrorException: WARNING: Base clause Marathi:mehuni:4 has no non-duplicative e
+xpansions.  Remove or fix it.
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 28, 2007.
+PROBLEM: During merger of Index files,
+nullorg.SIL.kin.JavaSystemException: IO Error in PredEncodings: java.io.
+FileNotFoundException: /Users/morris/Code/Library/PredEncodings (No such file or directory)
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 28, 2007.
+PROBLEM: During Leave One Out,
+nullorg.SIL.kin.JavaSystemException: weightVector File Not Found:
+java.io.
+FileNotFoundException: /Users/morris/Code/Library/WeightVector (No such file or directory)
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 28, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nullorg.SIL.kin.KSInternalErrorException: CB with no expansions in perfectFit:
+mother(A, Ego),
+ mother(B, A), mother(C, B), father(D, C), father(E, D), sister(F, E), daughter(G, F),
+ daughter(Alter, G){MoMoMoFaFaSisDaDa}  .
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 29, 2007.
+PROBLEM: During Leave One Out,
+nullorg.SIL.kin.KSInternalErrorException: CB with branching predicates in perfectFit:
+father(A, Ego), fa
+ther(B, A), half_brother(Alter, B){FaFaHsis}  .
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 29, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nullorg.SIL.kin.KSInternalErrorException: CB with branching predicates in perfectFit:
+father(A, Ego), fa
+ther(B, A), half_brother(Alter, B){FaFaHsis}  .
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 29, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nullorg.SIL.kin.KSInternalErrorException: Failed to find a half_sister in dyadVarBindings.
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 29, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nullorg.SIL.kin.KSInternalErrorException: Failed to find a half_sister in dyadVarBindings.
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 29, 2007.
+PROBLEM: During Leave One Out,
+nullorg.SIL.kin.KinshipSystemException: No new Egos available in Simulation
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 29, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nullorg.SIL.kin.KSInternalErrorException: Failed to find a half_sister in dyadVarBindings.
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Nov 29, 2007.
+PROBLEM:  The following clause contains single references to 'P2', 'P3'.
+[parents(P1, Ego), parents(P2, P1), siblings(Alter, P3)]
+This makes no sense.
+
+Current = period: .
+On Line # 128  Character Position: 59 of /Users/morris/Code/Domain Theories/Agta Domain Theory
+RECOMMENDATION: Correct this line number & try again.
+
+
+########### Log of errors and warnings encountered on Dec 1, 2007.
+PROBLEM: During Leave One Out,
+nullorg.SIL.kin.KSInternalErrorException: CB with no expansions in perfectFit:
+father(A, Ego),
+ father(B, A), father(C, B), father(D, C), brother(E, D), son(F, E), son(G, F),
+ daughter(Alter, G){FaFaFaFaBroSoSoDa}  .
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Dec 3, 2007.
+PROBLEM: During Leave One Out,
+nullorg.SIL.kin.KSInternalErrorException: CB.reassignArgNames_NewFront got front literal with existing a
+rgs.
+RECOMMENDATION: DeBug!
+
+PROBLEM: During Leave-1-Instant-Replay,
+nullorg.SIL.kin.KSInternalErrorException: CB.reassignArgNames_NewFront got front literal with existing a
+rgs.
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Dec 3, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nullorg.SIL.kin.KSParsingErrorException: Specified kinTerm 'saxa<aux>R1' not found.
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Dec 3, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nullorg.SIL.kin.KSParsingErrorException: Attempt to re-define kinTerm jate_zhakka<aux>1
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Dec 3, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nullorg.SIL.kin.KSParsingErrorException: Attempt to re-define kinTerm jate_zhakka<aux>1
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Dec 5, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nulljava.io.InvalidClassException: org.SIL.kin.DomainTheory; local class incompatible: stream classdesc 
+serialVersionUID = 842894292279033403, local class serialVersionUID = -84005036284244993
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Dec 5, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nullorg.SIL.kin.KSParsingErrorException: Attempt to re-define kinTerm saxa<temp_aux>1
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Dec 5, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nullorg.SIL.kin.KSParsingErrorException: Attempt to re-define kinTerm jaku<aux>1
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Dec 6, 2007.
+PROBLEM: During Leave One Out,
+nullorg.SIL.kin.KSBadHornClauseException: Undefined predicate 'sibling_in_law<aux>43' used in a definiti
+on.
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Dec 12, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nullorg.SIL.kin.KSInternalErrorException: DT.allLGGLits cannot follow path to alter:
+Path = 
+[#2820: *&^%$  (F), born Jan 1, 2078.
+Kin Term Name History: jiparamecu(1):0 jiparamecu(1):0 jiparam
+eco(1):0 jiparameco(1):0 jiparamecu(1):0 jiparamecu(1):0 jiparamecu(1):0 jiparamecu(1):0 jiparamecu(
+1):0 jiparamecu(1):0 jiparamecu(1):0 jiparamecu(1):0 .
+     BirthFamily: 1093
+     Marriages:
+      
+    Family#1214: I-2820,  I-3122
+          Family#1234: I-2820,
+  I-3142
+          Family#1642: I-2820,  I-4025
+          Family#1662: I-2820,  I-4045
+,
+ #2818: *&^%$  (F), born Jan 1, 2057.
+Kin Term Name History: jiparamecu(1):0 jiparamecu(1):0 jiparam
+eco(1):0 jiparameco(1):0 jiparamecu(1):0 jiparamecu(1):0 remiariru(1):171& jiparamecu(1):0 jiparamec
+u(1):0 jiparamecu(1):0 jiparamecu(1):0 jiparamecu(1):0 jiparamecu(1):0 .
+
+     BirthFamily: 1092
+     Marriages:
+          Family#1093: I-2819,  I-2818
+,
+ #2817: Presumed Spouse  (F), born Jan 1, 2036.
+     BirthFamily: 2305
+     Marriages:
+          Fam
+ily#1092: I-2816,  I-2817
+, #2816: *&^%$  (M), born Jan 1, 2036.
+
+     BirthFamily: 1044
+     Marriages:
+          Family#1092: I-2816,  I-2817
+,
+ #2934: *&^%$  (M), born Jan 1, 2058.
+Kin Term Name History: remiariru(1):65& .
+
+     BirthFamily: 1092
+     Marriages:
+          Family#1135: I-2934,  I-2935
+,
+ #2935: Presumed Spouse  (F), born Jan 1, 2058.
+Kin Term Name History: royo(3122):12& .
+
+     Marriages:
+          Family#1135: I-2934,  I-2935
+]
+pcString = WiMoBroWi
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Dec 12, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nullorg.SIL.kin.KSInternalErrorException: DT.allLGGLits cannot follow path to alter:
+Path = 
+[#2820: *&^%$  (F), born Jan 1, 2078.
+Kin Term Name History: jiparamecu(1):0 jiparamecu(1):0 jiparam
+eco(1):0 jiparameco(1):0 jiparamecu(1):0 jiparamecu(1):0 jiparamecu(1):0 jiparamecu(1):0 jiparamecu(
+1):0 jiparamecu(1):0 jiparamecu(1):0 jiparamecu(1):0 .
+     BirthFamily: 1093
+     Marriages:
+      
+    Family#1214: I-2820,  I-3122
+          Family#1234: I-2820,
+  I-3142
+          Family#1642: I-2820,  I-4025
+          Family#1662: I-2820,  I-4045
+,
+ #2818: *&^%$  (F), born Jan 1, 2057.
+Kin Term Name History: jiparamecu(1):0 jiparamecu(1):0 jiparam
+eco(1):0 jiparameco(1):0 jiparamecu(1):0 jiparamecu(1):0 remiariru(1):171& jiparamecu(1):0 jiparamec
+u(1):0 jiparamecu(1):0 jiparamecu(1):0 jiparamecu(1):0 jiparamecu(1):0 .
+
+     BirthFamily: 1092
+     Marriages:
+          Family#1093: I-2819,  I-2818
+,
+ #2817: Presumed Spouse  (F), born Jan 1, 2036.
+     BirthFamily: 2305
+     Marriages:
+          Fam
+ily#1092: I-2816,  I-2817
+, #2816: *&^%$  (M), born Jan 1, 2036.
+
+     BirthFamily: 1044
+     Marriages:
+          Family#1092: I-2816,  I-2817
+,
+ #2934: *&^%$  (M), born Jan 1, 2058.
+Kin Term Name History: remiariru(1):65& .
+
+     BirthFamily: 1092
+     Marriages:
+          Family#1135: I-2934,  I-2935
+,
+ #2935: Presumed Spouse  (F), born Jan 1, 2058.
+Kin Term Name History: royo(3122):12& .
+
+     Marriages:
+          Family#1135: I-2934,  I-2935
+]
+pcString = WiMoBroWi
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Dec 13, 2007.
+PROBLEM: During Leave-1-Instant-Replay,
+nullorg.SIL.kin.KSBadHornClauseException: Undefined predicate 'elder_para_gen<aux>11' used in a definiti
+on.
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Dec 13, 2007.
+PROBLEM: During Leave One Out,
+nullorg.SIL.kin.KSInternalErrorException: DT.allLGGLits cannot follow path to alter:
+Path = 
+[#20: *&^%$  (M), born Jan 1, 1928 & died Apr 15, 1958.
+     Marriages:
+          Family#9: I-20,  I
+-19
+, #19: *&^%$  (F), born Jan 1, 1928 & died Apr 15, 1958.
+     Marriages:
+          Family#8: I-1
+4,  I-19
+          Family#9: I-20,  I-19
+, #14: Presumed Spouse  (M), born Jan 1, 1928.
+
+Kin Term Name History: weetega(2):1 .
+     BirthFamily: 21
+     Marriages:
+          Family#5: I-14
+,  I-13
+          Family#8: I-14,  I-19
+, #22: *&^%$  (M), born Jan 1, 1951.
+
+Kin Term Name History: weenagee(2):1 .
+     BirthFamily: 5
+     Marriages:
+          Family#10: I-2
+2,  I-23
+, #74: *&^%$  (M), born Jan 1, 1973.
+Kin Term Name History: weenagee(2):33 .
+
+     BirthFamily: 10
+     Marriages:
+          Family#900: I-74,  I-2361
+,
+ #2362: *&^%$  (M), born Jan 1, 1994.
+Kin Term Name History: weetushpa(21):860& .
+
+     BirthFamily: 900
+     Marriages:
+          Family#1075: I-2362,  I-2702
+]
+pcString = HbroSoSo
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Dec 14, 2007.
+PROBLEM in Parsing:  parseLiteral seeking leftParen.
+Current = comma: ,
+On Line # 82  Character Position: 27 of /Users/morris/Code/Temp BackUp/Omaha-82 Dom Thy
+					   |  half_sisterAlter,Ego)).
+RECOMMENDATION: Correct this line number & try again.
+
+PROBLEM: During Index generation, nullorg.SIL.kin.KSInternalErrorException: WARNING: Base clause Omaha-19:weesonga:1 has no non-duplicativ
+e expansions.  Remove or fix it.
+RECOMMENDATION: DeBug!
+
+PROBLEM with Omaha-19:  Attempt to over-write existing Domain Theory (Reference) for language Omaha-19
+RECOMMENDATION: To replace an existing theory, delete the old version, then add the new version.
+
+
+########### Log of errors and warnings encountered on Dec 14, 2007.
+PROBLEM: During Leave One Out,
+nullorg.SIL.kin.KSParsingErrorException: Specified kinTerm 'sister<eq>1<F_aux>' not found.
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Dec 14, 2007.
+PROBLEM: During Leave One Out,
+nullorg.SIL.kin.KSInternalErrorException: DT.allLGGLits cannot follow path to alter:
+Path = 
+[#925: Presumed Spouse  (M), born Jan 1, 1949.
+     BirthFamily: 313
+     Marriages:
+          Famil
+y#303: I-925,  I-924
+          Family#1101: I-925,  I-2928
+, #947: *&^%$  (F), born Jan 1,
+ 1928.
+     BirthFamily: 314
+     Marriages:
+          Family#313: I-948,
+  I-947
+          Family#412: I-1158,  I-947
+, #2573: *&^%$  (F), born Jan 1, 1950.
+
+     BirthFamily: 313
+     Marriages:
+          Family#950: I-2574,  I-2573
+,
+ #2574: Presumed Spouse  (M), born Jan 1, 1950.
+Kin Term Name History: neviniavi(0):26& .
+
+     Marriages:
+          Family#950: I-2574,  I-2573
+]
+pcString = FaHsisHu
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Dec 15, 2007.
+PROBLEM:  parseLiteral seeking leftParen.
+Current = comma: ,
+On Line # 164  Character Position: 40 of /Users/morris/Code/Domain Theories/Wandamen Domain Theory
+					 |  <ext>, parents(P,Ego), siblings,(A,P), daughter(D,A), husband(Alter,D).
+RECOMMENDATION: Correct this line number & try again.
+
+PROBLEM:  parseLiteral seeking leftParen.
+Current = comma: ,
+On Line # 166  Character Position: 55 of /Users/morris/Code/Domain Theories/Wandamen Domain Theory
+					 |  <ext>, parents(P,Ego), parents(P2,P), siblings,(A,P2), daughter(D,A), husband(Alter,D).
+RECOMMENDATION: Correct this line number & try again.
+
+
+########### Log of errors and warnings encountered on Dec 18, 2007.
+PROBLEM: During Leave One Out,
+nullorg.SIL.kin.KSInternalErrorException: DyadTMap's dyad count is corrupted
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Dec 18, 2007.
+PROBLEM: During Leave One Out,
+nullorg.SIL.kin.KSInternalErrorException: DyadTMap's dyad count is corrupted
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Dec 18, 2007.
+PROBLEM: During Leave One Out,
+nullorg.SIL.kin.KSInternalErrorException: No pos Dyads found in DT.doLGG.
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Dec 18, 2007.
+PROBLEM: During Leave One Out,
+nullorg.SIL.kin.KSInternalErrorException: No pos Dyads found in DT.doLGG.
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Dec 19, 2007.
+PROBLEM: During Leave One Out,
+nullorg.SIL.kin.KSInternalErrorException: Found Repudiation of a WholeDef: mengke
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Feb 15, 2008.
+PROBLEM: During Leave-1-Instant-Replay,
+nulljava.io.InvalidClassException: org.SIL.kin.LiteralAbstract2; local class incompatible: stream classd
+esc serialVersionUID = 6929913480453480325, local class serialVersionUID = 6206261443744758597
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Jul 15, 2009.
+PROBLEM: During User Simulation,
+nulljava.io.InvalidClassException: org.SIL.kin.Context; local class incompatible: stream classdesc seria
+lVersionUID = 2006970689310328865, local class serialVersionUID = -3075924962581562027
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Jul 15, 2009.
+PROBLEM in Parsing:  Attempt to re-define kinTerm brother
+RECOMMENDATION: Correct this line number & try again.
+
+
+########### Log of errors and warnings encountered on Jul 15, 2009.
+PROBLEM in Parsing:  Attempt to re-define kinTerm brother
+in DomainTheory Agta
+RECOMMENDATION: Correct this line number & try again.
+
+
+########### Log of errors and warnings encountered on Jul 15, 2009.
+PROBLEM: Internal Error:  org.SIL.kin.AList
+RECOMMENDATION: Submit Bug Report.
+
+
+########### Log of errors and warnings encountered on Jul 17, 2009.
+PROBLEM:  Attempting to over-write existing Domain Theory in Library.
+RECOMMENDATION: To replace an existing theory, delete the old version, then add the new version.
+
+PROBLEM: Internal Error:  org.SIL.kin.AList
+RECOMMENDATION: Submit Bug Report.
+
+
+########### Log of errors and warnings encountered on Jul 20, 2009.
+PROBLEM: During User Simulation,
+nulljava.io.InvalidClassException: org.SIL.kin.Context; local class incompatible: stream classdesc seria
+lVersionUID = -3075924962581562027, local class serialVersionUID = 4615144913072374950
+RECOMMENDATION: DeBug!
+
+
+########### Log of errors and warnings encountered on Jul 20, 2009.
+While saving a context, java.lang.NullPointerException
+
+
+########### Log of errors and warnings encountered on Jul 20, 2009.
+While saving a context, java.lang.NullPointerException
+
+While saving a context, java.lang.NullPointerException
+
+
+########### Log of errors and warnings encountered on Jul 24, 2009.
+Error while parsing integers in the UDP Editor.
+java.lang.NumberFormatException: For input string: ""
+Your 'Default Value' can't be accepted as that type.
+Please try again.
+java.lang.NumberFormatException: For input string: ""Error while parsing integers in the UDP Editor.
+java.lang.NumberFormatException: For input string: ""
+Your 'Default Value' can't be accepted as that type.
+Please try again.
+java.lang.NumberFormatException: For input string: ""Error while parsing integers in the UDP Editor.
+java.lang.NumberFormatException: For input string: ""
+Your 'Default Value' can't be accepted as that type.
+Please try again.
+java.lang.NumberFormatException: For input string: ""
+########### Log of errors and warnings encountered on Jul 24, 2009.
+Error while parsing integers in the UDP Editor.
+java.lang.NumberFormatException: For input string: ""
+Your 'Default Value' can't be accepted as that type.
+Please try again.
+java.lang.NumberFormatException: For input string: ""
+########### Log of errors and warnings encountered on Jul 24, 2009.
+While editing a context, org.SIL.kin.JavaSystemException: UserContext File Not Found:
+java.io.InvalidClassException: org.SIL.kin.Context; local class incompatible: stream classdesc serialVersionUID = 4615144913072374950, local class serialVersionUID = 3831616612964617214
+
+
+########### Log of errors and warnings encountered on May 22, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: ERROR: Found '?' (an illegal character).  State = 14
+1:	<?xml version="1.0"?>
+
+
+
+########### Log of errors and warnings encountered on May 24, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: ERROR: Found ' ' (an illegal character).  State = 24
+1:	<?xml version="1.0"?>
+
+
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: ERROR: Found ' ' (an illegal character).  State = 24
+1:	<?xml version="1.0"?>
+
+
+While editing a context, java.lang.NullPointerException
+
+
+########### Log of errors and warnings encountered on May 24, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: ERROR: Found '.' (an illegal character).  State = 24
+1:	<?xml version="1.0"?>
+
+
+
+########### Log of errors and warnings encountered on May 24, 2010.
+While opening a KinshipEditor (.silk) file:
+java.lang.StringIndexOutOfBoundsException: String index out of range: -1
+
+
+########### Log of errors and warnings encountered on May 24, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: ERROR: Found '>' (an illegal character).  State = 0
+1:	<?xml version="1.0"?>
+
+
+
+########### Log of errors and warnings encountered on May 24, 2010.
+While opening a KinshipEditor (.silk) file:
+java.lang.NullPointerException
+
+
+########### Log of errors and warnings encountered on May 24, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: parseHeaderOpts seeking leftParen or symbol.
+Current = $: null
+On Line # 0  Character Position: 0 of /Users/morris/Code/SILK Files/English.thy
+null
+
+
+########### Log of errors and warnings encountered on May 24, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: parseFamilyCensus seeking flag '<familyCensus>'.
+Current = flag: </familyCensus>
+On Line # 15  Character Position: 0 of /Users/morris/Code/SILK Files/English_rev-12.silk
+<matrix>
+
+
+########### Log of errors and warnings encountered on May 24, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: parseBody seeking the end flag '</familyCensus>'. 
+Current = flag: <matrix>
+On Line # 16  Character Position: 0 of /Users/morris/Code/SILK Files/English_rev-12.silk
+</matrix>
+
+
+########### Log of errors and warnings encountered on May 24, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: parseMatrix seeking the end flag '</matrix>'. 
+Current = flag: <dyadsUndefinedRef>
+On Line # 18  Character Position: 0 of /Users/morris/Code/SILK Files/English_rev-12.silk
+</dyadsUndefinedRef>
+
+
+########### Log of errors and warnings encountered on May 24, 2010.
+While opening a KinshipEditor (.silk) file:
+java.lang.NullPointerException
+
+
+########### Log of errors and warnings encountered on May 25, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSInternalErrorException: This will over-write an already-active domain theory.
+
+
+########### Log of errors and warnings encountered on May 25, 2010.
+While opening a KinshipEditor (.silk) file:
+java.lang.IndexOutOfBoundsException: Index: 171, Size: 0
+
+
+########### Log of errors and warnings encountered on May 25, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: parseUDPs seeking a flag: '</UDP>' or '</parameters>'. 
+Current = flag: <userDefinedProperties>
+On Line # 26  Character Position: 0 of /Users/morris/Code/SILK Files/English_rev-13.silk
+<userDefinedProperties>
+
+
+########### Log of errors and warnings encountered on May 25, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: parseIndividuals seeking tags '<individual>' or '</individualCensus>',
+but found <serialNmbr>
+Current = flag: <serialNmbr>
+On Line # 32  Character Position: 0 of /Users/morris/Code/SILK Files/English_rev-13.silk
+<serialNmbr>1</serialNmbr>
+
+
+########### Log of errors and warnings encountered on May 25, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: parseNullOrString looking for null or a parseable date string.
+Current = string: 
+On Line # 3184  Character Position: 13 of /Users/morris/Code/SILK Files/English_rev-13.silk
+<divorceDate> "" </divorceDate>
+
+
+########### Log of errors and warnings encountered on May 25, 2010.
+While opening a KinshipEditor (.silk) file:
+java.lang.ClassCastException: java.lang.String
+
+
+########### Log of errors and warnings encountered on May 26, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: parseMoreTerms seeking comma or end flag (e.g. '</PR>').
+Current = flag: </PR>
+On Line # 3792  Character Position: 32 of /Users/morris/Code/SILK Files/English_rev-13.silk
+	<cell> 2 <PR> "ancestor", "mom"</PR></cell>
+
+
+########### Log of errors and warnings encountered on May 26, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: parseDyadKinTerm seeking a string (kinTerm).
+Current = symbol: ancestor
+On Line # 3944  Character Position: 13 of /Users/morris/Code/SILK Files/English_rev-13.silk
+	<kinType> Fa
+
+
+########### Log of errors and warnings encountered on May 26, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: ERROR: Found '
+' (an illegal character).  State = 4
+3945:		<kinType> Fa
+
+
+
+########### Log of errors and warnings encountered on May 26, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: ERROR: Found '
+' (an illegal character).  State = 4
+3945:		<kinType> Fa
+
+
+
+########### Log of errors and warnings encountered on May 26, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: nextPair did not find a valid value-string in "1" counters="1 0 0" kinTermType="0" addrOrRef="0" ego="0" alter="3" path="" confirmed="false" challenged="false" />
+Current = onePcTag: <dyad level="1" counters="1 0 0" kinTermType="0" addrOrRef="0" ego="0" alter="3" path="" confirmed="false" challenged="false" />
+On Line # 3946  Character Position: 0 of /Users/morris/Code/SILK Files/English_rev-16.silk
+	</kinType>
+
+
+########### Log of errors and warnings encountered on May 26, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: parseMultiIntString encountered invalid multi-integer string: <dyad level="1" counters="1 0 0" kinTermType="0" addrOrRef="0" ego="0" alter="3" path="" confirmed="false" challenged="false" />
+Current = onePcTag: <dyad level="1" counters="1 0 0" kinTermType="0" addrOrRef="0" ego="0" alter="3" path="" confirmed="false" challenged="false" />
+On Line # 3946  Character Position: 0 of /Users/morris/Code/SILK Files/English_rev-16.silk
+	</kinType>
+
+
+########### Log of errors and warnings encountered on May 26, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: parseMultiIntString encountered invalid multi-integer string:  0, 0
+Current = onePcTag: <dyad level="1" counters="1, 0, 0" kinTermType="0" addrOrRef="0" ego="0" alter="3" path="" confirmed="false" challenged="false" />
+On Line # 3946  Character Position: 0 of /Users/morris/Code/SILK Files/English_rev-17.silk
+	</kinType>
+
+
+########### Log of errors and warnings encountered on May 26, 2010.
+While opening a KinshipEditor (.silk) file:
+java.lang.NullPointerException
+
+
+########### Log of errors and warnings encountered on May 26, 2010.
+While opening a KinshipEditor (.silk) file:
+java.lang.NullPointerException
+
+
+########### Log of errors and warnings encountered on May 28, 2010.
+While saving a context, java.lang.NullPointerException
+
+
+########### Log of errors and warnings encountered on May 29, 2010.
+While saving a context, java.lang.NullPointerException
+
+
+########### Log of errors and warnings encountered on Jun 2, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: ERROR: Found '/' (an illegal character).  State = 3
+14:	<typ> individual</typ>
+
+
+
+########### Log of errors and warnings encountered on Jun 2, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: ERROR: Found '/' (an illegal character).  State = 3
+14:	<typ> individual</typ>
+
+
+
+########### Log of errors and warnings encountered on Jun 2, 2010.
+While opening a KinshipEditor (.silk) file:
+java.lang.NullPointerException
+
+
+########### Log of errors and warnings encountered on Jun 28, 2010.
+PROBLEM: During User Simulation,
+nulljava.io.InvalidClassException: org.SIL.kin.Context; local class incompatible: stream classdesc seria
+lVersionUID = 4615144913072374950, local class serialVersionUID = 3831616612964617214
+RECOMMENDATION: DeBug!
+
+PROBLEM in Parsing:  Attempt to re-define kinTerm brother
+in DomainTheory Agta
+RECOMMENDATION: Correct this line number & try again.
+
+
+########### Log of errors and warnings encountered on Jun 28, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSInternalErrorException: This will over-write an already-active domain theory.
+
+
+########### Log of errors and warnings encountered on Jun 28, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: parseBody seeking the end flag '</parameters>'. 
+Current = flag: <individualCensus>
+On Line # 12  Character Position: 0 of /Users/morris/Code/SILK Files/Berik.silk
+<individual>
+
+
+########### Log of errors and warnings encountered on Jun 29, 2010.
+While opening a KinshipEditor (.silk) file:
+java.lang.NullPointerException
+
+
+########### Log of errors and warnings encountered on Jun 29, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: Language name in .silk file (Cogui) 
+differs from name in .thy file(Cogui(Adr)).
+Current = flag: </theory>
+On Line # 7  Character Position: 25 of /Users/morris/Code/SILK Files/Cogui.silk
+<createDate> "Jun 28, 2010" </createDate>
+
+
+########### Log of errors and warnings encountered on Jun 29, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSParsingErrorException: parseBody found unknown flag '<dyadsUndefinedAdr>'. 
+Current = flag: <dyadsUndefinedAdr>
+On Line # 71956  Character Position: 0 of /Users/morris/Code/SILK Files/Cogui.silk
+<dyadsUndefinedAdr>
+
+
+########### Log of errors and warnings encountered on Jun 29, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSInternalErrorException: Attempt to over-write existing Domain Theory (Address) for language Cogui(Adr)
+
+
+########### Log of errors and warnings encountered on Jun 29, 2010.
+While opening a KinshipEditor (.silk) file:
+org.SIL.kin.KSInternalErrorException: This will over-write an already-active domain theory.
+
+
+########### Log of errors and warnings encountered on Jun 29, 2010.
+While editing a context, java.lang.NullPointerException
+
+
+########### Log of errors and warnings encountered on Oct 1, 2010.
+While editing a context, org.SIL.kin.JavaSystemException: UserContext File Not Found:
+java.io.InvalidClassException: org.SIL.kin.Context; local class incompatible: stream classdesc serialVersionUID = 3831616612964617214, local class serialVersionUID = 4789534280397420441
+
+

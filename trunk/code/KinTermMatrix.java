@@ -71,7 +71,7 @@ public class KinTermMatrix implements Serializable {
     public void deleteKinTerm(int ego, int alter, String kinTerm, boolean adr) {
         TreeMap egoRow = (TreeMap)matrix.get(ego);
         Node nod = (Node)egoRow.get(alter);
-        ArrayList<Object> lst = (adr ? nod.kinTermsAddr : nod.kinTermsAddr);
+        ArrayList<Object> lst = (adr ? nod.kinTermsAddr : nod.kinTermsRef);
         lst.remove(kinTerm);
     }
     

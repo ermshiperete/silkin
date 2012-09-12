@@ -16,7 +16,13 @@ public class UDPEditor extends KSJInternalFrame {
 
     public Context ctxt;
     public KSJInternalFrame ctxtEd;
-    public boolean newUDP, newSingleValue, validValsChanged = false, defaultValExists = false;
+    public boolean newUDP, newSingleValue, 
+                   validValsChanged = false, 
+                   defaultValExists = false,
+                   name1Changed = false,
+                   certainTextChanged = false,
+                   defaultTextChanged = false,
+                   reName = false;
     public UserDefinedProperty theUDP;	//  The various newxxx fields are holders for the
     public String newStarName, newType; //  new values entered into this editor.
     public ArrayList<Object> newValidEntries;   //  After validation, they'll be stored on theUDP.
@@ -25,11 +31,12 @@ public class UDPEditor extends KSJInternalFrame {
     UDPListener listener;
     JComboBox typePick;
     JRadioButton nocertain, yescertain, yesdefault, nodefault, nomulti;
-    JTextField name_1, certainText, defaultText, minText, maxText;
+    JTextField minText, maxText;
+    JTextArea certainText, name_1, defaultText;      
     JLabel certainEditLabel, defeditLabel;
     JButton udpCheckSave;
-    JProgressBar progressBar;			//  These 2 elements of the editor GUI are accessed 
-    JPanel progBox;						//  by the Listener
+//  This element of the editor GUI is accessed by the Listener
+    JPanel progBox;
 
     public UDPEditor(Context cntxt, KSJInternalFrame ctEd, String title, boolean newUDPee,
             UserDefinedProperty theUDPee) {
@@ -53,13 +60,14 @@ public class UDPEditor extends KSJInternalFrame {
         //  NAME BOX
         JPanel nameBox = new JPanel();
         nameBox.setLayout(new BoxLayout(nameBox, BoxLayout.LINE_AXIS));
-        name_1 = new JTextField("*", 28);
+        name_1 = new JTextArea();
         if (!newUDP) {
             name_1.setText(theUDP.starName);
+        }else {
+            name_1.setText("*");
         }
         name_1.setMaximumSize(new Dimension(225, 22));
-        name_1.addActionListener(listener);
-        name_1.setActionCommand("name edit");
+        name_1.getDocument().addDocumentListener(new Name1Listener());
         JLabel nameLabel = new JLabel("UDP Name: ");
         nameBox.add(nameLabel);
         nameBox.add(name_1);
@@ -68,9 +76,9 @@ public class UDPEditor extends KSJInternalFrame {
         nameBox.setAlignmentX(0.5f);
         String lab;
         if (newUDP) {
-            lab = "Enter name (starting with '*'), hit 'Enter' key.";
+            lab = "Enter name (starting with '*').";
         } else {
-            lab = "Edit name, then press 'Enter' key.";
+            lab = "Edit name.";
         }
         JLabel nameEdLabel = new JLabel(lab);
         nameEdLabel.setAlignmentX(0.5f);
@@ -162,7 +170,7 @@ public class UDPEditor extends KSJInternalFrame {
         certainBox.add(yescertain);
         certainBox.add(nocertain);
 
-        certainText = new JTextField();
+        certainText = new JTextArea();
         certainText.setMinimumSize(new Dimension(400, 30));
         certainText.setMaximumSize(new Dimension(400, 30));
         certainText.setAlignmentX(0.5f);
@@ -174,11 +182,10 @@ public class UDPEditor extends KSJInternalFrame {
             certainText.setEditable(false);
         } else {
             certainText.setEditable(true);
-            certainEditLabel.setText("Edit list of values, then hit 'Enter'.");
+            certainEditLabel.setText("Edit list of values.");
             newValidEntries = theUDP.validEntries;
             certainText.setText(theUDP.getValidEntriesString());
-            certainText.addActionListener(listener);
-            certainText.setActionCommand("certainText edit");
+            certainText.getDocument().addDocumentListener(new CertainTextListener());
         }  //  end of it's restricted
         editor.add(Box.createRigidArea(new Dimension(0, 4)));
         editor.add(certainBox);
@@ -203,7 +210,7 @@ public class UDPEditor extends KSJInternalFrame {
         defaultBox.add(defaultLabel);
         defaultBox.add(yesdefault);
         defaultBox.add(nodefault);
-        defaultText = new JTextField();
+        defaultText = new JTextArea();
         defaultText.setMinimumSize(new Dimension(400, 30));
         defaultText.setMaximumSize(new Dimension(400, 30));
         defaultText.setAlignmentX(0.5f);
@@ -216,12 +223,11 @@ public class UDPEditor extends KSJInternalFrame {
             defaultValExists = false;
         } else {
             defaultText.setEditable(true);
-            defeditLabel.setText("Edit the default value, then hit 'Enter'.");
+            defeditLabel.setText("Edit the default value.");
             newDefaultValue = theUDP.defaultValue;
             yesdefault.setSelected(true);
             defaultText.setText(theUDP.defaultValue.toString());
-            defaultText.addActionListener(listener);
-            defaultText.setActionCommand("defaultText edit");
+            defaultText.getDocument().addDocumentListener(new DefaultTextListener());
             defaultValExists = true;
         }  //  end of there is a default value
         editor.add(Box.createRigidArea(new Dimension(0, 4)));
@@ -299,12 +305,8 @@ public class UDPEditor extends KSJInternalFrame {
             progMod = " new UDP.";
         }
         JLabel progLabel = new JLabel("Updating " + ctxt.indSerNumGen + " persons with the" + progMod);
-        progressBar = new JProgressBar(0, ctxt.indSerNumGen);
-        progressBar.setValue(0);
-        progressBar.setStringPainted(true);
         progBox.add(progLabel);
-        progBox.add(progressBar);
-        //  progBox.setVisible(false);
+        progBox.setVisible(false);
         editor.add(Box.createRigidArea(new Dimension(0, 6)));
         editor.add(progBox);
 
@@ -319,74 +321,357 @@ public class UDPEditor extends KSJInternalFrame {
         setVisible(true);
     }  //  end of UDPEditor constructor
 
-    public class UDPListener implements ActionListener {
+   public void flipFinalBtn(String saveORnot) {
+        if (saveORnot.equals("save")) {
+            udpCheckSave.setActionCommand("save");
+            udpCheckSave.setText("Save");
+        } //  end of flip to SAVE
+        else {
+            udpCheckSave.setActionCommand("check");
+            udpCheckSave.setText("Check for Errors");
+        }  //  end of flip to CHECK
+    }  //  end of method flipFinalBtn
+
+    public void validateCertainVals() {
+        //  Can't get here if typ = indiv or boolean
+        validValsChanged = true;
+        String theVals = certainText.getText();
+        ArrayList<Object> safetyNet = new ArrayList<Object>(newValidEntries);  // in case the edits were bad
+        newValidEntries.clear();
+        int start = 0, nextComma = 0, length = theVals.length();
+        //  In effect, we reverse the logic of getValidEntriesString
+        try {
+            if (newType.equals("string")) {
+                while (nextComma < length) {
+                    nextComma = theVals.substring(start).indexOf(",");
+                    if (nextComma == -1) {
+                        nextComma = length;
+                    } else {
+                        nextComma += start;
+                    }
+                    newValidEntries.add(theVals.substring(start, nextComma).trim());
+                    start = nextComma + 1;
+                }
+                // Now test for embedded blanks == missing commas in theVals
+                for (Object o : newValidEntries) {
+                    String s = (String) o, msg;
+                    if (s.contains(" ")) {
+                        msg = "Embedded blanks found in '" + s + "'\n"
+                                + "Separate values with commas. Use underscores in compound words.";
+                        throw new KSConstraintInconsistency(msg);
+                    }
+                    try {
+                        PersonPanel.sanitizeKinTerms(this, s, "this value");
+                    } catch (KSParsingErrorException exc) {
+                        msg = "In value '" + s + "': " + exc.toString();
+                        throw new KSConstraintInconsistency(msg);
+                    }
+                }  //  end of typ = string
+            } else if (newType.equals("integer")) {
+                while (nextComma < length) {
+                    nextComma = theVals.substring(start).indexOf(",");
+                    if (nextComma == -1) {
+                        nextComma = length;
+                    } else {
+                        nextComma += start;
+                    }
+                    newValidEntries.add(new Integer(theVals.substring(start, nextComma).trim()));
+                    start = nextComma + 1;
+                }
+            } //  //  end of typ = int
+            else if (newType.equals("float")) {
+                while (nextComma < length) {
+                    nextComma = theVals.substring(start).indexOf(",");
+                    if (nextComma == -1) {
+                        nextComma = length;
+                    } else {
+                        nextComma += start;
+                    }
+                    newValidEntries.add(new Float(theVals.substring(start, nextComma).trim()));
+                    start = nextComma + 1;
+                }
+            }  //  end of typ = float
+        } catch (NumberFormatException nfe) {
+            if (MainPane.activity == null) {
+                MainPane.createActivityLog(desktop, menuView);
+            }
+            String eMsg = "The Data Type you chose is '" + newType + ".'\n"
+                    + "Your entries can't be accepted as that type.\nPlease try again.";
+            MainPane.activity.log.append("While parsing 'int' Valid Entries:\n" + nfe + "\n" + eMsg);
+            JOptionPane.showMessageDialog(this, eMsg, "Type Violation", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        } catch (Exception exc) {
+            if (MainPane.activity == null) {
+                MainPane.createActivityLog(desktop, menuView);
+            }
+            String eMsg = "Error while parsing " + newType + "s in the UDP Editor.\n" + exc + "\n"
+                    + "Your entries can't be accepted as that type.\nPlease try again.";
+            MainPane.activity.log.append(eMsg + "\n" + exc);
+            JOptionPane.showMessageDialog(this, eMsg, "Type Violation", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }  //  end of catch blocks
+        flipFinalBtn("check");
+        certainTextChanged = false;
+        return;
+    }  //  end of method validateCertainVals()
+
+    public boolean validateDefaultVal() {
+        //  Can't get here if typ = indiv
+        if (!defaultValExists) {
+            return true;  //  Nothing to validate
+        }
+        String defVal = defaultText.getText();
+        Object safetyNet = newDefaultValue;
+        if (defVal.length() > 0) {
+            try {
+                if (newType.equals("string")) {
+                    newDefaultValue = defVal;
+                } else if (newType.equals("integer")) {
+                    newDefaultValue = new Integer(defVal);
+                } else if (newType.equals("float")) {
+                    newDefaultValue = new Float(defVal);
+                } else if (newType.equals("boolean")) {
+                    if (!((defVal.equals("true")) || (defVal.equals("false")))) {
+                        throw new KinshipSystemException("Did not enter 'true' or 'false'.");
+                    } else {
+                        newDefaultValue = new Boolean(defVal);
+                    }
+                }  //  end of type=boolean
+            } catch (Exception exc) {
+                if (MainPane.activity == null) {
+                    MainPane.createActivityLog(desktop, menuView);
+                }
+                String eMsg = "Error while parsing " + newType + "s in the UDP Editor.\n" + exc + "\n"
+                        + "Your 'Default Value' can't be accepted as that type.\nPlease try again.";
+                MainPane.activity.log.append(eMsg + "\n" + exc);
+                JOptionPane.showMessageDialog(this, eMsg, "Type Violation", JOptionPane.INFORMATION_MESSAGE);
+                newDefaultValue = safetyNet;
+                return false;
+            }  //  end of catch block
+            //  Check for consistency with Restricted Values
+            if ((newValidEntries != null) && (newValidEntries.size() > 0) && (!newValidEntries.contains(newDefaultValue))) {
+                if (MainPane.activity == null) {
+                    MainPane.createActivityLog(desktop, menuView);
+                }
+                String eMsg = "Sorry.  Your default value of " + defVal + " is not valid.\n"
+                        + "You have Restricted Values for this UDP.\nPlease try again.";
+                MainPane.activity.log.append(eMsg);
+                JOptionPane.showMessageDialog(this, eMsg, "Restricted Value Violation", JOptionPane.INFORMATION_MESSAGE);
+                newDefaultValue = safetyNet;
+                return false;
+            }  //  end of inconsistent-with-Valid-Entries
+            flipFinalBtn("check");
+            defaultTextChanged = false;
+            return true;
+        } else {  //  default required but none entered
+            JOptionPane.showMessageDialog(this, "You have not entered a Default Value.\n"
+                    + "Either enter one or click 'No' default.",
+                    "None Entered", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }  //  end of none entered
+    }  //  end of method validateDefaultVal()
+
+    public boolean validateMinText() {
+        //  The Min field is only valid for data types of integer and float (Real Number)
+        Number newVal;
+        if (minText.getText().equals("")) {
+            return true;
+        }
+        try {
+            if (newType.equals("float")) {
+                newVal = new Float(minText.getText());
+            } else {
+                newVal = new Integer(minText.getText());
+            }
+        } catch (NumberFormatException nfe) {
+            if (MainPane.activity == null) {
+                MainPane.createActivityLog(desktop, menuView);
+            }
+            String eMsg = "Sorry.  Your Minimum Value of '" + minText.getText() + "' is not a valid "
+                    + newType + ".\nPlease try again.";
+            MainPane.activity.log.append(eMsg);
+            JOptionPane.showMessageDialog(this, eMsg, "Invalid Minimum Value", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }  //  end of catch block
+        if ((newValidEntries != null) && (newValidEntries.size() > 0) && (newValidEntries.get(0) instanceof Number)) {
+            for (int i = 0; i < newValidEntries.size(); i++) {
+                if (((Number) newValidEntries.get(i)).floatValue() < newVal.floatValue()) {
+                    if (MainPane.activity == null) {
+                        MainPane.createActivityLog(desktop, menuView);
+                    }
+                    String eMsg = "Sorry.  Your Minimum Value of '" + newVal + "' is greater than "
+                            + newValidEntries.get(i) + ", one of your 'Certain Values.'\nPlease try again.";
+                    MainPane.activity.log.append(eMsg);
+                    JOptionPane.showMessageDialog(this, eMsg, "Invalid Minimum Value", JOptionPane.INFORMATION_MESSAGE);
+                    return false;
+                }  //  end of activity-found
+            }
+        }
+        if ((newDefaultValue != null) && (newDefaultValue instanceof Number)
+                && (((Number) newDefaultValue).floatValue() < newVal.floatValue())) {
+            if (MainPane.activity == null) {
+                MainPane.createActivityLog(desktop, menuView);
+            }
+            String eMsg = "Sorry.  Your Minimum Value of '" + newVal + "' is greater than "
+                    + newDefaultValue + ", your Default Value.\nPlease try again.";
+            MainPane.activity.log.append(eMsg);
+            JOptionPane.showMessageDialog(this, eMsg, "Invalid Minimum Value", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        if ((newMaxVal != null) && (newMaxVal.floatValue() < newVal.floatValue())) {
+            if (MainPane.activity == null) {
+                MainPane.createActivityLog(desktop, menuView);
+            }
+            String eMsg = "Sorry.  Your Minimum Value of '" + newVal + "' is greater than "
+                    + newMaxVal + ", your Maximum Value.\nPlease try again.";
+            MainPane.activity.log.append(eMsg);
+            JOptionPane.showMessageDialog(this, eMsg, "Invalid Minimum Value", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        newMinVal = newVal;
+        return true;
+    }  //  end of method validateMinText
+
+    public boolean validateMaxText() {
+        //  The Max field is only valid for data types of integer and float (Real Number)
+        Number newVal;
+        if (maxText.getText().equals("")) {
+            return true;
+        }
+        try {
+            if (newType.equals("float")) {
+                newVal = new Float(maxText.getText());
+            } else {
+                newVal = new Integer(maxText.getText());
+            }
+        } catch (NumberFormatException nfe) {
+            if (MainPane.activity == null) {
+                MainPane.createActivityLog(desktop, menuView);
+            }
+            String eMsg = "Sorry.  Your Maximum Value of '" + maxText.getText() + "' is not a valid "
+                    + newType + ".\nPlease try again.";
+            MainPane.activity.log.append(eMsg);
+            JOptionPane.showMessageDialog(this, eMsg, "Invalid Maximum Value", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }  //  end of catch block
+        if ((newValidEntries != null) && (newValidEntries.size() > 0) && (newValidEntries.get(0) instanceof Number)) {
+            for (int i = 0; i < newValidEntries.size(); i++) {
+                if (((Number) newValidEntries.get(i)).floatValue() > newVal.floatValue()) {
+                    if (MainPane.activity == null) {
+                        MainPane.createActivityLog(desktop, menuView);
+                    }
+                    String eMsg = "Sorry.  Your Maximum Value of '" + newVal + "' is less than "
+                            + newValidEntries.get(i) + ", one of your 'Certain Values.'\nPlease try again.";
+                    MainPane.activity.log.append(eMsg);
+                    JOptionPane.showMessageDialog(this, eMsg, "Invalid Maximum Value", JOptionPane.INFORMATION_MESSAGE);
+                    return false;
+                }  //  end of activity-found
+            }
+        }
+        if ((newDefaultValue != null) && (newDefaultValue instanceof Number)
+                && (((Number) newDefaultValue).floatValue() > newVal.floatValue())) {
+            if (MainPane.activity == null) {
+                MainPane.createActivityLog(desktop, menuView);
+            }
+            String eMsg = "Sorry.  Your Maximum Value of '" + newVal + "' is less than "
+                    + newDefaultValue + ", your Default Value.\nPlease try again.";
+            MainPane.activity.log.append(eMsg);
+            JOptionPane.showMessageDialog(this, eMsg, "Invalid Maximum Value", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        if ((newMinVal != null) && (newMinVal.floatValue() > newVal.floatValue())) {
+            if (MainPane.activity == null) {
+                MainPane.createActivityLog(desktop, menuView);
+            }
+            String eMsg = "Sorry.  Your Maximum Value of '" + newVal + "' is less than "
+                    + newMinVal + ", your Minimum Value.\nPlease try again.";
+            MainPane.activity.log.append(eMsg);
+            JOptionPane.showMessageDialog(this, eMsg, "Invalid Maximum Value", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+        newMaxVal = newVal;
+        return true;
+    }  //  end of method validateMinText
+    
+    
+     public class UDPListener implements ActionListener {
 
         KSJInternalFrame ed;
-        boolean reName = false;
 
         public UDPListener(KSJInternalFrame uded) {
             ed = uded;
         }  //  end of constructor
 
         public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand().equals("name edit")) {
+            if (name1Changed) {  //  This check always performed
                 String newName = name_1.getText(), msg;
-                if (!newName.startsWith("*") ||
-                        newName.length() < 2) {
+                char nonStar = newName.charAt(1);
+                if (!newName.startsWith("*")
+                        || newName.length() < 2) {
                     msg = "The name '" + newName + "' violates the rules for names:\n"
                             + "The name MUST start with a star ('*') and a lower case letter.";
                     JOptionPane.showMessageDialog(ed, msg, "Violation of Naming Rules",
                             JOptionPane.WARNING_MESSAGE);
                     flipFinalBtn("check");
                     name_1.setText("*");
-                    return;
-                }
-                char nonStar = newName.charAt(1);
-                if (! Character.isLowerCase(nonStar)) {
+                    name1Changed = false;
+                } else if (!Character.isLowerCase(nonStar)) {
                     msg = "The name '" + newName + "' violates the rules for names:\n"
                             + "The first character after the star must be a lower case letter.";
                     JOptionPane.showMessageDialog(ed, msg, "Violation of Naming Rules",
                             JOptionPane.WARNING_MESSAGE);
                     flipFinalBtn("check");
-                    return;
-                }
-                try {
-                    newName = PersonPanel.sanitizeKinTerms(ed, newName.substring(1), "this UDP name");
-                }catch(KSParsingErrorException exc) {
-                    flipFinalBtn("check");
-                    return;
-                }
-                //  Once past validity-check, we can safely record the new starName
-                newStarName = "*" + newName;
-                name_1.setText(newStarName);
-                if ((!newUDP) && (!newStarName.equals(theUDP.starName))) {  //  name change
-                    int numWithProp = 0, numWithVals = 0;
-                    Iterator indIter = ctxt.individualCensus.iterator();
-                    UserDefinedProperty udp;
-                    while (indIter.hasNext()) {
-                        udp = (UserDefinedProperty) ((Individual) indIter.next()).userDefinedProperties.get(theUDP.starName);
-                        if (udp != null) {
-                            numWithProp++;
-                            if (udp.value.size() > 0) {
-                                numWithVals++;
-                            }
-                        }
-                    }  //  end of loop thru persons on this context
-                    int choice = JOptionPane.YES_OPTION;
-                    if (numWithProp > 0) {
-                        msg = "There are " + numWithProp + " persons with this property defined.\n"
-                                + "There are " + numWithVals + " with a value for this property.\n"
-                                + "Do you want to change the name of this UDP for every person?";
-                        choice = JOptionPane.showConfirmDialog(ed, msg, "Confirm", JOptionPane.YES_NO_OPTION);
-                    }  //  end of confirmed-delete-of-the UDPs-from-individuals
-                    if (choice == JOptionPane.YES_OPTION) {
-                        reName = true;
+                    name_1.setText("*");
+                    name1Changed = false;
+                } else {
+                    try {
+                        newName = PersonPanel.sanitizeKinTerms(ed, newName.substring(1), "this UDP name");
+                    } catch (KSParsingErrorException exc) {
+                        flipFinalBtn("check");
+                        name_1.setText("*");
+                        newName = "%%%%%%%%%%";
+                        name1Changed = false;
                     }
-                    //  end of User-chose-to-delete-UDP-from-all-persons
-                }  //  end of name-change
-                flipFinalBtn("check");
-                return;
-            }  //  end of "name edit"
+                }
+                if (!newName.equals("%%%%%%%%%%")) {
+                    //  Once past validity-check, we can safely record the new starName
+                    newStarName = "*" + newName;
+                    name_1.setText(newStarName);
+                    if ((!newUDP) && (!newStarName.equals(theUDP.starName))) {  //  name change
+                        int numWithProp = 0, numWithVals = 0;
+                        Iterator indIter = ctxt.individualCensus.iterator();
+                        UserDefinedProperty udp;
+                        while (indIter.hasNext()) {
+                            udp = (UserDefinedProperty) ((Individual) indIter.next()).userDefinedProperties.get(theUDP.starName);
+                            if (udp != null) {
+                                numWithProp++;
+                                if (udp.value.size() > 0) {
+                                    numWithVals++;
+                                }
+                            }
+                        }  //  end of loop thru persons on this context
+                        int choice = JOptionPane.YES_OPTION;
+                        if (numWithProp > 0) {
+                            msg = "There are " + numWithProp + " persons with this property defined.\n"
+                                    + "There are " + numWithVals + " with a value for this property.\n"
+                                    + "Do you want to change the name of this UDP for every person?";
+                            choice = JOptionPane.showConfirmDialog(ed, msg, "Confirm", JOptionPane.YES_NO_OPTION);
+                        }  //  end of confirmed-delete-of-the UDPs-from-individuals
+                        if (choice == JOptionPane.YES_OPTION) {
+                            reName = true;
+                        }
+                        //  end of User-chose-to-delete-UDP-from-all-persons
+                    }  //  end of name-change
+                    flipFinalBtn("check");
+                    name1Changed = false;
+                }
+            }            
+            if (certainTextChanged) {
+                validateCertainVals();
+            }
+            if (defaultTextChanged) {
+                validateDefaultVal();
+            }                        
             if (e.getActionCommand().equals("data type")) {
                 String priorType = newType;  //  prior value
                 String typ = (String) typePick.getSelectedItem();
@@ -400,7 +685,7 @@ public class UDPEditor extends KSJInternalFrame {
                     maxText.setText("");
                     maxText.setEditable(false);
                     if (yescertain.isSelected()) {
-                        certainEditLabel.setText("Edit list of values, then hit 'Enter'.");
+                        certainEditLabel.setText("Edit list of values.");
                         certainText.setEditable(true);
                     } else {
                         certainEditLabel.setText("");
@@ -408,7 +693,7 @@ public class UDPEditor extends KSJInternalFrame {
                     }
                     if (yesdefault.isSelected()) {
                         defaultText.setEditable(true);
-                        defeditLabel.setText("Edit the default value, then hit 'Enter'.");
+                        defeditLabel.setText("Edit the default value.");
                     } else {
                         defaultText.setEditable(false);
                         defeditLabel.setText("");
@@ -421,7 +706,7 @@ public class UDPEditor extends KSJInternalFrame {
                     minText.setEditable(true);
                     maxText.setEditable(true);
                     if (yescertain.isSelected()) {
-                        certainEditLabel.setText("Edit list of values, then hit 'Enter'.");
+                        certainEditLabel.setText("Edit list of values.");
                         certainText.setEditable(true);
                     } else {
                         certainEditLabel.setText("");
@@ -429,7 +714,7 @@ public class UDPEditor extends KSJInternalFrame {
                     }
                     if (yesdefault.isSelected()) {
                         defaultText.setEditable(true);
-                        defeditLabel.setText("Edit the default value, then hit 'Enter'.");
+                        defeditLabel.setText("Edit the default value.");
                     } else {
                         defaultText.setEditable(false);
                         defeditLabel.setText("");
@@ -442,7 +727,7 @@ public class UDPEditor extends KSJInternalFrame {
                     minText.setEditable(true);
                     maxText.setEditable(true);
                     if (yescertain.isSelected()) {
-                        certainEditLabel.setText("Edit list of values, then hit 'Enter'.");
+                        certainEditLabel.setText("Edit list of values.");
                         certainText.setEditable(true);
                     } else {
                         certainEditLabel.setText("");
@@ -450,7 +735,7 @@ public class UDPEditor extends KSJInternalFrame {
                     }
                     if (yesdefault.isSelected()) {
                         defaultText.setEditable(true);
-                        defeditLabel.setText("Edit the default value, then hit 'Enter'.");
+                        defeditLabel.setText("Edit the default value.");
                     } else {
                         defaultText.setEditable(false);
                         defeditLabel.setText("");
@@ -537,15 +822,14 @@ public class UDPEditor extends KSJInternalFrame {
                 else if ((newUDP) || (theUDP.validEntries == null)) {
                     newValidEntries = new ArrayList<Object>();
                     certainText.setText("");
-                    certainEditLabel.setText("Enter values separated by commas, then hit 'Enter'.");
+                    certainEditLabel.setText("Enter values separated by commas.");
                 } else {
                     newValidEntries = theUDP.validEntries;
                     certainText.setText(theUDP.getValidEntriesString());
-                    certainEditLabel.setText("Edit list of values, separated by commas, then hit 'Enter'.");
+                    certainEditLabel.setText("Edit list of values, separated by commas.");
                 }
                 certainText.setEditable(true);
-                certainText.addActionListener(listener);
-                certainText.setActionCommand("certainText edit");
+                certainText.getDocument().addDocumentListener(new CertainTextListener());
                 flipFinalBtn("check");
                 return;
             }
@@ -555,10 +839,6 @@ public class UDPEditor extends KSJInternalFrame {
                 certainEditLabel.setText("");
                 certainText.setEditable(false);
                 flipFinalBtn("check");
-                return;
-            }
-            if (e.getActionCommand().equals("certainText edit")) {
-                validateCertainVals();
                 return;
             }
             if (e.getActionCommand().equals("defaultVal yes")) {
@@ -575,9 +855,8 @@ public class UDPEditor extends KSJInternalFrame {
                     defaultText.setText(theUDP.defaultValue.toString());
                 }
                 defaultText.setEditable(true);
-                defaultText.addActionListener(listener);
-                defaultText.setActionCommand("defaultText edit");
-                defeditLabel.setText("Edit the default value, then hit 'Enter'.");
+                defaultText.getDocument().addDocumentListener(new DefaultTextListener());
+                defeditLabel.setText("Edit the default value.");
                 defaultValExists = true;
                 flipFinalBtn("check");
                 return;
@@ -589,10 +868,6 @@ public class UDPEditor extends KSJInternalFrame {
                 defaultText.setEditable(false);
                 defaultValExists = false;
                 flipFinalBtn("check");
-                return;
-            }
-            if (e.getActionCommand().equals("defaultText edit")) {
-                validateDefaultVal();
                 return;
             }
             if (e.getActionCommand().equals("minText edit")) {
@@ -808,7 +1083,6 @@ public class UDPEditor extends KSJInternalFrame {
                     } catch (Exception exc) {  } // No parsing errors expected.
                 }
                 progBox.setVisible(true);
-                progressBar.setStringPainted(true);
                 UserDefinedProperty oldudp, newInstance;
                 Individual ind;
                 Iterator indIter = ctxt.individualCensus.iterator();
@@ -821,7 +1095,6 @@ public class UDPEditor extends KSJInternalFrame {
                             ind.userDefinedProperties = new TreeMap();
                         }
                         ind.userDefinedProperties.put(newStarName, newInstance);
-                        progressBar.setValue(ind.serialNmbr);
                     }  //  end of loop thru individuals
                 } else {  //  revised UDP could be inconsistent with some existing instances of old definition
                     if (!oldType.equals(newType)) {  // type clash, instance 'value' fields must be empty
@@ -832,7 +1105,6 @@ public class UDPEditor extends KSJInternalFrame {
                             }
                             newInstance = new UserDefinedProperty(theUDP, false);  //  clone the new template
                             ind.userDefinedProperties.put(newStarName, newInstance);
-                            progressBar.setValue(ind.serialNmbr);
                         }  //  end of loop thru individuals
                     } else if (newSingleValue && (!theUDP.singleValue)) {  // no type clash but arity clash
                         while (indIter.hasNext()) {
@@ -853,7 +1125,6 @@ public class UDPEditor extends KSJInternalFrame {
                                 newInstance.value.add(oldudp.value.get(0));  //  add first value from old value list
                             }
                             ind.userDefinedProperties.put(newStarName, newInstance);
-                            progressBar.setValue(ind.serialNmbr);
                         }  //  end of loop thru individuals
                     } else {  // no type clash, no arity clash 
                         while (indIter.hasNext()) {
@@ -877,7 +1148,6 @@ public class UDPEditor extends KSJInternalFrame {
                                 newInstance.value.add(newDefaultValue);
                             }
                             ind.userDefinedProperties.put(newStarName, newInstance);
-                            progressBar.setValue(ind.serialNmbr);
                         }  //  end of loop thru individuals
                     }
                 }
@@ -931,259 +1201,53 @@ public class UDPEditor extends KSJInternalFrame {
         }  //  end of ActionListerner method actionPerformed
     }  //  end of inner class UDPListener
 
-    public void flipFinalBtn(String saveORnot) {
-        if (saveORnot.equals("save")) {
-            udpCheckSave.setActionCommand("save");
-            udpCheckSave.setText("Save");
-        } //  end of flip to SAVE
-        else {
-            udpCheckSave.setActionCommand("check");
-            udpCheckSave.setText("Check for Errors");
-        }  //  end of flip to CHECK
-    }  //  end of method flipFinalBtn
+    
+    class Name1Listener implements DocumentListener {
+        
+        public void insertUpdate(DocumentEvent e) {
+            name1Changed = true;
+        }
 
-    public void validateCertainVals() {
-        //  Can't get here if typ = indiv or boolean
-        validValsChanged = true;
-        String theVals = certainText.getText();
-        ArrayList<Object> safetyNet = new ArrayList<Object>(newValidEntries);  // in case the edits were bad
-        newValidEntries.clear();
-        int start = 0, nextComma = 0, length = theVals.length();
-        //  In effect, we reverse the logic of getValidEntriesString
-        try {
-            if (newType.equals("string")) {
-                while (nextComma < length) {
-                    nextComma = theVals.substring(start).indexOf(",");
-                    if (nextComma == -1) {
-                        nextComma = length;
-                    } else {
-                        nextComma += start;
-                    }
-                    newValidEntries.add(theVals.substring(start, nextComma).trim());
-                    start = nextComma + 1;
-                }  //  end of typ = string
-            } else if (newType.equals("integer")) {
-                while (nextComma < length) {
-                    nextComma = theVals.substring(start).indexOf(",");
-                    if (nextComma == -1) {
-                        nextComma = length;
-                    } else {
-                        nextComma += start;
-                    }
-                    newValidEntries.add(new Integer(theVals.substring(start, nextComma).trim()));
-                    start = nextComma + 1;
-                }
-            } //  //  end of typ = int
-            else if (newType.equals("float")) {
-                while (nextComma < length) {
-                    nextComma = theVals.substring(start).indexOf(",");
-                    if (nextComma == -1) {
-                        nextComma = length;
-                    } else {
-                        nextComma += start;
-                    }
-                    newValidEntries.add(new Float(theVals.substring(start, nextComma).trim()));
-                    start = nextComma + 1;
-                }
-            }  //  end of typ = float
-        } catch (NumberFormatException nfe) {
-            if (MainPane.activity == null) {
-                MainPane.createActivityLog(desktop, menuView);
-            }
-            String eMsg = "The Data Type you chose is '" + newType + ".'\n"
-                    + "Your entries can't be accepted as that type.\nPlease try again.";
-            MainPane.activity.log.append("While parsing 'int' Valid Entries:\n" + nfe + "\n" + eMsg);
-            JOptionPane.showMessageDialog(this, eMsg, "Type Violation", JOptionPane.INFORMATION_MESSAGE);
-            return;
-        } catch (Exception exc) {
-            if (MainPane.activity == null) {
-                MainPane.createActivityLog(desktop, menuView);
-            }
-            String eMsg = "Error while parsing " + newType + "s in the UDP Editor.\n" + exc + "\n"
-                    + "Your entries can't be accepted as that type.\nPlease try again.";
-            MainPane.activity.log.append(eMsg + "\n" + exc);
-            JOptionPane.showMessageDialog(this, eMsg, "Type Violation", JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }  //  end of catch blocks
-        flipFinalBtn("check");
-        return;
-    }  //  end of method validateCertainVals()
+        public void removeUpdate(DocumentEvent e) {
+            name1Changed = true;
+        }
 
-    public boolean validateDefaultVal() {
-        //  Can't get here if typ = indiv
-        if (!defaultValExists) {
-            return true;  //  Nothing to validate
+        public void changedUpdate(DocumentEvent e) {
+            //Plain text components do not fire these events
         }
-        String defVal = defaultText.getText();
-        Object safetyNet = newDefaultValue;
-        if (defVal.length() > 0) {
-            try {
-                if (newType.equals("string")) {
-                    newDefaultValue = defVal;
-                } else if (newType.equals("integer")) {
-                    newDefaultValue = new Integer(defVal);
-                } else if (newType.equals("float")) {
-                    newDefaultValue = new Float(defVal);
-                } else if (newType.equals("boolean")) {
-                    if (!((defVal.equals("true")) || (defVal.equals("false")))) {
-                        throw new KinshipSystemException("Did not enter 'true' or 'false'.");
-                    } else {
-                        newDefaultValue = new Boolean(defVal);
-                    }
-                }  //  end of type=boolean
-            } catch (Exception exc) {
-                if (MainPane.activity == null) {
-                    MainPane.createActivityLog(desktop, menuView);
-                }
-                String eMsg = "Error while parsing " + newType + "s in the UDP Editor.\n" + exc + "\n"
-                        + "Your 'Default Value' can't be accepted as that type.\nPlease try again.";
-                MainPane.activity.log.append(eMsg + "\n" + exc);
-                JOptionPane.showMessageDialog(this, eMsg, "Type Violation", JOptionPane.INFORMATION_MESSAGE);
-                newDefaultValue = safetyNet;
-                return false;
-            }  //  end of catch block
-            //  Check for consistency with Restricted Values
-            if ((newValidEntries != null) && (newValidEntries.size() > 0) && (!newValidEntries.contains(newDefaultValue))) {
-                if (MainPane.activity == null) {
-                    MainPane.createActivityLog(desktop, menuView);
-                }
-                String eMsg = "Sorry.  Your default value of " + defVal + " is not valid.\n"
-                        + "You have Restricted Values for this UDP.\nPlease try again.";
-                MainPane.activity.log.append(eMsg);
-                JOptionPane.showMessageDialog(this, eMsg, "Restricted Value Violation", JOptionPane.INFORMATION_MESSAGE);
-                newDefaultValue = safetyNet;
-                return false;
-            }  //  end of inconsistent-with-Valid-Entries
-            flipFinalBtn("check");
-            return true;
-        } else {  //  default required but none entered
-            JOptionPane.showMessageDialog(this, "You have not entered a Default Value.\n"
-                    + "Either enter one or click 'No' default.",
-                    "None Entered", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }  //  end of none entered
-    }  //  end of method validateDefaultVal()
+    }  // end of inner class Name1Listener
 
-    public boolean validateMinText() {
-        //  The Min field is only valid for data types of integer and float (Real Number)
-        Number newVal;
-        if (minText.getText().equals("")) {
-            return true;
+    
+    class CertainTextListener implements DocumentListener {
+        
+        public void insertUpdate(DocumentEvent e) {
+            certainTextChanged = true;
         }
-        try {
-            if (newType.equals("float")) {
-                newVal = new Float(minText.getText());
-            } else {
-                newVal = new Integer(minText.getText());
-            }
-        } catch (NumberFormatException nfe) {
-            if (MainPane.activity == null) {
-                MainPane.createActivityLog(desktop, menuView);
-            }
-            String eMsg = "Sorry.  Your Minimum Value of '" + minText.getText() + "' is not a valid "
-                    + newType + ".\nPlease try again.";
-            MainPane.activity.log.append(eMsg);
-            JOptionPane.showMessageDialog(this, eMsg, "Invalid Minimum Value", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }  //  end of catch block
-        if ((newValidEntries != null) && (newValidEntries.size() > 0) && (newValidEntries.get(0) instanceof Number)) {
-            for (int i = 0; i < newValidEntries.size(); i++) {
-                if (((Number) newValidEntries.get(i)).floatValue() < newVal.floatValue()) {
-                    if (MainPane.activity == null) {
-                        MainPane.createActivityLog(desktop, menuView);
-                    }
-                    String eMsg = "Sorry.  Your Minimum Value of '" + newVal + "' is greater than "
-                            + newValidEntries.get(i) + ", one of your 'Certain Values.'\nPlease try again.";
-                    MainPane.activity.log.append(eMsg);
-                    JOptionPane.showMessageDialog(this, eMsg, "Invalid Minimum Value", JOptionPane.INFORMATION_MESSAGE);
-                    return false;
-                }  //  end of activity-found
-            }
-        }
-        if ((newDefaultValue != null) && (newDefaultValue instanceof Number)
-                && (((Number) newDefaultValue).floatValue() < newVal.floatValue())) {
-            if (MainPane.activity == null) {
-                MainPane.createActivityLog(desktop, menuView);
-            }
-            String eMsg = "Sorry.  Your Minimum Value of '" + newVal + "' is greater than "
-                    + newDefaultValue + ", your Default Value.\nPlease try again.";
-            MainPane.activity.log.append(eMsg);
-            JOptionPane.showMessageDialog(this, eMsg, "Invalid Minimum Value", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-        if ((newMaxVal != null) && (newMaxVal.floatValue() < newVal.floatValue())) {
-            if (MainPane.activity == null) {
-                MainPane.createActivityLog(desktop, menuView);
-            }
-            String eMsg = "Sorry.  Your Minimum Value of '" + newVal + "' is greater than "
-                    + newMaxVal + ", your Maximum Value.\nPlease try again.";
-            MainPane.activity.log.append(eMsg);
-            JOptionPane.showMessageDialog(this, eMsg, "Invalid Minimum Value", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-        newMinVal = newVal;
-        return true;
-    }  //  end of method validateMinText
 
-    public boolean validateMaxText() {
-        //  The Max field is only valid for data types of integer and float (Real Number)
-        Number newVal;
-        if (maxText.getText().equals("")) {
-            return true;
+        public void removeUpdate(DocumentEvent e) {
+            certainTextChanged = true;
         }
-        try {
-            if (newType.equals("float")) {
-                newVal = new Float(maxText.getText());
-            } else {
-                newVal = new Integer(maxText.getText());
-            }
-        } catch (NumberFormatException nfe) {
-            if (MainPane.activity == null) {
-                MainPane.createActivityLog(desktop, menuView);
-            }
-            String eMsg = "Sorry.  Your Maximum Value of '" + maxText.getText() + "' is not a valid "
-                    + newType + ".\nPlease try again.";
-            MainPane.activity.log.append(eMsg);
-            JOptionPane.showMessageDialog(this, eMsg, "Invalid Maximum Value", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }  //  end of catch block
-        if ((newValidEntries != null) && (newValidEntries.size() > 0) && (newValidEntries.get(0) instanceof Number)) {
-            for (int i = 0; i < newValidEntries.size(); i++) {
-                if (((Number) newValidEntries.get(i)).floatValue() > newVal.floatValue()) {
-                    if (MainPane.activity == null) {
-                        MainPane.createActivityLog(desktop, menuView);
-                    }
-                    String eMsg = "Sorry.  Your Maximum Value of '" + newVal + "' is less than "
-                            + newValidEntries.get(i) + ", one of your 'Certain Values.'\nPlease try again.";
-                    MainPane.activity.log.append(eMsg);
-                    JOptionPane.showMessageDialog(this, eMsg, "Invalid Maximum Value", JOptionPane.INFORMATION_MESSAGE);
-                    return false;
-                }  //  end of activity-found
-            }
+
+        public void changedUpdate(DocumentEvent e) {
+            //Plain text components do not fire these events
         }
-        if ((newDefaultValue != null) && (newDefaultValue instanceof Number)
-                && (((Number) newDefaultValue).floatValue() > newVal.floatValue())) {
-            if (MainPane.activity == null) {
-                MainPane.createActivityLog(desktop, menuView);
-            }
-            String eMsg = "Sorry.  Your Maximum Value of '" + newVal + "' is less than "
-                    + newDefaultValue + ", your Default Value.\nPlease try again.";
-            MainPane.activity.log.append(eMsg);
-            JOptionPane.showMessageDialog(this, eMsg, "Invalid Maximum Value", JOptionPane.INFORMATION_MESSAGE);
-            return false;
+    }  // end of inner class CertainTextListener        defaultTextChanged
+
+    
+    class DefaultTextListener implements DocumentListener {
+        
+        public void insertUpdate(DocumentEvent e) {
+            defaultTextChanged = true;
         }
-        if ((newMinVal != null) && (newMinVal.floatValue() > newVal.floatValue())) {
-            if (MainPane.activity == null) {
-                MainPane.createActivityLog(desktop, menuView);
-            }
-            String eMsg = "Sorry.  Your Maximum Value of '" + newVal + "' is less than "
-                    + newMinVal + ", your Minimum Value.\nPlease try again.";
-            MainPane.activity.log.append(eMsg);
-            JOptionPane.showMessageDialog(this, eMsg, "Invalid Maximum Value", JOptionPane.INFORMATION_MESSAGE);
-            return false;
+
+        public void removeUpdate(DocumentEvent e) {
+            defaultTextChanged = true;
         }
-        newMaxVal = newVal;
-        return true;
-    }  //  end of method validateMinText
+
+        public void changedUpdate(DocumentEvent e) {
+            //Plain text components do not fire these events
+        }
+    }  // end of inner class DefaultTextListener
+    
 }  //  end of class UDPEditor
 

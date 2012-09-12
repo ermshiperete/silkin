@@ -1,0 +1,36 @@
+Wrote ClauseCounts for 1686 Language:KinTerm pairs.
+Wrote /Users/gary/NetBeansProjects/Library/ClauseCounts
+Wrote predEncodings.
+Wrote predDecodings.
+
+Done merging /Users/gary/NetBeansProjects/Library/Index Segments/ClauseIndex-C
+ClauseIndex Size:
+        6,379 kin types
+        20,336 EQCs
+        53,935 clauses
+EQC Sizes:
+           1:  11,748
+         2-4:  6,217
+        5-10:  1,388
+         11+:  983
+
+Wrote /Users/gary/NetBeansProjects/Library/ClauseIndex
+
+Done merging /Users/gary/NetBeansProjects/Library/Index Segments/BaseCBIndex-C
+ClauseIndex Size:
+        1,329 kin types
+        1,841 EQCs
+        3,272 clauses
+EQC Sizes:
+           1:  1,495
+         2-4:  237
+        5-10:  75
+         11+:  34
+
+Wrote /Users/gary/NetBeansProjects/Library/BaseCBIndex
+
+Done merging /Users/gary/NetBeansProjects/Library/Index Segments/KinTermSigTree-C
+
+wrote KinTerm Signature Tree (full) with 976 EQCs.
+
+wrote KinTerm Signature Tree (compact) with 248 EQCs.
