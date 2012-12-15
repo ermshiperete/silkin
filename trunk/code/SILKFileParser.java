@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.*;
 import java.text.*;
 import java.awt.*;
+import java.awt.print.PageFormat;
+import java.awt.print.PrinterJob;
 import javax.swing.*;
 
 /** This SILKFileParserPreXML is an extension of the basic {@link Parser} class which reads in Domain Theories expressed in
@@ -1159,7 +1161,9 @@ public class SILKFileParser extends Parser {
                       "<maxNoise>", integer, "</maxNoise>",
                       "<ignorable>", integer, "</ignorable>",
                       "<surnameCapture value=", boolean, "/>",
-                      "<birthdateCapture value=", boolean, "/>".
+                      "<birthdateCapture value=", boolean, "/>",
+                      "<printFont name=", string, "size=", integer, "/>",
+                      "<printOrientation value=", integer, "/>".
          First: [flag: <origin>]	 Follow: [flag: </editorSettings>]
     */
     void parseKAESParameters() throws KSParsingErrorException {
@@ -1186,7 +1190,7 @@ public class SILKFileParser extends Parser {
         newCtxt.ignorableP = readTaggedInteger("ignorable", "parseKAESParameters");
         newCtxt.doBaseCBs = Boolean.parseBoolean(readOneAttribute("doBaseCBs", "value", "parseKAESParameters"));
         newCtxt.doInduction = Boolean.parseBoolean(readOneAttribute("doInduction", "value", "parseKAESParameters"));
-        //  Next 2 parameters are optional
+        //  Next 4 parameters are optional
         current = scanner.lookAhead();
         if (current.lexeme.startsWith("<surnameCapture")) { 
             boolean b = Boolean.parseBoolean(readOneAttribute("surnameCapture", "value", "parseKAESParameters"));
@@ -1196,6 +1200,24 @@ public class SILKFileParser extends Parser {
         if (current.lexeme.startsWith("<birthdateCapture")) { 
             boolean b = Boolean.parseBoolean(readOneAttribute("birthdateCapture", "value", "parseKAESParameters"));
             newCtxt.birthDateNormallyCaptured = b;
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.startsWith("<printFont")) { 
+            String[] fields = {"name", "size" };
+            values = readAttributes("printFont", fields, "parseKAESParameters");
+            String faceName = values[0];
+            int sz = Integer.parseInt(values[1]);
+            Font nuFont = new Font(faceName, Font.PLAIN, sz);
+            PrintChart.printFont = nuFont;
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.startsWith("<printOrientation")) { 
+            String orient = readOneAttribute("printOrientation", "value", "parseKAESParameters");
+            int orientation = Integer.parseInt(orient);
+            PrinterJob job = PrinterJob.getPrinterJob();
+            PageFormat pf = job.defaultPage();
+            pf.setOrientation(orientation);
+            PrintChart.pgFormat = pf;
         }
     }
 

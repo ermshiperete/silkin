@@ -251,91 +251,141 @@ public class Marriage  {
 	int midx=0;
 	int midy=0;
 	
-	public void drawSpouseLines(Graphics g) {
-		Rectangle xr = bounds();
-		int xw = xr.width/2;
-		int xh = xr.height;
-		LinkedList sp = getSpouses();
-		Person p;
-		if (!hasBegun()) return;
-		if (sp != null) {
-			int minx=location.x;
-			int maxx=location.x;
-			int miny=9999;
-			int maxy=-9999;
-			int count=0;
-			while (sp != null) {
-				p = (Person) sp.getValue();
-				if (minx > p.location.x) minx =  p.location.x;
-				if (maxx < p.location.x) maxx =  p.location.x;
-				if (miny > p.location.y) miny =  p.location.y;
-				if (maxy < p.location.y) maxy =  p.location.y;
-				count++;
-				sp = (LinkedList) sp.getNext();
-			}
-			maxy += xh+4;
-			minx += xw;
-			maxx += xw;
-			sp = getSpouses();
-			g.drawLine(minx,maxy,maxx,maxy);
-			midx = minx +(maxx-minx)/2;
-			midy = maxy;
-			while (sp != null) {
-				p = (Person) sp.getValue();
-				
-				g.drawLine(p.location.x+xw,p.location.y+xh,p.location.x+xw,maxy);
-				sp = (LinkedList) sp.getNext();
-			}
-		} else {
-			midx = location.x;
-			midy = location.y + xh+4;
-		}
-	}
+    public void drawSpouseLines(Graphics g, Rectangle myRect, boolean doIt) {
+        Family fam = (Family) this;
+        boolean husbandIn = (fam.husband == null ? false
+                : myRect.contains(fam.husband.location));
+        boolean wifeIn = (fam.wife == null ? false
+                : myRect.contains(fam.wife.location));
+        Rectangle xr = bounds();
+        int xw = xr.width / 2;
+        int xh = xr.height;
+        LinkedList sp = getSpouses();
+        Person p;
+        if (!hasBegun()) {
+            return;
+        }
+        // IF there are any spice, AND 
+        //        doIt (marriage is within myRect) OR
+        //        husband is in myRect OR
+        //        wife is in myRect
+        // THEN draw the lines.
+        if (sp != null && (doIt || husbandIn || wifeIn)) {
+            int minx = location.x;
+            int maxx = location.x;
+            int miny = 9999;
+            int maxy = -9999;
+            int count = 0;
+            while (sp != null) {
+                p = (Person) sp.getValue();
+                if (minx > p.location.x) {
+                    minx = p.location.x;
+                }
+                if (maxx < p.location.x) {
+                    maxx = p.location.x;
+                }
+                if (miny > p.location.y) {
+                    miny = p.location.y;
+                }
+                if (maxy < p.location.y) {
+                    maxy = p.location.y;
+                }
+                count++;
+                sp = (LinkedList) sp.getNext();
+            }
+            maxy += xh + 4;
+            minx += xw;
+            maxx += xw;
+            sp = getSpouses();
+            g.drawLine(minx, maxy, maxx, maxy);
+            midx = minx + (maxx - minx) / 2;
+            midy = maxy;
+            while (sp != null) {
+                p = (Person) sp.getValue();
+                g.drawLine(p.location.x + xw, p.location.y + xh, p.location.x + xw, maxy);
+                sp = (LinkedList) sp.getNext();
+            }
+        } else {
+            midx = location.x;
+            midy = location.y + xh + 4;
+        }
+    }
 
-	public void drawSibLines(Graphics g) { // call draSpouseLines at least once first
-		LinkedList sp = getSibset();
-		Person p;
-		Rectangle xr = bounds();
-		int xw = xr.width/2;
-		int xh = xr.height;
-		if (!hasBegun()) return;
-		if (sp != null) {
-			int minx=location.x;
-			int maxx=location.x;
-			int miny=9999;
-			int maxy=-9999;
-			int count=0;
-			while (sp != null) {
-				p = (Person) sp.getValue(); // next line kludge
-				if (p.location.x != -100 && p.location.y != -100 && p.hasBegun()) {
-					if (minx > p.location.x) minx =  p.location.x;
-					if (maxx < p.location.x) maxx =  p.location.x;
-					if (miny > p.location.y) miny =  p.location.y;
-					if (maxy < p.location.y) maxy =  p.location.y;
-					count++;
-				}
-				sp = (LinkedList) sp.getNext();
-			}
-			
-			miny -= 5;
-			minx += xw;
-			maxx += xw;
-			sp = getSibset();
-			if (count == 0) return;
-			g.drawLine(minx,miny,maxx,miny); // draw horizontal line as wide as needed
-			g.drawLine(location.x+xw,miny,location.x+xw,midy); // draw vertical from center of union symbol to horiz line
-			while (sp != null) {
-				p = (Person) sp.getValue();
-				if (p.location.x != -100 && p.location.y != -100 && p.hasBegun())
-					g.drawLine(p.location.x+xw,p.location.y,p.location.x+xw,miny);
-				sp = (LinkedList) sp.getNext();
-			}
-		}
-	}
+    public void drawSibLines(Graphics g, Rectangle myRect, boolean doIt) {
+        // call drawSpouseLines at least once first
+        Family fam = (Family) this;
+        boolean kidsIn = false;
+        for (Object obj : fam.children) {
+            Individual kid = (Individual) obj;
+            if (myRect.contains(kid.location)) {
+                kidsIn = true;
+                break;
+            }
+        }
+        LinkedList sp = getSibset();
+        Person p;
+        Rectangle xr = bounds();
+        int xw = xr.width / 2;
+        int xh = xr.height;
+        if (!hasBegun()) {
+            return;
+        }
+        // IF there are any kids, AND 
+        //        doIt (marriage is within myRect) OR
+        //        a kid is in myRect
+        // THEN draw the lines.
+        if (sp != null && (doIt || kidsIn)) {
+            int minx = location.x;
+            int maxx = location.x;
+            int miny = 9999;
+            int maxy = -9999;
+            int count = 0;
+            while (sp != null) {
+                p = (Person) sp.getValue(); // next line kludge
+                if (p.location.x != -100 && p.location.y != -100 && p.hasBegun()) {
+                    if (minx > p.location.x) {
+                        minx = p.location.x;
+                    }
+                    if (maxx < p.location.x) {
+                        maxx = p.location.x;
+                    }
+                    if (miny > p.location.y) {
+                        miny = p.location.y;
+                    }
+                    if (maxy < p.location.y) {
+                        maxy = p.location.y;
+                    }
+                    count++;
+                }
+                sp = (LinkedList) sp.getNext();
+            }
+
+            miny -= 5;
+            minx += xw;
+            maxx += xw;
+            sp = getSibset();
+            if (count == 0) {
+                return;
+            }
+            g.drawLine(minx, miny, maxx, miny); // draw horizontal line as wide as needed
+            g.drawLine(location.x + xw, miny, location.x + xw, midy); // draw vertical from center of union symbol to horiz line
+            while (sp != null) {
+                p = (Person) sp.getValue();
+                if (p.location.x != -100 && p.location.y != -100 && p.hasBegun()) {
+                    g.drawLine(p.location.x + xw, p.location.y, p.location.x + xw, miny);
+                }
+                sp = (LinkedList) sp.getNext();
+            }
+        }
+    }
 	
-	public void drawLines(Graphics g) {
-		drawSpouseLines(g);
-		drawSibLines(g);
+	public void drawLines(Graphics g, Rectangle myRect) {
+            //  If the marriage symbol OR the symbol for a spoue or child
+            //  is within myRect, then draw the lines
+            boolean doIt = myRect.contains(location);
+            drawSpouseLines(g, myRect, doIt);
+            drawSibLines(g, myRect, doIt);
+            
 	}
 
 	public int getSize() {
@@ -400,10 +450,10 @@ public class Marriage  {
 
     public void drawSymbol(Graphics g, Rectangle pbounds) {
         Rectangle myBounds = bounds();
-        // myBounds.translate(offset.x,offset.y);
+        // myBounds is used to compute the size of the symbol
         drawn = false;
 
-        if (myBounds.intersects(pbounds)) {
+        if (pbounds.contains(location.x, location.y)) {
             if (divorced()) {
                 marSymbol.symbol.drawEndSymbol(g, myBounds);
                 drawn = true;

@@ -773,7 +773,7 @@ public class MainPane extends JFrame implements ActionListener {
         } //  end of action-is-delete-context
         else if (e.getActionCommand().equals("save context")) {
             if (SIL_Edit.editWindow != null) {
-                SIL_Edit.editWindow.chart.saveSILKinFile();
+                SIL_Edit.editWindow.chart.saveSILKFile();
             }else try {
                 Library.saveUserContext(currentFrame, false);
             } catch (Exception ex) {
@@ -2310,7 +2310,7 @@ public class MainPane extends JFrame implements ActionListener {
         public void run() {
             if (SIL_Edit.editWindow.chart.saveFile != null) {
                 try {
-                    SIL_Edit.editWindow.chart.saveSILKinFile();
+                    SIL_Edit.editWindow.chart.saveSILKFile();
                     System.out.println("Wrote: " + SIL_Edit.editWindow.chart.saveFile);
                 } catch (Exception ex) {
                     System.out.println("Hit File-Save exception in clean-up thread.");

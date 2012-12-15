@@ -20,6 +20,8 @@ import java.io.*;
 import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.print.PageFormat;
+import java.awt.print.PrinterJob;
 import java.util.*;
 
 /**
@@ -103,7 +105,6 @@ public class SIL_Edit extends JFrame {
         newContextItem = new JMenuItem();
         newLiBrowserItem = new JMenuItem();
         loadItem = new JMenuItem();
-//        loadItemPreXML = new JMenuItem();
         exportSubMenu = new JMenu();
         exportGEDCOMItem = new JMenuItem();
         exportKAESItem = new JMenuItem();
@@ -114,6 +115,11 @@ public class SIL_Edit extends JFrame {
         jSeparator3 = new JPopupMenu.Separator();
         deleteAllItem = new JMenuItem();
         jSeparator4 = new JPopupMenu.Separator();
+        printMenu = new JMenu("Print");
+        printVisible = new JMenuItem("Print Visible Chart Portion");
+        printCurrentChart = new JMenuItem("Print Current Chart");
+        printAllCharts = new JMenuItem("Print All Charts");
+        pageSetupItem = new JMenuItem("Page Setup");
         quitItem = new JMenuItem();
         editMenu = new JMenu();
         cutItem = new JMenuItem();
@@ -254,6 +260,40 @@ public class SIL_Edit extends JFrame {
         });
         fileMenu.add(deleteAllItem);
         fileMenu.add(jSeparator4);
+        
+        printVisible.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent evt) {
+                printVisibleItemActionPerformed(evt);
+            }
+        });
+        printMenu.add(printVisible);
+        
+        printCurrentChart.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent evt) {
+                printCurrentChartItemActionPerformed(evt);
+            }
+        });
+        printMenu.add(printCurrentChart);
+        
+        printAllCharts.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent evt) {
+                printAllChartsItemActionPerformed(evt);
+            }
+        });
+        printMenu.add(printAllCharts);
+        
+        fileMenu.add(printMenu);
+
+        pageSetupItem.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent evt) {
+                pageSetupItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(pageSetupItem);
 
         quitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
         quitItem.setText("Exit");
@@ -560,6 +600,7 @@ public class SIL_Edit extends JFrame {
         setSize(new Dimension(1050,725));
         newLiBrowserItem.setEnabled(false);
         exportGEDCOMItem.setEnabled(false);
+        printAllCharts.setEnabled(false);
         pack();
     }
 
@@ -607,7 +648,7 @@ public class SIL_Edit extends JFrame {
 
 
     private void saveItemActionPerformed(ActionEvent evt) {
-        chart.saveSILKinFile();
+        chart.saveSILKFile();
     }
 
     private void saveAsItemActionPerformed(ActionEvent evt) {
@@ -619,6 +660,28 @@ public class SIL_Edit extends JFrame {
             chart.deleteAll();
             setTitle("");
         }
+    }
+    
+    // 
+    private void printVisibleItemActionPerformed(ActionEvent evt) {
+        PrintChart pc = new PrintChart(chartScrollPane, false);
+        pc.printTheChart();
+    }
+
+    private void printCurrentChartItemActionPerformed(ActionEvent evt) {
+        PrintChart pc = new PrintChart(chartScrollPane, true);
+        pc.printTheChart();
+    }
+
+    private void printAllChartsItemActionPerformed(ActionEvent evt) {
+        System.out.println("Chose PRINT ALL");
+    }
+    
+    private void pageSetupItemActionPerformed(ActionEvent evt) {
+        PrinterJob job = PrinterJob.getPrinterJob();
+        PageFormat defaultPage = job.defaultPage();
+        defaultPage.setOrientation(PageFormat.LANDSCAPE);
+        PrintChart.pgFormat = job.pageDialog(defaultPage);
     }
 
     private void quitItemActionPerformed(ActionEvent evt) {
@@ -825,7 +888,7 @@ public class SIL_Edit extends JFrame {
 
     private void getSuggestionsItemActionPerformed(ActionEvent evt) {
         try {
-            chart.saveSILKinFile();
+            chart.saveSILKFile();
             if (Library.predEncodings == null) {
                 Library.readPredEncodings();
             }
@@ -858,7 +921,7 @@ public class SIL_Edit extends JFrame {
                 suggestionsAdr = learner.issuesForUser;
                 dtAdr.issuesForUser = suggestionsAdr;
             }
-            chart.saveSILKinFile();
+            chart.saveSILKFile();
             File suggsDataFile = chart.saveFile;
             String styleFilePath = Library.libraryDirectory + "Suggestions/silk-status.xsl";
             File stylesheet = new File(styleFilePath);
@@ -1913,21 +1976,23 @@ public class SIL_Edit extends JFrame {
     private JRadioButtonMenuItem ltrRefBtn;
     private JRadioButtonMenuItem lastNameBtn;
     private JMenuItem loadItem;
-//    private JMenuItem loadItemPreXML;
     private ButtonGroup nameButtonGroup;
     private JMenuItem newContextItem;
     private JMenuItem newLiBrowserItem;
     private JRadioButtonMenuItem noKinTermBtn;
     private JRadioButtonMenuItem noNameBtn;
+    private JMenuItem pageSetupItem;
     private JMenuItem pasteItem;
     private PersonPanel personPanel1;
+    private JMenu printMenu;
+    private JMenuItem printVisible;
+    private JMenuItem printCurrentChart;
+    private JMenuItem printAllCharts;
     private JMenuItem quitItem;
     public JMenuItem returnToSuggsItem;
     private JMenuItem saveAsItem;
     private JMenuItem saveItem;
     private JCheckBoxMenuItem snapToGrid;
-//    private JMenuItem testKeyItem;
-//    private JMenuItem testUnicodeItem;
     private JRadioButtonMenuItem wholeNameBtn;
     // End of variables declaration
 }

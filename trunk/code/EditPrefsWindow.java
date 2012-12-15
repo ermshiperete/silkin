@@ -1,4 +1,5 @@
 
+import java.awt.Font;
 import javax.swing.*;
 
 /** The EditPrefsWindow is where Learning Parameters are set.
@@ -15,6 +16,8 @@ public class EditPrefsWindow extends JFrame {
     private static final int ignorMinVal = 0;
     private static final int maxMaxVal = 40;
     private static final int maxMinVal = 0;
+    private static int[] demoSizes = {9, 12, 13, 15, 16, 18, 21, 24 };
+    private static int[] trueSizes = {6,  8,  9, 10, 11, 12, 14, 16 };
     boolean loading = true;
 
     /** Creates new form EditPrefsWindow */
@@ -53,6 +56,15 @@ public class EditPrefsWindow extends JFrame {
         highTxtFld.setText(String.valueOf(Library.gridY));
         wideTxtFld.setEditable(Library.snapToGrid);
         highTxtFld.setEditable(Library.snapToGrid);
+        if (PrintChart.printFont != null) {
+            String face = PrintChart.printFont.getName();
+            fontComboBox.setSelectedItem(face);
+            String size = "" + PrintChart.printFont.getSize();
+            sizeComboBox.setSelectedItem(size);
+            int ndx = sizeComboBox.getSelectedIndex();
+            Font demoFont = new Font(face, Font.PLAIN, demoSizes[ndx]);
+            sampleTextLabel.setFont(demoFont);
+        }
         String fileName = SIL_Edit.editWindow.chart.saveFile.getName();
         setTitle("Edit Preferences for " + fileName);
         loading = false;
@@ -93,6 +105,10 @@ public class EditPrefsWindow extends JFrame {
         wideTxtFld = new javax.swing.JTextField();
         highLabel = new javax.swing.JLabel();
         highTxtFld = new javax.swing.JTextField();
+        chartFontLabel = new javax.swing.JLabel();
+        fontComboBox = new javax.swing.JComboBox();
+        sizeComboBox = new javax.swing.JComboBox();
+        sampleTextLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -261,64 +277,96 @@ public class EditPrefsWindow extends JFrame {
             }
         });
 
+        chartFontLabel.setText("Chart Printing Font");
+
+        fontComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Dialog", "Monospaced", "Serif", "SansSerif" }));
+        fontComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fontComboBoxActionPerformed(evt);
+            }
+        });
+
+        sizeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "6", "8", "9", "10", "11", "12", "14", "16" }));
+        sizeComboBox.setSelectedIndex(3);
+        sizeComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sizeComboBoxActionPerformed(evt);
+            }
+        });
+
+        sampleTextLabel.setBackground(new java.awt.Color(204, 255, 204));
+        sampleTextLabel.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
+        sampleTextLabel.setText("  Sample text in this font and size.  ");
+        sampleTextLabel.setOpaque(true);
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
+                .add(25, 25, 25)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                        .add(layout.createSequentialGroup()
-                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                                .add(maxLabel)
-                                .add(ignorableLabel))
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                .add(ignorableField)
-                                .add(maxField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)))
-                        .add(layout.createSequentialGroup()
-                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                .add(subpatternCkBox)
-                                .add(polygamyCkBox)
-                                .add(inductionCkBox)
-                                .add(surnameCheckBox)
-                                .add(birthdateCheckBox)
-                                .add(snapToGridCkBox))
-                            .add(7, 7, 7)))
                     .add(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(editLinkPrioritiesBtn)))
-                .add(18, 18, 18)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                        .add(layout.createSequentialGroup()
-                            .add(ignorableSlider, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                            .add(ignoreHelp))
-                        .add(layout.createSequentialGroup()
-                            .add(maxSlider, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                            .add(maxHelp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                    .add(subpatternHelp)
-                    .add(inductionHelp)
-                    .add(layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, linkPrioritiesHelp, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, snapToGridHelp, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, normalCaptureHelpBtn, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, polygamyHelp, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .add(18, 18, 18)
-                        .add(wideLabel)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(wideTxtFld, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(18, 18, 18)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(doneBtn)
+                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                .add(layout.createSequentialGroup()
+                                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                        .add(maxLabel)
+                                        .add(ignorableLabel))
+                                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                        .add(ignorableField)
+                                        .add(maxField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)))
+                                .add(layout.createSequentialGroup()
+                                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                        .add(subpatternCkBox)
+                                        .add(polygamyCkBox)
+                                        .add(inductionCkBox)
+                                        .add(surnameCheckBox)
+                                        .add(birthdateCheckBox)
+                                        .add(snapToGridCkBox))
+                                    .add(7, 7, 7)))
+                            .add(editLinkPrioritiesBtn))
+                        .add(20, 20, 20)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                .add(layout.createSequentialGroup()
+                                    .add(ignorableSlider, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                    .add(ignoreHelp))
+                                .add(layout.createSequentialGroup()
+                                    .add(maxSlider, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                    .add(maxHelp, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .add(subpatternHelp)
+                            .add(inductionHelp)
                             .add(layout.createSequentialGroup()
-                                .add(highLabel)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                .add(highTxtFld, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                                    .add(org.jdesktop.layout.GroupLayout.LEADING, linkPrioritiesHelp, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .add(org.jdesktop.layout.GroupLayout.LEADING, snapToGridHelp, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .add(org.jdesktop.layout.GroupLayout.LEADING, normalCaptureHelpBtn, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .add(org.jdesktop.layout.GroupLayout.LEADING, polygamyHelp, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .add(18, 18, 18)
+                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(layout.createSequentialGroup()
+                                        .add(wideLabel)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                        .add(wideTxtFld, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .add(18, 18, 18)
+                                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                            .add(doneBtn)
+                                            .add(layout.createSequentialGroup()
+                                                .add(highLabel)
+                                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                                .add(highTxtFld, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+                                    .add(sizeComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                        .add(sampleTextLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 290, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(layout.createSequentialGroup()
+                            .add(chartFontLabel)
+                            .add(31, 31, 31)
+                            .add(fontComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 146, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -371,8 +419,17 @@ public class EditPrefsWindow extends JFrame {
                     .add(editLinkPrioritiesBtn)
                     .add(linkPrioritiesHelp))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(doneBtn)
-                .addContainerGap(8, Short.MAX_VALUE))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(chartFontLabel)
+                    .add(fontComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(sizeComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createSequentialGroup()
+                        .add(0, 25, Short.MAX_VALUE)
+                        .add(doneBtn))
+                    .add(sampleTextLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -554,6 +611,31 @@ public class EditPrefsWindow extends JFrame {
         HelpFrame.help.displayPage(HelpFrame.PREFS, "priority");
     }//GEN-LAST:event_linkPrioritiesHelpActionPerformed
 
+    private void fontComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fontComboBoxActionPerformed
+        resetSampleLabel();
+    }//GEN-LAST:event_fontComboBoxActionPerformed
+
+    private void sizeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sizeComboBoxActionPerformed
+        resetSampleLabel();
+    }//GEN-LAST:event_sizeComboBoxActionPerformed
+
+    void resetSampleLabel() {
+        /* The purpose of the Sample Text Label is to show what the font options look like.
+         * Unfortunately, font sizes that look fine on paper seem tiny on screen.
+         * So, I demonstrate a size 50% larger; it looks closer to the size it will have on paper.
+         */
+        if (loading) return;
+        String fontName = (String)fontComboBox.getSelectedItem();
+        int ndx = sizeComboBox.getSelectedIndex();
+        int demoSize = demoSizes[ndx]; 
+        int trueSize = trueSizes[ndx];
+        Font nuFont = new Font(fontName, Font.PLAIN, trueSize);
+        Font demoFont = new Font(fontName, Font.PLAIN, demoSize);
+        sampleTextLabel.setFont(demoFont);
+        PrintChart.printFont = nuFont;
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -591,8 +673,10 @@ public class EditPrefsWindow extends JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox birthdateCheckBox;
+    private javax.swing.JLabel chartFontLabel;
     private javax.swing.JButton doneBtn;
     private javax.swing.JButton editLinkPrioritiesBtn;
+    private javax.swing.JComboBox fontComboBox;
     private javax.swing.JLabel highLabel;
     private javax.swing.JTextField highTxtFld;
     private javax.swing.JTextField ignorableField;
@@ -609,6 +693,8 @@ public class EditPrefsWindow extends JFrame {
     private javax.swing.JButton normalCaptureHelpBtn;
     private javax.swing.JCheckBox polygamyCkBox;
     private javax.swing.JButton polygamyHelp;
+    private javax.swing.JLabel sampleTextLabel;
+    private javax.swing.JComboBox sizeComboBox;
     private javax.swing.JCheckBox snapToGridCkBox;
     private javax.swing.JButton snapToGridHelp;
     private javax.swing.JCheckBox subpatternCkBox;

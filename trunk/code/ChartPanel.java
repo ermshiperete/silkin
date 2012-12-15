@@ -450,6 +450,52 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         }
         return -1;
     }
+    
+    public int[] chartSize() {
+        int[] results = new int[2];
+        int minX = 1000000, minY = 1000000, maxX = -1, maxY = -1;
+        int extraX = Library.gridX, extraY = Library.gridY;
+        for (Family f : Context.current.familyCensus) {
+            if (!f.deleted) {
+                if (f.location.x < minX) {
+                    minX = f.location.x;
+                }
+                if (f.location.y < minY) {
+                    minY = f.location.y;
+                }
+                if (f.location.x + extraX > maxX) {
+                    maxX = f.location.x + extraX;
+                }
+                if (f.location.y + extraY > maxY) {
+                    maxY = f.location.y + extraY;
+                }
+            }
+        }
+        for (Individual ind : Context.current.individualCensus) {
+            if (!ind.deleted) {
+                if (ind.location.x < minX) {
+                    minX = ind.location.x;
+                }
+                if (ind.location.y < minY) {
+                    minY = ind.location.y;
+                }
+                if (ind.location.x + extraX > maxX) {
+                    maxX = ind.location.x + extraX;
+                }
+                if (ind.location.y + extraY > maxY) {
+                    maxY = ind.location.y + extraY;
+                }
+            }
+        }
+        if (maxY == -1) {  //  never found a valid Y
+            results[0] = 0;
+            results[1] = 0;
+        } else {
+            results[0] = maxX - minX;
+            results[1] = maxY - minY;
+        }
+        return results;
+    }
 
     void delayedAreaCk(Individual ind) {
         if (!reSizInds.contains(ind)) {
@@ -613,7 +659,8 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 } else {
                     m.drawSymbol(g, myRect, Color.black);
                 }
-                m.drawLines(g);
+                m.drawLines(g, myRect);
+                //  SILKin does not use the selectLine
                 if (selectLine != null) {
                     theRect = new Rectangle(theRect);
                     theRect.height *= 2;
@@ -845,14 +892,10 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                             // Love triumphs over all
                             mx.addSpouse(px);
                             
-                            //  NEW CODE
-                            Individual shortestPathPerson = findShortestPath(ix, fx);
-                            if (shortestPathPerson != null) {
-                                KSQ bfq = new KSQ();
-                                bfq.enQ(shortestPathPerson);
-                                TreeMap newRow = parent.ktm.getRow(parent.getCurrentEgo());
-                                SIL_Edit.propagateNodes(bfq, newRow, null);
-                            }
+                            //  NEW CODE  -- Changing Ego forces flesh out of new Ego's KTM row
+                            int storedEgo = parent.getCurrentEgo();
+                            parent.changeEgo(ix.serialNmbr);
+                            parent.changeEgo(storedEgo);
                             //  end of NEW CODE
                             
                             showInfo(ix);
@@ -904,13 +947,11 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                             px.setLocation(lastPersonLoc);
                             mx.addSib(px);
                             fx.addChild(ix);
-                            Individual shortestPathPerson = findShortestPath(ix, fx);
-                            if (shortestPathPerson != null) {
-                                KSQ bfq = new KSQ();
-                                bfq.enQ(shortestPathPerson);
-                                TreeMap newRow = parent.ktm.getRow(parent.getCurrentEgo());
-                                SIL_Edit.propagateNodes(bfq, newRow, null);
-                            }
+                            
+                            int storedEgo = parent.getCurrentEgo();
+                            // Changing Ego forces flesh out of new Ego's KTM row
+                            parent.changeEgo(ix.serialNmbr);
+                            parent.changeEgo(storedEgo);
                             //  end of NEW CODE
                             
                             showInfo(ix);
@@ -1234,11 +1275,11 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 pathName += ".silk";
                 saveFile = new File(pathName);
             }
-            saveSILKinFile();
+            saveSILKFile();
         }
     }
 
-    public void saveSILKinFile() {
+    public void saveSILKFile() {
         // if (dirty == false) return;
         if (saveFile == null) {
             saveAsFile();
@@ -1288,6 +1329,15 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         params += "  <doInduction value=\"" + ctxt.doInduction + "\"/>" + EOL;
         params += "  <surnameCapture value=\"" +   ctxt.surnameNormallyCaptured + "\"/>" + EOL;
         params += "  <birthdateCapture value=\"" +   ctxt.birthDateNormallyCaptured + "\"/>";
+        if (PrintChart.printFont != null) {
+            String logicalName = PrintChart.printFont.getName();
+            int size = PrintChart.printFont.getSize();
+            params += EOL + "  <printFont name=\"" + logicalName + "\" size=\"" + size + "\"/>";            
+        }
+        if (PrintChart.pgFormat != null) {
+            int orient = PrintChart.pgFormat.getOrientation();
+            params += EOL + "  <printOrientation value=\"" + orient + "\"/>";
+        }
         return params;
     }
 
@@ -1375,7 +1425,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             saveFile = null;
             return false;
         } else {
-            saveSILKinFile();
+            saveSILKFile();
             return true;
         }
     }

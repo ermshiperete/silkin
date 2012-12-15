@@ -37,7 +37,7 @@ public class ActionBoxInstructions extends javax.swing.JPanel {
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
-        jTextArea1.setText("Select a Suggestion from the drop-down menu above. \nThis Action Box will be replaced by an Action Box \ntailored to the type of suggestion you selected. \n\nIn all Action Boxes, there will be one or more decisions \nor entries to make. You may change your mind or edit \nyour entries as many times as you wish. \nNo action will be taken on your decisions until \nyou click the \"Done\" button in the lower right corner \nof the Action Box. \n\nIf you type into a text box like this one, do not hit \n\"Enter\" or \"Return\". Your lines of text will wrap \naround automatically. There is no limit on the length \nof text box entries.");
+        jTextArea1.setText("Select a Suggestion from the drop-down menu above. \nThis Action Box will be replaced by an Action Box \ntailored to the type of suggestion you selected. \n\nIn all Action Boxes, there will be one or more decisions \nor entries to make. You may change your mind or edit \nyour entries as many times as you wish. \nNo action will be taken on your decisions until \nyou click the \"Done\" button in the lower right corner \nof the Action Box. \n\nEven if you change your mind later, you can re-visit a \nSuggestion and \"Un-Do.\"\n\nIf you type into a text box like this one, do not hit \n\"Enter\" or \"Return\". Your lines of text will wrap \naround automatically. There is no limit on the length \nof text box entries.");
         jScrollPane1.setViewportView(jTextArea1);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
@@ -46,14 +46,14 @@ public class ActionBoxInstructions extends javax.swing.JPanel {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 260, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .add(layout.createSequentialGroup()
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 

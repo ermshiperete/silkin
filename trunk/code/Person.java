@@ -220,8 +220,8 @@ public class Person {
 	public void setSize(int x) {
 		lsize = x;
 	}
-
-	public Rectangle bounds() {
+        
+        public Rectangle bounds() {
 		return new Rectangle(location.x,location.y,getSize(),getSize());
 	}
 	
@@ -270,7 +270,7 @@ public class Person {
             if (st.hasMoreTokens()) {
                 out = st.nextToken() + " ";
                 while (st.hasMoreTokens()) {
-                    out = out + st.nextToken().substring(0, 1);
+                    out += st.nextToken().substring(0, 1);
                 }
             } else {
                 out = "<" + (myId -1) + ">";
@@ -280,7 +280,7 @@ public class Person {
                 out1 = st.nextToken();
                 out = "";
                 while (st.hasMoreTokens()) {
-                    out = out + out1.substring(0, 1);
+                    out += out1.substring(0, 1);
                     out1 = st.nextToken();
                 }
                 out += " " + out1;
@@ -349,23 +349,23 @@ public class Person {
         }
     }
 	
-	public void drawSymbol(Graphics g, Rectangle pbounds) {
-		Rectangle myBounds = bounds();
-		// myBounds.translate(offset.x,offset.y);
-		drawn=false;
+    public void drawSymbol(Graphics g, Rectangle pbounds) {
+        Rectangle myBounds = bounds();
+        // myBounds is used to compute the size of the symbol
+        drawn = false;
 
-		if (myBounds.intersects(pbounds)) {
-			if (hasEnded()) {
-				sex.symbol.drawEndSymbol(g,myBounds);
-				drawLabel(g,myBounds);
-				drawn = true;
-			} else if (hasBegun()) {
-				sex.symbol.drawSymbol(g,myBounds);
-				drawLabel(g,myBounds);
-				drawn=true;
-			}
-		}
-	}
+        if (pbounds.contains(location)) {
+            if (hasEnded()) {
+                sex.symbol.drawEndSymbol(g, myBounds);
+                drawLabel(g, myBounds);
+                drawn = true;
+            } else if (hasBegun()) {
+                sex.symbol.drawSymbol(g, myBounds);
+                drawLabel(g, myBounds);
+                drawn = true;
+            }
+        }
+    }
 	
 	public void paint(Graphics g) {
 		if (selected) sex.symbol.drawSymbol(g,bounds(), Color.red);

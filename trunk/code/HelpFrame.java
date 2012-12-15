@@ -340,6 +340,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             movingItem = new JMenuItem();
             deleteRelItem = new JMenuItem();
             deletePeopleItem = new JMenuItem();
+            printChartItem = new JMenuItem();
 //          Context Editor Sub-Menus
             definitionItem = new JMenuItem();
             editorItem = new JMenuItem();
@@ -360,6 +361,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             nameCaptureItem = new JMenuItem();
             snapToGridItem = new JMenuItem();
             linkPriorityItem = new JMenuItem();
+            chartPrintingItem = new JMenuItem();
 //          Theory Edit Sub-Menus
             layoutItem = new JMenuItem();
             tutorialItem = new JMenuItem();
@@ -522,6 +524,16 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
                 }
             });
             chartSubMenu.add(deletePeopleItem);
+            
+            printChartItem.setText("Printing Charts");
+            printChartItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(CHART, "print");
+                }
+            });
+            chartSubMenu.add(printChartItem);
+            
             
 //  Context Editor SubMenu
             contextSubMenu.setText("Context Editor");
@@ -690,6 +702,15 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             });
             prefsSubMenu.add(linkPriorityItem);
             
+            chartPrintingItem.setText("Fonts for Printing");
+            chartPrintingItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(PREFS, "printing");
+                }
+            });
+            prefsSubMenu.add(chartPrintingItem);
+            
 // Theory Editor SubMenu
             theoryEditSubMenu.setText("Editing Definitions");
             add(theoryEditSubMenu);
@@ -798,6 +819,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
         private JMenuItem movingItem;
         private JMenuItem deleteRelItem;
         private JMenuItem deletePeopleItem;
+        private JMenuItem printChartItem;
         private JMenuItem getSuggsItem;
         private JMenuItem actSuggsItem;
         private JMenuItem undoItem;
@@ -810,6 +832,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
         private JMenuItem nameCaptureItem;
         private JMenuItem snapToGridItem;
         private JMenuItem linkPriorityItem;
+        private JMenuItem chartPrintingItem;
         private JMenuItem layoutItem;
         private JMenuItem tutorialItem;
         private JMenuItem rulesItem;

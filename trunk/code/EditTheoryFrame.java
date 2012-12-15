@@ -88,7 +88,7 @@ public class EditTheoryFrame extends JFrame {
     /** Loads (or reloads) specific DomainTheory into this editor. */
     public void loadTheory(DomainTheory domTh) {
         if (dt != null) {
-            SIL_Edit.editWindow.chart.saveSILKinFile();
+            SIL_Edit.editWindow.chart.saveSILKFile();
         }
         dt = domTh;
         // Load fields from DomainTheory
