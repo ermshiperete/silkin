@@ -37,6 +37,7 @@ public class Individual extends Person implements Serializable  {
     
     /**  A list of all Families created by former & current marriages (& child births). */
     public ArrayList<Object> marriages = new ArrayList<Object>();  
+    public ArrayList<Link> links;
 	
     /**  A TreeMap of all the User-Defined Properties (aka *properties) for this Individual.  */
     public TreeMap userDefinedProperties;
@@ -101,6 +102,15 @@ public class Individual extends Person implements Serializable  {
         }
     }
 
+    public String getYYYYMMOfBirth() {
+        
+        try {
+        return UDate.formatAsXSD(birthYr, birthMM, null);
+        }catch(Exception ex) {
+            return "";
+        }
+    }
+
     public String getDateOfDeath() { 
         try {
         return UDate.formatAsXSD(deathYr, deathMM, deathDD);
@@ -115,6 +125,9 @@ public class Individual extends Person implements Serializable  {
         birthYr = components[0];
         birthMM = components[1];
         birthDD = components[2];
+        if (birthFamily != null) {
+            birthFamily.computeBirthGrps();
+        }
     }
 
     public void setDateOfDeath(String dod) { 
@@ -559,6 +572,7 @@ public boolean hasDoD() {
     public String toSILKString() throws KSDateParseException {
         String result = "<individual n=\"" + serialNmbr + "\">";
         result += "<sex>" + (sex instanceof Female ? "F" : "M") + "</sex>\n";
+        result += "  <homeChart n=\"" + homeChart + "\"/>\n";
         result += "  <location x=\"" + location.x + "\" y=\"" + location.y + "\"/>\n";
         if (comment != null && comment.length() > 0) {
             result += "  <comments txt=\"" + comment + "\"/>\n";
@@ -618,7 +632,15 @@ public boolean hasDoD() {
                 result += "\", #" + ((Individual) starLinks.get(i)).serialNmbr + "\"";
             }  //  end of loop thru starLinks
             result += "</starLinks>\n";
-        }        
+        }
+//  DON'T WRITE OUT THE LINKS LIST. IT WILL BE RE-CREATED FROM BACK-POINTERS IN THE LINKS.
+//        if (links != null && !links.isEmpty()) {
+//            result += "  <links>\n";
+//            for (Link lk : links) {
+//                result += "    " + lk.toSILKString();
+//            }
+//            result += "  </links>\n";
+//        }
         result += "</individual>\n";
         return result;
     }  //  end of method toSILKString
@@ -860,6 +882,14 @@ public boolean hasDoD() {
             ((Family) f).deleteSpouse(this);
         }
         dataChangeDate = UDate.today();
+        homeChart = -1;
+        if (links != null) { // iterate backwards; perhaps these were last links created
+            for (int i=links.size() -1; i >= 0; i--) {
+                Link lk = links.get(i);
+                Link.delete(lk);
+            }
+            links = null;
+        }
     }  // end of method delete
 
     public Individual oppSexKin() {
