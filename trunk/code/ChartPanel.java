@@ -4,6 +4,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JComboBox;
 import java.util.*;
 import java.io.*;
 
@@ -37,8 +38,10 @@ public class ChartPanel extends JPanel implements MouseInputListener {
     // instance variables
     java.awt.List personMenu;
     Point lastLoc = new Point(-1, -1);
-    int whichFolk = -1,
+    int     whichFolk = -1,
             priorAlter = -1,
+            whichLink = -1,
+            priorLink = -1,
             whichKnot = -1,
             tiedKnot = -1,
             whichHalf = -1;
@@ -58,22 +61,23 @@ public class ChartPanel extends JPanel implements MouseInputListener {
     int refYear = 0;
     int nameLabel = INITIALS;
     int kinTermLabel = NOKINTERM;
-    ArrayList<Person> draggedPersons = new ArrayList<Person>();
-    ArrayList<Marriage> draggedMarriages = new ArrayList<Marriage>();
+    ArrayList<Individual> draggedPersons = new ArrayList<Individual>();
+    ArrayList<Family> draggedMarriages = new ArrayList<Family>();
+    ArrayList<Link> draggedLinks = new ArrayList<Link>();
     Point lastPersonLoc = null;
     Dimension area = new Dimension(0, 0);
     ArrayList<Individual> reSizInds = new ArrayList<Individual>();
     ArrayList<Family> reSizFams = new ArrayList<Family>();
+    ArrayList<Link> reSizLinks = new ArrayList<Link>();
 
     public void init(SIL_Edit k) {
         parent = k;
         setLayout(null);
-        personMenu = new java.awt.List(5, false);
+        personMenu = new java.awt.List(4, false);
         personMenu.add("Female");
         personMenu.add("Male");
         personMenu.add("Union");
-        personMenu.add("Existing Female");
-        personMenu.add("Existing Male");
+        personMenu.add("Link to Person");
         personMenu.setVisible(false);
         personMenu.setSize(100, 72);
         add(personMenu);
@@ -98,6 +102,10 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         if (!reSizFams.isEmpty()) {
             checkFamArea(reSizFams);
             reSizFams.clear();
+        }
+        if (!reSizLinks.isEmpty()) {
+            checkLinkArea(reSizLinks);
+            reSizLinks.clear();
         }
     }
 
@@ -202,13 +210,15 @@ public class ChartPanel extends JPanel implements MouseInputListener {
 //		}
 //		// do some alt action
 //	}  //  Never used
+    
     void KinshipEditor_MouseDown(MouseEvent event) {
-        int which = -1;
         int mouseX = event.getX(), mouseY = event.getY();
+        int theInd = Person.findPerson(mouseX, mouseY);
+        int theLink = Link.findLink(mouseX, mouseY);
+        int theFam = findMarriage(mouseX, mouseY);
 //        mouseX -= originX;    //  Will I need these when chart grows large??
 //        mouseY -= originY;
-//  CLICKED ON A PERSON
-        if ((which = Person.findPerson(mouseX, mouseY)) >= 0) {
+        if ((theInd + theLink + theFam) > -3) { // SOMETHING was clicked
             if (personMenu.isShowing()) {
                 personMenu.setVisible(false);
             }
@@ -221,44 +231,48 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 displayError(pe);
                 return;
             }  //  If no exception, proceed to switch
-            if (whichFolk == which) {
-                lastLoc = new Point(mouseX, mouseY);
-            } else {
-                priorAlter = whichFolk;
-                whichFolk = which;
-            }
-            lastPersonLoc = new Point(Person.folks.get(which).location);
-            whichKnot = -1;
-            return;
-        } else {
-            whichFolk = -1;
-        }
 
-        //  CLICKED ON A MARRIAGE
-        if ((which = findMarriage(mouseX, mouseY)) >= 0) {
-            if (personMenu.isShowing()) {
-                personMenu.setVisible(false);
-            }
-            try {
-                if (editable) {
-                    parent.storeInfo();
+            if (theInd >= 0) { //  CLICKED ON A PERSON            
+                if (whichFolk == theInd) {
+                    lastLoc = new Point(mouseX, mouseY);
+                } else {
+                    priorAlter = whichFolk;
+                    whichFolk = theInd;
                 }
-                repaint();
-            } catch (Exception pe) {
-                displayError(pe);
+                lastPersonLoc = new Point(Person.folks.get(theInd).location);
+                whichKnot = -1;
+                whichLink = -1;
                 return;
-            }  //  If no exception, proceed to switch
-            if (whichKnot == which) {
-                lastLoc = new Point(mouseX, mouseY);
             } else {
-                whichKnot = which;
+                whichFolk = -1;
             }
-            whichFolk = -1;
-            return;
-        } else {
-            whichKnot = -1;
+            if (theLink >= 0) { // CLICKED ON A LINK
+                if (whichLink == theLink) {
+                    lastLoc = new Point(mouseX, mouseY);
+                } else {
+                    priorLink = whichLink;
+                    whichLink = theLink;
+                }
+                lastPersonLoc = new Point(Context.current.linkCensus.get(theLink).location);
+                whichKnot = -1;
+                whichFolk = -1;
+                return;
+            } else {
+                whichLink = -1;
+            }
+            if (theFam >= 0) { //  CLICKED ON A MARRIAGE
+                if (whichKnot == theFam) {
+                    lastLoc = new Point(mouseX, mouseY);
+                } else {
+                    whichKnot = theFam;
+                }
+                whichFolk = -1;
+                whichLink = -1;
+                return;
+            } else {
+                whichKnot = -1;
+            }
         }
-
         //  CLICKED ON A BLANK AREA
         try {
             parent.clearInfo();
@@ -379,6 +393,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         }
         Individual newPerson = null;
         Family newMar = null;
+        Link newLink = null;
         lastLoc = gridSnap(lastLoc);
         switch (theIndex) {
             case 0: // female
@@ -387,7 +402,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 parent.getPPanel().addToEgoChoices(newPerson);
                 break;
             case 1: // male
-                newPerson = new Individual(Person.mem, new Point(lastLoc.x, lastLoc.y));
+                newPerson = new Individual(Person.mal, new Point(lastLoc.x, lastLoc.y));
                 newPerson.myId = newPerson.serialNmbr + 1;
                 parent.getPPanel().addToEgoChoices(newPerson);
                 break;
@@ -395,17 +410,29 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 newMar = new Family(new Point(lastLoc.x, lastLoc.y));
                 newMar.mid = newMar.serialNmbr + 1;
                 break;
-            case 3: // existing Male
-                String msg = "Linking to existing persons is not yet implemented.",
-                 title = "Still Under Construction";
-                JOptionPane.showMessageDialog(this, msg,
-                        title, JOptionPane.INFORMATION_MESSAGE);
-                break;
-            case 4: // existing Female
-                msg = "Linking to existing persons is not yet implemented.";
-                title = "Still Under Construction";
-                JOptionPane.showMessageDialog(this, msg,
-                        title, JOptionPane.INFORMATION_MESSAGE);
+            case 3: // Linking to existing person
+                // Build menu of existing persons, let User choose one.
+                Object[] people = new Object[Context.current.indSerNumGen];
+                String newName;
+                int index = 0;
+                for (Individual ind : Context.current.individualCensus) {
+                    newName = (ind.deleted ? "deleted" : ind.name + " <" + ind.serialNmbr + ">");
+                    people[index++] = newName;
+                }
+                String person = (String)JOptionPane.showInputDialog(
+                        parent, "Choose the Person", "Link to An Existing Person",
+                        JOptionPane.PLAIN_MESSAGE, null, people, people[0]);    
+                if (person.startsWith("deleted")) {
+                    JOptionPane.showConfirmDialog(parent, 
+                            "Not Allowed to Link to a Deleted Person.");
+                    return;
+                }
+                int strt = person.indexOf("<") +1, end = person.length()-1;
+                int serial = Integer.parseInt(person.substring(strt, end));
+                Individual newbie = Context.current.individualCensus.get(serial);
+                Point location = new Point(lastLoc.x, lastLoc.y);
+                // Create the Link
+                newLink = new Link(newbie, Context.current.currentChart, location);
                 break;
         }
         if (newPerson != null) {
@@ -420,10 +447,12 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             }
             delayedAreaCk(newPerson);
             showInfo(newPerson);
-        }
-        if (newMar != null) {
+        }else if (newMar != null) {
             delayedAreaCk(newMar);
             showInfo(newMar);
+        }else if(newLink != null) {
+            delayedAreaCk(newLink);
+            showInfo(newLink.personPointedTo);
         }
         dirty = true;
         repaint();
@@ -510,6 +539,20 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             }
         }
     }
+    
+    void delayedAreaCk(Link link) {
+        if (!reSizLinks.contains(link)) {
+            reSizLinks.add(link);
+        }
+    }
+    
+    void delayedAreaCheck(ArrayList<Link> lynx) {
+        for (Link lk : lynx) {
+            if (!reSizLinks.contains(lk)) {
+                reSizLinks.add(lk);
+            }
+        }
+    }
 
     void delayedAreaCk(Family fam) {
         if (!reSizFams.contains(fam)) {
@@ -570,6 +613,32 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         checkArea(minX, minY, wide, high, maxSz);
     }
 
+    void checkLinkArea(ArrayList<Link> links) {
+        int minX = 1000000, minY = 1000000, maxX = -1, maxY = -1, maxSz = -1;
+        for (Link lk : links) {
+            if (!lk.deleted) {
+                int sz = lk.getSize();
+                if (sz > maxSz) {
+                    maxSz = sz;
+                }
+                if (lk.location.x < minX) {
+                    minX = lk.location.x;
+                }
+                if (lk.location.y < minY) {
+                    minY = lk.location.y;
+                }
+                if (lk.location.x + sz > maxX) {
+                    maxX = lk.location.x + sz;
+                }
+                if (lk.location.y + sz > maxY) {
+                    maxY = lk.location.y + sz;
+                }
+            }
+        }
+        int wide = maxX - minX, high = maxY - minY;
+        checkArea(minX, minY, wide, high, maxSz);
+    }
+
     void checkArea(int left, int top, int wide, int high, int sz) {
         // if bottom or right has inadequate margin, add extra space
         resize = false;
@@ -594,6 +663,13 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             }
             for (Family fam : Context.current.familyCensus) {
                 fam.adjustLocation(extra.x, extra.y);
+                for (Marriage.BirthGroup bg : fam.birthGrps) {
+                    bg.topPtX += extra.x;
+                }
+            }
+            for (Link lk : Context.current.linkCensus) {
+                lk.setLocationX(lk.getLocationX() + extra.x);
+                lk.setLocationY(lk.getLocationY() + extra.y);
             }
             area.width += extra.x;
             area.height += extra.y;
@@ -624,13 +700,34 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         }
         if (selectLine != null) {
             selectLine.paint(g);
-//        } else if (whichFolk == -1 && whichKnot == -1) {
-//            clearInfo();
         }
-        ArrayList<Integer> path = Context.current.ktm.getPath(
-                parent.getCurrentEgo(), whichFolk);
-        for (Individual p : Person.folks) {
-            if (p != null) {
+        int oldFolk = whichFolk;
+        ArrayList<Integer> path = new ArrayList<Integer>();;
+        if (whichFolk > -1) {
+            path = Context.current.ktm.getPath(parent.getCurrentEgo(), whichFolk);
+        } else if (whichLink > -1) {
+            int ppt = Context.current.linkCensus.get(whichLink).personPointedTo.serialNmbr;
+            path = Context.current.ktm.getPath(parent.getCurrentEgo(), ppt);
+        }
+        for (Link lk : Context.current.linkCensus) {
+            if (! lk.deleted) {
+                Individual p = lk.personPointedTo;
+                if (p.serialNmbr == parent.getCurrentEgo()) {
+                    lk.drawSymbol(g, myRect, Color.red);
+                } else if (lk.serialNmbr == whichLink) { // clicked on Link
+                    lk.drawSymbol(g, myRect, Color.blue);
+                    whichFolk = p.serialNmbr; // makes original blue also
+                } else if (p.serialNmbr == whichFolk) {
+                    lk.drawSymbol(g, myRect, Color.blue);
+                } else if (path.contains(p.serialNmbr)) {
+                    lk.drawSymbol(g, myRect, Color.orange);
+                } else {
+                    lk.drawSymbol(g, myRect, Link.defaultColor);
+                }
+            }
+        }  //  end of loop thru Links, w/ default color = green
+        for (Individual p : Person.folks) { // clicked on Individual
+            if (p != null && !p.deleted) {
                 if (p.serialNmbr == whichFolk) {
                     p.drawSymbol(g, myRect, Color.blue);
                     if (lastFolk != whichFolk) {
@@ -645,8 +742,8 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 }
             }
         }  //  end of loop thru Individuals
-
-        lastFolk = whichFolk;
+        whichFolk = oldFolk;
+        lastFolk = whichFolk;  // lastFolk == person previously displayed
         whichHalf = -1;
         for (Family m : Marriage.knots) {
             if (m != null) {
@@ -660,25 +757,25 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                     m.drawSymbol(g, myRect, Color.black);
                 }
                 m.drawLines(g, myRect);
-                //  SILKin does not use the selectLine
+                //  SelectLine shows that a person is being dragged to top or bottom of a marriage symbol
                 if (selectLine != null) {
                     theRect = new Rectangle(theRect);
                     theRect.height *= 2;
                     theRect.y -= theRect.height / 4;
                     if (theRect.contains(selectLine.toP.x, selectLine.toP.y)) {
                         tiedKnot = m.mid - 1;
-                        Rectangle a = new Rectangle(theRect.x, theRect.y, theRect.width,
+                        Rectangle upper = new Rectangle(theRect.x, theRect.y, theRect.width,
                                 theRect.height / 2);
-                        Rectangle b = new Rectangle(theRect.x, theRect.y + theRect.height / 2,
+                        Rectangle lower = new Rectangle(theRect.x, theRect.y + theRect.height / 2,
                                 theRect.width, theRect.height / 2);
                         Color cx = g.getColor();
                         g.setColor(Color.green);
-                        if (a.contains(selectLine.toP.x, selectLine.toP.y)) {
-                            g.fillOval(a.x, a.y, a.width, a.height);
+                        if (upper.contains(selectLine.toP.x, selectLine.toP.y)) {
+                            g.fillOval(upper.x, upper.y, upper.width, upper.height);
                             whichHalf = 1;
-                        } else if (b.contains(selectLine.toP.x, selectLine.toP.y)) {
+                        } else if (lower.contains(selectLine.toP.x, selectLine.toP.y)) {
                             g.setColor(Color.magenta);
-                            g.fillOval(b.x, b.y, b.width, b.height);
+                            g.fillOval(lower.x, lower.y, lower.width, lower.height);
                             whichHalf = 2;
                         }
                         g.setColor(cx);
@@ -739,7 +836,13 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 Person p = Person.folks.get(whichFolk);
                 selectLine = new Line(new Point(p.location.x + 10, p.location.y + 10),
                         new Point(mouseX, mouseY));
-                delayedAreaCk((Individual) p);
+//                delayedAreaCk((Individual) p);
+                repaint();
+            } else if (whichLink != -1) {
+                Link lk = Context.current.linkCensus.get(whichLink);
+                selectLine = new Line(new Point(lk.location.x + 10, lk.location.y + 10),
+                        new Point(mouseX, mouseY));
+//                delayedAreaCk(lk);
                 repaint();
             }
         } else if (metaDn || altDn) {   //  Alt-drag on a Family = move all descendants
@@ -747,8 +850,20 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 int dx = Marriage.knots.get(whichKnot).location.x - mouseX + 10;
                 int dy = Marriage.knots.get(whichKnot).location.y - mouseY + 10;
                 ArrayList<Individual> people = new ArrayList<Individual>();
-                Marriage.knots.get(whichKnot).lineageDeltaMove(dx, dy, people);
+                ArrayList<Link> lynx = new ArrayList<Link>();
+                Marriage.knots.get(whichKnot).lineageDeltaMove(dx, dy, people, lynx);
+                for (Individual ind : people) {
+                    if (!draggedPersons.contains(ind)) {
+                        draggedPersons.add(ind);
+                    }
+                }
+                for (Link lk : lynx) {
+                    if (!draggedLinks.contains(lk)) {
+                        draggedLinks.add(lk);
+                    }
+                }
                 delayedAreaCk(people);
+                delayedAreaCheck(lynx);
                 whichFolk = -1;
                 dirty = true;
                 repaint();
@@ -756,25 +871,44 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 Person p = Person.folks.get(whichFolk);
                 selectLine = new Line(new Point(p.location.x + 10, p.location.y + 10),
                         new Point(mouseX, mouseY));
-                delayedAreaCk((Individual) p);
+//                delayedAreaCk((Individual) p);
+                repaint();
+            }else if (whichLink != -1) {
+                Link lk = Context.current.linkCensus.get(whichLink);
+                selectLine = new Line(new Point(lk.location.x + 10, lk.location.y + 10),
+                        new Point(mouseX, mouseY));
+//                delayedAreaCk(lk);
                 repaint();
             }
 
         } else {  //  No mod keys = drag current object only
             selectLine = null;
             if (whichFolk != -1) {
-                Person p = Person.folks.get(whichFolk);
+                Individual p = Person.folks.get(whichFolk);
                 Point newLoc = new Point(mouseX - 10, mouseY - 10);
                 if (!draggedPersons.contains(p)) {
                     draggedPersons.add(p);
                 }
                 p.setLocation(newLoc);
                 whichKnot = -1;
+                whichLink = -1;
+                dirty = true;
+                selectLine = new Line(lastPersonLoc, newLoc);
+                repaint();
+            } else if (whichLink != -1) {
+                Link lk = Context.current.linkCensus.get(whichLink);
+                Point newLoc = new Point(mouseX - 10, mouseY - 10);
+                if (!draggedLinks.contains(lk)) {
+                    draggedLinks.add(lk);
+                }
+                lk.location = newLoc;
+                whichKnot = -1;
+                whichFolk = -1;
                 dirty = true;
                 selectLine = new Line(lastPersonLoc, newLoc);
                 repaint();
             } else if (whichKnot != -1) {
-                Marriage m = Marriage.knots.get(whichKnot);
+                Family m = Marriage.knots.get(whichKnot);
                 Point newLoc = new Point(mouseX - 10, mouseY - 10);
                 if (!draggedMarriages.contains(m)) {
                     draggedMarriages.add(m);
@@ -798,184 +932,139 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         boolean ctrlDn = event.isControlDown(),
                 shiftDn = event.isShiftDown(),
                 altDn = event.isAltDown(),
-                metaDn = event.isMetaDown();
-        if (!draggedPersons.isEmpty()) {
-            for (Person p : draggedPersons) {
+                metaDn = event.isMetaDown(),
+                needPaintJob = false;
+        ArrayList<Family> fams = new ArrayList<Family>(); 
+        // fams with birthGrps affected by the drag
+        if (!draggedPersons.isEmpty()) {            
+            for (Individual p : draggedPersons) {
                 Point newLoc = p.location;
                 p.setLocation(gridSnap(newLoc));
-                delayedAreaCk((Individual) p);
+                delayedAreaCk(p);
+                if (p.birthFamily != null && ! fams.contains(p.birthFamily)) {
+                    fams.add(p.birthFamily);
+                }
             }
-            repaint();
+            needPaintJob = true;
             draggedPersons.clear();
         }
         if (!draggedMarriages.isEmpty()) {
-            for (Marriage m : draggedMarriages) {
+            for (Family m : draggedMarriages) {
                 Point newLoc = m.location;
                 newLoc = gridSnap(newLoc);
                 m.location = newLoc;
-                delayedAreaCk((Family) m);
+                if (m.husband != null && m.husband.birthFamily != null
+                        && !fams.contains(m.husband.birthFamily)) {
+                    fams.add(m.husband.birthFamily);
+                }
+                if (m.wife != null && m.wife.birthFamily != null
+                        && !fams.contains(m.wife.birthFamily)) {
+                    fams.add(m.wife.birthFamily);
+                }
             }
-            repaint();
+            needPaintJob = true;
             draggedMarriages.clear();
         }
-        if (altDn && whichFolk > -1) {
+        if (!draggedLinks.isEmpty()) {
+            for (Link lk : draggedLinks) {
+                lk.location = gridSnap(lk.location);
+                delayedAreaCk(lk);
+                if (lk.personPointedTo.birthFamily != null && 
+                        ! fams.contains(lk.personPointedTo.birthFamily)) {
+                    fams.add(lk.personPointedTo.birthFamily);
+                }
+            }
+            needPaintJob = true;
+            draggedLinks.clear();
+        }
+        for (Family fam : fams) {
+            fam.computeBirthGrps();
+        }
+        if (needPaintJob) {
+            repaint();
+        }
+        if (altDn && whichFolk > -1) { // Chose New Ego
             parent.changeEgo(whichFolk);
             parent.getPPanel().resetEgoBox(parent.getCurrentEgo());
             whichFolk = priorAlter;
             repaint();
             return;
         }
-
-        Node newNode = null;
+        if (altDn && whichLink > -1) {
+            Individual ind = Context.current.linkCensus.get(whichLink).personPointedTo;
+            parent.changeEgo(ind.serialNmbr);
+            parent.getPPanel().resetEgoBox(parent.getCurrentEgo());
+            whichFolk = priorAlter;
+            repaint();
+            return;
+        }
         //  This test = 'no control key' or 'shift' or 'meta'
         if (shiftDn || metaDn || !ctrlDn) {
             if (selectLine != null && whichHalf > 0 && whichFolk > -1) {
-//      We've released a Person after dragging to a Marriage
-                Rectangle theRect = new Rectangle(Marriage.knots.get(tiedKnot).location.x,
-                        Marriage.knots.get(tiedKnot).location.y, 20, 20);
-                theRect = new Rectangle(Marriage.knots.get(tiedKnot).bounds());
-                theRect.height *= 2;
-                theRect.y -= theRect.height / 4;
+            //  We've released a Person after dragging to a Marriage
+                Family fx = Marriage.knots.get(tiedKnot);
+                Individual ix = Person.folks.get(whichFolk);
+                Rectangle theRect = makeRect(fx);
                 if (theRect.contains(selectLine.toP.x, selectLine.toP.y)) {
-                    Rectangle a = new Rectangle(theRect.x, theRect.y, theRect.width,
+                    Rectangle upperHalf = new Rectangle(theRect.x, theRect.y -5, theRect.width,
                             theRect.height / 2);
-                    Rectangle b = new Rectangle(theRect.x, theRect.y + theRect.height / 2,
-                            theRect.width, theRect.height / 2);
-                    Family fx = Marriage.knots.get(tiedKnot);
-                    Individual ix = Person.folks.get(whichFolk);
-                    Person px = (Person) ix;
-                    Marriage mx = (Marriage) fx;
-                    if (a.contains(selectLine.toP.x, selectLine.toP.y)) {
-                        if (!mx.isSpouse(px)) {  //  intend to add new spouse
-                            String marriageLicense = mx.eligibleSpouse(px);  //  'OK' or reason for rejecting marriage, or null
-                            if (marriageLicense.equals("gay")) {
-                                String msg = "Cannot have same-sex marriages.",
-                                        ttl = "Marriage Attempt Rejected.";
-                                JOptionPane.showMessageDialog(parent, msg, ttl, JOptionPane.WARNING_MESSAGE);
-                                px.setLocation(lastPersonLoc);
-                                repaint();
-                                return;
-                            } else if (marriageLicense.equals("bigamy")) {
-                                String msg = "Only 2 persons allowed in a marriage.",
-                                        ttl = "Marriage Attempt Rejected.";
-                                JOptionPane.showMessageDialog(parent, msg, ttl, JOptionPane.WARNING_MESSAGE);
-                                px.setLocation(lastPersonLoc);
-                                repaint();
-                                return;
-                            }
-                            if (mx.isSib(px)) {
-                                if (lastPersonLoc.y > mx.location.y) {
-                                    lastPersonLoc.y = mx.location.y + (mx.location.y - lastPersonLoc.y);
-                                }
-                                px.setLocation(lastPersonLoc);
-                                try {
-                                    fx.deleteChild(ix);
-                                } catch (KSInternalErrorException ksiee) {
-                                    String msg = ksiee.getMessage(),
-                                            ttl = "Sibling Deletion Attempt Rejected.";
-                                    JOptionPane.showMessageDialog(parent, msg, ttl, JOptionPane.WARNING_MESSAGE);
-                                    repaint();
-                                    return;
-                                }
-                                mx.delSib(px);
-                            }
-                            px.setLocation(lastPersonLoc);
-                            try {
-                                fx.addSpouse(ix);
-                            } catch (KSInternalErrorException ksiee) {
-                                String msg = ksiee.getMessage(),
-                                        ttl = "Marriage Attempt Rejected.";
-                                JOptionPane.showMessageDialog(parent, msg, ttl, JOptionPane.WARNING_MESSAGE);
-                                repaint();
-                                return;
-                            }
-                            // Love triumphs over all
-                            mx.addSpouse(px);
-                            
-                            //  NEW CODE  -- Changing Ego forces flesh out of new Ego's KTM row
-                            int storedEgo = parent.getCurrentEgo();
-                            parent.changeEgo(ix.serialNmbr);
-                            parent.changeEgo(storedEgo);
-                            //  end of NEW CODE
-                            
-                            showInfo(ix);
-                            dirty = true;
-                        } else {  // ix is already a spouse in fx. This is a deletion request.
-                            px.setLocation(lastPersonLoc);
-                            try {
-                                fx.deleteSpouse(ix);
-                                mx.delSpouse(px);
-                                removePersonAndRecomputeNodes(ix, fx);
-                            } catch (KSInternalErrorException ksiee) {
-                                String msg = ksiee.getMessage(),
-                                        ttl = "Annulment Attempt Rejected.";
-                                JOptionPane.showMessageDialog(parent, msg, ttl, JOptionPane.WARNING_MESSAGE);
-                                repaint();
-                                return;
-                            }
-                            showInfo(ix);
-                            dirty = true;
-                        }
-                    } else if (b.contains(selectLine.toP.x, selectLine.toP.y)) {
-                        //  Intend to add a child to marriage
+                    Rectangle lowerHalf = new Rectangle(theRect.x, theRect.y + theRect.height / 2,
+                            theRect.width, (theRect.height / 2) + 5);
+                    if (upperHalf.contains(selectLine.toP.x, selectLine.toP.y)) { //  intend to add new spouse
+                        addOrDeleteSpouse(ix, fx);
+                    } else if (lowerHalf.contains(selectLine.toP.x, selectLine.toP.y)) { //  Intend to add child
                         if (ix.birthFamily != null && ix.birthFamily != fx) { // kid already has a different birthFamily
                             String msg = "Person <" + ix.serialNmbr + "> is a child in Family <" + fx.serialNmbr + ">"
                                     + "\nMust delete from incorrect family before adding to correct one.",
                                     ttl = "Family-Building Error";
                             JOptionPane.showMessageDialog(parent, msg, ttl, JOptionPane.WARNING_MESSAGE);
-                            px.setLocation(lastPersonLoc);
+                            ix.setLocation(lastPersonLoc);
                             repaint();
                             return;
                         }
-                        if (!mx.isSib(px)) {
-                            if (mx.isSpouse(px)) {
-                                if (lastPersonLoc.y < mx.location.y) {
-                                    lastPersonLoc.y = mx.location.y + (mx.location.y - lastPersonLoc.y);
-                                }
-                                try {
-                                    fx.deleteSpouse(ix);
-                                } catch (KSInternalErrorException ksiee) {
-                                    String msg = ksiee.getMessage(),
-                                            ttl = "Annulment Attempt Rejected.";
-                                    JOptionPane.showMessageDialog(parent, msg, ttl, JOptionPane.WARNING_MESSAGE);
-                                    px.setLocation(lastPersonLoc);
-                                    repaint();
-                                    return;
-                                }
-                                mx.delSpouse(px);
-                            }
-                            px.setLocation(lastPersonLoc);
-                            mx.addSib(px);
-                            fx.addChild(ix);
-                            
-                            int storedEgo = parent.getCurrentEgo();
-                            // Changing Ego forces flesh out of new Ego's KTM row
-                            parent.changeEgo(ix.serialNmbr);
-                            parent.changeEgo(storedEgo);
-                            //  end of NEW CODE
-                            
-                            showInfo(ix);
-                            dirty = true;
-                        } else {  //  Removing a child
-                            px.setLocation(lastPersonLoc);
-                            try {
-                                fx.deleteChild(ix);
-                                mx.delSib(px);
-                                removePersonAndRecomputeNodes(ix, fx);
-                            } catch (KSInternalErrorException ksiee) {
-                                String msg = ksiee.getMessage(),
-                                        ttl = "Sibling Deletion Attempt Rejected.";
-                                JOptionPane.showMessageDialog(parent, msg, ttl, JOptionPane.WARNING_MESSAGE);
-                                repaint();
-                                return;
-                            }
-                            showInfo(ix);
-                            dirty = true;
+                        if (!fx.isSib(ix)) {
+                            addChild(ix, fx);
+                        } else {
+                            removeChild(ix, fx);
                         }
+                        fx.computeBirthGrps();
                     }
                 }
-            } else if (dragged) {
-                //  Perhaps we just dragged something to a new location
+            }else if (selectLine != null && whichHalf > 0 && whichLink > -1) {
+                //  We've released a Link after dragging to a Marriage
+                Family fx = Marriage.knots.get(tiedKnot);
+                Link lk = Context.current.linkCensus.get(whichLink);
+                Rectangle theRect = makeRect(fx);
+                if (theRect.contains(selectLine.toP.x, selectLine.toP.y)) {
+                    Rectangle upperHalf = new Rectangle(theRect.x, theRect.y -5, theRect.width,
+                            theRect.height / 2);
+                    Rectangle lowerHalf = new Rectangle(theRect.x, theRect.y + theRect.height / 2,
+                            theRect.width, (theRect.height / 2) + 5);
+                    if (upperHalf.contains(selectLine.toP.x, selectLine.toP.y)) { //  intend to add new spouseLink
+                        addOrDeleteSpouseLink(lk, fx);
+                    } else if (lowerHalf.contains(selectLine.toP.x, selectLine.toP.y)) { //  Intend to add child
+                        Family origBFam = lk.personPointedTo.birthFamily;
+                        if (origBFam != null && origBFam != fx) { // kid already has a different birthFamily
+                            String msg = "Person linked to: " + lk.personPointedTo.name + " <" + lk.personPointedTo.serialNmbr 
+                                    + ">\n is a child in Family <" + fx.serialNmbr + ">"
+                                    + "\nCannot be a child in two different families.",
+                                    ttl = "Family-Building Error";
+                            JOptionPane.showMessageDialog(parent, msg, ttl, JOptionPane.WARNING_MESSAGE);
+                            lk.location = lastPersonLoc;
+                            repaint();
+                            return;
+                        }
+                        if (!fx.isSib(lk.personPointedTo)) {
+                            addChildLink(lk, fx);
+                        } else {
+                            removeChildLink(lk, fx);
+                        }
+                        fx.computeBirthGrps();
+                    }
+                    lk.location = lastPersonLoc;
+                }                
+                
+            }else if (dragged) { //  Perhaps we just dragged something to a new location
             }
             whichHalf = -1;
             tiedKnot = -1;
@@ -983,23 +1072,31 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             repaint();
         } else if (ctrlDn) {  //  Control = deletion
             int which;
-            if ((which = Person.findPerson(mouseX, mouseY)) >= 0) {
-                //  Want to delete a Person
+            if ((which = Person.findPerson(mouseX, mouseY)) >= 0) { //  Want to delete a Person
                 if (whichFolk == which) {
                     lastLoc = new Point(mouseX, mouseY);
                 } else {
                     whichFolk = which;
                 }
                 Individual ind = Context.current.individualCensus.get(whichFolk);
+                if (ind.links != null && !ind.links.isEmpty()) {
+                    String title = "REMINDER: This Person Has Links.", msg = "",
+                           msg2 = "Deleting this person automatically deletes all their links on all charts.";
+                    if (!ind.marriages.isEmpty() || ind.birthFamily != null) {
+                        msg += "\nAt least one link was created to show a relationship. ";
+                        msg += "You must disconnect\nany links from families (break the relationship) ";
+                        msg += "before you delete this person.";
+                    }
+                    JOptionPane.showMessageDialog(parent, msg2 + msg, title, JOptionPane.PLAIN_MESSAGE);
+                }
                 if (Context.current.indSerNumGen > 1
-                        && (ind.node != null || ind.birthFamily != null
-                        || (ind.marriages != null && ind.marriages.size() > 0))) {
+                        && (ind.node != null || ind.birthFamily != null || ind.marriages.size() > 0)) {
                     String msg = "", title = "Deletion Cannot Be Performed";
                     if (which == parent.getCurrentEgo()) {
                         msg = "Cannot delete Ego. Must first choose a different Ego.";
                     } else if (ind.birthFamily != null) {
                         msg = "Cannot delete child while in family. First disconnect them, then delete.";
-                    } else if (ind.marriages != null && ind.marriages.size() > 0) {
+                    } else if (ind.marriages.size() > 0) {
                         msg = "Cannot delete spouse while married. First disconnect them, then delete.";
                     }
                     JOptionPane.showMessageDialog(parent, msg, title, JOptionPane.WARNING_MESSAGE);
@@ -1029,8 +1126,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             } else {
                 whichFolk = -1;
             }
-            if ((which = findMarriage(mouseX, mouseY)) >= 0) {
-                //  Want to delete a Family
+            if ((which = findMarriage(mouseX, mouseY)) >= 0) { //  Want to delete a Family
                 if (whichKnot == which) {
                     lastLoc = new Point(mouseX, mouseY);
                 } else {
@@ -1048,9 +1144,220 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             } else {
                 whichKnot = -1;
             }
+            if ((which = Link.findLink(mouseX, mouseY)) >= 0) { // Want to delete a Link
+                if (whichLink == which) {
+                    lastLoc = new Point(mouseX, mouseY);
+                } else {
+                    whichLink = which;
+                }
+                Link lk = Context.current.linkCensus.get(which);
+                Individual ind = lk.personPointedTo;
+                Family mar = null;
+                boolean linkIsKid = ind.birthFamily != null && ind.birthFamily.kidLinks.contains(lk);
+                boolean linkIsSpouse = (mar = spouseLinkIn(ind.marriages, lk)) != null;
+                if (Context.current.indSerNumGen > 1 && (linkIsKid || linkIsSpouse)) {
+                    String msg = "", title = "Deletion Cannot Be Performed";
+                    if (linkIsKid) {
+                        msg = "Cannot delete child while in family. First disconnect them, then delete.";
+                    } else if (linkIsSpouse) {
+                        msg = "Cannot delete spouse while married. First disconnect them, then delete.";
+                    }
+                    JOptionPane.showMessageDialog(parent, msg, title, JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                Link.delete(lk);
+                lk.personPointedTo.links.remove(lk);
+            } else {
+                whichLink = -1;
+            }
+        }
+        repaint();
+    }
+    
+    Rectangle makeRect(Family fx) {
+        Rectangle theRect = new Rectangle(fx.location.x, fx.location.y, 20, 20);
+        theRect = new Rectangle(fx.bounds());
+        theRect.height *= 2;
+        theRect.y -= theRect.height / 4;
+        return theRect;
+    }
+    
+    void addOrDeleteSpouse(Individual ix, Family fx) {
+        if (!fx.isSpouse(ix)) {
+            String marriageLicense = fx.eligibleSpouse(ix);  //  'OK' or reason for rejecting marriage, or null
+            if (marriageLicense.equals("gay")) {
+                String msg = "Cannot have same-sex marriages.",
+                        ttl = "Marriage Attempt Rejected.";
+                JOptionPane.showMessageDialog(parent, msg, ttl, JOptionPane.WARNING_MESSAGE);
+                ix.setLocation(lastPersonLoc);
+                repaint();
+                return;
+            } else if (marriageLicense.equals("bigamy")) {
+                String msg = "Only 2 persons allowed in a marriage.",
+                        ttl = "Marriage Attempt Rejected.";
+                JOptionPane.showMessageDialog(parent, msg, ttl, JOptionPane.WARNING_MESSAGE);
+                ix.setLocation(lastPersonLoc);
+                repaint();
+                return;
+            }
+            if (fx.isSib(ix)) {
+                if (lastPersonLoc.y > fx.location.y) {
+                    lastPersonLoc.y = fx.location.y + (fx.location.y - lastPersonLoc.y);
+                }
+                ix.setLocation(lastPersonLoc);
+                try {
+                    fx.deleteChild(ix);
+                } catch (KSInternalErrorException ksiee) {
+                    String msg = ksiee.getMessage(),
+                            ttl = "Sibling Deletion Attempt Rejected.";
+                    JOptionPane.showMessageDialog(parent, msg, ttl, JOptionPane.WARNING_MESSAGE);
+                    repaint();
+                    return;
+                }
+                fx.delSib(ix);
+            }
+            ix.setLocation(lastPersonLoc);
+            try {
+                fx.addSpouse(ix);  // the KAES method
+                fx.addParent(ix);  // the SILKin method
+            } catch (KSInternalErrorException ksiee) {
+                String msg = ksiee.getMessage(),
+                        ttl = "Marriage Attempt Rejected.";
+                JOptionPane.showMessageDialog(parent, msg, ttl, JOptionPane.WARNING_MESSAGE);
+                repaint();
+                return;
+            }
+            //  NEW CODE  -- Changing Ego forces flesh out of new Ego's KTM row
+            int storedEgo = parent.getCurrentEgo();
+            parent.changeEgo(ix.serialNmbr);
+            parent.changeEgo(storedEgo);
+            //  end of NEW CODE
+
+            showInfo(ix);
+            dirty = true;
+        } else {  // ix is already a spouse in fx. This is a deletion request.
+            ix.setLocation(lastPersonLoc);
+            try {
+                fx.deleteSpouse(ix);
+                fx.delSpouse(ix);
+                removePersonAndRecomputeNodes(ix, fx);
+            } catch (KSInternalErrorException ksiee) {
+                String msg = ksiee.getMessage(),
+                        ttl = "Annulment Attempt Rejected.";
+                JOptionPane.showMessageDialog(parent, msg, ttl, JOptionPane.WARNING_MESSAGE);
+                repaint();
+                return;
+            }
+            showInfo(ix);
+            dirty = true;
         }
     }
 
+    void addOrDeleteSpouseLink(Link lk, Family fx) {
+        //  If we can successfully add/delete ix as a spouse in fx, then we only need to
+        //  record/erase that lk is a Link to ix and restore ix's old location. 
+        Individual ix = lk.personPointedTo;
+        int oldX = ix.location.x, oldY = ix.location.y;
+        addOrDeleteSpouse(ix, fx);
+        if (fx.isSpouse(ix)) { // must have successfully added
+            if (ix.gender.equals("M")) {
+                fx.husbandLink = lk;
+            }else {
+                fx.wifeLink = lk;
+            }            
+        }else { // must have failed to add, or else deleted
+            if (fx.husbandLink == lk) {
+                fx.husbandLink = null;
+            }else if (fx.wifeLink == lk) {
+                fx.wifeLink = null;
+            }
+        }
+        ix.setLocation(new Point(oldX, oldY));
+    }
+
+    void removeChild(Individual ix, Family fx) {
+        ix.setLocation(lastPersonLoc);
+        try {
+            fx.deleteChild(ix);
+            fx.delSib(ix);
+            removePersonAndRecomputeNodes(ix, fx);
+        } catch (KSInternalErrorException ksiee) {
+            String msg = ksiee.getMessage(),
+                    ttl = "Sibling Deletion Attempt Rejected.";
+            JOptionPane.showMessageDialog(parent, msg, ttl, JOptionPane.WARNING_MESSAGE);
+            repaint();
+            return;
+        }
+        showInfo(ix);
+        dirty = true;
+    }
+    
+    void removeChildLink(Link lk, Family fx) {
+        Individual ix = lk.personPointedTo;
+        int ixX = ix.location.x, ixY = ix.location.y;
+        removeChild(ix, fx);
+        if (!fx.isSib(ix)) { // must have successfully removed
+            fx.kidLinks.remove(lk);            
+        }
+        ix.setLocation(ixX, ixY);
+    }
+
+    void addChild(Individual ix, Family fx) {
+        if (fx.isSpouse(ix)) {
+            if (lastPersonLoc.y < fx.location.y) {
+                lastPersonLoc.y = fx.location.y + (fx.location.y - lastPersonLoc.y);
+            }
+            try {
+                fx.deleteSpouse(ix);
+            } catch (KSInternalErrorException ksiee) {
+                String msg = ksiee.getMessage(),
+                        ttl = "Annulment Attempt Rejected.";
+                JOptionPane.showMessageDialog(parent, msg, ttl, JOptionPane.WARNING_MESSAGE);
+                ix.setLocation(lastPersonLoc);
+                repaint();
+                return;
+            }
+            fx.delSpouse(ix);
+        }
+        ix.setLocation(lastPersonLoc);
+        fx.addSib(ix);
+        fx.addChild(ix);
+        // Changing Ego forces flesh out of new Ego's KTM row
+        int storedEgo = parent.getCurrentEgo();
+        parent.changeEgo(ix.serialNmbr);
+        parent.changeEgo(storedEgo);
+        //  end of NEW CODE
+        showInfo(ix);
+        dirty = true;
+    }
+    
+    void addChildLink(Link lk, Family fx) {
+        //  If we can successfully add ix as a child in fx, then we only need to
+        //  record that lk is a Link to ix and restore ix's old location. 
+        Individual ix = lk.personPointedTo;
+        int oldX = ix.location.x, oldY = ix.location.y;
+        fx.kidLinks.add(lk);
+        addChild(ix, fx);
+        if (!fx.isSib(ix)) { // must not have successfully added
+            fx.kidLinks.remove(lk);           
+        }
+        ix.setLocation(oldX, oldY);
+        lk.location = lastPersonLoc;
+    }
+    
+    Family spouseLinkIn(ArrayList mars, Link lk) {
+        // Does the link appear as a spouse in any of these marriages?
+        if (mars == null) {
+            return null;
+        }
+        for (Object o : mars) {
+            Family fam = (Family)o;
+            if (fam.husbandLink == lk || fam.wifeLink == lk) {
+                return fam;                
+            }
+        }
+        return null;
+    }
 
     /** Survey ind and all members of fam, and return the person with the
      *  shortest path to Ego. In case of a tie, give first preference to
@@ -1349,7 +1656,6 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         }
         PrintFormat pf = new PrintFormat(true);
         sFile.Open(XFile.WRITE);
-        //	pf.printf("<!DOCTYPE kindata SYSTEM \"kinedit.dtd\">"+EOL+EOL);
         pf.printf("<?xml version=\"1.0\"?>" + EOL);
         pf.printf("<!DOCTYPE kindata>" + EOL + EOL);
         pf.printf("<!--  Kinship Editor Save File - Do not edit by hand!  -->" + EOL + EOL);
@@ -1505,7 +1811,6 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             loading = false;
             return false;
         }
-        //System.out.println("Loading");
         deleteAll();
         setOrigin(0, 0);
         Library.contextUnderConstruction = new Context();  // Context constructor makes Context.current
@@ -1526,7 +1831,6 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         }
 
         ntag = sFile.readTag();
-        //System.out.println(" Reading Unions ");
         if (!ntag[0][0].equalsIgnoreCase("unions")) {
             errMess = "Found People but no Unions: ";
             //	Marriage.knotIndex = -1;
@@ -1546,7 +1850,6 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         whichFolk = new Integer(sFile.readTagValue("ego")).intValue() - 1;
         whichKnot = new Integer(sFile.readTagValue("marriage")).intValue() - 1;
         nameLabel = new Integer(sFile.readTagValue("label")).intValue();
-        //System.out.println("Read Params");
 
         if (nameLabel > WHOLE) {
             nameLabel = WHOLE;
@@ -1569,7 +1872,6 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         originX = 0;
         originY = 0;
         repaint();
-        //System.out.println("Done");
         return true;
     }
 
@@ -1664,42 +1966,32 @@ public class ChartPanel extends JPanel implements MouseInputListener {
     void checkSizeOfChart(Context ctxt) {
     //  Set size of Chart to ideal for this diagram
         int minX = 1000000, minY = 1000000, maxX = -1, 
-            maxY = -1, maxSz = -1, sz = 20;
+            maxY = -1, sz = 20;
         for (Individual ind : ctxt.individualCensus) {
             if (!ind.deleted) {
                 sz = ind.getSize();
-                if (sz > maxSz) {
-                    maxSz = sz;
-                }
-                if (ind.location.x < minX) {
-                    minX = ind.location.x;
-                }
-                if (ind.location.y < minY) {
-                    minY = ind.location.y;
-                }
-                if (ind.location.x + sz > maxX) {
-                    maxX = ind.location.x + sz;
-                }
-                if (ind.location.y + sz > maxY) {
-                    maxY = ind.location.y + sz;
-                }
+                minX = Math.min(minX, ind.location.x);
+                minY = Math.min(minY, ind.location.y);
+                maxX = Math.max(maxX, ind.location.x + sz);
+                maxY = Math.max(maxY, ind.location.y + sz);                
             }
         }
         for (Family f : ctxt.familyCensus) {
             if (!f.deleted) {
                 sz = f.getSize();
-                if (f.location.x < minX) {
-                    minX = f.location.x;
-                }
-                if (f.location.y < minY) {
-                    minY = f.location.y;
-                }
-                if (f.location.x + sz > maxX) {
-                    maxX = f.location.x + sz;
-                }
-                if (f.location.y + sz > maxY) {
-                    maxY = f.location.y + sz;
-                }
+                minX = Math.min(minX, f.location.x);
+                minY = Math.min(minY, f.location.y);
+                maxX = Math.max(maxX, f.location.x + sz);
+                maxY = Math.max(maxY, f.location.y + sz); 
+            }
+        }
+        for (Link lk : ctxt.linkCensus) {
+            if (!lk.deleted) {
+                sz = lk.getSize();
+                minX = Math.min(minX, lk.location.x);
+                minY = Math.min(minY, lk.location.y);
+                maxX = Math.max(maxX, lk.location.x + sz);
+                maxY = Math.max(maxY, lk.location.y + sz); 
             }
         }
         Point idealTopLeft = gridSnap(new Point(2 * sz, 2 * sz));
@@ -1711,8 +2003,14 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             for (Individual ind : ctxt.individualCensus) {
                 ind.adjustLocation(adjustX, adjustY);
             }
+            for (Link lk : ctxt.linkCensus) {
+                lk.adjustLocation(adjustX, adjustY);
+            }
             for (Family f : ctxt.familyCensus) {
                 f.adjustLocation(adjustX, adjustY);
+                for (Marriage.BirthGroup bg : f.birthGrps) {
+                    bg.topPtX += adjustX;
+                }
             }
         }
         area.setSize(idealWidth, idealHeight);

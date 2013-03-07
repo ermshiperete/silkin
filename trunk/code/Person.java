@@ -37,7 +37,7 @@ import java.awt.*;
 import java.util.StringTokenizer;
 import java.util.*;
 
-public class Person {
+public class Person implements Locatable  {
     public static int id_no = 0;
     public static int size = 16; // default size;
     public static String refYear = ""; // reference year for drawing genealology
@@ -53,6 +53,7 @@ public class Person {
     String yobq = "9";
     String deathYr = "";
     String yodq = "9";
+    int homeChart = 0;
     public Point location = new Point(0, 0);
     Kind sex = null;
     LinkedList marriages = null;
@@ -85,6 +86,12 @@ public class Person {
         setLocation(location.x + extraWidth, 
                     location.y + extraHeight);
     }
+    
+    public Point getLocation() { return location; }
+    
+    public int getLocationX() { return location.x; }
+
+    public int getLocationY() { return location.y; }
 
     public void setLocation(Point p) {
       setLocation(p.x, p.y);
@@ -252,7 +259,7 @@ public class Person {
 	 *	else return false;
          */
 	public boolean hasEnded() {
-		if (!deathYr.equals("") && !deathYr.equals(""))
+		if (!deathYr.equals(""))
 			return true;
 		else return false;
 	}
@@ -430,7 +437,7 @@ public class Person {
 	}
 	
 	static Female fem = new Female();
-	static Male	mem = new Male();
+	static Male	mal = new Male();
 	static Neuter	nut = new Neuter();
 
 	public static Individual readXML(XFile sFile) {
@@ -453,7 +460,7 @@ public class Person {
 		if (sex.equalsIgnoreCase("Female")) {
 			retp = new Individual(fem, new Point(locx,locy));
 		} else if (sex.equalsIgnoreCase("Male") || sex.equalsIgnoreCase("Neuter")) {
-			retp = new Individual(mem, new Point(locx,locy));
+			retp = new Individual(mal, new Point(locx,locy));
 		} else {
 			System.out.println("Bad sex: " + sex);
 			return null;

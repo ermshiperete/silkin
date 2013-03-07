@@ -20,11 +20,6 @@ public class Family extends Marriage implements Serializable {
     public int serialNmbr;
     boolean deleted = false;
     boolean divorceStatusUnknown = true;
-    /** <code>children</code> is an ArrayList<Object> of Individuals born to this Family.	*/
-    public ArrayList<Object> children = new ArrayList<Object>();
-    /** <code>dataChangeDate</code> is the last date that any field was changed for this person.	*/
-    public String dataChangeDate,
-            dataAuthor;
     /**
     By convention, divorceDate = <code>null</code> means we have no information.
     But divorceDate = "" means they are known to be (or required to be) not divorced.
@@ -33,7 +28,6 @@ public class Family extends Marriage implements Serializable {
     By convention, <code>marriageDate</code> = null means we have no information,
     and "yyyy-mm-dd" is an actual or estimated date the union commenced.	*/
     private String marriageMM, marriageDD, divorceMM, divorceDD;
-    public Individual husband, wife;
     int nmbrOfKids = 0;
 
     public String getMarriageYr() {
@@ -557,8 +551,10 @@ public class Family extends Marriage implements Serializable {
         if (comment.length() > 7) {
             image += "\n" + comment;
         }
-        image += "\n     H =  #" + husband.serialNmbr + ", W =";
-        image += " #" + wife.serialNmbr + ".\n";
+        String hSerial = (husband == null ? "N/A" : "#" + husband.serialNmbr);
+        String wSerial = (wife == null ? "N/A" : "#" + wife.serialNmbr);
+        image += "\n     H =  " + hSerial + ", W =";
+        image += " " + wSerial + ".\n";
         image += "     " + children.size();
         if (children.size() != 1) {
             image += " children.\n";
@@ -577,6 +573,7 @@ public class Family extends Marriage implements Serializable {
     /**  This method builds a string that represents a family in a SILKin data (_.silk) file.   */
     public String toSILKString() throws KSDateParseException {
         String result = "<family n=\"" + serialNmbr + "\">";
+        result += "  <homeChart n=\"" + homeChart + "\"/>";
         result += "  <location x=\"" + location.x + "\" y=\""
                 + location.y + "\"/>" + XFile.Eol;
         result += "  <reason>" + reason + "</reason>" + XFile.Eol;
@@ -598,6 +595,19 @@ public class Family extends Marriage implements Serializable {
             result += "\n";
         }  //  end of printing children
         result += "  </children>\n";
+        if (husbandLink != null) {
+            result += "  <husbandLink id=\"" + husbandLink.serialNmbr + "\"/>\n";
+        }
+        if (wifeLink != null) {
+            result += "  <wifeLink id=\"" + wifeLink.serialNmbr + "\"/>\n";
+        }
+        if (!kidLinks.isEmpty()) {
+            result += "  <kidLinks>\n";
+            for (Link kid : kidLinks) {
+                result += "    <kidLink id=\"" + kid.serialNmbr + "\"/>\n";
+            }
+            result += "  </kidLinks>\n";
+        }
         String marrD = getMarriageDate(), enDate = getDivorceDate();
         if (marrD != null && marrD.length() > 0) {
             if (!UDate.validXSD(marrD)) {
@@ -671,7 +681,7 @@ public class Family extends Marriage implements Serializable {
 
     @param	mate		Individual to be added.
      */
-    public void addSpouse(Individual mate) throws KSInternalErrorException {
+    public void addParent(Individual mate) throws KSInternalErrorException {
         if (mate.gender.equals("F")) {
             if (wife == null) {
                 wife = mate;
@@ -716,8 +726,77 @@ public class Family extends Marriage implements Serializable {
         children.add(kid);
         kid.birthFamily = this;
         dataChangeDate = UDate.today();
+        computeBirthGrps();
     }  // end of method addChild
-
+    
+    public void computeBirthGrps() {
+            // To allow for multiple births (whose descent lines should all drop from a common point) we maintain "birth groups."
+            //      Single births = a 1-person group.
+            //      Multiple births = a single group with multiple members
+            // For each group, compute the single point from which the descent line should drop (above middle of the group).
+        birthGrps.clear();
+        BirthGroup bg;
+        TreeMap<String, ArrayList> kidSorter = new TreeMap<String, ArrayList>();  
+        ArrayList<Individual> linkees = new ArrayList<Individual>();
+        for (Link lk : kidLinks) {
+            Individual kid = lk.personPointedTo;
+            linkees.add(kid);
+            if (kid.birthYr.isEmpty()) {
+            // No birth date info. Must be single birth
+                bg = new BirthGroup();
+                bg.links.add(lk);
+                bg.topPtX = lk.location.x;
+                birthGrps.add(bg);
+            } else {  //  could be single or multiple
+                String bDate = kid.getYYYYMMOfBirth();
+                if (kidSorter.get(bDate) == null) {
+                    kidSorter.put(bDate, new ArrayList());
+                }
+                kidSorter.get(bDate).add(lk);
+            }
+        }        
+        for (Object k : children) {
+            Individual kid = (Individual) k;
+            if (!linkees.contains(kid)) {
+                if (kid.birthYr.isEmpty()) {
+                    // No birth date info. Must be single birth
+                    bg = new BirthGroup();
+                    bg.members.add(kid);
+                    bg.topPtX = kid.location.x;
+                    birthGrps.add(bg);
+                } else {  //  could be single or multiple
+                    String bDate = kid.getYYYYMMOfBirth();
+                    if (kidSorter.get(bDate) == null) {
+                        kidSorter.put(bDate, new ArrayList<Individual>());
+                    }
+                    kidSorter.get(bDate).add(kid);
+                }
+            }
+        }
+        Iterator bgIter = kidSorter.values().iterator();
+        ArrayList kidList;
+        while (bgIter.hasNext()) {
+            bg = new BirthGroup();
+            kidList = (ArrayList)bgIter.next();
+            for (Object o : kidList) {
+                if (o instanceof Individual) {
+                    bg.members.add((Individual)o);
+                }else {
+                    bg.links.add((Link)o);
+                }
+            } // end of loop thru kidList in the sorter            
+            bg.topPtX = 0;
+            for (Individual kid : bg.members) {
+                bg.topPtX += kid.location.x;
+            }
+            for (Link kid : bg.links) {
+                bg.topPtX += kid.location.x;
+            }
+            bg.topPtX /= (bg.members.size() + bg.links.size());
+            birthGrps.add(bg);
+        }
+    }
+    
     /**
     Delete the Individual <code>kid</code> as a child of this Family.
 
@@ -731,6 +810,7 @@ public class Family extends Marriage implements Serializable {
                 kid.birthFamily = null;  // maybe already changed
             }
             dataChangeDate = UDate.today();
+            computeBirthGrps();
         } else {
             throw new KSInternalErrorException("Family.deleteChild asked to drop a kid who is unknown.");
         }

@@ -3119,7 +3119,6 @@ public class Library {
             KSBadHornClauseException, KSInternalErrorException, KSConstraintInconsistency, KSDateParseException {
         //  if a context may have been changed
         Linus silkLineServer = new Linus(file, "UTF8");
-//    	Linus silkLineServer = new Linus(file);
         Tokenizer tok = new Tokenizer(getDFA(), silkLineServer);
         if (preXML) {
             SILKFileParserPreXML parzer = new SILKFileParserPreXML(tok);

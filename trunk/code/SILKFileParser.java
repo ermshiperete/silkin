@@ -1,5 +1,4 @@
 
-
 import java.io.*;
 import java.util.*;
 import java.text.*;
@@ -8,22 +7,24 @@ import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
 import javax.swing.*;
 
-/** This SILKFileParserPreXML is an extension of the basic {@link Parser} class which reads in Domain Theories expressed in
-Horn Clauses.  This one reads in a SILK file which has been saved to disk in a *.silk format.
-The Context-Free Grammar defining a *.silk file format is documented in {@link SILKFileGrammar}.
-<p>
-When constructed with a {@link Tokenizer}, this SILKFileParserPreXML will construct a {@link Context}
-from the tokens found in the <code>Tokenizer's</code> input file.
-</p>
-
-@author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
-*/
+/**
+ * This SILKFileParserPreXML is an extension of the basic {@link Parser} class
+ * which reads in Domain Theories expressed in Horn Clauses. This one reads in a
+ * SILK file which has been saved to disk in a *.silk format. The Context-Free
+ * Grammar defining a *.silk file format is documented in
+ * {@link SILKFileGrammar}. <p> When constructed with a {@link Tokenizer}, this
+ * SILKFileParserPreXML will construct a {@link Context} from the tokens found
+ * in the
+ * <code>Tokenizer's</code> input file. </p>
+ *
+ * @author	Gary Morris, Northern Virginia Community College
+ * garymorris2245@verizon.net
+ */
 public class SILKFileParser extends Parser {
 
-    static String[] valHolster = { "value" };
-
+    static String[] valHolster = {"value"};
     Context newCtxt = new Context();
-    int origIndCount, origFamCount, currentEgoSerialNmbr, lastPersonIndexed = -99;
+    int origIndCount, origLinkCount, origFamCount, currentEgoSerialNmbr, lastPersonIndexed = -99;
     boolean udp2ndPassReqd = false;
     boolean orphanDyadFlag = false;
     /*  These 2 tables will hold the relationships between Individuals & Families.
@@ -42,32 +43,35 @@ public class SILKFileParser extends Parser {
      *  Each row in famTable is a family. Normally, row# = serial#.
      *  Each row contains family serial#, husband serial# (or -1 if unknown),
      *  wife serial# (or -1 if unknown), and zero or more serial#s of children.
-    */
+     */
     ArrayList<ArrayList<Integer>> indivTable;
     ArrayList<ArrayList<Integer>> famTable;
+    Integer[] linkTable;
     TreeMap starTable = new TreeMap();
     ArrayList<DyadTemp> tempDyadsDefinedRef, tempDyadsUndefinedRef,
-                        tempDyadsDefinedAddr, tempDyadsUndefinedAddr;
-
+            tempDyadsDefinedAddr, tempDyadsUndefinedAddr;
     String validCodes = "<PR><PA><ER><EA><XR><XA>";  //  for KinTermMAtrix
     String issuesFor = "REF";
-    /** Construct a SILKFileParserPreXML.
 
-    @param	tok	a <code>Tokenizer</code> which parses tokens from an input file on demand.
-    */
-    public SILKFileParser(Tokenizer tok)	{
+    /**
+     * Construct a SILKFileParserPreXML.
+     *
+     * @param	tok	a <code>Tokenizer</code> which parses tokens from an input
+     * file on demand.
+     */
+    public SILKFileParser(Tokenizer tok) {
         super(tok);
-     }
+    }
 
-     /*
-    SILKFile -> Header, Body, "</SIL_KinData >".
-    */
+    /*
+     SILKFile -> Header, Body, "</SIL_KinData >".
+     */
     public Context parseSILKFile() throws KSParsingErrorException, JavaSystemException, KSBadHornClauseException,
             KSInternalErrorException, KSConstraintInconsistency, KSDateParseException {
         parseHeader();
         parseBody();
         DomainTheory dt;
-        if (! newCtxt.domTheoryRefExists()) {
+        if (!newCtxt.domTheoryRefExists()) {
             dt = new DomainTheory(newCtxt, false, "");
             newCtxt.addDomainTheory(dt);
         }
@@ -82,7 +86,7 @@ public class SILKFileParser extends Parser {
         if (udp2ndPassReqd) {
             doUDPSerialSwaps();
         }
-        doIndFamSerialSwaps();
+        doInd_Link_FamSerialSwaps();
         doDyadSwaps();
         newCtxt.currentEgo = (Individual) newCtxt.individualCensus.get(currentEgoSerialNmbr);
         if (!starTable.isEmpty()) {
@@ -94,10 +98,10 @@ public class SILKFileParser extends Parser {
             error("parseSILKFile seeking the tag '</SIL_KinData>'. ");
         }
         if (orphanDyadFlag) {
-            String msg = "While re-loading the Suggestions from prior learning sessions,\n" +
-                    "we encountered references to a person or relationship that is\n" +
-                    " no longer valid. Those references were ignored, but this may\n" +
-                    "make some Suggestions seem illogical. If so, Get New Suggestions.\n";
+            String msg = "While re-loading the Suggestions from prior learning sessions,\n"
+                    + "we encountered references to a person or relationship that is\n"
+                    + " no longer valid. Those references were ignored, but this may\n"
+                    + "make some Suggestions seem illogical. If so, Get New Suggestions.\n";
             MainPane.displayError(msg, "Internal Problem", JOptionPane.WARNING_MESSAGE);
         }
         return newCtxt;
@@ -105,152 +109,174 @@ public class SILKFileParser extends Parser {
 
 
     /*
-    Header -> "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>", 
-            "<?xml-stylesheet type="text/xsl" href="Silk-status.xsl"?>",
-            "<!DOCTYPE SIL_KinData>", "<SIL_KinData>".
-        First: [""<?xml version=\"1.0\" encoding=\"UTF-8\" ?>""]
-        Follow: [tags: "<parameters>", "<editorSettings>", "<individualCensus>", "<familyCensus>", "<matrix>",
-                "<dyadsUndefinedRef>", "<dyadsDefinedRef>", "<dyadsUndefinedAddr>", "<dyadsDefinedAddr>"]
-    */
-    void parseHeader()  throws KSParsingErrorException  {
-	current = scanner.readToken();  // read token, which must be the tag '"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"'
-        if (current.lexeme.indexOf("<?xml version=\"1.0\"") == -1)
+     Header -> "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>", 
+     "<?xml-stylesheet type="text/xsl" href="Silk-status.xsl"?>",
+     "<!DOCTYPE SIL_KinData>", "<SIL_KinData>".
+     First: [""<?xml version=\"1.0\" encoding=\"UTF-8\" ?>""]
+     Follow: [tags: "<parameters>", "<editorSettings>", "<individualCensus>", "<familyCensus>", "<matrix>",
+     "<dyadsUndefinedRef>", "<dyadsDefinedRef>", "<dyadsUndefinedAddr>", "<dyadsDefinedAddr>"]
+     */
+    void parseHeader() throws KSParsingErrorException {
+        current = scanner.readToken();  // read token, which must be the tag '"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"'
+        if (current.lexeme.indexOf("<?xml version=\"1.0\"") == -1) {
             error("parseHeader seeking a tag beginning with '<?xml version=\"1.0\"'. ");
+        }
         current = scanner.readToken();  // read token, which must be the XSL stylesheet tag
-        if (current.lexeme.indexOf("<?xml-stylesheet type=") == -1)
+        if (current.lexeme.indexOf("<?xml-stylesheet type=") == -1) {
             error("parseHeader seeking a tag beginning with '<?xml-stylesheet type='. ");
+        }
         current = scanner.readToken();  // read token, which must be the tag '<!DOCTYPE SIL_KinData>'
-        if (! current.lexeme.equals("<!DOCTYPE SIL_KinData>"))
+        if (!current.lexeme.equals("<!DOCTYPE SIL_KinData>")) {
             error("parseHeader seeking the tag '<!DOCTYPE SIL_KinData>'. ");
+        }
         current = scanner.readToken();  // read token, which must be the flag '<SIL_KinData>'
-        if (! current.lexeme.equals("<SIL_KinData>"))
+        if (!current.lexeme.equals("<SIL_KinData>")) {
             error("parseHeader seeking the flag '<SIL_KinData>'. ");
+        }
         return;
     }
 
 
     /*
-    Body ->     "<parameters>", Parameters, "</parameters>", Body.
-             |  "<editorSettings>", EditorSettings, "</editorSettings>", Body.
-             |  "<individualCensus>", Individuals, "</individualCensus>", Body.
-             |  "<familyCensus>", Families, "</familyCensus>", Body.
-             |  "<matrix>", Matrix, "</matrix>", Body.
-             |  "<dyadsUndefinedRef>", DyadKinTerms, "</dyadsUndefinedRef>", Body.
-             |  "<dyadsDefinedRef>", DyadKinTerms, "</dyadsDefinedRef>", Body.
-             |  "<dyadsUndefinedAddr>", DyadKinTerms, "</dyadsUndefinedAddr>", Body.
-             |  "<dyadsDefinedAddr>", DyadKinTerms, "</dyadsDefinedAddr>", Body.
-             |  "<kinTypeIndex>", KinTypeIndex, "</kinTypeIndex>", Body.
-             |  "<accepted-defs...", AccDefs, </accepted-defs>, Body.
-             |  "<rejected-defs...", RejectedDedfs, </rejected-defs>, Body.
-             |  \empty.
+     Body ->     "<parameters>", Parameters, "</parameters>", Body.
+     |  "<editorSettings>", EditorSettings, "</editorSettings>", Body.
+     |  "<individualCensus>", Individuals, "</individualCensus>", Body.
+     |  "<familyCensus>", Families, "</familyCensus>", Body.
+     |  "<matrix>", Matrix, "</matrix>", Body.
+     |  "<dyadsUndefinedRef>", DyadKinTerms, "</dyadsUndefinedRef>", Body.
+     |  "<dyadsDefinedRef>", DyadKinTerms, "</dyadsDefinedRef>", Body.
+     |  "<dyadsUndefinedAddr>", DyadKinTerms, "</dyadsUndefinedAddr>", Body.
+     |  "<dyadsDefinedAddr>", DyadKinTerms, "</dyadsDefinedAddr>", Body.
+     |  "<kinTypeIndex>", KinTypeIndex, "</kinTypeIndex>", Body.
+     |  "<accepted-defs...", AccDefs, </accepted-defs>, Body.
+     |  "<rejected-defs...", RejectedDedfs, </rejected-defs>, Body.
+     |  \empty.
 
-        First: ["parameters", "editorSettings", "individualCensus", "familyCensus",
-                "matrix", "dyadsUndefinedRef", "dyadsDefinedRef", "dyadsUndefinedAddr",
-                "dyadsDefinedAddr", "accepted-defs...", "<rejected-defs..."]
-        Follow: [flags: "<silkin-issues type="Reference">", "<silkin-issues type="Address">",
-                        "</SIL_KinData >"]
-    */
+     First: ["parameters", "editorSettings", "individualCensus", "familyCensus",
+     "matrix", "dyadsUndefinedRef", "dyadsDefinedRef", "dyadsUndefinedAddr",
+     "dyadsDefinedAddr", "accepted-defs...", "<rejected-defs..."]
+     Follow: [flags: "<silkin-issues type="Reference">", "<silkin-issues type="Address">",
+     "</SIL_KinData >"]
+     */
     void parseBody() throws KSParsingErrorException, JavaSystemException, KSBadHornClauseException,
-				KSInternalErrorException, KSConstraintInconsistency, KSDateParseException   {
-	current = scanner.lookAhead();  // peek at token, which must be a flag or a tag.
-        if (! (current.token.equals("tag") || current.token.equals("tagWithAttributes")))
+            KSInternalErrorException, KSConstraintInconsistency, KSDateParseException {
+        current = scanner.lookAhead();  // peek at token, which must be a flag or a tag.
+        if (!(current.token.equals("tag") || current.token.equals("tagWithAttributes"))) {
             error("parseBody looking for a tag (e.g. '<parameters>').");
+        }
         if (current.lexeme.equals("<parameters>")) {
             scanner.readToken();  //  consume the start flag
             parseParameters();
             current = scanner.readToken();  // read token, which must be the flag '</parameters>'
-            if (! current.lexeme.equals("</parameters>"))
+            if (!current.lexeme.equals("</parameters>")) {
                 error("parseBody seeking the end flag '</parameters>'. ");
+            }
             parseBody();
-        }else if (current.lexeme.equals("<editorSettings>")) {
+        } else if (current.lexeme.equals("<editorSettings>")) {
             scanner.readToken();  //  consume the start flag
             parseEditorSettings();
             current = scanner.readToken();  // read token, which must be the flag '</editorSettings>'
-            if (! current.lexeme.equals("</editorSettings>"))
+            if (!current.lexeme.equals("</editorSettings>")) {
                 error("parseBody seeking the end flag '</editorSettings>'. ");
+            }
             parseBody();
-        }else if (current.lexeme.startsWith("<domain-theory"))  {
+        } else if (current.lexeme.startsWith("<domain-theory")) {
             parseDomTheoryRef();
             parseDomTheoryAdr();
             parseBody();
-        }else if (!newCtxt.domTheoryRefExists() && !newCtxt.domTheoryAdrExists()) {
-        // If we've read as far as the Individual Census, we should have encountered a domain
-        // theory in the parameters or else in a domain-theory block. 
+        } else if (!newCtxt.domTheoryRefExists() && !newCtxt.domTheoryAdrExists()) {
+            // If we've read as far as the Individual Census, we should have encountered a domain
+            // theory in the parameters or else in a domain-theory block. 
             error("Did not find any domain theory (in either format).");
-        }else if (current.lexeme.equals("<individualCensus>")) {
-       		scanner.readToken();  //  consume the start flag
+        } else if (current.lexeme.equals("<individualCensus>")) {
+            scanner.readToken();  //  consume the start flag
             parseIndividuals();
             current = scanner.readToken();  // read token, which must be the flag '</individualCensus>'
-            if (! current.lexeme.equals("</individualCensus>"))
+            if (!current.lexeme.equals("</individualCensus>")) {
                 error("parseBody seeking the end flag '</individualCensus>'. ");
+            }
             parseBody();
-        }else if (current.lexeme.equals("<familyCensus>")) {
+        } else if (current.lexeme.equals("<linkCensus>")) {
+            scanner.readToken();  //  consume the start flag
+            parseLinks();
+            current = scanner.readToken();  // read token, which must be the flag '</linkCensus>'
+            if (!current.lexeme.equals("</linkCensus>")) {
+                error("parseBody seeking the end flag '</linkCensus>'. ");
+            }
+            parseBody();
+        } else if (current.lexeme.equals("<familyCensus>")) {
             parseFamilyCensus();
             parseBody();
-        }else if (current.lexeme.equals("<matrix>")) {
+        } else if (current.lexeme.equals("<matrix>")) {
             parseMatrix();
             parseBody();
-        }else if (current.lexeme.equals("<dyadsUndefinedRef>")) {
+        } else if (current.lexeme.equals("<dyadsUndefinedRef>")) {
             scanner.readToken();  //  consume the start flag
             DomainTheory dt = newCtxt.domTheoryRef();
             dt.dyadsUndefined = new DyadTMap();
             tempDyadsUndefinedRef = new ArrayList<DyadTemp>();
             parseDyadKinTerms(tempDyadsUndefinedRef);
             current = scanner.readToken();  // read token, which must be the flag '</dyadsUndefinedRef>'
-            if (! current.lexeme.equals("</dyadsUndefinedRef>"))
+            if (!current.lexeme.equals("</dyadsUndefinedRef>")) {
                 error("parseBody seeking the end flag '</dyadsUndefinedRef>'. ");
+            }
             parseBody();
-        }else if (current.lexeme.equals("<dyadsDefinedRef>")) {
+        } else if (current.lexeme.equals("<dyadsDefinedRef>")) {
             scanner.readToken();  //  consume the start flag
             DomainTheory dt = newCtxt.domTheoryRef();
             dt.dyadsDefined = new DyadTMap();
             tempDyadsDefinedRef = new ArrayList<DyadTemp>();
             parseDyadKinTerms(tempDyadsDefinedRef);
             current = scanner.readToken();  // read token, which must be the flag '</dyadsDefinedRef>'
-            if (! current.lexeme.equals("</dyadsDefinedRef>"))
+            if (!current.lexeme.equals("</dyadsDefinedRef>")) {
                 error("parseBody seeking the end flag '</dyadsDefinedRef>'. ");
+            }
             parseBody();
-        }else if (current.lexeme.equals("<dyadsUndefinedAddr>")) {
+        } else if (current.lexeme.equals("<dyadsUndefinedAddr>")) {
             scanner.readToken();  //  consume the start flag
             DomainTheory dt = newCtxt.domTheoryAdr();
             dt.dyadsUndefined = new DyadTMap();
             tempDyadsUndefinedAddr = new ArrayList<DyadTemp>();
             parseDyadKinTerms(tempDyadsUndefinedAddr);
             current = scanner.readToken();  // read token, which must be the flag '</dyadsUndefinedAddr>'
-            if (! current.lexeme.equals("</dyadsUndefinedAddr>"))
+            if (!current.lexeme.equals("</dyadsUndefinedAddr>")) {
                 error("parseBody seeking the end flag '</dyadsUndefinedAddr>'. ");
+            }
             parseBody();
-        }else if (current.lexeme.equals("<dyadsDefinedAddr>")) {
+        } else if (current.lexeme.equals("<dyadsDefinedAddr>")) {
             scanner.readToken();  //  consume the start flag
             DomainTheory dt = newCtxt.domTheoryAdr();
             dt.dyadsDefined = new DyadTMap();
             tempDyadsDefinedAddr = new ArrayList<DyadTemp>();
             parseDyadKinTerms(tempDyadsDefinedAddr);
             current = scanner.readToken();  // read token, which must be the flag '</dyadsDefinedAddr>'
-            if (! current.lexeme.equals("</dyadsDefinedAddr>"))
+            if (!current.lexeme.equals("</dyadsDefinedAddr>")) {
                 error("parseBody seeking the end flag '</dyadsDefinedAddr>'. ");
+            }
             parseBody();
-        }else if (current.lexeme.equals("<kinTypeIndex>")) {
+        } else if (current.lexeme.equals("<kinTypeIndex>")) {
             scanner.readToken();  //  consume the start flag
             parseKinTypeIndex(newCtxt.kti);
             current = scanner.readToken();  // read token, which must be the flag '</kinTypeIndex>'
-            if (! current.lexeme.equals("</kinTypeIndex>"))
+            if (!current.lexeme.equals("</kinTypeIndex>")) {
                 error("parseBody seeking the end flag '</kinTypeIndex>'. ");
-            parseBody();
-        }else if (current.lexeme.startsWith("<learning-history")) { //
-            scanner.readToken();  //  consume the start flag
-            boolean ref = current.lexeme.substring(24,27).equals("Ref");
-            if (!ref && newCtxt.learningHistoryAdr == null) {
-                newCtxt.learningHistoryAdr = new TreeMap<String, ArrayList<Context.HistoryItem>>(); 
             }
-            TreeMap<String, ArrayList<Context.HistoryItem>> learningHistory = 
+            parseBody();
+        } else if (current.lexeme.startsWith("<learning-history")) { //
+            scanner.readToken();  //  consume the start flag
+            boolean ref = current.lexeme.substring(24, 27).equals("Ref");
+            if (!ref && newCtxt.learningHistoryAdr == null) {
+                newCtxt.learningHistoryAdr = new TreeMap<String, ArrayList<Context.HistoryItem>>();
+            }
+            TreeMap<String, ArrayList<Context.HistoryItem>> learningHistory =
                     (ref ? newCtxt.learningHistoryRef : newCtxt.learningHistoryAdr);
             parseHistoryItems(learningHistory);
             current = scanner.readToken();  // read token, which must be the flag '</learning-history>
-            if (! current.lexeme.equals("</learning-history>"))
+            if (!current.lexeme.equals("</learning-history>")) {
                 error("parseBody seeking the end flag '</learning-history>'. ");
+            }
             parseBody();
-        }else if (current.lexeme.startsWith("<auto-def")) {
+        } else if (current.lexeme.startsWith("<auto-def")) {
             scanner.readToken();  //  consume the start flag
             boolean ref = current.lexeme.substring(16, 19).equals("Ref");
             if (!ref && newCtxt.autoDefAdr == null) {
@@ -260,29 +286,30 @@ public class SILKFileParser extends Parser {
                     (ref ? newCtxt.autoDefRef : newCtxt.autoDefAdr);
             parseAutoDefs(autos);
             current = scanner.readToken();  // read token, which must be the flag '</auto-def>
-            if (! current.lexeme.equals("</auto-def>"))
+            if (!current.lexeme.equals("</auto-def>")) {
                 error("parseBody seeking the end flag '</auto-def>'. ");
+            }
             parseBody();
-        }else if (current.lexeme.equals("</SIL_KinData>") ||
-                current.lexeme.substring(0,14).equals("<silkin-issues")) {
+        } else if (current.lexeme.equals("</SIL_KinData>")
+                || current.lexeme.substring(0, 14).equals("<silkin-issues")) {
             return;
-        }else error("parseBody found unknown flag '" + current.lexeme + "'. ");
+        } else {
+            error("parseBody found unknown flag '" + current.lexeme + "'. ");
+        }
     }  //  end of method parseBody
 
-
-
     /*
-    Parameters ->  "<language name=",  string,  "/>", Theory1, Theory2, DTRef, DTAdr,
-                    Comments, CreateDate, DataAuthor, DataChgDate, SuggestionDate,
-                    IndSerial, FamSerial,
-                    "<polygamyPermit>", boolean, "</polygamyPermit>", UDPs.
-        First: ["<language name="]   Follow: [flag: "</parameters>"]
-    */
+     Parameters ->  "<language name=",  string,  "/>", Theory1, Theory2, DTRef, DTAdr,
+     Comments, CreateDate, DataAuthor, DataChgDate, SuggestionDate,
+     IndSerial, FamSerial,
+     "<polygamyPermit>", boolean, "</polygamyPermit>", UDPs.
+     First: ["<language name="]   Follow: [flag: "</parameters>"]
+     */
     void parseParameters() throws KSParsingErrorException, JavaSystemException, KSBadHornClauseException,
-				KSInternalErrorException, KSConstraintInconsistency {
+            KSInternalErrorException, KSConstraintInconsistency {
 //  grab the lang name for the ctxt
-        newCtxt.languageName= readOneAttribute("language", "name", "parseParameters");
-	Library.activeContexts.put(newCtxt.languageName, newCtxt);
+        newCtxt.languageName = readOneAttribute("language", "name", "parseParameters");
+        Library.activeContexts.put(newCtxt.languageName, newCtxt);
         parseTheory1();
         parseTheory2();
         parseDomTheoryRef();
@@ -292,14 +319,15 @@ public class SILKFileParser extends Parser {
         current = scanner.lookAhead();
         if (current.lexeme.equals("<dataAuthors>")) {
             parseDataAuthors();
-        }else if (current.lexeme.indexOf("<dataAuthor") == 0) {
+        } else if (current.lexeme.indexOf("<dataAuthor") == 0) {
             parseAuthors();
-        }else {
+        } else {
             error("parseParameters did not find a dat author (in either format).");
         }
         parseDataChgDate();
         parseLastSuggestionDate();
         parseIndSerial();
+        parseLinkSerial();
         parseFamSerial();
         newCtxt.polygamyPermit = readTaggedBoolean("polygamyPermit", "parseParameters");
         parseUDPList(newCtxt);
@@ -307,12 +335,12 @@ public class SILKFileParser extends Parser {
 
 
     /*
-    Theory1 -> "<theory file=", string, "/>".
+     Theory1 -> "<theory file=", string, "/>".
      *      |  \empty.
-         First: ["<theory..."]	 Follow: [tags: "<theory...", "<comments>", "<createDate...", "<indSerialNum"]
-    */
+     First: ["<theory..."]	 Follow: [tags: "<theory...", "<comments>", "<createDate...", "<indSerialNum"]
+     */
     void parseTheory1() throws KSParsingErrorException, JavaSystemException, KSBadHornClauseException,
-				KSInternalErrorException, KSConstraintInconsistency {
+            KSInternalErrorException, KSConstraintInconsistency {
         current = scanner.lookAhead();  //  inspect the next flag.
         if (current.lexeme.indexOf("<theory") == 0) {
             String fileName = readOneAttribute("theory", "file", "parseTheory1");
@@ -323,12 +351,12 @@ public class SILKFileParser extends Parser {
     }
 
     /*
-    Theory2 -> "<theory file=", string, "/>".
-              | \empty.
-         First: ["<theory..."]	 Follow: [tags: "<comments>", "<createDate...", "<indSerialNum>"]
-    */
-    void parseTheory2()throws KSParsingErrorException, JavaSystemException, KSBadHornClauseException,
-				KSInternalErrorException, KSConstraintInconsistency {
+     Theory2 -> "<theory file=", string, "/>".
+     | \empty.
+     First: ["<theory..."]	 Follow: [tags: "<comments>", "<createDate...", "<indSerialNum>"]
+     */
+    void parseTheory2() throws KSParsingErrorException, JavaSystemException, KSBadHornClauseException,
+            KSInternalErrorException, KSConstraintInconsistency {
         current = scanner.lookAhead();  //  inspect the next flag.
         if (current.lexeme.indexOf("<theory") == 0) {
             String fileName = readOneAttribute("theory", "file", "parseTheory2");
@@ -338,10 +366,9 @@ public class SILKFileParser extends Parser {
         }
     }
 
-
     /**
-     * DomTheoryRef -> '<domain-theory type="Ref"', DomTheoryComponents.
-     *              |  \empty.
+     * DomTheoryRef -> '<domain-theory type="Ref"', DomTheoryComponents. |
+     * \empty.
      */
     void parseDomTheoryRef() throws KSParsingErrorException, KSInternalErrorException {
         current = scanner.lookAhead();  //  inspect the next flag.
@@ -352,10 +379,9 @@ public class SILKFileParser extends Parser {
         }
     }
 
-
     /**
-     * DomTheoryAdr -> '<domain-theory type="Adr"', DomTheoryComponents.
-     *              |  \empty.
+     * DomTheoryAdr -> '<domain-theory type="Adr"', DomTheoryComponents. |
+     * \empty.
      */
     void parseDomTheoryAdr() throws KSParsingErrorException, KSInternalErrorException {
         current = scanner.lookAhead();  //  inspect the next flag.
@@ -367,17 +393,16 @@ public class SILKFileParser extends Parser {
     }
 
     /**
-     * DomTheoryComponents -> Citation, NonTerms, NonTermFlags, LevelsOfRecursion,
-     *                          Theory, Synonyms, Umbrellas, Overlaps, NonSynonyms,
-     *                          NonOverlaps, NonUmbrellas, EditsInProgress, '</domain-theory>'.
-     *                      |  \empty.
+     * DomTheoryComponents -> Citation, NonTerms, NonTermFlags,
+     * LevelsOfRecursion, Theory, Synonyms, Umbrellas, Overlaps, NonSynonyms,
+     * NonOverlaps, NonUmbrellas, EditsInProgress, '</domain-theory>'. | \empty.
      *
-     * @param dt    the DomainTheory to receive the components. 
-     * 
-     *      NOTE: all components are optional, but the order is fixed.
+     * @param dt the DomainTheory to receive the components.
+     *
+     * NOTE: all components are optional, but the order is fixed.
      */
     void parseDomTheoryComponents(DomainTheory dt) throws KSParsingErrorException,
-                KSInternalErrorException  {
+            KSInternalErrorException {
         scanner.readToken();  // consume start tag
         current = scanner.lookAhead();
         if (current.lexeme.startsWith("<author")) {
@@ -420,7 +445,7 @@ public class SILKFileParser extends Parser {
             String num = readOneAttribute("levels-of-recursion", "n", "parseDomTheoryComponents");
             try {
                 dt.levelsOfRecursion = Integer.parseInt(num);
-            }catch(Exception ex) {
+            } catch (Exception ex) {
                 error("parseDomTheoryComponents unable to parse '" + num + "' as integer for levelsOfRecursion.");
             }
             current = scanner.lookAhead();
@@ -444,7 +469,7 @@ public class SILKFileParser extends Parser {
             dt.synonyms = new TreeMap();
             current = scanner.lookAhead();  // peek at next tag
             while (current.lexeme.indexOf("<pair") == 0) {
-                String[] names = {"subTerm", "baseTerm" }, values;
+                String[] names = {"subTerm", "baseTerm"}, values;
                 values = readAttributes("pair", names, "parseDomTheoryComponents");
                 dt.synonyms.put(values[0], values[1]);
                 current = scanner.lookAhead();
@@ -510,7 +535,7 @@ public class SILKFileParser extends Parser {
             dt.nonSynonyms = new ArrayList<Object>();
             current = scanner.lookAhead();  // peek at next tag
             while (current.lexeme.indexOf("<nonSynonym") == 0) {
-                String[] names = {"term1", "term2" }, values;
+                String[] names = {"term1", "term2"}, values;
                 values = readAttributes("nonSynonym", names, "parseDomTheoryComponents");
                 String newPair = values[0] + "/" + values[1];
                 dt.nonSynonyms.add(newPair);
@@ -577,8 +602,8 @@ public class SILKFileParser extends Parser {
             dt.editsInProgress = new TreeMap<String, EditTheoryFrame.EditInProgress>();
             current = scanner.lookAhead();  // peek at next tag
             while (current.lexeme.startsWith("<eip")) {
-                String[] tags = {"kinTerm", "text", "indent",  "lastVar",  
-                    "nextVar",  "checkpoint", "syntaxOK", "dyadCkOK"};
+                String[] tags = {"kinTerm", "text", "indent", "lastVar",
+                    "nextVar", "checkpoint", "syntaxOK", "dyadCkOK"};
                 String[] components = readAttributes("eip", tags, "parseDomTheoryComponents");
                 String kt = components[0];
                 EditTheoryFrame.EditInProgress eip = new EditTheoryFrame.EditInProgress(kt);
@@ -614,50 +639,52 @@ public class SILKFileParser extends Parser {
         }
         newCtxt.addDomainTheory(dt);
     }
-    
+
 
     /*
-    Comments -> "<comments txt=", string, "/>".
-              |  \empty.
-         First: ["<comments>"]	 Follow: [tags: "<createDate...", "<indSerialNum>", 
-                    "<getDateOfBirth...", "</family>"]
-    */
-    String parseComments()  throws KSParsingErrorException  {
+     Comments -> "<comments txt=", string, "/>".
+     |  \empty.
+     First: ["<comments>"]	 Follow: [tags: "<createDate...", "<indSerialNum>", 
+     "<getDateOfBirth...", "</family>"]
+     */
+    String parseComments() throws KSParsingErrorException {
         current = scanner.lookAhead();
-        if (current.lexeme.indexOf("<comments") == 0)  {
+        if (current.lexeme.indexOf("<comments") == 0) {
             return readOneAttribute("comments", "txt", "parseComments");
-        }else if (current.lexeme.indexOf("<createDate") == 0 || current.lexeme.equals("<indSerialNum>") ||
-                current.lexeme.equals("</family>") || current.lexeme.indexOf("<surname") == 0 ||
-                current.lexeme.equals("<deleted>"))  {
+        } else if (current.lexeme.indexOf("<createDate") == 0 || current.lexeme.equals("<indSerialNum>")
+                || current.lexeme.equals("</family>") || current.lexeme.indexOf("<surname") == 0
+                || current.lexeme.equals("<deleted>")) {
             return null;
         }
-        error("parseComments seeking a flag: '<comments>, '<createDate>'," +
-                "\n'<indSerialNum>', '<dateOfBirth>', '<dateOfDeath>', '<surname...', '<deleted>, or '</family>'.");
+        error("parseComments seeking a flag: '<comments>, '<createDate>',"
+                + "\n'<indSerialNum>', '<dateOfBirth>', '<dateOfDeath>', '<surname...', '<deleted>, or '</family>'.");
         return null;
     }
 
 
     /*
-    CreateDate -> "<createDate value=", string, "/>".
-              |  \empty.
-         First: ["<createDate..."]	 Follow: ["<indSerNum>"]
-    */
-    void parseCreateDate()  throws KSParsingErrorException  {
+     CreateDate -> "<createDate value=", string, "/>".
+     |  \empty.
+     First: ["<createDate..."]	 Follow: ["<indSerNum>"]
+     */
+    void parseCreateDate() throws KSParsingErrorException {
         current = scanner.lookAhead();
-        if (current.lexeme.indexOf("<createDate") == 0)  {
+        if (current.lexeme.indexOf("<createDate") == 0) {
             Date cDate = readDateTag("createDate", "parseCreateDate");
             newCtxt.createDate = UDate.formatAsXSD(cDate);
-        }else if (current.lexeme.equals("<indSerNum>") || current.lexeme.indexOf("<dataAuthor") == 0)  {
+        } else if (current.lexeme.equals("<indSerNum>") || current.lexeme.indexOf("<dataAuthor") == 0) {
             return;
-        }else error("parseCreateDate seeking a flag: '<createDate...', '<dataAuthor>',  or '<indSerNum>'.");
+        } else {
+            error("parseCreateDate seeking a flag: '<createDate...', '<dataAuthor>',  or '<indSerNum>'.");
+        }
     }
 
     /*
-    DataAuthor -> "<dataAuthors>", Authors, </dataAuthors>.
+     DataAuthor -> "<dataAuthors>", Authors, </dataAuthors>.
      *
-         First: ["<dataAuthors>"]	 Follow: ["<indSerNum>"]
-    */
-    void parseDataAuthors()  throws KSParsingErrorException  {
+     First: ["<dataAuthors>"]	 Follow: ["<indSerNum>"]
+     */
+    void parseDataAuthors() throws KSParsingErrorException {
         current = scanner.readToken();  //  consume start tag
         if (!current.lexeme.equals("<dataAuthors>")) {
             error("parseDataAuthors seeking the tag: '<dataAuthors>'.");
@@ -669,63 +696,80 @@ public class SILKFileParser extends Parser {
         }
     }
 
-    /** Authors -> "<dataAuthor name=", string, "/>", Authors.
-              |  \empty.
+    /**
+     * Authors -> "<dataAuthor name=", string, "/>", Authors. | \empty.
      *
-         First: ["<dataAuthor..."]	 Follow: ["</dataAuthors>"]
+     * First: ["<dataAuthor..."]	Follow: ["</dataAuthors>"]
      */
-    void parseAuthors()  throws KSParsingErrorException  {
+    void parseAuthors() throws KSParsingErrorException {
         current = scanner.lookAhead();
-        while (current.lexeme.indexOf("<dataAuthor") == 0)  {
+        while (current.lexeme.indexOf("<dataAuthor") == 0) {
             String author = readOneAttribute("dataAuthor", "name", "parseAuthors");
             Context.current.dataAuthors.add(author);
             current = scanner.lookAhead();
         }
     }
 
-    void parseDataChgDate()  throws KSParsingErrorException  {
+    void parseDataChgDate() throws KSParsingErrorException {
         current = scanner.lookAhead();
-        if (current.lexeme.indexOf("<lastDataChangeDate") == 0)  {
+        if (current.lexeme.indexOf("<lastDataChangeDate") == 0) {
             newCtxt.dateOfLastDataChange = readOneAttribute("lastDataChangeDate", "value", "parseDataChgDate");
-        }else if (current.lexeme.equals("<indSerNum>")
-                || current.lexeme.indexOf("<lastSuggestionDate") == 0)  {
+        } else if (current.lexeme.equals("<indSerNum>")
+                || current.lexeme.indexOf("<lastSuggestionDate") == 0) {
             return;
-        }else error("parseDataChgDate seeking a flag: '<lastDataChangeDate>' or '<lastSuggestionDate>' or '<indSerNum>'.");
+        } else {
+            error("parseDataChgDate seeking a flag: '<lastDataChangeDate>' or '<lastSuggestionDate>' or '<indSerNum>'.");
+        }
     }
 
-    void parseLastSuggestionDate()  throws KSParsingErrorException  {
+    void parseLastSuggestionDate() throws KSParsingErrorException {
         current = scanner.lookAhead();
-        if (current.lexeme.indexOf("<lastSuggestionDate") == 0)  {
+        if (current.lexeme.indexOf("<lastSuggestionDate") == 0) {
             newCtxt.dateOfLastSuggestion = readOneAttribute("lastSuggestionDate", "value", "parseLastSuggestionDate");
-        }else if (current.lexeme.equals("<indSerNum>"))  {
+        } else if (current.lexeme.equals("<indSerNum>")) {
             return;
-        }else error("parseLastSuggestionDate seeking a flag: '<lastSuggestionDate>' or '<indSerNum>'.");
+        } else {
+            error("parseLastSuggestionDate seeking a flag: '<lastSuggestionDate>' or '<indSerNum>'.");
+        }
     }
 
     /*
-    IndSerial -> "<indSerNum>", integer, "</indSerNum>".
-         First: ["<indSerNum>"]	 Follow: ["<famSerNum>"]
-    */
-    void parseIndSerial()  throws KSParsingErrorException, NumberFormatException {
-        int nmbrOfPersons = readTaggedInteger("indSerNum", "parseIndSerial");
-        origIndCount = nmbrOfPersons;  //  will use it as a check-sum after individuals loaded
-        indivTable = new ArrayList<ArrayList<Integer>>(nmbrOfPersons);
+     IndSerial -> "<indSerNum>", integer, "</indSerNum>".
+     First: ["<indSerNum>"]	 Follow: ["<famSerNum>", "<linkSerNum>"]
+     */
+    void parseIndSerial() throws KSParsingErrorException, NumberFormatException {
+        origIndCount = readTaggedInteger("indSerNum", "parseIndSerial");
+        indivTable = new ArrayList<ArrayList<Integer>>(origIndCount);
     }
 
     /*
-    FamSerial -> "<famSerNum>", integer,"</famSerNum>".
-         First: ["<famSerNum>"]	 Follow: ["<polygamyPermit>"]
-    */
-    void parseFamSerial()   throws KSParsingErrorException, NumberFormatException {
-        int nmbrOfFams = readTaggedInteger("famSerNum", "parseFamSerial");
-        origFamCount = nmbrOfFams;
-        famTable = new ArrayList<ArrayList<Integer>>(nmbrOfFams);
+     IndSerial -> "<linkSerNum>", integer, "</linkSerNum>".
+     First: ["<linkSerNum>"]	 Follow: ["<famSerNum>"]
+     */
+    void parseLinkSerial() throws KSParsingErrorException, NumberFormatException {
+        current = scanner.lookAhead();
+        if (!current.lexeme.equals("<linkSerNum>")) {
+            return;
+        }
+        origLinkCount = readTaggedInteger("linkSerNum", "parseLinkSerial");
+        if (origLinkCount > 0) {
+            linkTable = new Integer[origLinkCount];
+        }
+    }
+
+    /*
+     FamSerial -> "<famSerNum>", integer,"</famSerNum>".
+     First: ["<famSerNum>"]	 Follow: ["<polygamyPermit>"]
+     */
+    void parseFamSerial() throws KSParsingErrorException, NumberFormatException {
+        origFamCount = readTaggedInteger("famSerNum", "parseFamSerial");
+        famTable = new ArrayList<ArrayList<Integer>>(origFamCount);
     }
 
     /*	UDPList -> "<userDefinedProperties>", UDPs, "</userDefinedProperties>".
-                |  \empty.
-    	First: ["<userDefinedProperties>"]	 Follow: [tags: "<starLinks>", "</individual>"]
-    */
+     |  \empty.
+     First: ["<userDefinedProperties>"]	 Follow: [tags: "<starLinks>", "</individual>"]
+     */
     void parseUDPList(Individual ind) throws KSParsingErrorException {
         current = scanner.lookAhead();  //  inspect the tag, which must be "<userDefinedProperties>"
         if (current.lexeme.equals("<userDefinedProperties>")) {
@@ -750,48 +794,57 @@ public class SILKFileParser extends Parser {
     }
 
     /*	UDPList -> "<userDefinedProperties>", UDPs, "</userDefinedProperties>".
-    			| \empty.
-    	First: ["<userDefinedProperties>"]	 Follow: [flag: "</parameters>"]
-    */
-	void parseUDPList(Context newCtxt) throws KSParsingErrorException  {
+     | \empty.
+     First: ["<userDefinedProperties>"]	 Follow: [flag: "</parameters>"]
+     */
+    void parseUDPList(Context newCtxt) throws KSParsingErrorException {
         current = scanner.lookAhead();  //  inspect the flag, which must be "<userDefinedProperties>" or "</parameters>"
-        if (current.lexeme.equals("</parameters>")) return;
-        if (! current.lexeme.equals("<userDefinedProperties>"))
+        if (current.lexeme.equals("</parameters>")) {
+            return;
+        }
+        if (!current.lexeme.equals("<userDefinedProperties>")) {
             error("parseUDPList seeking flag '<userDefinedProperties>', but found " + current.lexeme);
+        }
         scanner.readToken();  //  consume the flag "<userDefinedProperties>"
         TreeMap tMap = new TreeMap();
         parseUDPs(tMap, true);
         scanner.readToken();  //  consume the flag, which must be "</userDefinedProperties>"
-        if (! current.lexeme.equals("</userDefinedProperties>"))
+        if (!current.lexeme.equals("</userDefinedProperties>")) {
             error("parseUDPList seeking flag '</userDefinedProperties>', but found " + current.lexeme);
-        if (! tMap.isEmpty()) newCtxt.userDefinedProperties = tMap;
-		}
-
-    /*
-    UDPs -> "<UDP>", UDP, "</UDP>", UDPs.
-              |  \empty.
-         First: ["<UDP>"]	 Follow: [flag: "</parameters>"]
-    */
-    void parseUDPs(TreeMap tMap, boolean full)  throws KSParsingErrorException {
-        current = scanner.lookAhead();
-        if (current.lexeme.equals("<UDP>"))  {
-            scanner.readToken();  //  consume the start flag.
-            UserDefinedProperty newProp = parseUDP(full);
-            current = scanner.readToken();  //  consume the end tag, which must be "</UDP>"
-            if (! current.lexeme.equals("</UDP>"))
-                error("parseUDPs seeking the flag '</UDP>'. ");
-            String propName = newProp.starName;
-            tMap.put(propName, newProp);
-            parseUDPs(tMap, full);
-        }else if (current.lexeme.equals("</parameters>") || current.lexeme.equals("</userDefinedProperties>")) {
-            return;
-        }else error("parseUDPs seeking a flag: '</UDP>' or '</parameters>'. ");
+        }
+        if (!tMap.isEmpty()) {
+            newCtxt.userDefinedProperties = tMap;
+        }
     }
 
     /*
-    UDP -> PropName, Type, ValueList, "<singleValue>", boolean,"</singleValue>",
-            ValidEntries, DefVal, MinVal, MaxVal.
-         First: [flag: "<propertyName>"]	 Follow: [flag: "</UDP>"]
+     UDPs -> "<UDP>", UDP, "</UDP>", UDPs.
+     |  \empty.
+     First: ["<UDP>"]	 Follow: [flag: "</parameters>"]
+     */
+    void parseUDPs(TreeMap tMap, boolean full) throws KSParsingErrorException {
+        current = scanner.lookAhead();
+        if (current.lexeme.equals("<UDP>")) {
+            scanner.readToken();  //  consume the start flag.
+            UserDefinedProperty newProp = parseUDP(full);
+            current = scanner.readToken();  //  consume the end tag, which must be "</UDP>"
+            if (!current.lexeme.equals("</UDP>")) {
+                error("parseUDPs seeking the flag '</UDP>'. ");
+            }
+            String propName = newProp.starName;
+            tMap.put(propName, newProp);
+            parseUDPs(tMap, full);
+        } else if (current.lexeme.equals("</parameters>") || current.lexeme.equals("</userDefinedProperties>")) {
+            return;
+        } else {
+            error("parseUDPs seeking a flag: '</UDP>' or '</parameters>'. ");
+        }
+    }
+
+    /*
+     UDP -> PropName, Type, ValueList, "<singleValue>", boolean,"</singleValue>",
+     ValidEntries, DefVal, MinVal, MaxVal.
+     First: [flag: "<propertyName>"]	 Follow: [flag: "</UDP>"]
 
      * This method relies on the fact that the Context's UDP templates are parsed in first.
      * They are parsed with full = true. Later, we parse the UDP's for individuals with
@@ -801,7 +854,7 @@ public class SILKFileParser extends Parser {
     UserDefinedProperty parseUDP(boolean full) throws KSParsingErrorException, NumberFormatException {
         UserDefinedProperty udp, model;
         if (full) {
-            udp  = new UserDefinedProperty(parsePropName());
+            udp = new UserDefinedProperty(parsePropName());
             parseType(udp);
             parseValueList(udp);
             udp.singleValue = readTaggedBoolean("singleValue", "parseUDP");
@@ -809,8 +862,8 @@ public class SILKFileParser extends Parser {
             parseDefVal(udp);
             parseMinVal(udp);
             parseMaxVal(udp);
-        }else {
-            model = (UserDefinedProperty)newCtxt.userDefinedProperties.get(parsePropName());
+        } else {
+            model = (UserDefinedProperty) newCtxt.userDefinedProperties.get(parsePropName());
             udp = new UserDefinedProperty(model, false);
             parseValueList(udp);
         }
@@ -818,272 +871,309 @@ public class SILKFileParser extends Parser {
     }
 
     /*
-    PropName -> "<propertyName>", starName, "</propertyName>".
-         First: [flag: "<propertyName>"]	 Follow: [flag: "<typ>"]
-    */
+     PropName -> "<propertyName>", starName, "</propertyName>".
+     First: [flag: "<propertyName>"]	 Follow: [flag: "<typ>"]
+     */
     String parsePropName() throws KSParsingErrorException {
         return readTagEnclosedText("propertyName", "parsePropName");
     }
 
     /*
-    Type -> "<typ>", TypeSpec, "</typ>".
-         First: [flag: "<typ>"]	 Follow: [flag: "<singleValue>"]
+     Type -> "<typ>", TypeSpec, "</typ>".
+     First: [flag: "<typ>"]	 Follow: [flag: "<singleValue>"]
     
      TypeSpec -> "integer".
-             |  "float".
-             |  "string".
-             |  "boolean".
-             |  "individual".
-         First: [one of those]	 Follow: [flag: "</typ>"]
-    */
+     |  "float".
+     |  "string".
+     |  "boolean".
+     |  "individual".
+     First: [one of those]	 Follow: [flag: "</typ>"]
+     */
     void parseType(UserDefinedProperty udp) throws KSParsingErrorException {
         String type = readTagEnclosedText("typ", "parseType");
         if (type.equals("integer") || type.equals("float") || type.equals("string")
-                || type.equals("boolean") || type.equals("individual"))
+                || type.equals("boolean") || type.equals("individual")) {
             udp.typ = type;
-        else error("parseType found invalid UDP type: " + type);
+        } else {
+            error("parseType found invalid UDP type: " + type);
+        }
     }
 
     /*
-    ValueList -> "<value>", Values, "</value>".
-         First: [flag: "<value>"]	 Follow: [flag: "<singleValue>"]
-    */
+     ValueList -> "<value>", Values, "</value>".
+     First: [flag: "<value>"]	 Follow: [flag: "<singleValue>"]
+     */
     void parseValueList(UserDefinedProperty udp) throws KSParsingErrorException, NumberFormatException {
         current = scanner.readToken();  //  consume the start flag, which must be "<value>"
-        if (! current.lexeme.equals("<value>"))
+        if (!current.lexeme.equals("<value>")) {
             error("parseValueList seeking the flag '<value>'. ");
+        }
         udp.value = new ArrayList<Object>();
         parseValues(udp);
         current = scanner.readToken();  //  consume the next tag, which must be "</value>"
-        if (! current.lexeme.equals("</value>"))
+        if (!current.lexeme.equals("</value>")) {
             error("parsePropName seeking the flag '</value>'. ");
+        }
     }
 
+    /*
+     Values -> Value, MoreValues.
+     |  \empty.
+     First: [integer, float, string, boolean, Individual]
+     Follow: [flag: "</value>"]
+     */
+    void parseValues(UserDefinedProperty udp) throws KSParsingErrorException, NumberFormatException {
+        current = scanner.lookAhead();
+        if (current.lexeme.equals("</value>")) //  empty
+        {
+            return;
+        }
+        Object newVal = parseValue(udp);
+        if (newVal != null) {
+            udp.value.add(newVal);
+        }
+        parseMoreValues(udp);
+    }
+
+    /*
+     MoreValues -> comma, Value, MoreValues.
+     |  \empty.
+     First: [comma]
+     Follow: [flag: "</value>"]
+     */
+    void parseMoreValues(UserDefinedProperty udp) throws KSParsingErrorException {
+        current = scanner.lookAhead();
+        if (current.lexeme.equals("</value>")) //  empty
+        {
+            return;
+        }
+        scanner.readToken();  //  consume a comma
+        if (!current.token.equals("comma")) {
+            error("parseMoreValues seeking a comma, found " + current.lexeme);
+        }
+        Object newVal = parseValue(udp);
+        if (newVal != null) {
+            udp.value.add(newVal);
+        }
+        parseMoreValues(udp);
+    }
 
 
     /*
-    Values -> Value, MoreValues.
-           |  \empty.
-         First: [integer, float, string, boolean, Individual]
-         Follow: [flag: "</value>"]
-    */
-    void parseValues(UserDefinedProperty udp) throws KSParsingErrorException, NumberFormatException {
-        current = scanner.lookAhead();
-        if (current.lexeme.equals("</value>"))  //  empty
-            return;
-        Object newVal = parseValue(udp);
-        if (newVal != null) udp.value.add(newVal);
-        parseMoreValues(udp);
-    }
-
-/*
-    MoreValues -> comma, Value, MoreValues.
-           |  \empty.
-         First: [comma]
-         Follow: [flag: "</value>"]
-    */
-    void parseMoreValues(UserDefinedProperty udp) throws KSParsingErrorException {
-        current = scanner.lookAhead();
-        if (current.lexeme.equals("</value>"))   //  empty
-            return;
-        scanner.readToken();  //  consume a comma
-        if (! current.token.equals("comma"))
-            error("parseMoreValues seeking a comma, found " + current.lexeme);
-        Object newVal = parseValue(udp);
-        if (newVal != null) udp.value.add(newVal);
-        parseMoreValues(udp);
-    }
-
-
-   /*
-    ValidEntries -> "<validEntries>", ValEntries, MoreValEntries, "</validEntries>".
-         First: [flag: "<validEntries>"]	 Follow: [flag: "<defaultValue>"]
-    */
+     ValidEntries -> "<validEntries>", ValEntries, MoreValEntries, "</validEntries>".
+     First: [flag: "<validEntries>"]	 Follow: [flag: "<defaultValue>"]
+     */
     void parseValidEntries(UserDefinedProperty udp) throws KSParsingErrorException {
         current = scanner.readToken();  //  consume the start flag, which must be "<validEntries>"
-        if (! current.lexeme.equals("<validEntries>"))
+        if (!current.lexeme.equals("<validEntries>")) {
             error("parseValidEntries seeking the flag '<validEntries>'. ");
+        }
         udp.validEntries = new ArrayList<Object>();
         parseValEntries(udp);
         parseMoreValEntries(udp);
         current = scanner.readToken();  //  consume the divorceYr flag, which must be "</validEntries>"
-        if (! current.lexeme.equals("</validEntries>"))
+        if (!current.lexeme.equals("</validEntries>")) {
             error("parseValidEntries seeking the flag '</validEntries>'. ");
+        }
     }
 
 
     /*
-    ValEntries -> integer.
-               |  float.
-               |  string.
-               |  \empty.
-         First: [one of these]	 Follow: [comma, flag: "</validEntries>"]
-    */
+     ValEntries -> integer.
+     |  float.
+     |  string.
+     |  \empty.
+     First: [one of these]	 Follow: [comma, flag: "</validEntries>"]
+     */
     void parseValEntries(UserDefinedProperty udp)
             throws KSParsingErrorException, NumberFormatException {
         current = scanner.lookAhead();
-        if (current.lexeme.equals("</validEntries>"))  //  empty
+        if (current.lexeme.equals("</validEntries>")) //  empty
+        {
             return;
+        }
         //  if currentEdit = a comma, this is not legal
         scanner.readToken();  //  consume the token
         if (udp.typ.equals("integer")) {
             udp.validEntries.add(new Integer(current.lexeme));
-        }else if (udp.typ.equals("string")) {
+        } else if (udp.typ.equals("string")) {
             udp.validEntries.add(current.lexeme);
-        }else if (udp.typ.equals("float")) {
+        } else if (udp.typ.equals("float")) {
             udp.validEntries.add(new Float(current.lexeme));
-        }else error("parseValEntries found illegal valid-entry type (" + current.token + ") = " + current.lexeme);
+        } else {
+            error("parseValEntries found illegal valid-entry type (" + current.token + ") = " + current.lexeme);
+        }
     }
 
-
-
     /*
-    MoreValEntries -> comma, integer, MoreValEntries.
-               |  comma, float, MoreValEntries.
-               |  comma, string, MoreValEntries.
-               |  \empty.
-         First: [comma]	 Follow: [flag: "</validEntries>"]
-    */
+     MoreValEntries -> comma, integer, MoreValEntries.
+     |  comma, float, MoreValEntries.
+     |  comma, string, MoreValEntries.
+     |  \empty.
+     First: [comma]	 Follow: [flag: "</validEntries>"]
+     */
     void parseMoreValEntries(UserDefinedProperty udp)
             throws KSParsingErrorException, NumberFormatException {
         current = scanner.lookAhead();
-        if (current.lexeme.equals("</validEntries>"))  //  empty
+        if (current.lexeme.equals("</validEntries>")) //  empty
+        {
             return;
+        }
         if (current.token.equals("comma")) {
             scanner.readToken();  //  consume the comma
             current = scanner.readToken();
             if (udp.typ.equals("integer")) {
                 udp.validEntries.add(new Integer(current.lexeme));
-            }else if (udp.typ.equals("string")) {
+            } else if (udp.typ.equals("string")) {
                 udp.validEntries.add(current.lexeme);
-            }else if (udp.typ.equals("float")) {
+            } else if (udp.typ.equals("float")) {
                 udp.validEntries.add(new Float(current.lexeme));
             }
             parseMoreValEntries(udp);
-        }else error("parseMoreValEntries found illegal valid-entry type (" + current.token + ") = " + current.lexeme);
+        } else {
+            error("parseMoreValEntries found illegal valid-entry type (" + current.token + ") = " + current.lexeme);
+        }
     }
 
     /*
-    DefVal -> "<defaultValue>", Value, "</defaultValue>".
-         First: [flag: "<defaultValue>"]	 Follow: [flag: "<minVal>"]
-    */
+     DefVal -> "<defaultValue>", Value, "</defaultValue>".
+     First: [flag: "<defaultValue>"]	 Follow: [flag: "<minVal>"]
+     */
     void parseDefVal(UserDefinedProperty udp)
             throws KSParsingErrorException, NumberFormatException {
         current = scanner.readToken();  //  consume the start flag, which must be "<defaultValue>"
-        if (! current.lexeme.equals("<defaultValue>"))
+        if (!current.lexeme.equals("<defaultValue>")) {
             error("parseDefVal seeking the flag '<defaultValue>'. ");
+        }
         udp.defaultValue = parseValue(udp);
         current = scanner.readToken();  //  consume the divorceYr flag, which must be "</defaultValue>"
-        if (! current.lexeme.equals("</defaultValue>"))
+        if (!current.lexeme.equals("</defaultValue>")) {
             error("parseDefVal seeking the flag '</defaultValue>'. ");
+        }
     }
 
     /*
-    Value -> integer.  // NOTE: Must agree with 'typ' for this UDP.
-           |  float.
-           |  string.
-           |  boolean.
-           |  Individual.
-           |  \empty.
-         First: [integer, float, string, boolean, Individual]
-         Follow: [comma, tags: "</defaultValue>", "</value>"]
-    */
+     Value -> integer.  // NOTE: Must agree with 'typ' for this UDP.
+     |  float.
+     |  string.
+     |  boolean.
+     |  Individual.
+     |  \empty.
+     First: [integer, float, string, boolean, Individual]
+     Follow: [comma, tags: "</defaultValue>", "</value>"]
+     */
     Object parseValue(UserDefinedProperty udp) throws KSParsingErrorException, NumberFormatException {
         current = scanner.lookAhead();
         if (current.lexeme.equals("</value>") || current.lexeme.equals("</defaultValue>")
-                || current.token.equals("comma"))
+                || current.token.equals("comma")) {
             return null;
+        }
         scanner.readToken();  //  consume the token
         if (udp.typ.equals("integer")) {
             return new Integer(current.lexeme);
-        }else if (udp.typ.equals("float")) {
+        } else if (udp.typ.equals("float")) {
             return new Float(current.lexeme);
-        }else if (udp.typ.equals("string")) {
+        } else if (udp.typ.equals("string")) {
             return current.lexeme;
-        }else if (udp.typ.equals("boolean")) {
+        } else if (udp.typ.equals("boolean")) {
             return new Boolean(current.lexeme);  // if not true or false, run-time exception will be thrown
-        }else if (udp.typ.equals("individual")) {
+        } else if (udp.typ.equals("individual")) {
             udp2ndPassReqd = true;
-            if (current.lexeme.indexOf("#") != 0)
+            if (current.lexeme.indexOf("#") != 0) {
                 error("parseValue found invalid representation of an individual: " + current.lexeme);
+            }
             return current.lexeme;
-        }else error("parseValue found invalid value type (" + current.token + ") = " + current.lexeme);
+        } else {
+            error("parseValue found invalid value type (" + current.token + ") = " + current.lexeme);
+        }
         return null;
     }
 
     /*
-    MinVal -> "<minVal>", MinValue, "</minVal>".
-         First: ["flag: <minVal>"]	 Follow: [flag: "<maxVal>"]
-    */
+     MinVal -> "<minVal>", MinValue, "</minVal>".
+     First: ["flag: <minVal>"]	 Follow: [flag: "<maxVal>"]
+     */
     void parseMinVal(UserDefinedProperty udp)
             throws KSParsingErrorException, NumberFormatException {
         current = scanner.readToken();  //  consume the start flag, which must be "<minVal>"
-        if (! current.lexeme.equals("<minVal>"))
+        if (!current.lexeme.equals("<minVal>")) {
             error("parseMinVal seeking the flag '<minVal>'. ");
+        }
         parseMinValue(udp);
         current = scanner.readToken();  //  consume the divorceYr flag, which must be "</minVal>"
-        if (! current.lexeme.equals("</minVal>"))
+        if (!current.lexeme.equals("</minVal>")) {
             error("parseMinVal seeking the flag '</minVal>'. ");
+        }
     }
 
     /*
-    MinValue -> integer.
-             |  float.
-             |  \empty.
-         First: [integer, float]	 Follow: [flag: "</minVal>"]
-    */
+     MinValue -> integer.
+     |  float.
+     |  \empty.
+     First: [integer, float]	 Follow: [flag: "</minVal>"]
+     */
     void parseMinValue(UserDefinedProperty udp)
             throws KSParsingErrorException, NumberFormatException {
         current = scanner.lookAhead();  // must be a number or divorceYr flag
-        if (current.lexeme.equals("</minVal>")) return;
+        if (current.lexeme.equals("</minVal>")) {
+            return;
+        }
         if (current.token.equals("integer")) {
             udp.minVal = new Integer(current.lexeme);
-        }else if (current.token.equals("float"))  {
+        } else if (current.token.equals("float")) {
             udp.minVal = new Float(current.lexeme);
-        }else error("parseMinValue seeking a number or the flag '</minVal>'. Found " + current.lexeme);
+        } else {
+            error("parseMinValue seeking a number or the flag '</minVal>'. Found " + current.lexeme);
+        }
         current = scanner.readToken(); //  consume the value
     }
 
     /*
-    MaxVal -> "<maxVal>", MaxValue,"</maxVal>".
-         First: [flag: "<maxVal>"]	 Follow: [see note 1]
-    */
+     MaxVal -> "<maxVal>", MaxValue,"</maxVal>".
+     First: [flag: "<maxVal>"]	 Follow: [see note 1]
+     */
     void parseMaxVal(UserDefinedProperty udp)
             throws KSParsingErrorException, NumberFormatException {
         current = scanner.readToken();  //  consume the start flag, which must be "<maxVal>"
-        if (! current.lexeme.equals("<maxVal>"))
+        if (!current.lexeme.equals("<maxVal>")) {
             error("parseMaxVal seeking the flag '<maxVal>'. ");
+        }
         parseMaxValue(udp);
         current = scanner.readToken();  //  consume the divorceYr flag, which must be "</maxVal>"
-        if (! current.lexeme.equals("</maxVal>"))
+        if (!current.lexeme.equals("</maxVal>")) {
             error("parseMaxVal seeking the flag '</maxVal>'. ");
+        }
     }
 
     /*
-    MaxValue -> integer.
-             |  float.
-             |  \empty.
-         First: [integer, float]	 Follow: [flag: "</maxVal>"]
-    */
+     MaxValue -> integer.
+     |  float.
+     |  \empty.
+     First: [integer, float]	 Follow: [flag: "</maxVal>"]
+     */
     void parseMaxValue(UserDefinedProperty udp)
             throws KSParsingErrorException, NumberFormatException {
         current = scanner.lookAhead();  // consume symbol, which must be a number or divorceYr flag
-        if (current.lexeme.equals("</maxVal>")) return;
+        if (current.lexeme.equals("</maxVal>")) {
+            return;
+        }
         if (current.token.equals("integer")) {
             udp.maxVal = new Integer(current.lexeme);
-        }else if (current.token.equals("float"))  {
+        } else if (current.token.equals("float")) {
             udp.maxVal = new Float(current.lexeme);
-        }else error("parseMaxValue seeking a number or the flag '</maxVal>'. Found " + current.lexeme);
+        } else {
+            error("parseMaxValue seeking a number or the flag '</maxVal>'. Found " + current.lexeme);
+        }
         current = scanner.readToken(); //  consume the value
     }
 
     /*
-    EditorSettings -> "<currentEgo n=", integer, "/>",
-                "<editDirectory dir=", string, "/>",
-                KAESParameters, LastPersonIndexed, LinkPriorities.
-         First: [flag: <currentEgo..., <editDirectory..., <origin...]
-         Follow: ["</editorSettings>"]
-    */
+     EditorSettings -> "<currentEgo n=", integer, "/>",
+     "<editDirectory dir=", string, "/>",
+     KAESParameters, LastPersonIndexed, LinkPriorities.
+     First: [flag: <currentEgo..., <editDirectory..., <origin...]
+     Follow: ["</editorSettings>"]
+     */
     void parseEditorSettings() throws KSParsingErrorException {
         current = scanner.lookAhead();  // peek at token, which must be a flag.
         if (current.lexeme.indexOf("<currentEgo") == 0) { // always 1st, if present
@@ -1091,11 +1181,15 @@ public class SILKFileParser extends Parser {
             currentEgoSerialNmbr = Integer.parseInt(val);
             current = scanner.lookAhead();  // peek at token, which must be a flag.
         }
-        if (current.lexeme.indexOf("<editDirectory") == 0) { // always 2nd, if present
+        if (current.lexeme.startsWith("<editDirectory")) { // always 2nd, if present
             newCtxt.editDirectory = readOneAttribute("editDirectory", "dir", "parseEditorSettings");
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.startsWith("<currentChart")) {
+            newCtxt.currentChart = Integer.parseInt(readOneAttribute("currentChart", "n", "parseEditorSettings"));
         }
         parseKAESParameters(); // always present
-        parseLastPersonIndexed(); 
+        parseLastPersonIndexed();
         parseLinkPriorities();
         parseSnapToGrid();
     }
@@ -1104,15 +1198,15 @@ public class SILKFileParser extends Parser {
         current = scanner.lookAhead();  // peek at token, which must be a flag.
         if (current.lexeme.equals("<lastPersonIndexed>")) { // temp storage
             lastPersonIndexed = readTaggedInteger("lastPersonIndexed", "parseLastPersonIndexed");
-        }else if (! current.lexeme.equals("</editorSettings>") && 
-                ! current.lexeme.startsWith("<linkPriorities")) {
+        } else if (!current.lexeme.equals("</editorSettings>")
+                && !current.lexeme.startsWith("<linkPriorities")) {
             error("parseLastPersonIndexed seeking the flags '<lastPersonIndexed>' '<linkPriorities>' or </editorSettings>'. ");
         }
     }
 
     void parseLinkPriorities() throws KSParsingErrorException {
         current = scanner.lookAhead();  // peek at token, which must be a flag.
-        if (current.lexeme.startsWith("<linkPriorities")) { 
+        if (current.lexeme.startsWith("<linkPriorities")) {
             String mf = readOneAttribute("linkPriorities", "maleFirst", "parseLinkPriorities");
             newCtxt.maleFirst = Boolean.parseBoolean(mf);
             newCtxt.linkOrder = new ArrayList<String>();
@@ -1128,49 +1222,49 @@ public class SILKFileParser extends Parser {
                 current = scanner.lookAhead();
             }
             scanner.readToken();
-            if (! current.lexeme.equals("</linkPriorities>")) {
-            error("parseLinkPriorities seeking the flag '</linkPriorities>'. ");
+            if (!current.lexeme.equals("</linkPriorities>")) {
+                error("parseLinkPriorities seeking the flag '</linkPriorities>'. ");
             }
-        }else if (! current.lexeme.equals("</editorSettings>") && !current.lexeme.startsWith("<snapToGrid")) {
+        } else if (!current.lexeme.equals("</editorSettings>") && !current.lexeme.startsWith("<snapToGrid")) {
             error("parseLinkPriorities seeking the flags '<linkPriorities>', '<snapToGrid>' or </editorSettings>'. ");
         }
     }
-    
+
     void parseSnapToGrid() throws KSParsingErrorException {
         current = scanner.lookAhead();  // peek at token, which must be a flag.
-        if (current.lexeme.startsWith("<snapToGrid")) { 
+        if (current.lexeme.startsWith("<snapToGrid")) {
             String[] vals, attributes = {"val", "x", "y"};
             vals = readAttributes("snapToGrid", attributes, "parseSnapToGrid");
             Library.snapToGrid = Boolean.parseBoolean(vals[0]);
             Library.gridX = Integer.parseInt(vals[1]);
             Library.gridY = Integer.parseInt(vals[2]);
-        }else if (! current.lexeme.equals("</editorSettings>")) {
+        } else if (!current.lexeme.equals("</editorSettings>")) {
             error("parseSnapToGrid seeking the flags '<snapToGrid>' or </editorSettings>'. ");
         }
     }
 
     /*
-    KAESParameters -> "<origin x=", integer, "y=", integer, "/>",
-                      "<area W=", integer, "H=", integer, "/>",
-                      "<infoPerson>", integer, "</infoPerson>",
-                      "<infoMarriage>", integer, "</infoMarriage>",
-                      "<label>", integer, "</label>",
-                      "<ktlabel>", integer, "</ktlabel>",
-                      "<editable>", boolean, "</editable>",
-                      "<distinctAdrTerms>", boolean, "</distinctAdrTerms>",
-                      "<maxNoise>", integer, "</maxNoise>",
-                      "<ignorable>", integer, "</ignorable>",
-                      "<surnameCapture value=", boolean, "/>",
-                      "<birthdateCapture value=", boolean, "/>",
-                      "<printFont name=", string, "size=", integer, "/>",
-                      "<printOrientation value=", integer, "/>".
-         First: [flag: <origin>]	 Follow: [flag: </editorSettings>]
-    */
+     KAESParameters -> "<origin x=", integer, "y=", integer, "/>",
+     "<area W=", integer, "H=", integer, "/>",
+     "<infoPerson>", integer, "</infoPerson>",
+     "<infoMarriage>", integer, "</infoMarriage>",
+     "<label>", integer, "</label>",
+     "<ktlabel>", integer, "</ktlabel>",
+     "<editable>", boolean, "</editable>",
+     "<distinctAdrTerms>", boolean, "</distinctAdrTerms>",
+     "<maxNoise>", integer, "</maxNoise>",
+     "<ignorable>", integer, "</ignorable>",
+     "<surnameCapture value=", boolean, "/>",
+     "<birthdateCapture value=", boolean, "/>",
+     "<printFont name=", string, "size=", integer, "/>",
+     "<printOrientation value=", integer, "/>".
+     First: [flag: <origin>]	 Follow: [flag: </editorSettings>]
+     */
     void parseKAESParameters() throws KSParsingErrorException {
         if (newCtxt.origin == null) {
             newCtxt.origin = new Point();
         }
-        String[] attributes = { "x", "y" };
+        String[] attributes = {"x", "y"};
         String[] values = readAttributes("origin", attributes, "parseKAESParameters");
         newCtxt.origin.x = Integer.parseInt(values[0]);
         newCtxt.origin.y = Integer.parseInt(values[1]);
@@ -1192,18 +1286,18 @@ public class SILKFileParser extends Parser {
         newCtxt.doInduction = Boolean.parseBoolean(readOneAttribute("doInduction", "value", "parseKAESParameters"));
         //  Next 4 parameters are optional
         current = scanner.lookAhead();
-        if (current.lexeme.startsWith("<surnameCapture")) { 
+        if (current.lexeme.startsWith("<surnameCapture")) {
             boolean b = Boolean.parseBoolean(readOneAttribute("surnameCapture", "value", "parseKAESParameters"));
             newCtxt.surnameNormallyCaptured = b;
             current = scanner.lookAhead();
         }
-        if (current.lexeme.startsWith("<birthdateCapture")) { 
+        if (current.lexeme.startsWith("<birthdateCapture")) {
             boolean b = Boolean.parseBoolean(readOneAttribute("birthdateCapture", "value", "parseKAESParameters"));
             newCtxt.birthDateNormallyCaptured = b;
             current = scanner.lookAhead();
         }
-        if (current.lexeme.startsWith("<printFont")) { 
-            String[] fields = {"name", "size" };
+        if (current.lexeme.startsWith("<printFont")) {
+            String[] fields = {"name", "size"};
             values = readAttributes("printFont", fields, "parseKAESParameters");
             String faceName = values[0];
             int sz = Integer.parseInt(values[1]);
@@ -1211,7 +1305,7 @@ public class SILKFileParser extends Parser {
             PrintChart.printFont = nuFont;
             current = scanner.lookAhead();
         }
-        if (current.lexeme.startsWith("<printOrientation")) { 
+        if (current.lexeme.startsWith("<printOrientation")) {
             String orient = readOneAttribute("printOrientation", "value", "parseKAESParameters");
             int orientation = Integer.parseInt(orient);
             PrinterJob job = PrinterJob.getPrinterJob();
@@ -1221,7 +1315,7 @@ public class SILKFileParser extends Parser {
         }
     }
 
-    int readTaggedInteger(String tag, String caller) throws KSParsingErrorException  {
+    int readTaggedInteger(String tag, String caller) throws KSParsingErrorException {
         int theVal = 0;
         current = scanner.readToken(); //  consume next, which must match tag
         if (!current.lexeme.equals("<" + tag + ">")) {
@@ -1240,45 +1334,54 @@ public class SILKFileParser extends Parser {
     }
 
     /*
-    Individuals -> "<individual n=", integer, "/>", Individual, "</individual>", Individuals.
-                |  \empty.
-         First: [flag: "<individual>"]	 Follow: [flag: "</individualCensus>"]
-    NOTE: Iterative style used here to avoid stack overflows for very large populations.
-    */
+     Individuals -> "<individual n=", integer, "/>", Individual, "</individual>", Individuals.
+     |  \empty.
+     First: [flag: "<individual>"]	 Follow: [flag: "</individualCensus>"]
+     NOTE: Iterative style used here to avoid stack overflows for very large populations.
+     */
     void parseIndividuals() throws KSParsingErrorException {
         current = scanner.lookAhead();	//  inspect the flag
-        while (current.lexeme.indexOf("<individual") == 0)  {
+        while (current.lexeme.indexOf("<individual") == 0) {
             parseIndividual(newCtxt);
             current = scanner.readToken();  //  consume the flag, which must be "</individual>"
-            if (! current.lexeme.equals("</individual>"))
+            if (!current.lexeme.equals("</individual>")) {
                 error("parseIndividuals seeking flag '</individual>', but found " + current.lexeme);
+            }
             current = scanner.lookAhead();
         }
-        if (current.lexeme.equals("</individualCensus>"))  //  empty or divorceYr of Individual Census
+        if (current.lexeme.equals("</individualCensus>")) //  empty or end of Individual Census
+        {
             return;
-        else error("parseIndividuals seeking tags '<individual>' or '</individualCensus>',\nbut found " + current.lexeme);
+        } else {
+            error("parseIndividuals seeking tags '<individual>' or '</individualCensus>',\nbut found " + current.lexeme);
+        }
     }
 
-/*
-Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
-              "<firstNames value=", string, "/>" , Birth,
-              Death, DataChg, Author, Deleted, BirthFam, Marriages, UDPs, StarLinks.
+    /*
+     Individual -> Sex, Stats, Location, "<homeChart n=", string, "/>", Comment, "<surname value=", string, "/>",
+     "<firstNames value=", string, "/>" , Birth,
+     Death, DataChg, Author, Deleted, BirthFam, Marriages, UDPs, StarLinks.
      First: [flag: "<serialNmbr>"]	 Follow: [flag: "</individual>"]
-*/
+     */
     void parseIndividual(Context ctxt) throws KSParsingErrorException {
         Individual ind = new Individual(ctxt, "?");
         int serial = Integer.parseInt(readOneAttribute("individual", "n", "parseIndividual"));
-        if (serial != ind.serialNmbr)
+        if (serial != ind.serialNmbr) {
             error("parseIndividual creating an individual with out-of-sequence serial number: " + serial);
-        ind.myId = serial +1;
+        }
+        ind.myId = serial + 1;
         parseGender(ind);
+        current = scanner.lookAhead();
+        if (current.lexeme.startsWith("<homeChart")) {
+            ind.homeChart = Integer.parseInt(readOneAttribute("homeChart", "n", "parseIndividual"));
+        }
         ind.location = parseLocation();
         String note = parseComments();
         ind.comment = (note == null ? "" : note);
         ind.surname = readOneAttribute("surname", "value", "parseIndividual");
         ind.firstNames = readOneAttribute("firstNames", "value", "parseIndividual");
         ind.name = ((ind.firstNames == null ? "" : ind.firstNames)
-                    + (ind.surname == null ? "" : " " + ind.surname)).trim();
+                + (ind.surname == null ? "" : " " + ind.surname)).trim();
         parseBirth(ind);
         parseDeath(ind);
         ind.dataChangeDate = readOneAttribute("dataChangeDate", "value", "parseIndividual");
@@ -1295,33 +1398,83 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         parseUDPList(ind);
         parseStarLinks(ind);
     }
-
-
+    
+    // No need to parse the person's links. They'll be captured from back-pointers
     /*
-    Gender -> "<sex>", symbol, "</sex>".  [must be ?, M or F]
-         First: [flag: "<sex>"]	 Follow: [flag: "<location>"]
-    */
-    void parseGender(Individual ind) throws KSParsingErrorException {
-        current = scanner.readToken();  //  consume the flag, which must be "<sex>"
-        if (! current.lexeme.equals("<sex>"))
-            error("parseGender seeking flag '<sex>', but found " + current.lexeme);
-        current = scanner.readToken();
-        if (! current.lexeme.equals("Male") && ! current.lexeme.equals("Female")
-                &&!current.lexeme.equals("M") && !current.lexeme.equals("F") &&
-                ! current.lexeme.equals("Neuter"))
-               error("parseGender seeking a gender, but found " + current.lexeme);
-        String sex = current.lexeme;
-        current = scanner.readToken();  //  consume the flag, which must be "</sex>"
-        if (! current.lexeme.equals("</sex>"))
-            error("parseGender seeking flag '</sex>'.");
-        ind.gender = sex.substring(0,1);
-        if (ind.gender.equals("N")) ind.gender = "?";
-        if (ind.gender.equals("M")) ind.sex = new Male();
-        else if(ind.gender.equals("F")) ind.sex = new Female();
-        else ind.sex = new Neuter();
+     Links -> "<link person=", string, "deleted=", string, "gender=", string,
+     "homeChart=, string, "locationX=" string, "locationY=" string,
+     "serial=", string, "author=" string, "chgDate=", string
+     "/>", Links.
+     |  \empty.
+     First: [flag: "<link...."]	 Follow: [flag: "</linkCensus>"]
+     NOTE: Iterative style used here to avoid stack overflows for very large populations.
+     */
+
+    void parseLinks() throws KSParsingErrorException {
+        String[] attrs = {"person", "deleted", "gender", "homeChart", "locationX",
+            "locationY", "serial", "author", "chgDate"};
+        current = scanner.lookAhead();	//  inspect the flag
+        while (current.lexeme.startsWith("<link")) {
+            String[] values = readAttributes("link", attrs, "parseLinks");
+            Link lk = new Link(newCtxt);
+            int linkSerial = Integer.parseInt(values[6]);
+            if (lk.serialNmbr != linkSerial) {
+                error("Link Census member #" + lk.serialNmbr + " has serial number of "
+                        + linkSerial + " according to the SILK file.");
+            }
+            linkTable[linkSerial] = Integer.parseInt(values[0]);
+            lk.deleted = Boolean.parseBoolean(values[1]);
+            lk.sex = (values[2].equals("M") ? Person.mal : Person.fem);
+            lk.homeChart = Integer.parseInt(values[3]);
+            int locX = Integer.parseInt(values[4]),
+                    locY = Integer.parseInt(values[5]);
+            lk.location = new Point(locX, locY);
+            lk.dataAuthor = values[7];
+            lk.dataChangeDate = values[8];
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.equals("</linkCensus>")) //  empty or end of Link Census
+        {
+            return;
+        } else {
+            error("parseLinks seeking tags '<link>' or '</linkCensus>',\nbut found " + current.lexeme);
+        }
     }
 
-    boolean readTaggedBoolean(String tag, String caller) throws KSParsingErrorException  {
+    /*
+     Gender -> "<sex>", symbol, "</sex>".  [must be ?, M or F]
+     First: [flag: "<sex>"]	 Follow: [flag: "<location>"]
+     */
+    void parseGender(Individual ind) throws KSParsingErrorException {
+        current = scanner.readToken();  //  consume the flag, which must be "<sex>"
+        if (!current.lexeme.equals("<sex>")) {
+            error("parseGender seeking flag '<sex>', but found " + current.lexeme);
+        }
+        current = scanner.readToken();
+        if (!current.lexeme.equals("Male") && !current.lexeme.equals("Female")
+                && !current.lexeme.equals("M") && !current.lexeme.equals("F")
+                && !current.lexeme.equals("Neuter")) {
+            error("parseGender seeking a gender, but found " + current.lexeme);
+        }
+        String sex = current.lexeme;
+        current = scanner.readToken();  //  consume the flag, which must be "</sex>"
+        if (!current.lexeme.equals("</sex>")) {
+            error("parseGender seeking flag '</sex>'.");
+        }
+        ind.gender = sex.substring(0, 1);
+        if (ind.gender.equals("N")) {
+            ind.gender = "?";
+        }
+        if (ind.gender.equals("M")) {
+            ind.sex = Person.mal;
+        } else if (ind.gender.equals("F")) {
+            ind.sex = Person.fem;
+        } else {
+            ind.sex = new Neuter();
+        }
+    }
+
+    boolean readTaggedBoolean(String tag, String caller) throws KSParsingErrorException {
         boolean theVal = false;
         current = scanner.readToken(); //  consume next, which must match tag
         if (!current.lexeme.equals("<" + tag + ">")) {
@@ -1339,15 +1492,14 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         return theVal;
     }
 
-
-   String readTagEnclosedText(String tag, String caller) throws KSParsingErrorException  {
+    String readTagEnclosedText(String tag, String caller) throws KSParsingErrorException {
         String theVal = "";
         current = scanner.readToken(); //  consume next, which must match tag
-        if (! current.lexeme.equals("<" + tag + ">")) {
+        if (!current.lexeme.equals("<" + tag + ">")) {
             error(caller + " seeking the flag " + "<" + tag + ">");
         }
         current = scanner.readToken(); //  consume next, first of the enclosed string
-        while (! current.lexeme.equals("</" + tag + ">")) {
+        while (!current.lexeme.equals("</" + tag + ">")) {
             theVal += current.lexeme + " ";
             current = scanner.readToken();
         }
@@ -1359,7 +1511,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         Date theDate = null;
         try {
             theDate = UDate.parse(dater[0]);
-        }catch(KSDateParseException pex) {
+        } catch (KSDateParseException pex) {
             error("Trying to parseCreateDate: " + pex);
         }
         return theDate;
@@ -1371,9 +1523,9 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         if (current.lexeme.indexOf("<" + tag) != 0) {
             error(caller + " seeking a tag " + "<" + tag + " ...");
         }
-        int attrStart = current.lexeme.indexOf(attribute + "="), 
-            quote1 = current.lexeme.indexOf("\"", attrStart) +1,
-            quote2 = current.lexeme.indexOf("\"", quote1);
+        int attrStart = current.lexeme.indexOf(attribute + "="),
+                quote1 = current.lexeme.indexOf("\"", attrStart) + 1,
+                quote2 = current.lexeme.indexOf("\"", quote1);
         return current.lexeme.substring(quote1, quote2);
     }
 
@@ -1388,31 +1540,31 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         for (String attr : attributes) {
             attrStart = current.lexeme.indexOf(attr + "=");
             quote1 = current.lexeme.indexOf("\"", attrStart);
-            quote2 = current.lexeme.indexOf("\"", quote1 +1);
-            results[ndx++] = current.lexeme.substring(quote1 +1, quote2);
+            quote2 = current.lexeme.indexOf("\"", quote1 + 1);
+            results[ndx++] = current.lexeme.substring(quote1 + 1, quote2);
         }
         return results;
     }
 
 
     /*
-    Location -> "<location x=", integer, "y=", integer, "/>".
-         First: [flag: "<location..."]	 Follow: [flag: "<comment..."]
-    */
+     Location -> "<location x=", integer, "y=", integer, "/>".
+     First: [flag: "<location..."]	 Follow: [flag: "<comment..."]
+     */
     Point parseLocation() throws KSParsingErrorException {
-        String[] attributes = { "x", "y" };
+        String[] attributes = {"x", "y"};
         String[] values = readAttributes("location", attributes, "parseLocation");
         Point loc = new Point();
         loc.x = Integer.parseInt(values[0]);
         loc.y = Integer.parseInt(values[1]);
         return loc;
-     }
+    }
 
     /*
-    Birth -> "<dateOfBirth value=", string, "/>".
-           |  \empty.
-         First: [flag: "<dateOfBirth..."]	 Follow: [flag: "<dateOfDeath...", "<dataChangeDate..."]
-    */
+     Birth -> "<dateOfBirth value=", string, "/>".
+     |  \empty.
+     First: [flag: "<dateOfBirth..."]	 Follow: [flag: "<dateOfDeath...", "<dataChangeDate..."]
+     */
     void parseBirth(Individual ind) throws KSParsingErrorException {
         current = scanner.lookAhead();  //  inspect the flag.
         if (current.lexeme.indexOf("<dateOfBirth") == 0) {
@@ -1420,7 +1572,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             Date d = null;
             try {
                 d = UDate.parse(dob);
-            }catch(KSDateParseException dpe) {
+            } catch (KSDateParseException dpe) {
                 error("parseBirth cannot parse '" + dob + "' as date.\n" + dpe);
             }
             ind.setDateOfBirth(UDate.formatAsXSD(d));
@@ -1435,9 +1587,9 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
     }
 
     /*
-    Death -> "<dateOfDeath value=", string, "/>".
-         First: [flag: "<dateOfDeath"]	 Follow: [flag: "<dataChangeDate"]
-    */
+     Death -> "<dateOfDeath value=", string, "/>".
+     First: [flag: "<dateOfDeath"]	 Follow: [flag: "<dataChangeDate"]
+     */
     void parseDeath(Individual ind) throws KSParsingErrorException {
         current = scanner.lookAhead();  //  inspect the flag.
         if (current.lexeme.indexOf("<dateOfDeath") == 0) {
@@ -1445,7 +1597,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             Date d = null;
             try {
                 d = UDate.parse(dod);
-            }catch(KSDateParseException dpe) {
+            } catch (KSDateParseException dpe) {
                 error("parseDeath cannot parse '" + dod + "' as date.\n" + dpe);
             }
             ind.setDateOfDeath(UDate.formatAsXSD(d));
@@ -1459,68 +1611,76 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
     }
 
     /*
-    BirthFam -> "<birthFamily>", IntOrBlank, "</birthFamily>".
-         First: [flag: "<birthFamily>"]	 Follow: [flag: "<marriages>"]
-    */
+     BirthFam -> "<birthFamily>", IntOrBlank, "</birthFamily>".
+     First: [flag: "<birthFamily>"]	 Follow: [flag: "<marriages>"]
+     */
     void parseBirthFam(ArrayList<Integer> row) throws KSParsingErrorException {
         current = scanner.readToken();  //  consume the flag, which must be "<birthFamily>"
-        if (! current.lexeme.equals("<birthFamily>"))
+        if (!current.lexeme.equals("<birthFamily>")) {
             error("parseBirthFam seeking flag '<birthFamily>', but found " + current.lexeme);
+        }
         parseIntOrBlank(row);
         current = scanner.readToken();  //  consume the flag, which must be "</birthFamily>"
-        if (! current.lexeme.equals("</birthFamily>"))
+        if (!current.lexeme.equals("</birthFamily>")) {
             error("parseBirthFam seeking flag '</birthFamily>'.");
+        }
     }
 
     /*
-    IntOrBlank -> integer.
-               |  \empty.
-         First: [integer]	 Follow: [flag: "</birthFamily>"]
-    */
-    void parseIntOrBlank(ArrayList<Integer> row) throws KSParsingErrorException  {
+     IntOrBlank -> integer.
+     |  \empty.
+     First: [integer]	 Follow: [flag: "</birthFamily>"]
+     */
+    void parseIntOrBlank(ArrayList<Integer> row) throws KSParsingErrorException {
         current = scanner.lookAhead();
         if (current.token.equals("integer")) {
             scanner.readToken();  //  consume the integer
             row.add(new Integer(current.lexeme));
-        }else if (current.lexeme.equals("</birthFamily>"))
+        } else if (current.lexeme.equals("</birthFamily>")) {
             row.add(new Integer(-1));
-        else error("parseIntOrBlank seeking integer or flag '</birthFamily>'.");
+        } else {
+            error("parseIntOrBlank seeking integer or flag '</birthFamily>'.");
+        }
     }
 
     /*
-    Marriages -> "<marriages>", Weddings, "</marriages>".
-         First: [flag: "<marriages>"]	 Follow: [flag: "<userDefinedProperties>"]
-    */
-    void parseMarriages(ArrayList<Integer> row) throws KSParsingErrorException  {
+     Marriages -> "<marriages>", Weddings, "</marriages>".
+     First: [flag: "<marriages>"]	 Follow: [flag: "<userDefinedProperties>"]
+     */
+    void parseMarriages(ArrayList<Integer> row) throws KSParsingErrorException {
         current = scanner.readToken();  //  consume the flag, which must be "<marriages>"
-        if (! current.lexeme.equals("<marriages>"))
+        if (!current.lexeme.equals("<marriages>")) {
             error("parseMarriages seeking flag '<marriages>', but found " + current.lexeme);
+        }
         parseWeddings(row);
         current = scanner.readToken();  //  consume the flag, which must be "</marriages>"
-        if (! current.lexeme.equals("</marriages>"))
+        if (!current.lexeme.equals("</marriages>")) {
             error("parseMarriages seeking flag '</marriages>'.");
+        }
     }
 
     /*
-    Weddings -> "<mar n=", integer, "/>", Weddings.
-             |  \empty.
-         First: [integer]	 Follow: [flag: "</marriages>"]
-    */
-    void parseWeddings(ArrayList<Integer> row) throws KSParsingErrorException  {
+     Weddings -> "<mar n=", integer, "/>", Weddings.
+     |  \empty.
+     First: [integer]	 Follow: [flag: "</marriages>"]
+     */
+    void parseWeddings(ArrayList<Integer> row) throws KSParsingErrorException {
         current = scanner.lookAhead();
         if (current.lexeme.indexOf("<mar n=") == 0) {
             row.add(new Integer(readOneAttribute("mar", "n", "parseWeddings")));
             parseWeddings(row);
-        }else if (current.lexeme.equals("</marriages>"))
+        } else if (current.lexeme.equals("</marriages>")) {
             return;
-        else error("parseWeddings seeking tags '<mar...' or '</marriages>'.");
+        } else {
+            error("parseWeddings seeking tags '<mar...' or '</marriages>'.");
+        }
     }
 
     /*
-    StarLinks -> "<starLinks>", Starz, "</starLinks>".
-               |  \empty.
-         First: [flag: "<starLinks>"]	 Follow: [flag: "</individual>"]
-    */
+     StarLinks -> "<starLinks>", Starz, "</starLinks>".
+     |  \empty.
+     First: [flag: "<starLinks>"]	 Follow: [flag: "</individual>"]
+     */
     void parseStarLinks(Individual ind) throws KSParsingErrorException {
         current = scanner.lookAhead();  //  inspect the tag.
         if (current.lexeme.equals("<starLinks>")) {
@@ -1537,107 +1697,122 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
     }
 
     /*
-    Starz -> "#", integer, MoreStarz.
-          |  \empty.
-         First: [integer]	 Follow: [flag: "</starLinks>"]
-    */
-    void parseStarz(Individual ind) throws KSParsingErrorException  {
+     Starz -> "#", integer, MoreStarz.
+     |  \empty.
+     First: [integer]	 Follow: [flag: "</starLinks>"]
+     */
+    void parseStarz(Individual ind) throws KSParsingErrorException {
         current = scanner.lookAhead();
         if (current.token.equals("pound")) {
             scanner.readToken();  //  consume the pound sign
             current = scanner.readToken();  //  consume next, which must be an integer
-            if (! current.token.equals("integer"))
-            	error("parseStarz looking for an integer, found " + current.token);
+            if (!current.token.equals("integer")) {
+                error("parseStarz looking for an integer, found " + current.token);
+            }
             Integer star = new Integer(current.lexeme),
                     personNmbr = new Integer(ind.serialNmbr);
             ArrayList<Integer> starz = new ArrayList<Integer>();
             starz.add(star);
             starTable.put(personNmbr, starz);
             parseMoreStarz(starz);
-        }else if (current.lexeme.equals("</starLinks>"))
+        } else if (current.lexeme.equals("</starLinks>")) {
             return;
-        else error("parseStarz seeking '#' or flag '</starLinks>'.");
+        } else {
+            error("parseStarz seeking '#' or flag '</starLinks>'.");
+        }
     }
 
     /*
-    MoreStarz -> comma, "#", integer, MoreStarz.
-              |  \empty.
-         First: [comma]	 Follow: [flag: "</starLinks>"]
-    */
-    void parseMoreStarz(ArrayList<Integer> starList) throws KSParsingErrorException  {
+     MoreStarz -> comma, "#", integer, MoreStarz.
+     |  \empty.
+     First: [comma]	 Follow: [flag: "</starLinks>"]
+     */
+    void parseMoreStarz(ArrayList<Integer> starList) throws KSParsingErrorException {
         current = scanner.lookAhead();
         if (current.token.equals("comma")) {
             scanner.readToken();  //  consume the comma
             current = scanner.readToken();  //  consume next, which must be a pound sign
-            if (! current.token.equals("pound"))
-                    error("parseMoreStarz seeking a pound sign.");
-            else {
+            if (!current.token.equals("pound")) {
+                error("parseMoreStarz seeking a pound sign.");
+            } else {
                 current = scanner.readToken();  //  consume next, which must be an integer
-                if (! current.token.equals("integer"))
-                	error("parseMoreStarz looking for an integer, found " + current.token);
+                if (!current.token.equals("integer")) {
+                    error("parseMoreStarz looking for an integer, found " + current.token);
+                }
                 starList.add(new Integer(current.lexeme));
                 parseMoreStarz(starList);
             }
-        }else if (current.lexeme.equals("</starLinks>"))
+        } else if (current.lexeme.equals("</starLinks>")) {
             return;
-        else error("parseMoreStarz seeking comma or flag '</starLinks>'.");
+        } else {
+            error("parseMoreStarz seeking comma or flag '</starLinks>'.");
+        }
     }
 
     /*
-    FamilyCensus -> "<familyCensus>", Families, "</familyCensus>".
-                First:  [flag: "<familyCensus>"]		Follow: [flag: "<matrix>"]
-    */
-    void parseFamilyCensus()  throws KSParsingErrorException  {
+     FamilyCensus -> "<familyCensus>", Families, "</familyCensus>".
+     First:  [flag: "<familyCensus>"]		Follow: [flag: "<matrix>"]
+     */
+    void parseFamilyCensus() throws KSParsingErrorException {
         scanner.readToken();  //  consume the start flag (already verified)
         parseFamilies(newCtxt);
         current = scanner.readToken();  // consume next, which must be </familyCensus>
-        if (! current.lexeme.equals("</familyCensus>"))  //  empty
+        if (!current.lexeme.equals("</familyCensus>")) //  empty
+        {
             error("parseFamilyCensus seeking tag '</familyCensus>'.");
+        }
 
     }
 
     /*
-    Families -> Family, Families.
-                |  \empty.
-         First: [flag: "<family..."]	 Follow: [flag: "</familyCensus>"]
-    NOTE: Iterative style used here to avoid stack overflows for very large populations.
-    */
-    void parseFamilies(Context newCtxt)  throws KSParsingErrorException  {
+     Families -> Family, Families.
+     |  \empty.
+     First: [flag: "<family..."]	 Follow: [flag: "</familyCensus>"]
+     NOTE: Iterative style used here to avoid stack overflows for very large populations.
+     */
+    void parseFamilies(Context newCtxt) throws KSParsingErrorException {
         current = scanner.lookAhead();  //  inspect the flag
         while (current.lexeme.indexOf("<family") == 0) {
-			parseFamily(newCtxt);
-			current = scanner.lookAhead();  //  inspect the flag
+            parseFamily(newCtxt);
+            current = scanner.lookAhead();  //  inspect the flag
         }
-        if (current.lexeme.equals("</familyCensus>"))
+        if (current.lexeme.equals("</familyCensus>")) {
             return;
-        else error("parseFamilies seeking tags '<family...' or '</familyCensus>'.");
+        } else {
+            error("parseFamilies seeking tags '<family...' or '</familyCensus>'.");
+        }
     }
 
 
-	/* Old version
-    void parseFamilies(Context newCtxt)  throws KSParsingErrorException  {
-        currentEdit = scanner.lookAhead();
-        if (currentEdit.lexeme.equals("<family>")) {
-        parseFamily(newCtxt);
-        parseFamilies(newCtxt);
-        }else if (currentEdit.lexeme.equals("</familyCensus>"))
-            return;
-        else error("parseFamilies seeking tags '<family>' or '</familyCensus>'.");
-    }
-	*/
+    /* Old version
+     void parseFamilies(Context newCtxt)  throws KSParsingErrorException  {
+     currentEdit = scanner.lookAhead();
+     if (currentEdit.lexeme.equals("<family>")) {
+     parseFamily(newCtxt);
+     parseFamilies(newCtxt);
+     }else if (currentEdit.lexeme.equals("</familyCensus>"))
+     return;
+     else error("parseFamilies seeking tags '<family>' or '</familyCensus>'.");
+     }
+     */
 
     /*
-    Family -> "<family n=", integer, "/>", Location, FamStats, Comments, Deleted,
-               Husband, Wife, Children, "<marriageDate value=", string, "/>",
-               "<endDate value=", string, "/>", "<dataChangeDate value=", string, "/>", "</family>".
-         First: [flag: "<family>"]	 Follow: [tags: "<family>", "</familyCensus>"]
-    */
-    void parseFamily(Context newCtxt)  throws KSParsingErrorException  {
+     Family -> "<family n=", integer, "/>", Location, FamStats, Comments, Deleted,
+     Husband, Wife, Children, "<marriageDate value=", string, "/>",
+     "<endDate value=", string, "/>", "<dataChangeDate value=", string, "/>", "</family>".
+     First: [flag: "<family>"]	 Follow: [tags: "<family>", "</familyCensus>"]
+     */
+    void parseFamily(Context newCtxt) throws KSParsingErrorException {
         Family fam = new Family(newCtxt, true);  // constructor adds family to context's family census
         int serial = Integer.parseInt(readOneAttribute("family", "n", "parseFamily"));
-        if (serial != fam.serialNmbr)
+        if (serial != fam.serialNmbr) {
             error("parseFamily trying to create a Family with out-of-sequence serial nmuber.");
-        fam.mid = serial +1;
+        }
+        fam.mid = serial + 1;
+        current = scanner.lookAhead();
+        if (current.lexeme.startsWith("<homeChart")) {
+            fam.homeChart = Integer.parseInt(readOneAttribute("homeChart", "n", "parseFamily"));
+        }
         fam.location = parseLocation();
         fam.reason = readTagEnclosedText("reason", "parseFamStats");
         current = scanner.lookAhead();
@@ -1651,12 +1826,38 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         row.add(new Integer(readOneAttribute("wife", "n", "parseFamily")));
         parseChildren(row);
         current = scanner.lookAhead();
+        if (current.lexeme.startsWith("<husbandLink")) {
+            int husLinkSerial = Integer.parseInt(readOneAttribute("husbandLink", "id", "parseFamily"));
+            fam.husbandLink = newCtxt.linkCensus.get(husLinkSerial);
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.startsWith("<wifeLink")) {
+            int wifeLinkSerial = Integer.parseInt(readOneAttribute("wifeLink", "id", "parseFamily"));
+            fam.wifeLink = newCtxt.linkCensus.get(wifeLinkSerial);
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.equals("<kidLinks>")) {
+            scanner.readToken();  // consume start tag
+            current = scanner.lookAhead();
+            while (current.lexeme.startsWith("<kidLink")) {
+                int kLserial = Integer.parseInt(readOneAttribute("kidLink", "id", "parseFamily"));
+                Link kidLink = newCtxt.linkCensus.get(kLserial);
+                fam.kidLinks.add(kidLink);
+                current = scanner.lookAhead();
+            }
+            current = scanner.readToken();  // must be the end tag
+            if (!current.lexeme.equals("</kidLinks>")) {
+                error("parseFamily looking for '<kidLink' or '</kidLinks>' but found\n'"
+                        + current.lexeme + "' instead");
+            }
+            current = scanner.lookAhead();
+        }
         if (current.lexeme.indexOf("<marriageDate") == 0) {
             String marrDate = readOneAttribute("marriageDate", "value", "parseFamily");
             Date d = null;
             try {
                 d = UDate.parse(marrDate);
-            }catch(KSDateParseException dpe) {
+            } catch (KSDateParseException dpe) {
                 error("parseFamily cannot parse '" + marrDate + "' as date.\n" + dpe);
             }
             fam.setMarriageDate(UDate.formatAsXSD(d));
@@ -1666,7 +1867,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             String enDate = readOneAttribute("endDate", "value", "parseFamily");
             if (enDate.equals("null") || enDate.equals("")) {
                 fam.setDivorceDate("");
-            }else {
+            } else {
                 Date d = null;
                 try {
                     d = UDate.parse(enDate);
@@ -1681,32 +1882,35 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             fam.dataAuthor = readOneAttribute("dataAuthor", "name", "parseFamily");
         }
         fam.dataChangeDate = readOneAttribute("dataChangeDate", "value", "parseFamily");
-        current = scanner.readToken(); //  consume next, which must be divorceYr flag
-        if (! current.lexeme.equals("</family>"))
+        current = scanner.readToken(); //  consume next, which must be end flag
+        if (!current.lexeme.equals("</family>")) {
             error("parseFamily seeking flag '</family>'.");
+        }
     }
 
     /*
-    Children -> "<children>", Kids, "</children>".
-         First: [flag: "<children>"]	 Follow: [flag: "<marriageDate>"]
-    */
-    void parseChildren(ArrayList<Integer> row)  throws KSParsingErrorException  {
+     Children -> "<children>", Kids, "</children>".
+     First: [flag: "<children>"]	 Follow: [flag: "<marriageDate>"]
+     */
+    void parseChildren(ArrayList<Integer> row) throws KSParsingErrorException {
         current = scanner.readToken();  //  consume the flag, which must be "<children>"
-        if (! current.lexeme.equals("<children>"))
+        if (!current.lexeme.equals("<children>")) {
             error("parseChildren seeking flag '<children>', but found " + current.lexeme);
+        }
         parseKids(row);
         current = scanner.readToken();  //  consume the flag, which must be "</children>"
-        if (! current.lexeme.equals("</children>"))
+        if (!current.lexeme.equals("</children>")) {
             error("parseChildren seeking flag '</children>'.");
+        }
     }
 
 
     /*
-    Kids -> "<kid n=", integer, "/>", Kids.
-          |  \empty.
-         First: [integer]	 Follow: [flag: "</children>"]
-    */
-    void parseKids(ArrayList<Integer> row) throws KSParsingErrorException  {
+     Kids -> "<kid n=", integer, "/>", Kids.
+     |  \empty.
+     First: [integer]	 Follow: [flag: "</children>"]
+     */
+    void parseKids(ArrayList<Integer> row) throws KSParsingErrorException {
         current = scanner.lookAhead();
         while (current.lexeme.indexOf("<kid n=") == 0) {
             int kidNum = Integer.parseInt(readOneAttribute("kid", "n", "parseKids"));
@@ -1716,24 +1920,25 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
     }
 
     /*
-    Matrix -> "<matrix>", Rows, "</matrix>".
-        First: [flag: "<matrix>"]		Follow: [flag: "<dyadsUndefinedRef>"]
-    */
-    void parseMatrix()  throws KSParsingErrorException, KSInternalErrorException  {
+     Matrix -> "<matrix>", Rows, "</matrix>".
+     First: [flag: "<matrix>"]		Follow: [flag: "<dyadsUndefinedRef>"]
+     */
+    void parseMatrix() throws KSParsingErrorException, KSInternalErrorException {
         scanner.readToken();  //  consume the start flag (already verified)
         newCtxt.ktm = new KinTermMatrix();
         parseRows();
         current = scanner.readToken();  // read token, which must be the flag '</matrix>'
-        if (! current.lexeme.equals("</matrix>"))
+        if (!current.lexeme.equals("</matrix>")) {
             error("parseMatrix seeking the end flag '</matrix>'. ");
+        }
     }
 
     /*
-    Rows -> Row, Rows.
-          |  \empty.
-         First: [flag: "<row>"]	 Follow: [flag: "</matrix>"]
-    NOTE: Iterative style used here to avoid stack overflows for very large matrices.
-    */
+     Rows -> Row, Rows.
+     |  \empty.
+     First: [flag: "<row>"]	 Follow: [flag: "</matrix>"]
+     NOTE: Iterative style used here to avoid stack overflows for very large matrices.
+     */
     void parseRows()
             throws KSParsingErrorException, KSInternalErrorException {
         current = scanner.lookAhead();  //  inspect the flag
@@ -1749,75 +1954,79 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
     }
 
     /*
-    Row -> "<row ego=", integer, ">", Cells, "</row>".
-         First: [flag: "<row>"]	 Follow: [tags: "<row>", "</matrix>"]
-    */
-    void parseRow()
-            throws KSParsingErrorException, KSInternalErrorException  {
-    /* STRATEGY:  I must gather the parameters for a call to the 'addNode'
-     * method of KinTermMatrix. Create an empty ArgList and send it down the
-     * call stack. Each method will add its parameter in order. When the argList
-     * gets to parseNodeComponents, create a Node, then pass it to
-     * parseTermGroups for adding in the kinTerms.
-     *
-     * ASSUMPTION: This method relies on the IndividualCensus and FamilyCensus
-     * being completely processed before the KTM is built. That is the order of
-     * the elements in a SILK file. Any hand-editing of a SILK file that violates
-     * this assumption will cause an error.
+     Row -> "<row ego=", integer, ">", Cells, "</row>".
+     First: [flag: "<row>"]	 Follow: [tags: "<row>", "</matrix>"]
      */
+    void parseRow()
+            throws KSParsingErrorException, KSInternalErrorException {
+        /* STRATEGY:  I must gather the parameters for a call to the 'addNode'
+         * method of KinTermMatrix. Create an empty ArgList and send it down the
+         * call stack. Each method will add its parameter in order. When the argList
+         * gets to parseNodeComponents, create a Node, then pass it to
+         * parseTermGroups for adding in the kinTerms.
+         *
+         * ASSUMPTION: This method relies on the IndividualCensus and FamilyCensus
+         * being completely processed before the KTM is built. That is the order of
+         * the elements in a SILK file. Any hand-editing of a SILK file that violates
+         * this assumption will cause an error.
+         */
         Integer egoInt = new Integer(readOneAttribute("row", "ego", "parseRow"));
         ArrayList<Object> argList = new ArrayList<Object>();
         argList.add(egoInt);
         parseCells(argList);
         current = scanner.readToken();  // read token, which must be the tag '</row>'
-        if (! current.lexeme.equals("</row>"))
+        if (!current.lexeme.equals("</row>")) {
             error("parseRow seeking the end tag '</row>'. ");
+        }
     }
 
     /*
-    Cells -> Cell, Cells.
-          |  \empty.
-         First: [flag: "<cell>"]	 Follow: [flag: "</row>"]
-    */
+     Cells -> Cell, Cells.
+     |  \empty.
+     First: [flag: "<cell>"]	 Follow: [flag: "</row>"]
+     */
     void parseCells(ArrayList<Object> argList)
-            throws KSParsingErrorException, KSInternalErrorException  {
+            throws KSParsingErrorException, KSInternalErrorException {
         current = scanner.lookAhead();
         if (current.lexeme.indexOf("<cell") == 0) {
             ArrayList<Object> argListCopy = new ArrayList<Object>(argList);
             parseCell(argListCopy);
             parseCells(argList);
-        }else if (current.lexeme.equals("</row>"))  {
+        } else if (current.lexeme.equals("</row>")) {
             return;
-        }else error("parseCells seeking tags '</row>' or '<cell>'.");
+        } else {
+            error("parseCells seeking tags '</row>' or '<cell>'.");
+        }
     }
 
     /*
-    Cell -> "<cell alter=", integer, ">", NodeComponents, TermGroups, "</cell>".
-         First: [flag: "<cell>"]	 Follow: [tags: "</row>", "<cell>"]
-    */
+     Cell -> "<cell alter=", integer, ">", NodeComponents, TermGroups, "</cell>".
+     First: [flag: "<cell>"]	 Follow: [tags: "</row>", "<cell>"]
+     */
     void parseCell(ArrayList<Object> argList)
-            throws KSParsingErrorException, KSInternalErrorException  {
+            throws KSParsingErrorException, KSInternalErrorException {
         //  At this point, argList contains only ego's serial#
         Integer alterInt = new Integer(readOneAttribute("cell", "alter", "parseCell")),
-                egoInt = (Integer)argList.get(0);
+                egoInt = (Integer) argList.get(0);
         argList.add(alterInt);
         Node newNode = parseNodeComponents(argList);
         parseTermGroups(newNode, argList);
         current = scanner.readToken();  // read token, which must be the flag '</cell>'
-        if (! current.lexeme.equals("</cell>"))
+        if (!current.lexeme.equals("</cell>")) {
             error("parseCell seeking the end flag '</cell>'. ");
+        }
         newCtxt.ktm.addNode(egoInt, alterInt, newNode);
     }
 
     /*
-    NodeComponents ->  "<pcString>", text, "</pcString>", "<level>", integer, "</level>", MiniPreds.
-    First: [tag: "<pcString>"]	 Follow: [tags:  "<PR>","<ER>","<XR>","<PA>","<EA>","<XA>","</cell>"]
-    */
+     NodeComponents ->  "<pcString>", text, "</pcString>", "<level>", integer, "</level>", MiniPreds.
+     First: [tag: "<pcString>"]	 Follow: [tags:  "<PR>","<ER>","<XR>","<PA>","<EA>","<XA>","</cell>"]
+     */
     Node parseNodeComponents(ArrayList<Object> argList)
             throws KSParsingErrorException, KSInternalErrorException {
         //  At this point, argList contains ego's & alter's serial#s
         Node newNode = new Node();
-        newNode.indiv = newCtxt.individualCensus.get(((Integer)argList.get(1)).intValue());
+        newNode.indiv = newCtxt.individualCensus.get(((Integer) argList.get(1)).intValue());
         newNode.pcString = readTagEnclosedText("pcString", "parseNodeComponents");
         newNode.setLevel(readTaggedInteger("level", "parseNodeComponents"));
         current = scanner.lookAhead();  // check for miniPreds
@@ -1830,96 +2039,114 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         }
         if (validCodes.contains(current.lexeme)) {
             return newNode;
-        }else if (current.lexeme.equals("</cell>")) {
+        } else if (current.lexeme.equals("</cell>")) {
             return newNode;
-        }else error("parseNodeComponents seeking kin terms or </cell>.");
+        } else {
+            error("parseNodeComponents seeking kin terms or </cell>.");
+        }
         return newNode;
     }
 
     /*
-    MiniPreds ->  "<pred rel=", text, "arg0=", text, "arg1=", text, "/> ", MiniPreds.
+     MiniPreds ->  "<pred rel=", text, "arg0=", text, "arg1=", text, "/> ", MiniPreds.
      *         |  \empty.
-    First: [tag: "<pred>"]	 Follow: [tags:  "<pred>", "</miniPreds>"]
-    */
+     First: [tag: "<pred>"]	 Follow: [tags:  "<pred>", "</miniPreds>"]
+     */
     void parseMiniPreds(Node tNode)
             throws KSParsingErrorException, KSInternalErrorException {
         //  At this point, tNode contains all but kinTerms
         if (current.lexeme.indexOf("<pred") == 0) {
-            String[] attributes = { "rel", "arg0", "arg1" };
+            String[] attributes = {"rel", "arg0", "arg1"};
             String[] vals = readAttributes("pred", attributes, "parseMiniPreds");
             String mp = vals[0] + "(#" + vals[1] + ",#" + vals[2] + ")";
             tNode.miniPreds.add(mp);
             current = scanner.lookAhead();  // check next tag
-        }else if (current.lexeme.equals("</miniPreds>")) {
+        } else if (current.lexeme.equals("</miniPreds>")) {
             return;
-        }else error("parseMiniPreds seeking tags '<pred...' or '</miniPreds>'.");
+        } else {
+            error("parseMiniPreds seeking tags '<pred...' or '</miniPreds>'.");
+        }
         parseMiniPreds(tNode);
     }
 
 
     /*
-    TermGroups -> TermGroup, TermGroups.
-          |  \empty.
-         First: [tags: "<PR>","<ER>","<XR>","<PA>","<EA>","<XA>"]
-         Follow: [flag: "</cell>"]
-    */
+     TermGroups -> TermGroup, TermGroups.
+     |  \empty.
+     First: [tags: "<PR>","<ER>","<XR>","<PA>","<EA>","<XA>"]
+     Follow: [flag: "</cell>"]
+     */
     void parseTermGroups(Node tNode, ArrayList<Object> argList)
-            throws KSParsingErrorException, KSInternalErrorException  {
+            throws KSParsingErrorException, KSInternalErrorException {
         current = scanner.lookAhead();
         if (validCodes.contains(current.lexeme)) {
             ArrayList<Object> argListCopy = new ArrayList<Object>(argList);
             parseTermGroup(tNode, argListCopy);
             parseTermGroups(tNode, argList);
-        }else if (current.lexeme.equals("</cell>"))  {
+        } else if (current.lexeme.equals("</cell>")) {
             return;
-        }else error("parseTermGroups seeking tags for valid kinTerm types\n(e.g. '</row>') or the flag '</cell>'.");
+        } else {
+            error("parseTermGroups seeking tags for valid kinTerm types\n(e.g. '</row>') or the flag '</cell>'.");
+        }
     }
 
     /*
-    TermGroup -> TGStartTag, TermStrings, TGEndTag.
-         First: [tags: "<PR>","<ER>","<XR>","<PA>","<EA>","<XA>"]
-         Follow: [tags: "</cell>","<PR>","<ER>","<XR>","<PA>","<EA>","<XA>"]
-    */
+     TermGroup -> TGStartTag, TermStrings, TGEndTag.
+     First: [tags: "<PR>","<ER>","<XR>","<PA>","<EA>","<XA>"]
+     Follow: [tags: "</cell>","<PR>","<ER>","<XR>","<PA>","<EA>","<XA>"]
+     */
     void parseTermGroup(Node tNode, ArrayList<Object> argList)
-            throws KSParsingErrorException, KSInternalErrorException  {
+            throws KSParsingErrorException, KSInternalErrorException {
         //  At this point, argList contains ego and alter's serial #s
         current = scanner.readToken();  //  consume startTag, already validated
         String startTag = current.lexeme, type = null, clas = null;
-        if (startTag.substring(0,2).equals("<P")) type = "primary";
-        else if (startTag.substring(0,2).equals("<E")) type = "extended";
-        else if (startTag.substring(0,2).equals("<X")) type = "exception";
-        else error("parseTermGroup found invalid start tag: " + startTag);
-        if (startTag.substring(2,4).equals("R>")) clas = "reference";
-        else if (startTag.substring(2,4).equals("A>")) clas = "address";
-        else error("parseTermGroup found invalid start tag: " + startTag);
+        if (startTag.substring(0, 2).equals("<P")) {
+            type = "primary";
+        } else if (startTag.substring(0, 2).equals("<E")) {
+            type = "extended";
+        } else if (startTag.substring(0, 2).equals("<X")) {
+            type = "exception";
+        } else {
+            error("parseTermGroup found invalid start tag: " + startTag);
+        }
+        if (startTag.substring(2, 4).equals("R>")) {
+            clas = "reference";
+        } else if (startTag.substring(2, 4).equals("A>")) {
+            clas = "address";
+        } else {
+            error("parseTermGroup found invalid start tag: " + startTag);
+        }
         argList.add(type);
         argList.add(clas);
         parseTermStrings(tNode, argList);
         current = scanner.readToken();  //  consume endTag, which must match startTag
         String endTag = "</" + startTag.substring(1);
-        if (! endTag.equals(current.lexeme))
+        if (!endTag.equals(current.lexeme)) {
             error("parseTermGroup seeking '" + endTag + "' found: " + current.lexeme);
+        }
     }
 
     /*
-    TermStrings -> text, MoreTerms.
-         First: [string]	 Follow: [tags: "</PR>","</ER>","</XR>","</PA>","</EA>","</XA>"]
-    */
+     TermStrings -> text, MoreTerms.
+     First: [string]	 Follow: [tags: "</PR>","</ER>","</XR>","</PA>","</EA>","</XA>"]
+     */
     void parseTermStrings(Node tNode, ArrayList<Object> argList)
-            throws KSParsingErrorException, KSInternalErrorException  {
-    // Strategy: We expect a series of terms, separated by commas. For example:
-    //    'grandson , grandchild , descendent'
-    //     All odd-numbered items should be terms, and even ones are commas or the divorceYr tag
+            throws KSParsingErrorException, KSInternalErrorException {
+        // Strategy: We expect a series of terms, separated by commas. For example:
+        //    'grandson , grandchild , descendent'
+        //     All odd-numbered items should be terms, and even ones are commas or the divorceYr tag
         while (true) {
             current = scanner.readToken();  // consume next, which must be a term
             String kinTerm = current.lexeme,
-                   type = (String) argList.get(2),
-                   addr = ((String) argList.get(3));
+                    type = (String) argList.get(2),
+                    addr = ((String) argList.get(3));
             tNode.addTerm(kinTerm, type, addr);
             current = scanner.lookAhead(); // a comma or divorceYr tag
             if (current.lexeme.indexOf("</") == 0) { // end tag
                 return;
-            }else scanner.readToken();  // consume the comma
+            } else {
+                scanner.readToken();  // consume the comma
+            }
         }
     }
 
@@ -1927,9 +2154,9 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
      *              |  \empty.
      * First: [tag: <history...]
      * Follow: [tag: </learning-history> ]
-    */
+     */
     void parseHistoryItems(TreeMap<String, ArrayList<Context.HistoryItem>> learningHistory)
-              throws KSParsingErrorException {
+            throws KSParsingErrorException {
         current = scanner.lookAhead();
         while (current.lexeme.indexOf("<history") == 0) {
             String kinTerm = readOneAttribute("history", "kinTerm", "parseHistoryItems");
@@ -1937,7 +2164,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             learningHistory.put(kinTerm, items);
             parseItems(items);
             current = scanner.readToken(); // consume end tag
-            if (! current.lexeme.equals("</history>")) {
+            if (!current.lexeme.equals("</history>")) {
                 error("parseHistoryItems seeking tag: </history>");
             }
             current = scanner.lookAhead();
@@ -1979,12 +2206,9 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         } else if (current.lexeme.indexOf("<rejected-overlap") == 0) {
             parseOverlapHistItem(items, "rejected");
             parseItems(items);
-        }
-                
-                
-        else if (current.lexeme.equals("</history>")) {
+        } else if (current.lexeme.equals("</history>")) {
             return;
-        }else {
+        } else {
             error("parseItems seeking tags for accepted/rejected def, syn, umb, overlap or  </history>");
         }
     }
@@ -2005,7 +2229,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             ArrayList<Context.CB_Ptr> ptrs = autos.get(kinType);
             current = scanner.lookAhead();
             while (current.lexeme.indexOf("<def") == 0) {
-                String[] vals, names = { "kinTerm", "clause-number" };
+                String[] vals, names = {"kinTerm", "clause-number"};
                 vals = readAttributes("def", names, "parseAutoDefs");
                 int cbNum = Integer.parseInt(vals[1]);
                 ptrs.add(new Context.CB_Ptr(vals[0], cbNum));
@@ -2047,7 +2271,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
                 pair[0] = Integer.parseInt(vals[0]);
                 pair[1] = Integer.parseInt(vals[1]);
                 ptr.autoDefPairs.add(pair);
-                current = scanner.lookAhead(); 
+                current = scanner.lookAhead();
             }
             if (!current.lexeme.equals("</auto-defs>")) {
                 error("parseAccDef seeking end tag </auto-defs>");
@@ -2057,9 +2281,9 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         }
         if (current.lexeme.equals("</accepted-def>")) {
             scanner.readToken();  //  consume end tag of accepted-defs
-        }else {
+        } else {
             error("parseAccDef seeking end tag </accepted-def>");
-        }        
+        }
     }
 
 
@@ -2068,7 +2292,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
      *                  protoKT=, string, "/>".
      * First: [tag: <rejected-def...]
      * Follow: [tags: <accepted-def..., <rejected-def..., </history> ]
-    */
+     */
     void parseRejectedDef(ArrayList<Context.HistoryItem> items)
             throws KSParsingErrorException {
         String[] vals, attributes = {"kinTerm", "date", "rescinded", "notes", "sigString",
@@ -2078,12 +2302,11 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
                 vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6]);
         items.add(ptr);
     }
-    
-    
+
     /* Synonym -> <"typ-synonym primary=", string, "date=", string,
      * "notes=", string, "synonym=", string, ">".
      * */
-    void parseSynonymHistItem(ArrayList<Context.HistoryItem> items, String typ) 
+    void parseSynonymHistItem(ArrayList<Context.HistoryItem> items, String typ)
             throws KSParsingErrorException {
         String tag = typ + "-synonym";
         String[] vals, attributes = {"primary", "date", "rescinded", "notes", "synonym"};
@@ -2091,13 +2314,12 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         Context.HistoryItem item;
         if (typ.equals("accepted")) {
             item = new Context.AcceptedSynonym(vals[0], vals[1], vals[2], vals[3], vals[4]);
-        }else {
+        } else {
             item = new Context.RejectedSynonym(vals[0], vals[1], vals[2], vals[3], vals[4]);
         } // any 'typ' other than 'rejected' or 'accepted' will throw error in readAttributes
         items.add(item);
     }
-    
-    
+
     /* Umbrella -> "<typ-umbrella primary=", string, "date=", string,
      * "notes=", string, ">", SubTerms, "</typ-umbrella".
      * */
@@ -2121,7 +2343,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             }
             scanner.readToken();  //  consume the end tag
             current = scanner.lookAhead();
-        }        
+        }
         if (current.lexeme.equals("<edited-sub-terms>")) {
             scanner.readToken();  //  consume the start tag
             current = scanner.lookAhead();
@@ -2161,9 +2383,8 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             error("parseUmbrellaHistItem seeking end tag " + "</" + tag + ">");
         }
     }
-    
-    
-    void parseUmbrella2Synonyms(ArrayList<Context.HistoryItem> items) 
+
+    void parseUmbrella2Synonyms(ArrayList<Context.HistoryItem> items)
             throws KSParsingErrorException {
         String[] vals, attributes = {"umbTerm", "date", "rescinded", "newKey", "notes"};
         vals = readAttributes("umbrella-into-synonyms", attributes, "parseUmbrella2Synonyms");
@@ -2199,13 +2420,12 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         if (!current.lexeme.equals("</umbrella-into-synonyms>")) {
             error("parseUmbrellaHistItem seeking end tag " + "</umbrella-into-synonyms>");
         }
-        Context.HistoryItem item = new Context.UmbrellaIntoSyns(vals[0], vals[1], 
+        Context.HistoryItem item = new Context.UmbrellaIntoSyns(vals[0], vals[1],
                 vals[2], vals[4], subs, syns, vals[3]);
         items.add(item);
     }
-    
-    
-    void parseOverlapHistItem(ArrayList<Context.HistoryItem> items, String typ) 
+
+    void parseOverlapHistItem(ArrayList<Context.HistoryItem> items, String typ)
             throws KSParsingErrorException {
         String tag = typ + "-overlap";
         String[] vals, attributes = {"term1", "date", "rescinded", "notes", "term2"};
@@ -2213,89 +2433,97 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         Context.HistoryItem item;
         if (typ.equals("accepted")) {
             item = new Context.AcceptedOverlap(vals[0], vals[1], vals[2], vals[3], vals[4]);
-        }else {
+        } else {
             item = new Context.RejectedOverlap(vals[0], vals[1], vals[2], vals[3], vals[4]);
         } // any 'typ' other than 'rejected' or 'accepted' will throw error in readAttributes
         items.add(item);
     }
-    
+
 
     /*
-    KinTypeIndex -> Entries, KinTypeIndex.
-                 |  \empty.
-        First:  [flag: "<entry ....."]
-        Follow: [flag: "</kinTypeIndex>"]
-    */
-    void parseKinTypeIndex(KinTypeIndex kti)  throws KSParsingErrorException {
-        if (lastPersonIndexed != -99) kti.lastSerial = lastPersonIndexed;
+     KinTypeIndex -> Entries, KinTypeIndex.
+     |  \empty.
+     First:  [flag: "<entry ....."]
+     Follow: [flag: "</kinTypeIndex>"]
+     */
+    void parseKinTypeIndex(KinTypeIndex kti) throws KSParsingErrorException {
+        if (lastPersonIndexed != -99) {
+            kti.lastSerial = lastPersonIndexed;
+        }
         current = scanner.lookAhead();  //  load the tag
-        if (current.lexeme.substring(0,6).equals("<entry")) {
+        if (current.lexeme.substring(0, 6).equals("<entry")) {
             parseEntries(kti);
-        }else if (current.lexeme.equals("</kinTypeIndex>")) {
+        } else if (current.lexeme.equals("</kinTypeIndex>")) {
             return;
-        }else error("parseKinTypeIndex seeking entry or flag </kinTypeIndex>.");
+        } else {
+            error("parseKinTypeIndex seeking entry or flag </kinTypeIndex>.");
+        }
     }
 
     /*
-    Entries -> "<entry kt=", string, ">", Pairs, "</entry>", Entries.
-                 |  \empty.
-        First:  [flag: "<entry ....."]
-        Follow: [flags: "<entry .....", "</kinTypeIndex>"]
-    */
+     Entries -> "<entry kt=", string, ">", Pairs, "</entry>", Entries.
+     |  \empty.
+     First:  [flag: "<entry ....."]
+     Follow: [flags: "<entry .....", "</kinTypeIndex>"]
+     */
     void parseEntries(KinTypeIndex kti) throws KSParsingErrorException {
         String kt = readOneAttribute("entry", "kt", "parseEntries");
         current = scanner.lookAhead();  //  load the first pair
-        if (current.lexeme.substring(0,5).equals("<pair")) {
+        if (current.lexeme.substring(0, 5).equals("<pair")) {
             ArrayList<Integer[]> pairs = new ArrayList<Integer[]>();
             parsePairs(pairs);
             kti.addList(kt, pairs);
-        }else {
+        } else {
             error("parseEntries found kin type with no entries.");
         }
         scanner.readToken();  //  consume the entry divorceYr tag
         current = scanner.lookAhead();  //  load the next tag
-        if (current.lexeme.substring(0,6).equals("<entry")) {
+        if (current.lexeme.substring(0, 6).equals("<entry")) {
             parseEntries(kti);
-        }else if (current.lexeme.equals("</kinTypeIndex>")) {
+        } else if (current.lexeme.equals("</kinTypeIndex>")) {
             return;
-        }else error("parseEntries seeking entry or flag </kinTypeIndex>.");
+        } else {
+            error("parseEntries seeking entry or flag </kinTypeIndex>.");
+        }
     }
 
     /*
-    Pairs -> "<pair from=", integer, " to=", integer, "/>", Pairs.
-                 |  \empty.
-        First:  [flag: "<pair ....."]
-        Follow: [flags: "<pair .....", "</entry>"]
-    */
+     Pairs -> "<pair from=", integer, " to=", integer, "/>", Pairs.
+     |  \empty.
+     First:  [flag: "<pair ....."]
+     Follow: [flags: "<pair .....", "</entry>"]
+     */
     void parsePairs(ArrayList<Integer[]> list) throws KSParsingErrorException {
-        String[] attributes = { "from", "to" };
+        String[] attributes = {"from", "to"};
         String[] values = readAttributes("pair", attributes, "parsePairs");
         Integer[] pair = new Integer[2];
         pair[0] = new Integer(values[0]);
         pair[1] = new Integer(values[1]);
         list.add(pair);
         current = scanner.lookAhead();  //  load the next pair or divorceYr-tag
-        if (current.lexeme.substring(0,5).equals("<pair")) {
+        if (current.lexeme.substring(0, 5).equals("<pair")) {
             parsePairs(list);
-        }else if (current.lexeme.equals("</entry>")) {
+        } else if (current.lexeme.equals("</entry>")) {
             return;
-        }else error("parsePairs seeking pair or </entry> but found " +
-                current.lexeme);
+        } else {
+            error("parsePairs seeking pair or </entry> but found "
+                    + current.lexeme);
+        }
     }
 
 
     /*
-    DyadKinTerms -> DyadKinTerm, DyadKinTerms.
-                 |  \empty.
-        First:  [tag: "<dyadKinTerm..."]
-        Follow: [flags: "</dyadsDefinedRef>", "</dyadsUndefinedRef>", "</dyadsDefinedAddr>", "</dyadsDefinedAddr>"]
+     DyadKinTerms -> DyadKinTerm, DyadKinTerms.
+     |  \empty.
+     First:  [tag: "<dyadKinTerm..."]
+     Follow: [flags: "</dyadsDefinedRef>", "</dyadsUndefinedRef>", "</dyadsDefinedAddr>", "</dyadsDefinedAddr>"]
 
      * STRATEGY:  Capture each kinTerm and kinType and pass them down to the parseDyads method,
      *            which will build the actual dyads and add them to the DyadTMap
 
      NOTE: Iterative style used here to avoid stack overflows for very large populations.
-    */
-    void parseDyadKinTerms(ArrayList<DyadTemp> dList) throws KSParsingErrorException  {
+     */
+    void parseDyadKinTerms(ArrayList<DyadTemp> dList) throws KSParsingErrorException {
         current = scanner.lookAhead();  //  load the tag
         while (current.lexeme.indexOf("<dyadKinTerm") == 0) {
             parseDyadKinTerm(dList);
@@ -2306,42 +2534,47 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
 
 
     /*
-    DyadKinTerm -> "<dyadKinTerm kinterm=", string, ">", KinType, MoreTypes, "</dyadKinTerm>".
-        First:  [tag: "<dyadKinTerm..."]
-        Follow: [tags: "<dyadKinTerm...", "</dyadsDefinedRef>", "</dyadsUndefinedRef>", "</dyadsDefinedAddr>", "</dyadsDefinedAddr>"]
-    */
-    void parseDyadKinTerm(ArrayList<DyadTemp> dList) throws KSParsingErrorException  {
+     DyadKinTerm -> "<dyadKinTerm kinterm=", string, ">", KinType, MoreTypes, "</dyadKinTerm>".
+     First:  [tag: "<dyadKinTerm..."]
+     Follow: [tags: "<dyadKinTerm...", "</dyadsDefinedRef>", "</dyadsUndefinedRef>", "</dyadsDefinedAddr>", "</dyadsDefinedAddr>"]
+     */
+    void parseDyadKinTerm(ArrayList<DyadTemp> dList) throws KSParsingErrorException {
         String kinTerm = readOneAttribute("dyadKinTerm", "kinterm", "parseDyadKinTerm");
-        current = scanner.lookAhead();
-        if (current.lexeme.indexOf("<kinType") == 0) {
-        		parseKinType(dList, kinTerm);
-        		parseMoreTypes(dList, kinTerm);
-		  }else error("parseDyadKinTerm seeking tag '<kinType...'; found " +
-		  						current.lexeme);
-        current = scanner.readToken();  // read token, which must be the flag '</dyadKinTerm>'
-        if (! current.lexeme.equals("</dyadKinTerm>"))
-            error("parseDyadKinTerm seeking the end flag '</dyadKinTerm>'. ");
-    }
-
-    /*
-    MoreTypes -> KinType, MoreTypes.
-             |  \empty.
-         First: [flag: "<kinType>"]	 Follow: [flag: "</dyadKinTerm>"]
-    */
-    void parseMoreTypes(ArrayList<DyadTemp> dList, String kinTerm) throws KSParsingErrorException  {
         current = scanner.lookAhead();
         if (current.lexeme.indexOf("<kinType") == 0) {
             parseKinType(dList, kinTerm);
             parseMoreTypes(dList, kinTerm);
-        }else if (current.lexeme.equals("</dyadKinTerm>"))
-            return;
-        else error("parseMoreTypes seeking tags '<kinType>' or '</dyadKinTerm>'.");
+        } else {
+            error("parseDyadKinTerm seeking tag '<kinType...'; found "
+                    + current.lexeme);
+        }
+        current = scanner.readToken();  // read token, which must be the flag '</dyadKinTerm>'
+        if (!current.lexeme.equals("</dyadKinTerm>")) {
+            error("parseDyadKinTerm seeking the end flag '</dyadKinTerm>'. ");
+        }
     }
 
     /*
-    KinType -> "<kinType type=", string, ">", Dyad, MoreDyads, "</kinType>".
-         First: [flag: "<kinType>"]	 Follow: [tags: "<kinType>", "</dyadKinTerm>"]
-    */
+     MoreTypes -> KinType, MoreTypes.
+     |  \empty.
+     First: [flag: "<kinType>"]	 Follow: [flag: "</dyadKinTerm>"]
+     */
+    void parseMoreTypes(ArrayList<DyadTemp> dList, String kinTerm) throws KSParsingErrorException {
+        current = scanner.lookAhead();
+        if (current.lexeme.indexOf("<kinType") == 0) {
+            parseKinType(dList, kinTerm);
+            parseMoreTypes(dList, kinTerm);
+        } else if (current.lexeme.equals("</dyadKinTerm>")) {
+            return;
+        } else {
+            error("parseMoreTypes seeking tags '<kinType>' or '</dyadKinTerm>'.");
+        }
+    }
+
+    /*
+     KinType -> "<kinType type=", string, ">", Dyad, MoreDyads, "</kinType>".
+     First: [flag: "<kinType>"]	 Follow: [tags: "<kinType>", "</dyadKinTerm>"]
+     */
     void parseKinType(ArrayList<DyadTemp> dList, String kinTerm) throws KSParsingErrorException {
         String kinType = readOneAttribute("kinType", "type", "parseKinType");
         current = scanner.lookAhead();
@@ -2358,54 +2591,58 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
     }
 
     /*
-    MoreDyads -> Dyad, MoreDyads.
-             |  \empty.
-         First: [onePcTag]	 Follow: [flag: "</kinType>"]
-    */
-    void parseMoreDyads(ArrayList<DyadTemp> dList, String kinTerm, String kinType) throws KSParsingErrorException  {
+     MoreDyads -> Dyad, MoreDyads.
+     |  \empty.
+     First: [onePcTag]	 Follow: [flag: "</kinType>"]
+     */
+    void parseMoreDyads(ArrayList<DyadTemp> dList, String kinTerm, String kinType) throws KSParsingErrorException {
         current = scanner.lookAhead();
         if (current.token.equals("onePcTag")) {
             parseDyad(dList, kinTerm, kinType);
             parseMoreDyads(dList, kinTerm, kinType);
-        }else if (current.lexeme.equals("</kinType>"))
+        } else if (current.lexeme.equals("</kinType>")) {
             return;
-        else error("parseMoreDyads seeking onePcTag or tag '</dyadKinTerm>'.");
+        } else {
+            error("parseMoreDyads seeking onePcTag or tag '</dyadKinTerm>'.");
+        }
     }
 
     /*	Dyad -> onePcTag.
-            First: [onePcTag]	 Follow: [onePcTag, tag: "</kinType>"]
-            </p>   <p>
+     First: [onePcTag]	 Follow: [onePcTag, tag: "</kinType>"]
+     </p>   <p>
 
-            NOTE:  a onePcTag consists of: "<dyad", DyadComponents, "/>".
-            First: [tag: "<dyad"]	 Follow: [onePcTag, "</kinType>"]
-    */
-    void parseDyad(ArrayList<DyadTemp> dList, String kinTerm, String pcStr) throws KSParsingErrorException  {
-    scanner.readToken();  //  consume the onePcTag
-    String innards = current.lexeme;
-    if (! innards.substring(0, 5).equals("<dyad"))
+     NOTE:  a onePcTag consists of: "<dyad", DyadComponents, "/>".
+     First: [tag: "<dyad"]	 Follow: [onePcTag, "</kinType>"]
+     */
+    void parseDyad(ArrayList<DyadTemp> dList, String kinTerm, String pcStr) throws KSParsingErrorException {
+        scanner.readToken();  //  consume the onePcTag
+        String innards = current.lexeme;
+        if (!innards.substring(0, 5).equals("<dyad")) {
             error("parseDyad found onePcTag not starting with '<dyad'.");
-    else innards = innards.substring(6);  // trim off the '<dyad '
-    DyadTemp newDyad = new DyadTemp();
-    newDyad.pcString = pcStr;
-    newDyad.kinTerm = kinTerm;
-    parseDyadComponents(newDyad, innards);
-    dList.add(newDyad);
-}
+        } else {
+            innards = innards.substring(6);  // trim off the '<dyad '
+        }
+        DyadTemp newDyad = new DyadTemp();
+        newDyad.pcString = pcStr;
+        newDyad.kinTerm = kinTerm;
+        parseDyadComponents(newDyad, innards);
+        dList.add(newDyad);
+    }
 
-	/*DyadComponents -> "level=", int, DyadComponents.
-                        | "kinTerm=", string, DyadComponents.
-			| "counters=", int, int, int, DyadComponents.
-			| "kinTermType=", IntString, DyadComponents.
-			| "addOrRef=", IntString, DyadComponents.
-			| "ego=", IntString, DyadComponents.
-			| "alter=", IntString, DyadComponents.
-			| "path=", MultiIntString, DyadComponents.
-			| "confirmed=", string, DyadComponents.
-			| "challenged=", string, DyadComponents.
-			| \empty.
-	 First: [attributes: "level=", "counters=", "kinTerm=", "kinTermType=",  "addOrRef=", "ego=", "alter=", "path=", "confirmed=", "challenged="]
- 	 Follow: [" />"]
-	*/
+    /*DyadComponents -> "level=", int, DyadComponents.
+     | "kinTerm=", string, DyadComponents.
+     | "counters=", int, int, int, DyadComponents.
+     | "kinTermType=", IntString, DyadComponents.
+     | "addOrRef=", IntString, DyadComponents.
+     | "ego=", IntString, DyadComponents.
+     | "alter=", IntString, DyadComponents.
+     | "path=", MultiIntString, DyadComponents.
+     | "confirmed=", string, DyadComponents.
+     | "challenged=", string, DyadComponents.
+     | \empty.
+     First: [attributes: "level=", "counters=", "kinTerm=", "kinTermType=",  "addOrRef=", "ego=", "alter=", "path=", "confirmed=", "challenged="]
+     Follow: [" />"]
+     */
     void parseDyadComponents(DyadTemp dy, String comps) throws KSParsingErrorException {
         String attr, val, rest;
         String[] pair = nextPair(comps);
@@ -2461,30 +2698,34 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         parseDyadComponents(dy, rest);
     }
 
-	/*	Return an array of 2 Strings. The first will have the form 'attr=' where 'attr' is
-		some symbol. The second will be the contents found between double-quotes immediately
-		following the equal sign. For example: path="2, 56, 32"
-	*/
-	String[ ] nextPair(String str)  throws KSParsingErrorException {
-		String[ ] thePair = new String[3];
-		int eql = str.indexOf("=");
-		if (eql > 0) {
-			thePair[0] = str.substring(0, eql +1);
-			str = str.substring(eql +1);
-		}else if (str.equals("/>") || str.equals(" />")) {
-			thePair[0] = str.trim();
-			return thePair;
-		}else error("nextPair did not find an attribute/value pair in " + str);
-		int quot1 = str.indexOf("\""),
-			quot2 = str.indexOf("\"", quot1 +1);
-		if (quot2 < 1) error("nextPair did not find a valid value-string in " + str);
-		thePair[1] = str.substring(quot1+1, quot2);
-		thePair[2] = str.substring(quot2 +1);
-		return thePair;
-		}  //  end of method nextPair
+    /*	Return an array of 2 Strings. The first will have the form 'attr=' where 'attr' is
+     some symbol. The second will be the contents found between double-quotes immediately
+     following the equal sign. For example: path="2, 56, 32"
+     */
+    String[] nextPair(String str) throws KSParsingErrorException {
+        String[] thePair = new String[3];
+        int eql = str.indexOf("=");
+        if (eql > 0) {
+            thePair[0] = str.substring(0, eql + 1);
+            str = str.substring(eql + 1);
+        } else if (str.equals("/>") || str.equals(" />")) {
+            thePair[0] = str.trim();
+            return thePair;
+        } else {
+            error("nextPair did not find an attribute/value pair in " + str);
+        }
+        int quot1 = str.indexOf("\""),
+                quot2 = str.indexOf("\"", quot1 + 1);
+        if (quot2 < 1) {
+            error("nextPair did not find a valid value-string in " + str);
+        }
+        thePair[1] = str.substring(quot1 + 1, quot2);
+        thePair[2] = str.substring(quot2 + 1);
+        return thePair;
+    }  //  end of method nextPair
 
-	/* Parse a string containing 0 or more integers separated by commas. Return an ArrayList of Integers.
-	*/
+    /* Parse a string containing 0 or more integers separated by commas. Return an ArrayList of Integers.
+     */
     ArrayList<Object> parseMultiIntString(String numList) throws KSParsingErrorException {
         ArrayList<Object> theList = new ArrayList<Object>();
         try {
@@ -2505,8 +2746,8 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
     }
 
     /* IssueLists -> "<silkin-issues type="Reference">", IssuesRef, "</silkin-issues>", Body.
-                  |  "<silkin-issues type="Address">", IssuesAdr, "</silkin-issues>", Body.
-    } \empty.
+     |  "<silkin-issues type="Address">", IssuesAdr, "</silkin-issues>", Body.
+     } \empty.
      *
      */
     void parseIssueLists() throws KSParsingErrorException, JavaSystemException,
@@ -2518,63 +2759,67 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             issuesFor = "REF";
             parseIssues(dt.issuesForUser);
             current = scanner.readToken();  // read token, which must be the flag '</silkin-issues>'
-            if (! current.lexeme.equals("</silkin-issues>"))
+            if (!current.lexeme.equals("</silkin-issues>")) {
                 error("parseIssueLists seeking the end flag '</silkin-issues>'. ");
+            }
             current = scanner.lookAhead();
             parseIssueLists();
-        }else if (current.lexeme.equals("<silkin-issues type=\"Address\">")) {
+        } else if (current.lexeme.equals("<silkin-issues type=\"Address\">")) {
             scanner.readToken();  //  consume the start flag
             DomainTheory dt = newCtxt.domTheoryAdr();
             dt.issuesForUser = new TreeMap<String, ArrayList<Issue>>();
             issuesFor = "ADR";
             parseIssues(dt.issuesForUser);
             current = scanner.readToken();  // read token, which must be the flag '</silkin-issues>'
-            if (! current.lexeme.equals("</silkin-issues>"))
+            if (!current.lexeme.equals("</silkin-issues>")) {
                 error("parseIssueLists seeking the end flag '</silkin-issues>'. ");
+            }
             current = scanner.lookAhead();
             parseIssueLists();
-        }else if (current.lexeme.equals("</SIL_KinData>")) {
+        } else if (current.lexeme.equals("</SIL_KinData>")) {
             return;
-        }else {
+        } else {
             error("parseIssueLists seeking tag </SIL_KinData > or a <silkin-issues> tag.");
         }
     }
 
     /*Issues -> "<proposed-def kinTerm=", string. ">", PropDef, "</proposed-def>", Issues.
-              | "<anomaly kinTerm=", string. ">", Anomaly, "</anomaly>", Issues.
-              | "<data-request kinTerm=", string. ">", DataRequest, "</data-request>", Issues.
-              | "<overlap kinTerm=", string. ">", Overlap, "</overlap>", Issues.
-              | "<synonym kinTerm=", string. ">", Synonym, "</synonym>", Issues.
-              | "<umbrella kinTerm=", string. ">", Umbrella, "</umbrella>", Issues.
-              | \empty.
-	 First: [<proposed-def, <anomaly, <data-request, <overlap, <synonym, <umbrella]
- 	 Follow: [<proposed-def, <anomaly, <data-request, <overlap, <synonym, <umbrella, </silkin-issues>]
-	*/
+     | "<anomaly kinTerm=", string. ">", Anomaly, "</anomaly>", Issues.
+     | "<data-request kinTerm=", string. ">", DataRequest, "</data-request>", Issues.
+     | "<overlap kinTerm=", string. ">", Overlap, "</overlap>", Issues.
+     | "<synonym kinTerm=", string. ">", Synonym, "</synonym>", Issues.
+     | "<umbrella kinTerm=", string. ">", Umbrella, "</umbrella>", Issues.
+     | \empty.
+     First: [<proposed-def, <anomaly, <data-request, <overlap, <synonym, <umbrella]
+     Follow: [<proposed-def, <anomaly, <data-request, <overlap, <synonym, <umbrella, </silkin-issues>]
+     */
     void parseIssues(TreeMap<String, ArrayList<Issue>> issues)
             throws KSParsingErrorException, KSDateParseException {
         current = scanner.lookAhead();  // peek at token, which must be a tag
-        if (current.lexeme.substring(0,13).equals("<proposed-def")) {
+        if (current.lexeme.substring(0, 13).equals("<proposed-def")) {
             ProposedDef def = parsePropDef();
             addToIssues(issues, def);
             parseIssues(issues);
-        }else if (current.lexeme.substring(0,8).equals("<anomaly")) {
+        } else if (current.lexeme.substring(0, 8).equals("<anomaly")) {
             parseAnomaly(issues);
             parseIssues(issues);
-        }else if (current.lexeme.substring(0,13).equals("<data-request")) {
+        } else if (current.lexeme.substring(0, 13).equals("<data-request")) {
             parseDataRequest(issues);
             parseIssues(issues);
-        }else if (current.lexeme.substring(0,8).equals("<overlap")) {
+        } else if (current.lexeme.substring(0, 8).equals("<overlap")) {
             parseOverlap(issues);
             parseIssues(issues);
-        }else if (current.lexeme.substring(0,8).equals("<synonym")) {
+        } else if (current.lexeme.substring(0, 8).equals("<synonym")) {
             parseSynonym(issues);
             parseIssues(issues);
-        }else if (current.lexeme.substring(0,9).equals("<umbrella")) {
+        } else if (current.lexeme.substring(0, 9).equals("<umbrella")) {
             parseUmbrella(issues);
             parseIssues(issues);
-        }else if (current.lexeme.equals("</silkin-issues>")) {
+        } else if (current.lexeme.equals("</silkin-issues>")) {
             return;
-        } else error("parseIssues seeking valid issue tag or '</silkin-issues>'. ");
+        } else {
+            error("parseIssues seeking valid issue tag or '</silkin-issues>'. ");
+        }
     }
 
     /* PropDefs -> PropDef, PropDefs.
@@ -2582,26 +2827,28 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
      *
      First: [<proposed-def...]
      Follow: [<proposed-def, </accepted-defs>]
-    */
+     */
     void parsePropDefs(ArrayList<ProposedDef> propDefs)
             throws KSParsingErrorException, KSDateParseException {
         current = scanner.lookAhead();
         if (current.lexeme.equals("</accepted-defs>")) {
             return;
-        }else if (current.lexeme.substring(0, 13).equals("<proposed-def")) {
+        } else if (current.lexeme.substring(0, 13).equals("<proposed-def")) {
             ProposedDef def = parsePropDef();
             propDefs.add(def);
             parsePropDefs(propDefs);
-        }else error("parsePropDefs seeking a PropDef, or tag '</accepted-defs>'.");
+        } else {
+            error("parsePropDefs seeking a PropDef, or tag '</accepted-defs>'.");
+        }
     }
 
 
     /*PropDef -> "<proposed-def kinTerm=", string, ">", KinTermDef, Questions,
-                  OptionalElements, "<request-date>", DateString + "</request-date>",
-                    </proposed-def>".
-         First: [<proposed-def]
- 	 Follow: [<proposed-def, <anomaly, <data-request, <overlap, <synonym, <umbrella, </silkin-issues>]
-	*/
+     OptionalElements, "<request-date>", DateString + "</request-date>",
+     </proposed-def>".
+     First: [<proposed-def]
+     Follow: [<proposed-def, <anomaly, <data-request, <overlap, <synonym, <umbrella, </silkin-issues>]
+     */
     ProposedDef parsePropDef() throws KSParsingErrorException, KSDateParseException {
         String kinTerm = readOneAttribute("proposed-def", "kinTerm", "parsePropDef");
         ProposedDef propDef = new ProposedDef();
@@ -2670,16 +2917,18 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
 
     void addToIssues(TreeMap<String, ArrayList<Issue>> issues, Issue issue) {
         String kinTerm = issue.kinTerm;
-        if (issues.get(kinTerm) == null) issues.put(kinTerm, new ArrayList<Issue>());
-            ArrayList<Issue> theList = issues.get(kinTerm);
-            theList.add(issue);
+        if (issues.get(kinTerm) == null) {
+            issues.put(kinTerm, new ArrayList<Issue>());
+        }
+        ArrayList<Issue> theList = issues.get(kinTerm);
+        theList.add(issue);
     }
 
     /* KinTermDef -> "<kin-term-def>", "<head>", symbol, "</head>", EqcSigExact,
-                      EqcSigStruct, Gloss, Definitions, ExpandedDefs, "</kin-term-def>".
-	 First: [<kin-term-def>]
- 	 Follow: [<questions>]
-	*/
+     EqcSigStruct, Gloss, Definitions, ExpandedDefs, "</kin-term-def>".
+     First: [<kin-term-def>]
+     Follow: [<questions>]
+     */
     KinTermDef parseKinTermDef() throws KSParsingErrorException {
         // the start tag has already been consumed
         String term = readTagEnclosedText("head", "parseKinTermDef");
@@ -2694,7 +2943,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             current = scanner.lookAhead();
         }
         if (current.lexeme.equals("<gloss>")) {
-            ktd.gloss = parseGloss();                       
+            ktd.gloss = parseGloss();
         }
         if (current.lexeme.startsWith("<comments")) {  // optional comments
             ktd.comments = readOneAttribute("comments", "text", "parseKinTermDef");
@@ -2711,7 +2960,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
                 error("parseKinTermDef seeking tag '</ktd-domain-theory>'. ");
             }
             ktd.domTh.addTerm(ktd);
-            current = scanner.lookAhead(); 
+            current = scanner.lookAhead();
         }
         if (current.lexeme.equals("<definitions>")) { // An EIP may not have any definitions
             parseDefinitions(ktd); // min 1 def'n required
@@ -2726,7 +2975,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         }
         return ktd;
     }
-    
+
     Gloss parseGloss() throws KSParsingErrorException {
         Gloss gloz = new Gloss();
         scanner.readToken();  //  consume the start tag
@@ -2775,8 +3024,8 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
     }
 
     /* Definitions -> "<definitions>", ClauseBody, ClauseBodies, "</definitions>".
-	 First: [<definitions>]
- 	 Follow: [<expandedDefs>, </kin-term-def>]
+     First: [<definitions>]
+     Follow: [<expandedDefs>, </kin-term-def>]
      */
     void parseDefinitions(KinTermDef ktd) throws KSParsingErrorException {
         current = scanner.readToken(); // must be start tag
@@ -2794,8 +3043,8 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
     }
 
     /* ExpandedDefs -> "<expandedDefs>", ClauseBody, ClauseBodies, "</expandedDefs>".
-	 First: [<expandedDefs>]
- 	 Follow: [</kin-term-def>]
+     First: [<expandedDefs>]
+     Follow: [</kin-term-def>]
      */
     void parseExpandedDefs(KinTermDef ktd) throws KSParsingErrorException {
         current = scanner.readToken(); // must be start tag
@@ -2813,10 +3062,10 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
     }
 
     /* ClauseBody -> "<clause level=", integer, ">", PCString, PCStringStruct,
-                        Literal, Literals, "</clause>".
-	 First: [<clause>]
- 	 Follow: [<clause>, </definitions>, </expandedDefs>, </kin-term-def>]
-	*/
+     Literal, Literals, "</clause>".
+     First: [<clause>]
+     Follow: [<clause>, </definitions>, </expandedDefs>, </kin-term-def>]
+     */
     ClauseBody parseClauseBody() throws KSParsingErrorException {
         current = scanner.lookAhead(); // must be start tag of clause
         if (!current.lexeme.startsWith("<clause")) {
@@ -2848,32 +3097,32 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
     }
 
     /* ClauseBodies -> ClauseBody, ClauseBodies.
-                    |  \empty.
-	 First: [<clause>]
- 	 Follow: [<clause>, </definitions>, </expandedDefs>, </kin-term-def>]
-	*/
+     |  \empty.
+     First: [<clause>]
+     Follow: [<clause>, </definitions>, </expandedDefs>, </kin-term-def>]
+     */
     void parseClauseBodies(KinTermDef ktd, ArrayList<Object> list)
-                throws KSParsingErrorException {
+            throws KSParsingErrorException {
         current = scanner.lookAhead(); // must be tag
         if (current.lexeme.indexOf("<clause") == 0) {
             ClauseBody cb = parseClauseBody();
             list.add(cb);
             cb.ktd = ktd;
             parseClauseBodies(ktd, list);
-        }else if (current.lexeme.equals("</kin-term-def>") ||
-                  current.lexeme.equals("</expandedDefs>") ||
-                  current.lexeme.equals("</definitions>")) {
+        } else if (current.lexeme.equals("</kin-term-def>")
+                || current.lexeme.equals("</expandedDefs>")
+                || current.lexeme.equals("</definitions>")) {
             return;
-        }else {
+        } else {
             error("parseClauseBodies seeking tags <clause>, </definitions>, </expandedDefs>, or </kin-term-def>.");
         }
     }
 
     /* Literal -> <literal>, <predicate>, symbol, </predicate>,
-                  <arg-list>, Arg, Args, </arg-list>, </literal>.
-	 First: [<literal>]
- 	 Follow: [<literal>, </clause>]
-	*/
+     <arg-list>, Arg, Args, </arg-list>, </literal>.
+     First: [<literal>]
+     Follow: [<literal>, </clause>]
+     */
     Literal parseLiteral(ClauseBody cb) throws KSParsingErrorException {
         current = scanner.readToken(); // must be start tag of lit
         if (!current.lexeme.equals("<literal>")) {
@@ -2901,89 +3150,89 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
     }
 
     /* Literals -> Literal, Literals.
-                |  \empty.
-	 First: [<literal>]
- 	 Follow: [<literal>, </clause>]
-	*/
+     |  \empty.
+     First: [<literal>]
+     Follow: [<literal>, </clause>]
+     */
     void parseLiterals(ClauseBody cb) throws KSParsingErrorException {
         current = scanner.lookAhead(); // must be tag
         if (current.lexeme.equals("<literal>")) {
             Literal lit = parseLiteral(cb);
             cb.body.add(lit);
             parseLiterals(cb);
-        }else if (current.lexeme.equals("</clause>")) {
+        } else if (current.lexeme.equals("</clause>")) {
             return;
-        }else {
+        } else {
             error("parseLiterals seeking tags '</clause>' or '<literal>'.");
         }
     }
 
     /* Arg -> <constant>, symbol, </constant>.
-            | Literal.
-            | Clause.
-            | <argString>, symbol, </argString>.
-            | <var>, symbol, </var>.
-            | <mathVar>, symbol, </mathVar>.
-	 First: [<literal>, <clause>, <constant>, <argString>, <var>, <mathVar>]
- 	 Follow: [<literal>, <clause>, <constant>, <argString>, <var>,
-                    <mathVar>, </arg-list>]
-	*/
+     | Literal.
+     | Clause.
+     | <argString>, symbol, </argString>.
+     | <var>, symbol, </var>.
+     | <mathVar>, symbol, </mathVar>.
+     First: [<literal>, <clause>, <constant>, <argString>, <var>, <mathVar>]
+     Follow: [<literal>, <clause>, <constant>, <argString>, <var>,
+     <mathVar>, </arg-list>]
+     */
     void parseArg(Literal lit, ClauseBody cb) throws KSParsingErrorException {
         current = scanner.lookAhead(); // must be tag
         if (current.lexeme.equals("<literal>")) {
             Literal litArg = parseLiteral(cb);
             lit.args.add(litArg);
-        }else if (current.lexeme.equals("<clause>")) {
+        } else if (current.lexeme.equals("<clause>")) {
             ClauseBody cbLit = parseClauseBody();
             cbLit.ktd = cb.ktd;
             lit.args.add(cbLit);
-        }else if (current.lexeme.equals("<constant>")) {
+        } else if (current.lexeme.equals("<constant>")) {
             String argSymbol = readTagEnclosedText("constant", "parseArg");
             Constant connie = new Constant(argSymbol);
             lit.args.add(connie);
-        }else if (current.lexeme.equals("<argString>")) {
+        } else if (current.lexeme.equals("<argString>")) {
             String argSymbol = readTagEnclosedText("argString", "parseArg");
             ArgString arnie = new ArgString(argSymbol);
             lit.args.add(arnie);
-        }else if (current.lexeme.equals("<var>")) {
+        } else if (current.lexeme.equals("<var>")) {
             String argSymbol = readTagEnclosedText("var", "parseArg");
             Variable v = new Variable(argSymbol);
             lit.args.add(v);
-        }else if (current.lexeme.equals("<mathVar>")) {
+        } else if (current.lexeme.equals("<mathVar>")) {
             String argSymbol = readTagEnclosedText("mathVar", "parseArg");
             Variable v = new Variable(argSymbol);
             MathVariable mv = new MathVariable(v);
             lit.args.add(mv);
-        }else {
+        } else {
             error("parseArg seeking <clause>, <literal>, <constant>, <argString>, <var>, or <mathVar>.");
         }
     }
 
     /* Args -> Arg, Args.
-            | \empty.
-	 First: [<literal>, <clause>, <constant>, <argString>, <var>, <mathVar>]
- 	 Follow: [<literal>, <clause>, <constant>, <argString>, <var>,
-                    <mathVar>, </arg-list>]
-	*/
+     | \empty.
+     First: [<literal>, <clause>, <constant>, <argString>, <var>, <mathVar>]
+     Follow: [<literal>, <clause>, <constant>, <argString>, <var>,
+     <mathVar>, </arg-list>]
+     */
     void parseArgs(Literal lit, ClauseBody cb) throws KSParsingErrorException {
         current = scanner.lookAhead(); // must be tag
         if (current.lexeme.equals("<literal>") || current.lexeme.equals("<clause>")
-            || current.lexeme.equals("<constant>") || current.lexeme.equals("<argString>")
-            || current.lexeme.equals("<var>") || current.lexeme.equals("<mathVar>")) {
+                || current.lexeme.equals("<constant>") || current.lexeme.equals("<argString>")
+                || current.lexeme.equals("<var>") || current.lexeme.equals("<mathVar>")) {
             parseArg(lit, cb);
             parseArgs(lit, cb);
-        }else if (current.lexeme.equals("</arg-list>")) {
+        } else if (current.lexeme.equals("</arg-list>")) {
             return;
-        }else {
+        } else {
             error("parseArg seeking <clause>, <literal>, <constant>, <argString>, <var>, <mathVar>, or </arg-list>.");
         }
     }
 
     /*Questions -> "<questions>", Qn, MoreQns, "</questions>".
-                |  \empty.
-         First: [<questions>]
- 	 Follow: [<kin-term-eqc>, <pos-dyads-uncovered>, <neg-dyads-covered>]
-	*/
+     |  \empty.
+     First: [<questions>]
+     Follow: [<kin-term-eqc>, <pos-dyads-uncovered>, <neg-dyads-covered>]
+     */
     void parseQuestions(Issue issue) throws KSParsingErrorException {
         // start tag <questions> has already been consumed
         current = scanner.lookAhead(); // must be start tag <qn>
@@ -2996,7 +3245,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             issue.questions.add(qn);
             current = scanner.lookAhead();
         }
-        if (! current.lexeme.equals("</questions>")) {
+        if (!current.lexeme.equals("</questions>")) {
             error("parseQuestions seeking tag '</questions>'.");
         }
     }
@@ -3004,7 +3253,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
     ArrayList<Object> parseDyadAList() throws KSParsingErrorException {
         ArrayList<Object> dyads = new ArrayList<Object>();
         current = scanner.lookAhead();
-        while (current.lexeme.substring(0,5).equals("<dyad")) {
+        while (current.lexeme.substring(0, 5).equals("<dyad")) {
             scanner.readToken(); // consume the dyad one-piece tag
             String innards = current.lexeme.substring(6);  // trim off the '<dyad '
             DyadTemp newDyad = new DyadTemp();
@@ -3020,10 +3269,10 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
                     newDyad.kinTerm = (String) nod.kinTermsAddr.get(0);
                 }
                 dyads.add(new Dyad(newDyad));
-            }catch(Exception ex) {
-            //  Some chart editing actions can remove people or links that were
-            //  part of a prior Learning session. That leaves 'orphan dyads' in the
-            //  Suggestions. Perhaps we just hit an orphan. Ignore, warn, & proceed.
+            } catch (Exception ex) {
+                //  Some chart editing actions can remove people or links that were
+                //  part of a prior Learning session. That leaves 'orphan dyads' in the
+                //  Suggestions. Perhaps we just hit an orphan. Ignore, warn, & proceed.
                 orphanDyadFlag = true;
             }
             current = scanner.lookAhead();
@@ -3033,30 +3282,34 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
 
 
     /* KTD_EQC -> <kin-term-eqc>, <signature-string>, String, </signature-string>,
-             <prototype>, KTD_Ptr, </prototype>, <members>, MemberList, </members>,
-              OptionalUnusedClauses, </kin-term-eqc>.
-         First: [<kin-term-eqc>]
- 	 Follow: [<request-date>]
-	*/
-    Library.KTD_EQC parseKTD_EQC()  throws KSParsingErrorException {
+     <prototype>, KTD_Ptr, </prototype>, <members>, MemberList, </members>,
+     OptionalUnusedClauses, </kin-term-eqc>.
+     First: [<kin-term-eqc>]
+     Follow: [<request-date>]
+     */
+    Library.KTD_EQC parseKTD_EQC() throws KSParsingErrorException {
         // start tag has already been consumed
         Library.KTD_EQC eqc = new Library.KTD_EQC();
         eqc.sigString = readTagEnclosedText("signature-string", "parseKTD_EQC");
         current = scanner.readToken();
         if (current.lexeme.equals("<prototype>")) {
             eqc.prototype = parseKTD_Ptr();
-        }else error("parseKTD_EQC seeking tag '<prototype>'.");
+        } else {
+            error("parseKTD_EQC seeking tag '<prototype>'.");
+        }
         current = scanner.readToken();
-        if (! current.lexeme.equals("</prototype>")) {
+        if (!current.lexeme.equals("</prototype>")) {
             error("parseKTD_EQC seeking tag '</prototype>'.");
         }
         current = scanner.readToken();
         if (current.lexeme.equals("<members>")) {
             eqc.members = new ArrayList<Object>();
             parseMemberList(eqc.members);
-        }else error("parseKTD_EQC seeking tag '<members>'.");
+        } else {
+            error("parseKTD_EQC seeking tag '<members>'.");
+        }
         current = scanner.readToken();
-        if (! current.lexeme.equals("</members>")) {
+        if (!current.lexeme.equals("</members>")) {
             error("parseKTD_EQC seeking tag '</members>'.");
         }
         current = scanner.readToken();
@@ -3068,40 +3321,40 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             }
             current = scanner.readToken();
         }
-        if (! current.lexeme.equals("</kin-term-eqc>")) {
+        if (!current.lexeme.equals("</kin-term-eqc>")) {
             error("parseKTD_EQC seeking tag '</kin-term-eqc>'.");
         }
         return eqc;
     }
 
     /* KTD_Ptr -> "<kin-term-context>", KinTermDef, "</kin-term-context>".
-         First: [<kin-term-context>]
- 	 Follow: [</prototype>]
-	*/
-    Library.KTD_Ptr parseKTD_Ptr() throws KSParsingErrorException  {
+     First: [<kin-term-context>]
+     Follow: [</prototype>]
+     */
+    Library.KTD_Ptr parseKTD_Ptr() throws KSParsingErrorException {
         Library.KTD_Ptr ptr = new Library.KTD_Ptr();
         current = scanner.readToken();
-        if (! current.lexeme.equals("<kin-term-context>")) {
+        if (!current.lexeme.equals("<kin-term-context>")) {
             error("parseKTD_Ptr seeking tag '<kin-term-context>'.");
         }
         current = scanner.readToken(); // consume the <kin-term-def> tag
         ptr.setKTD(parseKinTermDef());
         ptr.getLangFromKTD();
         current = scanner.readToken();
-        if (! current.lexeme.equals("</kin-term-context>")) {
+        if (!current.lexeme.equals("</kin-term-context>")) {
             error("parseKTD_Ptr seeking tag '</kin-term-context>'.");
         }
         return ptr;
     }
 
     /* DT_Highlights -> "<language name=", string , "/>",
-                   OptionalPolygamyFlag, "<author name=", string, "/>",
-                   "<create-date value=", string "/>", 
-                    "<citation txt=", string, "/>".
-         First: [<language...]
- 	 Follow: [</domain-theory>]
-	*/
-    DomainTheory parseDT_Highlights() throws KSParsingErrorException  {
+     OptionalPolygamyFlag, "<author name=", string, "/>",
+     "<create-date value=", string "/>", 
+     "<citation txt=", string, "/>".
+     First: [<language...]
+     Follow: [</domain-theory>]
+     */
+    DomainTheory parseDT_Highlights() throws KSParsingErrorException {
         DomainTheory dt = new DomainTheory();
         dt.languageName = readOneAttribute("language", "name", "parseDT_Highlights");
         current = scanner.lookAhead();
@@ -3124,16 +3377,16 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
     }
 
     /* MemberList -> KTD_Ptr, MemberList.
-                  |  \empty.
-         First: [<kin-term-context>]
- 	 Follow: [</members>]
-	*/
-    void parseMemberList(ArrayList<Object> list) throws KSParsingErrorException  {
+     |  \empty.
+     First: [<kin-term-context>]
+     Follow: [</members>]
+     */
+    void parseMemberList(ArrayList<Object> list) throws KSParsingErrorException {
         current = scanner.lookAhead();
         if (current.lexeme.equals("<kin-term-context>")) {
             list.add(parseKTD_Ptr());
             parseMemberList(list);
-        }else if (! current.lexeme.equals("</members>")) {
+        } else if (!current.lexeme.equals("</members>")) {
             error("parseMemberList seeking '<kin-term-context>' or '</members>'.");
         }
         return;
@@ -3150,18 +3403,15 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         return list;
     }
 
-
-
-
     /* Anomaly -> "<anomaly kinTerm=", string. ">", Anomaly, "</anomaly>", Issues.
-          First: [<anomaly]
- 	 Follow: [<proposed-def, <anomaly, <data-request, <overlap, <synonym, <umbrella, </silkin-issues>]
-	*/
+     First: [<anomaly]
+     Follow: [<proposed-def, <anomaly, <data-request, <overlap, <synonym, <umbrella, </silkin-issues>]
+     */
     void parseAnomaly(TreeMap<String, ArrayList<Issue>> issues)
             throws KSParsingErrorException, KSDateParseException {
         scanner.readToken(); // consume the start tag
-        int start = current.lexeme.indexOf("\"") +1,
-            stop = current.lexeme.indexOf("\"", start);
+        int start = current.lexeme.indexOf("\"") + 1,
+                stop = current.lexeme.indexOf("\"", start);
         Anomaly anna = new Anomaly();
         anna.kinTerm = current.lexeme.substring(start, stop);
         current = scanner.lookAhead(); // may be start tag of optional <processed> block
@@ -3176,26 +3426,26 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             scanner.readToken(); // consume the </questions> tag
             current = scanner.readToken();
         }
-        if (! current.lexeme.equals("<basis>")) {
+        if (!current.lexeme.equals("<basis>")) {
             error("parseAnomaly seeking tag '<basis>'");
         }
         current = scanner.lookAhead();
         if (current.lexeme.equals("<barriers />")) {
             scanner.readToken(); // consume token, but do nothing
-        }else if (current.lexeme.startsWith("<kin-term-def")) {
+        } else if (current.lexeme.startsWith("<kin-term-def")) {
             scanner.readToken();
             anna.basis.add(parseKinTermDef());
-        }else if (current.lexeme.startsWith("<clause")) {
+        } else if (current.lexeme.startsWith("<clause")) {
             anna.basis.add(parseClauseBody());
-        }else {
+        } else {
             error("parseAnomaly seeking tag '<barriers />', a ClauseBody, or a KinTermDef.");
         }
         current = scanner.readToken();
-        if (! current.lexeme.equals("</basis>")) {
+        if (!current.lexeme.equals("</basis>")) {
             error("parseAnomaly seeking tag '</basis>'");
         }
         current = scanner.readToken();
-        if (! current.lexeme.equals("<misfits>")) {
+        if (!current.lexeme.equals("<misfits>")) {
             error("parseAnomaly seeking tag '<misfits>'");
         }
         ArrayList<Object> misfits = parseDyadAList();
@@ -3207,7 +3457,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             anna.posHits = misfits;
         }
         current = scanner.readToken();
-        if (! current.lexeme.equals("</misfits>")) {
+        if (!current.lexeme.equals("</misfits>")) {
             error("parseAnomaly seeking tag '</misfits>'");
         }
         current = scanner.lookAhead();
@@ -3215,21 +3465,21 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             scanner.readToken();
         }
         current = scanner.readToken();
-        if (! current.lexeme.equals("</anomaly>")) {
+        if (!current.lexeme.equals("</anomaly>")) {
             error("parseAnomaly seeking tag '</anomaly>'");
         }
         addToIssues(issues, anna);
     }
 
     /*DataRequest ->  "<data-request kinTerm=", string. ">", CB_Ptrs, "</data-request>", Issues.
-         First: [<data-request]
- 	 Follow: [<proposed-def, <anomaly, <data-request, <overlap, <synonym, <umbrella, </silkin-issues>]
-	*/
+     First: [<data-request]
+     Follow: [<proposed-def, <anomaly, <data-request, <overlap, <synonym, <umbrella, </silkin-issues>]
+     */
     void parseDataRequest(TreeMap<String, ArrayList<Issue>> issues)
             throws KSParsingErrorException, KSDateParseException {
         scanner.readToken(); // consume the start tag
-        int start = current.lexeme.indexOf("\"") +1,
-            stop = current.lexeme.indexOf("\"", start);
+        int start = current.lexeme.indexOf("\"") + 1,
+                stop = current.lexeme.indexOf("\"", start);
         DataRequest dr = new DataRequest();
         dr.kinTerm = current.lexeme.substring(start, stop);
         current = scanner.lookAhead(); // may be start tag of optional <processed> block
@@ -3248,12 +3498,11 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             scanner.readToken();
         }
         current = scanner.readToken();
-        if (! current.lexeme.equals("</data-request>")) {
+        if (!current.lexeme.equals("</data-request>")) {
             error("parseDataRequest seeking tag '</data-request>'");
         }
         addToIssues(issues, dr);
     }
-
 
     ArrayList<Library.CB_Ptr> parseCB_Ptrs() throws KSParsingErrorException {
         ArrayList<Library.CB_Ptr> theList = new ArrayList<Library.CB_Ptr>();
@@ -3268,7 +3517,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             current = scanner.lookAhead();
             Library.CB_Ptr ptr = new Library.CB_Ptr();
             if (current.lexeme.startsWith("<gloss")) {
-                ptr.gloss = parseGloss();  
+                ptr.gloss = parseGloss();
             }
             ptr.cbEQC = new Library.CB_EQC();
             ptr.clause = parseClauseBody();
@@ -3282,7 +3531,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             }
             theList.add(ptr);
             theList.addAll(parseCB_Ptrs());
-        }else if (current.lexeme.equals("<named-dyad>")) {
+        } else if (current.lexeme.equals("<named-dyad>")) {
             scanner.readToken(); // consume the start tag
             Library.CB_Ptr ptr = new Library.CB_Ptr();
             current = scanner.lookAhead();
@@ -3291,7 +3540,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             }
             int eg = readTaggedInteger("ego-serial", "parseCB_Ptrs");
             int alt = readTaggedInteger("alter-serial", "parseCB_Ptrs");
-            Integer[] pair = {eg, alt };
+            Integer[] pair = {eg, alt};
             ptr.namedPairs.add(pair);
             ptr.cbEQC = new Library.CB_EQC();
             ptr.cbEQC.pcString = readTagEnclosedText("pc-string", "parseCB_Ptrs");
@@ -3302,11 +3551,11 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             }
             theList.add(ptr);
             theList.addAll(parseCB_Ptrs());
-        }else if (current.lexeme.startsWith("<request-date")) {
+        } else if (current.lexeme.startsWith("<request-date")) {
             return theList;
-        }else if (current.lexeme.equals("</data-request>")) {
+        } else if (current.lexeme.equals("</data-request>")) {
             return theList;
-        }else {
+        } else {
             error("parseCB_Ptrs seeking tags: <named-dyad>, <request-date>, <error>, or <kin-type-dyad>.");
         }
         return theList;
@@ -3314,13 +3563,13 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
 
 
     /*Overlap -> "<overlap kinTerm=", string. ">", Overlap, "</overlap>", Issues.
-        First: [<overlap]
- 	 Follow: [<proposed-def, <anomaly, <data-request, <overlap, <synonym, <umbrella, </silkin-issues>]
-	*/
+     First: [<overlap]
+     Follow: [<proposed-def, <anomaly, <data-request, <overlap, <synonym, <umbrella, </silkin-issues>]
+     */
     void parseOverlap(TreeMap<String, ArrayList<Issue>> issues) throws KSParsingErrorException, KSDateParseException {
         scanner.readToken(); // consume the start tag
-        int start = current.lexeme.indexOf("\"") +1,
-            stop = current.lexeme.indexOf("\"", start);
+        int start = current.lexeme.indexOf("\"") + 1,
+                stop = current.lexeme.indexOf("\"", start);
         OverlapCandidate oc = new OverlapCandidate();
         oc.kinTerm = current.lexeme.substring(start, stop);
         current = scanner.lookAhead(); // may be start tag of optional <processed> block
@@ -3330,18 +3579,18 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         oc.otherTerm = readTagEnclosedText("other-term", "parseOverlap");
         oc.ktermDyads = new ArrayList<Object>();
         current = scanner.readToken();  // read <kinTerm-dyads> tag
-        if (! current.lexeme.equals("<kinTerm-dyads>")) {
+        if (!current.lexeme.equals("<kinTerm-dyads>")) {
             error("parseOverlap seeking tag '<kinTerm-dyads>'");
         }
         ArrayList<DyadTemp> dyads = new ArrayList<DyadTemp>();
         current = scanner.lookAhead();
-        while (current.lexeme.substring(0,5).equals("<dyad")) {
+        while (current.lexeme.substring(0, 5).equals("<dyad")) {
             // kinTerm & pcString will be filled in from the dyad
             parseDyad(dyads, "TBD", "TBD");
             current = scanner.lookAhead();
         }
         current = scanner.readToken();  // read </kinTerm-dyads> tag
-        if (! current.lexeme.equals("</kinTerm-dyads>")) {
+        if (!current.lexeme.equals("</kinTerm-dyads>")) {
             error("parseOverlap seeking tag '</kinTerm-dyads>'");
         }
         oc.ktermDyads = new ArrayList<Object>();
@@ -3349,17 +3598,17 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             dt.postDyad(oc.ktermDyads, newCtxt);
         }
         current = scanner.readToken();  // read <other-term-dyads> tag
-        if (! current.lexeme.equals("<other-term-dyads>")) {
+        if (!current.lexeme.equals("<other-term-dyads>")) {
             error("parseOverlap seeking tag '<other-term-dyads>'");
         }
         dyads = new ArrayList<DyadTemp>();
         current = scanner.lookAhead();
-        while (current.lexeme.substring(0,5).equals("<dyad")) {
+        while (current.lexeme.substring(0, 5).equals("<dyad")) {
             parseDyad(dyads, "TBD", "TBD");
             current = scanner.lookAhead();
         }
         current = scanner.readToken();  // read </other-term-dyads> tag
-        if (! current.lexeme.equals("</other-term-dyads>")) {
+        if (!current.lexeme.equals("</other-term-dyads>")) {
             error("parseOverlap seeking tag '</other-term-dyads>'");
         }
         oc.otherTermDyads = new ArrayList<Object>();
@@ -3373,12 +3622,11 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             scanner.readToken();
         }
         current = scanner.readToken();
-        if (! current.lexeme.equals("</overlap>")) {
+        if (!current.lexeme.equals("</overlap>")) {
             error("parseOverlap seeking tag '</overlap>'");
         }
         addToIssues(issues, oc);
     }
-
 
     void readStringSet(ArrayList<Object> theList, String tag, String caller)
             throws KSParsingErrorException {
@@ -3387,15 +3635,15 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             error(caller + " seeking tag '" + tag + "'.");
         }
         current = scanner.lookAhead();
-        while (! current.lexeme.equals("</" + tag + ">")) {
+        while (!current.lexeme.equals("</" + tag + ">")) {
             scanner.readToken(); // consume the token
             theList.add(current.lexeme);
             current = scanner.readToken();
             if (current.lexeme.equals("</" + tag + ">")) {
                 //do nothing; loop will end
-            }else if (current.token.equals("comma")) {
+            } else if (current.token.equals("comma")) {
                 current = scanner.lookAhead(); // peek at next symbol
-            }else {
+            } else {
                 error(caller + " seeking comma or '</" + tag + ">'.");
             }
         } // end tag is already consumed
@@ -3403,14 +3651,14 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
 
 
     /*Synonym -> "<synonym kinTerm=", string. ">", Synonym, "</synonym>", Issues.
-         First: [<synonym]
- 	 Follow: [<proposed-def, <anomaly, <data-request, <overlap, <synonym, <umbrella, </silkin-issues>]
-	*/
-    void parseSynonym(TreeMap<String, ArrayList<Issue>> issues) 
+     First: [<synonym]
+     Follow: [<proposed-def, <anomaly, <data-request, <overlap, <synonym, <umbrella, </silkin-issues>]
+     */
+    void parseSynonym(TreeMap<String, ArrayList<Issue>> issues)
             throws KSParsingErrorException, KSDateParseException {
         scanner.readToken(); // consume the start tag
-        int start = current.lexeme.indexOf("\"") +1,
-            stop = current.lexeme.indexOf("\"", start);
+        int start = current.lexeme.indexOf("\"") + 1,
+                stop = current.lexeme.indexOf("\"", start);
         SynonymCandidate sc = new SynonymCandidate();
         sc.kinTerm = current.lexeme.substring(start, stop);
         current = scanner.lookAhead(); // may be start tag of optional <processed> block
@@ -3426,21 +3674,21 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         sc.pcStringsCovered = new ArrayList<Object>();
         readStringSet(sc.pcStringsCovered, "pc-strings-covered", "parseSynonym");
         current = scanner.readToken();
-        if (! current.lexeme.equals("<kinTerm-dyads>")) {
+        if (!current.lexeme.equals("<kinTerm-dyads>")) {
             error("parseSynonym seeking tag '<kinTerm-dyads>'");
         }
         sc.ktermDyads = parseDyadAList();
         current = scanner.readToken();
-        if (! current.lexeme.equals("</kinTerm-dyads>")) {
+        if (!current.lexeme.equals("</kinTerm-dyads>")) {
             error("parseSynonym seeking tag '</kinTerm-dyads>'");
         }
         current = scanner.readToken();
-        if (! current.lexeme.equals("<other-term-dyads>")) {
+        if (!current.lexeme.equals("<other-term-dyads>")) {
             error("parseSynonym seeking tag '<other-term-dyads>'");
         }
         sc.otherTermDyads = parseDyadAList();
         current = scanner.readToken();
-        if (! current.lexeme.equals("</other-term-dyads>")) {
+        if (!current.lexeme.equals("</other-term-dyads>")) {
             error("parseSynonym seeking tag '</other-term-dyads>'");
         }
         current = scanner.lookAhead();
@@ -3448,21 +3696,21 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             scanner.readToken();
         }
         current = scanner.readToken();
-        if (! current.lexeme.equals("</synonym>")) {
+        if (!current.lexeme.equals("</synonym>")) {
             error("parseSynonym seeking tag '</synonym>'");
         }
         addToIssues(issues, sc);
     }
 
     /*Umbrella -> "<umbrella kinTerm=", string. ">", Umbrella, "</umbrella>", Issues.
-         First: [<umbrella]
- 	 Follow: [<proposed-def, <anomaly, <data-request, <overlap, <synonym, <umbrella, </silkin-issues>]
-	*/
+     First: [<umbrella]
+     Follow: [<proposed-def, <anomaly, <data-request, <overlap, <synonym, <umbrella, </silkin-issues>]
+     */
     void parseUmbrella(TreeMap<String, ArrayList<Issue>> issues)
             throws KSParsingErrorException, KSDateParseException {
         scanner.readToken(); // consume the start tag
-        int start = current.lexeme.indexOf("\"") +1,
-            stop = current.lexeme.indexOf("\"", start);
+        int start = current.lexeme.indexOf("\"") + 1,
+                stop = current.lexeme.indexOf("\"", start);
         UmbrellaCandidate uc = new UmbrellaCandidate();
         uc.kinTerm = current.lexeme.substring(start, stop);
         current = scanner.lookAhead(); // may be start tag of optional <processed> block
@@ -3478,18 +3726,18 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             parseGloss();  // Throwaway. Recomputed on the fly.
         }
         current = scanner.readToken();
-        if (! current.lexeme.equals("<sub-terms>")) {
+        if (!current.lexeme.equals("<sub-terms>")) {
             error("parseUmbrella seeking tag '<sub-terms>'");
         }
         current = scanner.readToken();
-        if (! current.lexeme.equals("<sub-term>")) {
+        if (!current.lexeme.equals("<sub-term>")) {
             error("parseUmbrella seeking tag '<sub-term>'");
         }
         while (current.lexeme.equals("<sub-term>")) {
             parseSubTerm(uc.subTerms);
         }
         current = scanner.readToken();
-        if (! current.lexeme.equals("</sub-terms>")) {
+        if (!current.lexeme.equals("</sub-terms>")) {
             error("parseUmbrella seeking tag '</sub-terms>'");
         }
         current = scanner.lookAhead();
@@ -3497,14 +3745,13 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             scanner.readToken();
         }
         current = scanner.readToken();
-        if (! current.lexeme.equals("</umbrella>")) {
+        if (!current.lexeme.equals("</umbrella>")) {
             error("parseUmbrella seeking tag '</umbrella>'");
         }
         addToIssues(issues, uc);
     }
 
-
-    void parseSubTerm(TreeMap tmap) throws KSParsingErrorException  {
+    void parseSubTerm(TreeMap tmap) throws KSParsingErrorException {
         String subterm = readTagEnclosedText("sub-kin-term", "parseSubTerm");
         ArrayList<Object> supportList = new ArrayList<Object>();
         ArrayList<Object> stringsCovered = new ArrayList<Object>();
@@ -3513,15 +3760,15 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         current = scanner.lookAhead();
         if (current.lexeme.equals("<gloss>")) {
             parseGloss();  // Throwaway. Recomputed on the fly.
-        }        
-        current = scanner.readToken();        
-        if (! current.lexeme.equals("<dyads-covered>")) {
+        }
+        current = scanner.readToken();
+        if (!current.lexeme.equals("<dyads-covered>")) {
             error("parseSubTerm seeking tag '<dyads-covered>'");
         }
         ArrayList<Object> dyadsCovered = parseDyadAList();
         supportList.add(dyadsCovered);
         current = scanner.readToken();
-        if (! current.lexeme.equals("</dyads-covered>")) {
+        if (!current.lexeme.equals("</dyads-covered>")) {
             error("parseSubTerm seeking tag '</dyads-covered>'");
         }
         current = scanner.lookAhead();
@@ -3530,7 +3777,7 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             supportList.add(typ);
         }
         current = scanner.readToken();
-        if (! current.lexeme.equals("</sub-term>")) {
+        if (!current.lexeme.equals("</sub-term>")) {
             error("parseSubTerm seeking tag '</sub-term>'");
         }
         tmap.put(subterm, supportList);
@@ -3540,66 +3787,66 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         }
     }
 
-
     void doUDPSerialSwaps() throws KSParsingErrorException {
-       //  Iterate thru all UDP templates in the context and all UDPs on
-       //  Individuals. Swap the indSerial tokens (e.g. '#2') for pointers
-       //  to the actual Individual objects in the IndividualCensus (e.g. the
-       //  person with serial #2).
-       //  NOTE: the UDP.toSILKString() method writes tokens (e.g. '#34') for individuals
-       Iterator udpIter = newCtxt.userDefinedProperties.values().iterator();
-       while (udpIter.hasNext()) {
-       		UserDefinedProperty udp = (UserDefinedProperty)udpIter.next();
-       		if (udp.typ.equals("individual")) {
-     				if (udp.defaultValue != null) {
-						int defaultPersonNmbr = Integer.parseInt(((String)udp.defaultValue).substring(1));
-       				udp.defaultValue = newCtxt.individualCensus.get(defaultPersonNmbr);
-						}  //  end of swap token in default-value
-     				if (udp.validEntries != null &&!  udp.validEntries.isEmpty()) {
-						ArrayList<Object> newValidEntries = new ArrayList<Object>();
-       				for (Object obj : udp.validEntries) {
-       					String personStr = (String)obj;
-       					int personNmbr = Integer.parseInt(personStr.substring(1));
-       					newValidEntries.add(newCtxt.individualCensus.get(personNmbr));
-       					}  //  end of loop thru valid entries
-       				udp.validEntries = newValidEntries;
-						}  //  end of if-valid-entries non-null
-       			}  //  end of this-UDP-holds-individuals
-       	}  //  end of loop thru the Context's UDP templates
+        //  Iterate thru all UDP templates in the context and all UDPs on
+        //  Individuals. Swap the indSerial tokens (e.g. '#2') for pointers
+        //  to the actual Individual objects in the IndividualCensus (e.g. the
+        //  person with serial #2).
+        //  NOTE: the UDP.toSILKString() method writes tokens (e.g. '#34') for individuals
+        Iterator udpIter = newCtxt.userDefinedProperties.values().iterator();
+        while (udpIter.hasNext()) {
+            UserDefinedProperty udp = (UserDefinedProperty) udpIter.next();
+            if (udp.typ.equals("individual")) {
+                if (udp.defaultValue != null) {
+                    int defaultPersonNmbr = Integer.parseInt(((String) udp.defaultValue).substring(1));
+                    udp.defaultValue = newCtxt.individualCensus.get(defaultPersonNmbr);
+                }  //  end of swap token in default-value
+                if (udp.validEntries != null && !udp.validEntries.isEmpty()) {
+                    ArrayList<Object> newValidEntries = new ArrayList<Object>();
+                    for (Object obj : udp.validEntries) {
+                        String personStr = (String) obj;
+                        int personNmbr = Integer.parseInt(personStr.substring(1));
+                        newValidEntries.add(newCtxt.individualCensus.get(personNmbr));
+                    }  //  end of loop thru valid entries
+                    udp.validEntries = newValidEntries;
+                }  //  end of if-valid-entries non-null
+            }  //  end of this-UDP-holds-individuals
+        }  //  end of loop thru the Context's UDP templates
 
-       for (Object indObj : newCtxt.individualCensus) {
-    			Individual ind = (Individual)indObj;
-				Iterator iter = ind.userDefinedProperties.values().iterator();
-       		while (iter.hasNext()) {
-       			UserDefinedProperty udp = (UserDefinedProperty)iter.next();
-       			if (udp.typ.equals("individual")) {
-       				ArrayList<Object> newValue = new ArrayList<Object>();
-       				for (Object indNmbr : udp.value) {
-       					String indNmbrStr = (String)indNmbr;
-       					if (! indNmbrStr.substring(0,1).equals("#"))
-       						error("doUDPSerialSwaps encountered a UDP of typ 'individual' with a value not " +
-       								"beginning with '#'");
-       					int indSerial = Integer.parseInt(indNmbrStr.substring(1));
-       					newValue.add(newCtxt.individualCensus.get(indSerial));
-       					}  //  end of loop through value list
-       				udp.value = newValue;
-						if (udp.defaultValue != null) {
-							int defaultPersonNmbr = Integer.parseInt(((String)udp.defaultValue).substring(1));
-							udp.defaultValue = newCtxt.individualCensus.get(defaultPersonNmbr);
-							}  //  end of if-default-value-non-null
-						ArrayList<Object> newValidEntries = new ArrayList<Object>();
-						for (Object obj : udp.validEntries) {
-							String personStr = (String)obj;
-							int personNmbr = Integer.parseInt(personStr.substring(1));
-							newValidEntries.add(newCtxt.individualCensus.get(personNmbr));
-							}  //  end of loop thru valid entries
-						udp.validEntries = newValidEntries;
-       				}  //  end of udp-with-individuals
-       			}  //  end of loop thru UDPs
-       		}  //  end of loop thru people & UDPs
+        for (Object indObj : newCtxt.individualCensus) {
+            Individual ind = (Individual) indObj;
+            Iterator iter = ind.userDefinedProperties.values().iterator();
+            while (iter.hasNext()) {
+                UserDefinedProperty udp = (UserDefinedProperty) iter.next();
+                if (udp.typ.equals("individual")) {
+                    ArrayList<Object> newValue = new ArrayList<Object>();
+                    for (Object indNmbr : udp.value) {
+                        String indNmbrStr = (String) indNmbr;
+                        if (!indNmbrStr.substring(0, 1).equals("#")) {
+                            error("doUDPSerialSwaps encountered a UDP of typ 'individual' with a value not "
+                                    + "beginning with '#'");
+                        }
+                        int indSerial = Integer.parseInt(indNmbrStr.substring(1));
+                        newValue.add(newCtxt.individualCensus.get(indSerial));
+                    }  //  end of loop through value list
+                    udp.value = newValue;
+                    if (udp.defaultValue != null) {
+                        int defaultPersonNmbr = Integer.parseInt(((String) udp.defaultValue).substring(1));
+                        udp.defaultValue = newCtxt.individualCensus.get(defaultPersonNmbr);
+                    }  //  end of if-default-value-non-null
+                    ArrayList<Object> newValidEntries = new ArrayList<Object>();
+                    for (Object obj : udp.validEntries) {
+                        String personStr = (String) obj;
+                        int personNmbr = Integer.parseInt(personStr.substring(1));
+                        newValidEntries.add(newCtxt.individualCensus.get(personNmbr));
+                    }  //  end of loop thru valid entries
+                    udp.validEntries = newValidEntries;
+                }  //  end of udp-with-individuals
+            }  //  end of loop thru UDPs
+        }  //  end of loop thru people & UDPs
     }  //  end of method UDPSerialSwaps
 
-    void doIndFamSerialSwaps() {
+    void doInd_Link_FamSerialSwaps() {
         //  STRATEGY: use indivTable and famTable as guides for inserting pointers to
         //  the actual birth family object, etc. into the Individuals and Families we
         //  created during the parse of the SILK file
@@ -3614,16 +3861,24 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
                 ind.marriages.add(newCtxt.familyCensus.get(tempInd.get(m)));
             }
         }  //  end of loop thru individual census
+        for (int i = 0; i < newCtxt.linkCensus.size(); i++) {
+            Link lk = newCtxt.linkCensus.get(i);
+            lk.personPointedTo = newCtxt.individualCensus.get(linkTable[i]);
+            if (lk.personPointedTo.links == null) {
+                lk.personPointedTo.links = new ArrayList<Link>();
+            }
+            lk.personPointedTo.links.add(lk);
+        }
         for (Object famObj : newCtxt.familyCensus) {
             Family fam = (Family) famObj;
             ArrayList<Integer> tempFam = famTable.get(fam.serialNmbr);
             int ndx = tempFam.get(1);
-            Individual spouse = (ndx == -1 ? null :
-                (Individual) newCtxt.individualCensus.get(ndx));
+            Individual spouse = (ndx == -1 ? null
+                    : (Individual) newCtxt.individualCensus.get(ndx));
             fam.husband = spouse;
             ndx = tempFam.get(2);
-            spouse = (ndx == -1 ? null :
-                (Individual) newCtxt.individualCensus.get(ndx));
+            spouse = (ndx == -1 ? null
+                    : (Individual) newCtxt.individualCensus.get(ndx));
             fam.wife = spouse;
             if (fam.husband != null) {
                 fam.addSpouse((Person) fam.husband);
@@ -3633,32 +3888,40 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
             }
             for (int k = 3; k < tempFam.size(); k++) {
                 Individual child = newCtxt.individualCensus.get(tempFam.get(k));
-                fam.children.add(child);
-                fam.addSib((Person)child);
+                fam.addChild(child);
+                fam.addSib((Person) child);
             }
+            fam.computeBirthGrps();
         }  //  end of loop thru family census
-    }  //  end of method doIndFamSerialSwaps
-
+    }  //  end of method doInd_Link_FamSerialSwaps
 
     void doDyadSwaps() throws KSParsingErrorException, JavaSystemException, KSBadHornClauseException,
-				KSInternalErrorException, KSConstraintInconsistency   {
+            KSInternalErrorException, KSConstraintInconsistency {
         //  STRATEGY: the lists tempDyadsDefinedRef, tempDyadsUndefinedRef, tempDyadsDefinedAddr,
         //  and tempDyadsUndefinedAddr (when non-null) are filled with DyadTemp objects.
         //  After the entire file has been parsed, call the DyadTemp method postDyad. It will
-		  //  use the serialNmbrs in the DyadTemp objects to get the actual Individual or Family
-		  //  objects to be used in the real Dyads. It will post them to the DyadTMaps.
-		  if (tempDyadsDefinedRef != null && ! tempDyadsDefinedRef.isEmpty())
-        	for (DyadTemp temp : tempDyadsDefinedRef)
-        		temp.postDyad(newCtxt, newCtxt.domTheoryRef().dyadsDefined);
-        if (tempDyadsUndefinedRef != null && ! tempDyadsUndefinedRef.isEmpty())
-        	for (DyadTemp temp : tempDyadsUndefinedRef)
-        		temp.postDyad(newCtxt, newCtxt.domTheoryRef().dyadsUndefined);
-        if (tempDyadsDefinedAddr != null && ! tempDyadsDefinedAddr.isEmpty())
-        	for (DyadTemp temp : tempDyadsDefinedAddr)
-        		temp.postDyad(newCtxt, newCtxt.domTheoryAdr().dyadsDefined);
-        if (tempDyadsUndefinedAddr != null && ! tempDyadsUndefinedAddr.isEmpty())
-        	for (DyadTemp temp : tempDyadsUndefinedAddr)
-        		temp.postDyad(newCtxt, newCtxt.domTheoryAdr().dyadsUndefined);
+        //  use the serialNmbrs in the DyadTemp objects to get the actual Individual or Family
+        //  objects to be used in the real Dyads. It will post them to the DyadTMaps.
+        if (tempDyadsDefinedRef != null && !tempDyadsDefinedRef.isEmpty()) {
+            for (DyadTemp temp : tempDyadsDefinedRef) {
+                temp.postDyad(newCtxt, newCtxt.domTheoryRef().dyadsDefined);
+            }
+        }
+        if (tempDyadsUndefinedRef != null && !tempDyadsUndefinedRef.isEmpty()) {
+            for (DyadTemp temp : tempDyadsUndefinedRef) {
+                temp.postDyad(newCtxt, newCtxt.domTheoryRef().dyadsUndefined);
+            }
+        }
+        if (tempDyadsDefinedAddr != null && !tempDyadsDefinedAddr.isEmpty()) {
+            for (DyadTemp temp : tempDyadsDefinedAddr) {
+                temp.postDyad(newCtxt, newCtxt.domTheoryAdr().dyadsDefined);
+            }
+        }
+        if (tempDyadsUndefinedAddr != null && !tempDyadsUndefinedAddr.isEmpty()) {
+            for (DyadTemp temp : tempDyadsUndefinedAddr) {
+                temp.postDyad(newCtxt, newCtxt.domTheoryAdr().dyadsUndefined);
+            }
+        }
     }  //  end of method doDyadSwaps
 
     void doStarSwaps() {
@@ -3669,16 +3932,15 @@ Individual -> Sex, Stats, Location, Comment, "<surname value=", string, "/>",
         //  the starTable, swapping individual-pointers for integers.
         Iterator iter = starTable.entrySet().iterator();
         while (iter.hasNext()) {
-        	Map.Entry entry = (Map.Entry)iter.next();
-        	Integer egoNmbr = (Integer)entry.getKey();
-        	ArrayList<Integer> starLinx = (ArrayList<Integer>)entry.getValue();
-        	Individual link, ego = (Individual)newCtxt.individualCensus.get(egoNmbr);
-        	ego.starLinks = new ArrayList<Object>(starLinx.size());
-        	for (Integer linkNmbr : starLinx) {
-        		link = (Individual)newCtxt.individualCensus.get(linkNmbr);
-        		ego.starLinks.add(link);
-        	}  //  end of loop thru star links for this person
+            Map.Entry entry = (Map.Entry) iter.next();
+            Integer egoNmbr = (Integer) entry.getKey();
+            ArrayList<Integer> starLinx = (ArrayList<Integer>) entry.getValue();
+            Individual link, ego = (Individual) newCtxt.individualCensus.get(egoNmbr);
+            ego.starLinks = new ArrayList<Object>(starLinx.size());
+            for (Integer linkNmbr : starLinx) {
+                link = (Individual) newCtxt.individualCensus.get(linkNmbr);
+                ego.starLinks.add(link);
+            }  //  end of loop thru star links for this person
         }  //  end of loop thru starTable
     }  //  end of method doStarSwaps
-
 }  //  end of class SILKFileParser

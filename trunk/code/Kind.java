@@ -31,144 +31,124 @@
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //  
 
-
-
 import java.awt.*;
 
+public class Kind implements java.io.Serializable {
 
-public  class Kind {
-	 SymbolDraw symbol; /* which symbol or linetype */
-	 String name;
+    SymbolDraw symbol; /* which symbol or linetype */
+    String name;
 }
 
- class Male extends Kind {
-	public Male() {
-		symbol = new drawTriangle();
-		name = "Male";
-	}
+class SymbolDraw implements java.io.Serializable {
+
+    public void drawSymbol(Graphics g, Rectangle bounds) {
+    }
+
+    public void drawSymbol(Graphics g, Rectangle bounds, Color c) {
+    }
+
+    public void drawEndSymbol(Graphics g, Rectangle bounds) {
+        Polygon p = new Polygon();
+        drawSymbol(g, bounds);
+        p.addPoint(bounds.x, bounds.y - 3);
+        p.addPoint(bounds.x + 2, bounds.y - 3);
+        p.addPoint(bounds.x + bounds.width, bounds.y + bounds.height + 5);
+        p.addPoint(bounds.x + bounds.width - 2, bounds.y + bounds.height + 5);
+        p.addPoint(bounds.x, bounds.y - 3);
+        g.fillPolygon(p);
+    }
+
+    public void drawEndSymbol(Graphics g, Rectangle bounds, Color c) {
+        Color save = g.getColor();
+        Polygon p = new Polygon();
+        g.setColor(c);
+        drawSymbol(g, bounds);
+        drawEndSymbol(g, bounds);
+        g.setColor(save);
+    }
 }
 
-class Female extends Kind {
-	public Female() {
-		symbol = new drawCircle();
+class drawCircle extends SymbolDraw {
 
-		name = "Female";
-	}
+    public void drawSymbol(Graphics g, Rectangle bounds) {
+        g.fillOval(bounds.x, bounds.y, bounds.width, bounds.height);
+    }
+
+    public void drawSymbol(Graphics g, Rectangle bounds, Color c) {
+        Color save = g.getColor();
+        g.setColor(c);
+        g.fillOval(bounds.x, bounds.y, bounds.width, bounds.height);
+        g.setColor(save);
+    }
 }
 
+class drawSquare extends SymbolDraw {
 
-class Neuter extends Kind {
-	public Neuter() {
-		symbol = new drawSquare();
+    public void drawSymbol(Graphics g, Rectangle bounds) {
+        g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+    }
 
-		name = "Neuter";
-	}
-}
-
-
- class SymbolDraw {
-	public void drawSymbol(Graphics g, Rectangle bounds) {
-		
-	}
-	public void drawSymbol(Graphics g, Rectangle bounds, Color c) {
-		
-	}
-	public void drawEndSymbol(Graphics g, Rectangle bounds) {
-		Polygon p = new Polygon();
-		drawSymbol(g,bounds);
-		p.addPoint(bounds.x,bounds.y-3);
-		p.addPoint(bounds.x+2,bounds.y-3);
-		p.addPoint(bounds.x+bounds.width,bounds.y+bounds.height+5);
-		p.addPoint(bounds.x+bounds.width-2,bounds.y+bounds.height+5);
-		p.addPoint(bounds.x,bounds.y-3);
-		g.fillPolygon(p);
-	}
-	public void drawEndSymbol(Graphics g, Rectangle bounds, Color c) {
-		Color save = g.getColor();
-		Polygon p = new Polygon();
-		g.setColor(c);
-		drawSymbol(g,bounds);
-		drawEndSymbol(g,bounds);
-		g.setColor(save);
-	}
-}
-
- class drawCircle extends SymbolDraw {
-	public void drawSymbol(Graphics g, Rectangle bounds) {
-		g.fillOval(bounds.x,bounds.y,bounds.width,bounds.height);
-	}
-	public void drawSymbol(Graphics g, Rectangle bounds, Color c) {
-		Color save = g.getColor();
-		g.setColor(c);
-		g.fillOval(bounds.x,bounds.y,bounds.width,bounds.height);
-		g.setColor(save);
-	}
-}
-
- class drawSquare extends SymbolDraw {
-	public void drawSymbol(Graphics g, Rectangle bounds) {
-		g.fillRect(bounds.x,bounds.y,bounds.width,bounds.height);
-	}
-	public void drawSymbol(Graphics g, Rectangle bounds, Color c) {
-		Color save = g.getColor();
-		g.setColor(c);
-		g.fillRect(bounds.x,bounds.y,bounds.width,bounds.height);
-		g.setColor(save);
-	}
+    public void drawSymbol(Graphics g, Rectangle bounds, Color c) {
+        Color save = g.getColor();
+        g.setColor(c);
+        g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+        g.setColor(save);
+    }
 }
 
 class drawTriangle extends SymbolDraw {
-	public void drawSymbol(Graphics g, Rectangle bounds) {
-		fillTriangle(g,bounds.x,bounds.y,bounds.width,bounds.height);
-	}
 
-	public void drawSymbol(Graphics g, Rectangle bounds, Color c) {
-		Color save = g.getColor();
-		g.setColor(c);
-		fillTriangle(g,bounds.x,bounds.y,bounds.width,bounds.height);
-		g.setColor(save);
-	}
-	void fillTriangle(Graphics g,int x, int y, int w, int h) {
-		int x1 = x + w/2;
-		int xs[] = {x1,x,x+w,x1};
-		int ys[] = {y,y+h,y+h,y};
-		g.fillPolygon(xs,ys,4);
-	}
+    public void drawSymbol(Graphics g, Rectangle bounds) {
+        fillTriangle(g, bounds.x, bounds.y, bounds.width, bounds.height);
+    }
+
+    public void drawSymbol(Graphics g, Rectangle bounds, Color c) {
+        Color save = g.getColor();
+        g.setColor(c);
+        fillTriangle(g, bounds.x, bounds.y, bounds.width, bounds.height);
+        g.setColor(save);
+    }
+
+    void fillTriangle(Graphics g, int x, int y, int w, int h) {
+        int x1 = x + w / 2;
+        int xs[] = {x1, x, x + w, x1};
+        int ys[] = {y, y + h, y + h, y};
+        g.fillPolygon(xs, ys, 4);
+    }
 }
 
 class drawEquals extends SymbolDraw {
-	public void drawSymbol(Graphics g, Rectangle bounds) {
-		fillEqual(g,bounds.x,bounds.y,bounds.width,bounds.height);
-	}
 
-	public void drawSymbol(Graphics g, Rectangle bounds, Color c) {
-		Color save = g.getColor();
-		g.setColor(c);
-		fillEqual(g,bounds.x,bounds.y,bounds.width,bounds.height);
-		g.setColor(save);
-	}
-	void fillEqual(Graphics g,int x, int y, int w, int h) {
-		int yh = 4;
-		int yo = yh+4;
-		y += 4;
-		
-		int xs[] = {x,x+w,x+w,x,x};
-		int ys[] = {y,y,y+yh,y+yh,y};
-		g.fillPolygon(xs,ys,5);
+    public void drawSymbol(Graphics g, Rectangle bounds) {
+        fillEqual(g, bounds.x, bounds.y, bounds.width, bounds.height);
+    }
 
-		int qxs[] = {x,x+w,x+w,x,x};
-		int qys[] = {y+yo,y+yo,y+yo+yh,y+yo+yh,y+yo};
-		g.fillPolygon(qxs,qys,5);
-	}
+    public void drawSymbol(Graphics g, Rectangle bounds, Color c) {
+        Color save = g.getColor();
+        g.setColor(c);
+        fillEqual(g, bounds.x, bounds.y, bounds.width, bounds.height);
+        g.setColor(save);
+    }
 
+    void fillEqual(Graphics g, int x, int y, int w, int h) {
+        int yh = 4;
+        int yo = yh + 4;
+        y += 4;
+
+        int xs[] = {x, x + w, x + w, x, x};
+        int ys[] = {y, y, y + yh, y + yh, y};
+        g.fillPolygon(xs, ys, 5);
+
+        int qxs[] = {x, x + w, x + w, x, x};
+        int qys[] = {y + yo, y + yo, y + yo + yh, y + yo + yh, y + yo};
+        g.fillPolygon(qxs, qys, 5);
+    }
 }
-
 
 class MarriageSymbol extends Kind {
-	public MarriageSymbol() {
-		symbol = new drawEquals();
-		name = "Marriage";
-	}
+
+    public MarriageSymbol() {
+        symbol = new drawEquals();
+        name = "Marriage";
+    }
 }
-
-

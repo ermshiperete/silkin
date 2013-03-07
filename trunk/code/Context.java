@@ -14,7 +14,7 @@ Class-level (static) fields act as global variables.
  */
 public class Context implements Serializable {
 
-    static Context current;  // for Library Browser purposes only.  User's current Context = Library.contextUnderConstruction
+    static Context current;  // for Library Browser purposes.  User's current Context = Library.contextUnderConstruction
     static boolean simulation = false;
     static float spellingNoise, classNoise;
     //  --- Debug tools ---
@@ -29,7 +29,8 @@ public class Context implements Serializable {
             createDate;
     public String dateOfLastSuggestion, dateOfLastDataChange;
     ArrayList<String> dataAuthors = new ArrayList<String>();
-    int indSerNumGen = 0, famSerNumGen = 0, maxBaseDefMisFits = 4;
+    ArrayList<String> chartDescriptions = new ArrayList<String>();
+    int indSerNumGen = 0, famSerNumGen = 0, linkSerNumGen = 0, maxBaseDefMisFits = 4, currentChart;
     /**	Name of the language spoken in this culture. It is limited administratively to 28 characters.	*/
     public String languageName;
     ArrayList<Object> selectedKinTerms;
@@ -37,6 +38,7 @@ public class Context implements Serializable {
     public ArrayList<Individual> individualCensus = new ArrayList<Individual>();
     /**		List of all families in this culture, in serialNmbr order (beginning with 0).	*/
     public ArrayList<Family> familyCensus = new ArrayList<Family>();
+    public ArrayList<Link> linkCensus = new ArrayList<Link>();
     ArrayList<Object> bagOfEgos = new ArrayList<Object>();
     private DomainTheory domTheoryRef, domTheoryAdr;
     /** Two-dimensional matrix of all kin terms known for pairs of persons. Row# = Ego's serialNmbr.
@@ -733,6 +735,7 @@ public class Context implements Serializable {
             silk.println("  <lastSuggestionDate value=\"" + dateOfLastSuggestion + "\"/>");
         }
         silk.println("  <indSerNum>" + indSerNumGen + "</indSerNum> ");
+        silk.println("  <linkSerNum>" + linkSerNumGen + "</linkSerNum> ");
         silk.println("  <famSerNum>" + famSerNumGen + "</famSerNum> ");
         silk.println("  <polygamyPermit>" + polygamyPermit + "</polygamyPermit> ");
         if (userDefinedProperties != null) {
@@ -758,6 +761,14 @@ public class Context implements Serializable {
         if (editDirectory != null) {
             silk.println("  <editDirectory dir=\"" + editDirectory + "\"/>");
         }
+        silk.println("  <currentChart n=\"" + currentChart + "\"/>");
+        if (!chartDescriptions.isEmpty()) {
+            silk.println("  <chartDescriptions>");
+            for (String s : chartDescriptions) {
+                silk.println("    <chart name=\"" + s + "\"/>");
+            }
+            silk.println("  </chartDescriptions>");
+        }
         silk.println(editorParameters);
         if (kti.lastSerial != -1) {
             silk.println("  <lastPersonIndexed>" + kti.lastSerial + "</lastPersonIndexed>");
@@ -780,14 +791,19 @@ public class Context implements Serializable {
             silk.println(domTheoryAdr.toSILKString(""));
         }        
         silk.println("<individualCensus>");
-        for (int i = 0; i < individualCensus.size(); i++) {
-            Individual ind = individualCensus.get(i);
+        for (Individual ind : individualCensus) {
             silk.println(ind.toSILKString());
         }
         silk.println("</individualCensus>");
+        if (!linkCensus.isEmpty()) {
+            silk.println("<linkCensus>");
+            for (Link lk : linkCensus) {
+                silk.println(lk.toSILKString());
+            }
+            silk.println("</linkCensus>");
+        }        
         silk.println("<familyCensus>");
-        for (int i = 0; i < familyCensus.size(); i++) {
-            Family fam = familyCensus.get(i);
+        for (Family fam : familyCensus) {
             silk.println(fam.toSILKString());
         }
         silk.println("</familyCensus>");

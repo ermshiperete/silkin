@@ -1176,9 +1176,9 @@ public class SILKFileParserPreXML extends Parser {
             ind.gender = "?";
         }
         if (sex.equals("Male")) {
-            ind.sex = new Male();
+            ind.sex = Person.mal;
         } else if (sex.equals("Female")) {
-            ind.sex = new Female();
+            ind.sex = Person.fem;
         } else {
             ind.sex = new Neuter();
         }

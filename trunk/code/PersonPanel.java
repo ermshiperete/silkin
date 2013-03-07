@@ -887,6 +887,7 @@ public class PersonPanel extends javax.swing.JPanel {
                 c = "Invalid date of birth: '" + b + "-" + a + "-" + c;
                 throw new KSDateParseException(c);
             }
+            infoPerson.birthFamily.computeBirthGrps();
         }
         a = personDeathMon.getText().trim();
         if (a.length() == 1) a = "0"+ a;
