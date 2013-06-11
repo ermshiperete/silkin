@@ -1186,12 +1186,29 @@ public class SILKFileParser extends Parser {
             current = scanner.lookAhead();
         }
         if (current.lexeme.startsWith("<currentChart")) {
-            newCtxt.currentChart = Integer.parseInt(readOneAttribute("currentChart", "n", "parseEditorSettings"));
+            newCtxt.currentChart = readOneAttribute("currentChart", "id", "parseEditorSettings");
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.equals("<chartDescriptions>")) {
+            scanner.readToken();  // consume the tag 
+            current = scanner.lookAhead();
+            while (current.lexeme.startsWith("<chart name=")) {
+                newCtxt.chartDescriptions.add(readOneAttribute("chart", "name", "parseEditorSettings"));
+                current = scanner.lookAhead();
+            }
+            if (!current.lexeme.equals("</chartDescriptions>")) {
+                error("parseEditorSettings seeking end tag '</chartDescriptions>'.");
+            }
+            scanner.readToken();  // consume the end tag
         }
         parseKAESParameters(); // always present
         parseLastPersonIndexed();
         parseLinkPriorities();
         parseSnapToGrid();
+        if (newCtxt.currentChart == null || newCtxt.currentChart.isEmpty()) {
+            newCtxt.currentChart = "A";
+            newCtxt.chartDescriptions.add("Default Chart");
+        }
     }
 
     void parseLastPersonIndexed() throws KSParsingErrorException {
@@ -1358,7 +1375,7 @@ public class SILKFileParser extends Parser {
     }
 
     /*
-     Individual -> Sex, Stats, Location, "<homeChart n=", string, "/>", Comment, "<surname value=", string, "/>",
+     Individual -> Sex, Stats, Location, "<homeChart id=", string, "/>", Comment, "<surname value=", string, "/>",
      "<firstNames value=", string, "/>" , Birth,
      Death, DataChg, Author, Deleted, BirthFam, Marriages, UDPs, StarLinks.
      First: [flag: "<serialNmbr>"]	 Follow: [flag: "</individual>"]
@@ -1373,7 +1390,10 @@ public class SILKFileParser extends Parser {
         parseGender(ind);
         current = scanner.lookAhead();
         if (current.lexeme.startsWith("<homeChart")) {
-            ind.homeChart = Integer.parseInt(readOneAttribute("homeChart", "n", "parseIndividual"));
+            ind.homeChart = readOneAttribute("homeChart", "id", "parseIndividual");
+        } // if no home chart specified, take the default
+        if (ind.homeChart.isEmpty()) {
+            ind.homeChart = ctxt.currentChart;
         }
         ind.location = parseLocation();
         String note = parseComments();
@@ -1425,7 +1445,11 @@ public class SILKFileParser extends Parser {
             linkTable[linkSerial] = Integer.parseInt(values[0]);
             lk.deleted = Boolean.parseBoolean(values[1]);
             lk.sex = (values[2].equals("M") ? Person.mal : Person.fem);
-            lk.homeChart = Integer.parseInt(values[3]);
+            lk.homeChart = values[3];
+            // if no home chart specified, take the default
+            if (lk.homeChart.isEmpty()) {
+                lk.homeChart = newCtxt.currentChart;
+            }
             int locX = Integer.parseInt(values[4]),
                     locY = Integer.parseInt(values[5]);
             lk.location = new Point(locX, locY);
@@ -1811,7 +1835,10 @@ public class SILKFileParser extends Parser {
         fam.mid = serial + 1;
         current = scanner.lookAhead();
         if (current.lexeme.startsWith("<homeChart")) {
-            fam.homeChart = Integer.parseInt(readOneAttribute("homeChart", "n", "parseFamily"));
+            fam.homeChart = readOneAttribute("homeChart", "id", "parseFamily");
+        } // if no home chart is specified, take the default
+        if (fam.homeChart.isEmpty()) {
+            fam.homeChart = newCtxt.currentChart;
         }
         fam.location = parseLocation();
         fam.reason = readTagEnclosedText("reason", "parseFamStats");

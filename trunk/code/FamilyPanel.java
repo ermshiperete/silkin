@@ -380,16 +380,16 @@ public class FamilyPanel extends JPanel {
         String EOL = ChartPanel.EOL,
                kidList = "", name;
         if (fam.husband == null) { name = "";
-        } else { name = fam.husband.name + " <" + fam.husband.serialNmbr + ">";  }
+        } else { name = fam.husband.homeChart + ": " + fam.husband.name + " <" + fam.husband.serialNmbr + ">";  }
         husbandName.setText(name);
         if (fam.wife == null) {  name = "";
-        } else { name = fam.wife.name + " <" + fam.wife.serialNmbr + ">"; }
+        } else { name = fam.wife.homeChart + ": " + fam.wife.name + " <" + fam.wife.serialNmbr + ">"; }
         wifeName.setText(name);
         ArrayList<Individual> sortList = sortOnBirthOrder(fam.children);
         for (int i = 0; i < sortList.size(); i++) {
             Individual kid = sortList.get(i);
             if (i > 0) { kidList += EOL; }
-            kidList += kid.name + " <" + kid.serialNmbr + ">   " + kid.getDateOfBirth();
+            kidList += kid.homeChart + ": " + kid.name + " <" + kid.serialNmbr + ">   " + kid.getDateOfBirth();
         }
         childList.setText(kidList);
         int reason = 0;

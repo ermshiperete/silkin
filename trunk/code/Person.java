@@ -53,7 +53,7 @@ public class Person implements Locatable  {
     String yobq = "9";
     String deathYr = "";
     String yodq = "9";
-    int homeChart = 0;
+    String homeChart = "";
     public Point location = new Point(0, 0);
     Kind sex = null;
     LinkedList marriages = null;
@@ -507,12 +507,17 @@ public class Person implements Locatable  {
 	//  object 'deleted.' So I am changing KAES to not delete anyone.
 	static public int findFreePerson() { return folks.size();  }
 
-	static public int findPerson(int x, int y) {
-		if (folks == null) return -1;
-		for(int i=folks.size() -1; i>=0; i--) {
-			if (folks.get(i) != null &&
-				folks.get(i).bounds().inside(x,y)) return i;
-		}
-		return -1;
-	}
+    static public int findPerson(int x, int y) {
+        if (folks == null) {
+            return -1;
+        }
+        for (int i = folks.size() - 1; i >= 0; i--) {
+            if (folks.get(i) != null
+                    && folks.get(i).bounds().contains(x, y)
+                    && folks.get(i).homeChart.equals(Context.current.currentChart)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

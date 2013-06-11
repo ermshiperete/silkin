@@ -60,7 +60,7 @@ public class Marriage {
     LinkedList spouses = null; // three or more possible
     LinkedList sibset = null;
     Point location = null;
-    int homeChart;
+    String homeChart = "";
     public static final int NOLABEL = 0;
     public static final int INITIALS = 1;
     public static final int NAME = 2;

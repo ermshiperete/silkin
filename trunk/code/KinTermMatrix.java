@@ -51,18 +51,20 @@ public class KinTermMatrix implements Serializable {
      */
     public void deletePerson(Individual ind) {
         Integer ndx = new Integer(ind.serialNmbr);
-        TreeMap herRow = (TreeMap)matrix.get(ndx);
-        for (Object o : herRow.values()) {
-            Node nod = (Node)o;
-            Context.current.deleteDyads(nod, ndx);
+        TreeMap herRow = (TreeMap) matrix.get(ndx);
+        if (herRow != null) {
+            for (Object o : herRow.values()) {
+                Node nod = (Node) o;
+                Context.current.deleteDyads(nod, ndx);
+            }
         }
         matrix.remove(ndx);
         Iterator rowIter = matrix.entrySet().iterator();
         while (rowIter.hasNext()) {
-            Map.Entry entry = (Map.Entry)rowIter.next();
-            Integer altSerial = (Integer)entry.getKey();
-            TreeMap row = (TreeMap)entry.getValue();
-            Node nod = (Node)row.get(ndx);
+            Map.Entry entry = (Map.Entry) rowIter.next();
+            Integer altSerial = (Integer) entry.getKey();
+            TreeMap row = (TreeMap) entry.getValue();
+            Node nod = (Node) row.get(ndx);
             Context.current.deleteDyads(nod, altSerial);
             row.remove(ndx);
         }
@@ -491,22 +493,40 @@ public class KinTermMatrix implements Serializable {
      * @param alterNum  alter's serial number
      * @return  the array
      */
-    public ArrayList<Integer> getPath(int egoNum, int alterNum) {
+    public ArrayList<Integer> getPath(int egoNum, int alterNum)
+            throws KSInternalErrorException {
         ArrayList<Integer> path = new ArrayList<Integer>();
         Node n = getCell(egoNum, alterNum);
-        if (n == null || n.miniPreds == null) return path;
+        if (n == null || n.miniPreds == null) {
+            return path;
+        }
         for (Object o : n.miniPreds) {
-            String pred = (String)o;
-            int start, comma, close, p1, p2;
+            String pred = (String) o, pcStr;
+            int leftParen, start, comma, close, p1, p2;
+            leftParen = pred.indexOf("(");
             start = pred.indexOf("#");
             comma = pred.indexOf(",");
             close = pred.indexOf(")");
-            p1 = Integer.parseInt(pred.substring(start +1, comma));
+            pcStr = pred.substring(0, leftParen);
+            p1 = Integer.parseInt(pred.substring(start + 1, comma));
             start = pred.indexOf("#", comma);
-            p2 = Integer.parseInt(pred.substring(start +1, close));
+            p2 = Integer.parseInt(pred.substring(start + 1, close));
             if (p1 != egoNum && p1 != alterNum && !path.contains(p1)) {
                 path.add(p1);
             }
+            if (Context.current.chartDescriptions.size() > 1 && pcStr.startsWith("St")) {
+                //  highlighting linking natural kin of step-relations is only needed if multi charts  
+                try {
+                    if (pcStr.equals("Stfa") || pcStr.equals("Stmo")) {
+                        findNaturalLinkingKin(p1, p2, path);
+                    } else {
+                        findNaturalLinkingKin(p2, p1, path);
+                    }
+                } catch (KSInternalErrorException exc) {
+                    throw new KSInternalErrorException("Found invalid minipred: " + pred);
+                }
+            }
+
             if (p2 != egoNum && p2 != alterNum && !path.contains(p2)) {
                 path.add(p2);
             }
@@ -514,6 +534,29 @@ public class KinTermMatrix implements Serializable {
         return path;
     }
 
+    void findNaturalLinkingKin(int parent, int child, ArrayList<Integer> path)
+            throws KSInternalErrorException {
+        Individual par = Context.current.individualCensus.get(parent),
+                kid = Context.current.individualCensus.get(child),
+                spouse = null, link = null;
+        // par is a step-parent of kid
+        bigLoop:
+        for (Object o : par.marriages) {
+            Family fam = (Family) o;
+            spouse = (fam.wife == par ? fam.husband : fam.wife);
+            for (Object o2 : spouse.marriages) {
+                Family stepFam = (Family) o2;
+                if (stepFam != fam && stepFam.children.contains(kid)) {
+                    link = spouse;
+                    break bigLoop;
+                }
+            }  
+        }
+        if (link == null) {
+            throw new KSInternalErrorException("");
+        }
+        path.add(link.serialNmbr);
+    }
 
     /**
     Update <code>ego</code>'s row in this KinTermMatrix.  For each person in the ArrayList<Individual>

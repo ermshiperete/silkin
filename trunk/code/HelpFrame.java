@@ -322,7 +322,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             suggsSubMenu = new JMenu();
             prefsSubMenu = new JMenu();
             theoryEditSubMenu = new JMenu();
-        // SubMenu Items
+//          Start Sub-Menus
             screenItem = new JMenuItem();
             createProjectItem = new JMenuItem();
             addPeopleItem = new JMenuItem();
@@ -340,6 +340,8 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             movingItem = new JMenuItem();
             deleteRelItem = new JMenuItem();
             deletePeopleItem = new JMenuItem();
+            multiChartItem = new JMenuItem();
+            deletingChartsItem = new JMenuItem();
             printChartItem = new JMenuItem();
 //          Context Editor Sub-Menus
             definitionItem = new JMenuItem();
@@ -524,6 +526,24 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
                 }
             });
             chartSubMenu.add(deletePeopleItem);
+            
+            multiChartItem.setText("Multiple Charts");
+            multiChartItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(CHART, "multicharts");
+                }
+            });
+            chartSubMenu.add(multiChartItem);
+            
+            deletingChartsItem.setText("Deleting Charts");
+            deletingChartsItem.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent evt) {
+                    help.displayPage(CHART, "deletingcharts");
+                }
+            });
+            chartSubMenu.add(deletingChartsItem);
             
             printChartItem.setText("Printing Charts");
             printChartItem.addActionListener(new ActionListener() {
@@ -819,6 +839,8 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
         private JMenuItem movingItem;
         private JMenuItem deleteRelItem;
         private JMenuItem deletePeopleItem;
+        private JMenuItem multiChartItem;
+        private JMenuItem deletingChartsItem;
         private JMenuItem printChartItem;
         private JMenuItem getSuggsItem;
         private JMenuItem actSuggsItem;

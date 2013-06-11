@@ -17,6 +17,8 @@ public class Context implements Serializable {
     static Context current;  // for Library Browser purposes.  User's current Context = Library.contextUnderConstruction
     static boolean simulation = false;
     static float spellingNoise, classNoise;
+    static String[] chartLtrs = LiteralAbstract1.argCodes;
+        
     //  --- Debug tools ---
     static Individual watchInd;
     static int breakCount1 = 0;
@@ -27,10 +29,10 @@ public class Context implements Serializable {
     public String comments = "",
             /**	Date this context was initialized.	*/
             createDate;
-    public String dateOfLastSuggestion, dateOfLastDataChange;
+    public String dateOfLastSuggestion, dateOfLastDataChange, currentChart = "A";
     ArrayList<String> dataAuthors = new ArrayList<String>();
     ArrayList<String> chartDescriptions = new ArrayList<String>();
-    int indSerNumGen = 0, famSerNumGen = 0, linkSerNumGen = 0, maxBaseDefMisFits = 4, currentChart;
+    int indSerNumGen = 0, famSerNumGen = 0, linkSerNumGen = 0, maxBaseDefMisFits = 4;
     /**	Name of the language spoken in this culture. It is limited administratively to 28 characters.	*/
     public String languageName;
     ArrayList<Object> selectedKinTerms;
@@ -633,6 +635,31 @@ public class Context implements Serializable {
         }
     }
     
+    public String getChartDescription(String chart) {
+        String description = "ERROR -- No Description Found";
+        int index = Arrays.binarySearch(chartLtrs, chart);
+        if (index >= 0 && index < chartDescriptions.size()) {
+            description = chartDescriptions.get(index);
+        }        
+        return description;
+    }
+    
+    public int getChartIndex(String chartLtr) {
+        return Arrays.binarySearch(chartLtrs, chartLtr);
+    }
+    
+    public String getChartLtr(int n) {
+        return chartLtrs[n];
+    }
+    
+    public String getNextChartLtr() {
+        int nextIndex = chartDescriptions.size();
+        if (nextIndex >= chartLtrs.length) {
+            return null;
+        }
+        return chartLtrs[nextIndex];
+    }
+    
     private String editorParameters = "";
 
     public void writeSILKFile(File f, String params) throws FileNotFoundException,
@@ -761,7 +788,7 @@ public class Context implements Serializable {
         if (editDirectory != null) {
             silk.println("  <editDirectory dir=\"" + editDirectory + "\"/>");
         }
-        silk.println("  <currentChart n=\"" + currentChart + "\"/>");
+        silk.println("  <currentChart id=\"" + currentChart + "\"/>");
         if (!chartDescriptions.isEmpty()) {
             silk.println("  <chartDescriptions>");
             for (String s : chartDescriptions) {

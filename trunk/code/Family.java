@@ -573,7 +573,7 @@ public class Family extends Marriage implements Serializable {
     /**  This method builds a string that represents a family in a SILKin data (_.silk) file.   */
     public String toSILKString() throws KSDateParseException {
         String result = "<family n=\"" + serialNmbr + "\">";
-        result += "  <homeChart n=\"" + homeChart + "\"/>";
+        result += "  <homeChart id=\"" + homeChart + "\"/>";
         result += "  <location x=\"" + location.x + "\" y=\""
                 + location.y + "\"/>" + XFile.Eol;
         result += "  <reason>" + reason + "</reason>" + XFile.Eol;
@@ -822,6 +822,7 @@ public class Family extends Marriage implements Serializable {
      */
     public void delete() {
         deleted = true;
+        homeChart = "deleted";
         for (Object o : children) {
             ((Individual) o).birthFamily = null;
         }

@@ -21,24 +21,23 @@ public abstract class LiteralAbstract1 extends Argument  {
 	public static int expansionSerial, debugSerial = 0;
 	public static final String stdEgo = "Ego", stdAlter = "Alter";
 	public static final String[] argCodes = {"A".intern(), "B".intern(), "C".intern(), "D".intern(), "E".intern(), 
-											 "F".intern(), "G".intern(), "H".intern(), "I".intern(), "J".intern(), 
-											 "K".intern(), "L".intern(), "M".intern(),
-											 "N".intern(), "O".intern(), "P".intern(), "Q".intern(), "R".intern(), 
-											 "S".intern(), "T".intern(), "U".intern(), "V".intern(), "W".intern(), 
-											 "X".intern(), "Y".intern(), "Z".intern(),
-											 "AA", "BB", "CC", "DD", "EE", "FF", "GG", "HH", "II", "JJ", "KK", 
-											 "LL", "MM", "NN", "OO", "PP", "QQ", "RR", "SS", "TT", "UU", "VV", 
-											 "WW", "XX", "YY", "ZZ"};  // 54 variables SHOULD be enough!
+					"F".intern(), "G".intern(), "H".intern(), "I".intern(), "J".intern(), 
+					"K".intern(), "L".intern(), "M".intern(), "N".intern(), "O".intern(), "P".intern(), "Q".intern(), 
+                                        "R".intern(), "S".intern(), "T".intern(), "U".intern(), "V".intern(), "W".intern(), 
+					"X".intern(), "Y".intern(), "Z".intern(),
+					"AA", "BB", "CC", "DD", "EE", "FF", "GG", "HH", "II", "JJ", "KK", 
+					"LL", "MM", "NN", "OO", "PP", "QQ", "RR", "SS", "TT", "UU", "VV", 
+					"WW", "XX", "YY", "ZZ"};  // 54 variables SHOULD be enough!
 	public static final String[] cancellingPredsA = { "male", "female", "elder", "younger" },
-								 cancellingPredsB = { "female", "male", "younger", "elder" },
-								 oppositePredsA = { "father", "husband", "son", "brother", "mother", "wife", "daughter", "sister" },
-								 oppositePredsB = { "mother", "wife", "daughter", "sister", "father", "husband", "son", "brother" },
-								 generalPreds = { "parents", "spice", "children", "siblings", "parents", "spice", "children", "siblings" };
+				     cancellingPredsB = { "female", "male", "younger", "elder" },
+                                     oppositePredsA = { "father", "husband", "son", "brother", "mother", "wife", "daughter", "sister" },
+                                     oppositePredsB = { "mother", "wife", "daughter", "sister", "father", "husband", "son", "brother" },
+                                     generalPreds = { "parents", "spice", "children", "siblings", "parents", "spice", "children", "siblings" };
 	public static ArrayList<Object> cancelPredsA = loadCanA(),
-							cancelPredsB = loadCanB(),
-							oppoPredsA = loadOppoA(),
-							oppoPredsB = loadOppoB(),
-							genPreds = loadGenPreds();
+					cancelPredsB = loadCanB(),
+					oppoPredsA = loadOppoA(),
+					oppoPredsB = loadOppoB(),
+					genPreds = loadGenPreds();
 	
 	//  INSTANCE VARIABLES
 	public Predicate predicate;

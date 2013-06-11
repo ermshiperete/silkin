@@ -19,11 +19,12 @@ import javax.swing.JScrollPane;
  */
 public class PrintChart implements Printable {
 
-    public static Font printFont = null;
+    public static Font printFont;
+    public static Font tinyFont = new Font("Dialog", Font.PLAIN, 4);
     public static PageFormat pgFormat = null;
     ChartPanel chart = null;
     JScrollPane pane;
-    boolean wholeChart;
+    boolean wholeChart, ok = false;
     int nmbrOfPages = 0;
     Rectangle[] boundsArray;
 
@@ -31,7 +32,7 @@ public class PrintChart implements Printable {
         pane = js;
         wholeChart = whole;
         if (printFont == null) {
-            printFont = new Font("Dialog", Font.PLAIN, 9);
+            printFont = new Font("Dialog", Font.PLAIN, 8);
         }
     }
 
@@ -76,7 +77,7 @@ public class PrintChart implements Printable {
             }
         }
         job.setPrintable(this, pgFormat);
-        boolean ok = job.printDialog();
+        ok = job.printDialog();
         if (ok) {
             try {
                 job.print();
@@ -84,11 +85,14 @@ public class PrintChart implements Printable {
                 Context.breakpoint();
             }
         }
-    }   
+    }  
 
     public int print(Graphics g, PageFormat pf, int page) throws PrinterException {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setFont(printFont);
+        Context ctxt = Context.current;
+        int chartPageNmbr = page + 1;
+        String chartTitle = ctxt.currentChart;
+        chartTitle += ": " + ctxt.getChartDescription(ctxt.currentChart);
         if (wholeChart) {
             if (page >= nmbrOfPages) {
                 return NO_SUCH_PAGE;
@@ -96,22 +100,27 @@ public class PrintChart implements Printable {
                 //  Print the page called for
                 Rectangle segmentBounds = boundsArray[page];
                 int offsetX = segmentBounds.x,
-                    offsetY = segmentBounds.y;
+                        offsetY = segmentBounds.y;
                 g2d.translate(pf.getImageableX() - offsetX,
                         pf.getImageableY() - offsetY);
-                chart.paint0(g2d, segmentBounds);
+                // Print page header
+                g2d.setFont(tinyFont);
+                g2d.drawString(chartTitle + " pg " + chartPageNmbr, offsetX + 5, offsetY + 15);
+                g2d.setFont(printFont);
+                chart.paint0(g2d, segmentBounds, ctxt.currentChart);
                 return PAGE_EXISTS;
             }
         } else {  // Print just visible portion: Page 0
             if (page > 0) {
                 return NO_SUCH_PAGE;
             }
+            g2d.setFont(printFont);
             Rectangle segmentBounds = pane.getViewport().getViewRect();
             int offsetX = segmentBounds.x,
-                offsetY = segmentBounds.y;
+                    offsetY = segmentBounds.y;
             g2d.translate(pf.getImageableX() - offsetX,
                     pf.getImageableY() - offsetY);
-            chart.paint0(g2d, segmentBounds);
+            chart.paint0(g2d, segmentBounds, ctxt.currentChart);
             return PAGE_EXISTS;
         }
     }

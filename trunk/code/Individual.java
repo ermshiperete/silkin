@@ -572,7 +572,7 @@ public boolean hasDoD() {
     public String toSILKString() throws KSDateParseException {
         String result = "<individual n=\"" + serialNmbr + "\">";
         result += "<sex>" + (sex instanceof Female ? "F" : "M") + "</sex>\n";
-        result += "  <homeChart n=\"" + homeChart + "\"/>\n";
+        result += "  <homeChart id=\"" + homeChart + "\"/>\n";
         result += "  <location x=\"" + location.x + "\" y=\"" + location.y + "\"/>\n";
         if (comment != null && comment.length() > 0) {
             result += "  <comments txt=\"" + comment + "\"/>\n";
@@ -875,6 +875,7 @@ public boolean hasDoD() {
      */
     public void delete() throws KSInternalErrorException {
         deleted = true;
+        homeChart = "deleted";
         if (birthFamily != null) {
             birthFamily.deleteChild(this);
         }
@@ -882,7 +883,7 @@ public boolean hasDoD() {
             ((Family) f).deleteSpouse(this);
         }
         dataChangeDate = UDate.today();
-        homeChart = -1;
+        homeChart = "";
         if (links != null) { // iterate backwards; perhaps these were last links created
             for (int i=links.size() -1; i >= 0; i--) {
                 Link lk = links.get(i);

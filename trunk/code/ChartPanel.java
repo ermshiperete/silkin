@@ -203,9 +203,9 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         originY = y;
     }  //  Only used once, for 0,0.   ???
 
-//	public void doFixEgo(int which) {
+//	public void doFixEgo(int serialNum) {
 //		if (whichFolk == -1) {
-//			whichFolk = which;
+//			whichFolk = serialNum;
 //			return;
 //		}
 //		// do some alt action
@@ -216,8 +216,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         int theInd = Person.findPerson(mouseX, mouseY);
         int theLink = Link.findLink(mouseX, mouseY);
         int theFam = findMarriage(mouseX, mouseY);
-//        mouseX -= originX;    //  Will I need these when chart grows large??
-//        mouseY -= originY;
+
         if ((theInd + theLink + theFam) > -3) { // SOMETHING was clicked
             if (personMenu.isShowing()) {
                 personMenu.setVisible(false);
@@ -365,7 +364,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         Library.activeContexts.put(ctxtName, Context.current);
         Context.current.editDirectory = Library.editDirectory;
         parent.ktm = Context.current.ktm;
-        Context.current.loadDefaultLinkStuff();        
+        Context.current.loadDefaultLinkStuff();
         saveFile = null;
     }  //  end of Check when 1st person/union created
 
@@ -399,11 +398,13 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             case 0: // female
                 newPerson = new Individual(Person.fem, new Point(lastLoc.x, lastLoc.y));
                 newPerson.myId = newPerson.serialNmbr + 1;
+                newPerson.homeChart = Context.current.currentChart;
                 parent.getPPanel().addToEgoChoices(newPerson);
                 break;
             case 1: // male
                 newPerson = new Individual(Person.mal, new Point(lastLoc.x, lastLoc.y));
                 newPerson.myId = newPerson.serialNmbr + 1;
+                newPerson.homeChart = Context.current.currentChart;
                 parent.getPPanel().addToEgoChoices(newPerson);
                 break;
             case 2: // marriage
@@ -419,15 +420,19 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                     newName = (ind.deleted ? "deleted" : ind.name + " <" + ind.serialNmbr + ">");
                     people[index++] = newName;
                 }
-                String person = (String)JOptionPane.showInputDialog(
+                String person = (String) JOptionPane.showInputDialog(
                         parent, "Choose the Person", "Link to An Existing Person",
-                        JOptionPane.PLAIN_MESSAGE, null, people, people[0]);    
-                if (person.startsWith("deleted")) {
-                    JOptionPane.showConfirmDialog(parent, 
+                        JOptionPane.PLAIN_MESSAGE, null, people, people[0]);
+                if (person == null) {
+                    return;
+                }
+                if(person.startsWith("deleted")) {
+                    JOptionPane.showConfirmDialog(parent,
                             "Not Allowed to Link to a Deleted Person.");
                     return;
                 }
-                int strt = person.indexOf("<") +1, end = person.length()-1;
+                int strt = person.indexOf("<") + 1,
+                 end = person.length() - 1;
                 int serial = Integer.parseInt(person.substring(strt, end));
                 Individual newbie = Context.current.individualCensus.get(serial);
                 Point location = new Point(lastLoc.x, lastLoc.y);
@@ -447,10 +452,12 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             }
             delayedAreaCk(newPerson);
             showInfo(newPerson);
-        }else if (newMar != null) {
+        } else if (newMar != null) {
+            newMar.homeChart = Context.current.currentChart;
             delayedAreaCk(newMar);
             showInfo(newMar);
-        }else if(newLink != null) {
+        } else if (newLink != null) {
+            newLink.homeChart = Context.current.currentChart;
             delayedAreaCk(newLink);
             showInfo(newLink.personPointedTo);
         }
@@ -473,7 +480,9 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             return -1;
         }
         for (Family m : Marriage.knots) {
-            if (m != null && m.bounds().contains(x, y)) {
+            if (m != null && 
+                    m.homeChart.equals(Context.current.currentChart)
+                    && m.bounds().contains(x, y)) {
                 return m.mid - 1;
             }
         }
@@ -484,8 +493,9 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         int[] results = new int[2];
         int minX = 1000000, minY = 1000000, maxX = -1, maxY = -1;
         int extraX = Library.gridX, extraY = Library.gridY;
+        String currChart = Context.current.currentChart;
         for (Family f : Context.current.familyCensus) {
-            if (!f.deleted) {
+            if (!f.deleted && f.homeChart.equals(currChart)) {
                 if (f.location.x < minX) {
                     minX = f.location.x;
                 }
@@ -501,7 +511,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             }
         }
         for (Individual ind : Context.current.individualCensus) {
-            if (!ind.deleted) {
+            if (!ind.deleted && ind.homeChart.equals(currChart)) {
                 if (ind.location.x < minX) {
                     minX = ind.location.x;
                 }
@@ -513,6 +523,22 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 }
                 if (ind.location.y + extraY > maxY) {
                     maxY = ind.location.y + extraY;
+                }
+            }
+        }
+        for (Link lk : Context.current.linkCensus) {
+            if (!lk.deleted && lk.homeChart.equals(currChart)) {
+                if (lk.location.x < minX) {
+                    minX = lk.location.x;
+                }
+                if (lk.location.y < minY) {
+                    minY = lk.location.y;
+                }
+                if (lk.location.x + extraX > maxX) {
+                    maxX = lk.location.x + extraX;
+                }
+                if (lk.location.y + extraY > maxY) {
+                    maxY = lk.location.y + extraY;
                 }
             }
         }
@@ -690,10 +716,14 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         g.translate(originX, originY);
         Rectangle myRect = getBounds();
         myRect.setLocation(-originX, -originY);
-        paint0(g, myRect);
+        String currChart = null;
+        if (Context.current != null && Context.current.currentChart != null) {
+            currChart = Context.current.currentChart;
+        }
+        paint0(g, myRect, currChart);
     }
 
-    public void paint0(Graphics g, Rectangle myRect) {
+    public void paint0(Graphics g, Rectangle myRect, String chart) {
         Rectangle theRect;
         if (Context.current == null) {
             return;
@@ -702,21 +732,35 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             selectLine.paint(g);
         }
         int oldFolk = whichFolk;
-        ArrayList<Integer> path = new ArrayList<Integer>();;
-        if (whichFolk > -1) {
-            path = Context.current.ktm.getPath(parent.getCurrentEgo(), whichFolk);
-        } else if (whichLink > -1) {
-            int ppt = Context.current.linkCensus.get(whichLink).personPointedTo.serialNmbr;
-            path = Context.current.ktm.getPath(parent.getCurrentEgo(), ppt);
+        ArrayList<Integer> path = new ArrayList<Integer>();
+        try {
+            if (whichFolk > -1) {
+                path = Context.current.ktm.getPath(parent.getCurrentEgo(), whichFolk);
+            } else if (whichLink > -1) {
+                int ppt = Context.current.linkCensus.get(whichLink).personPointedTo.serialNmbr;
+                path = Context.current.ktm.getPath(parent.getCurrentEgo(), ppt);
+            }
+        } catch (KSInternalErrorException exc) {
+            JOptionPane.showMessageDialog(this,
+                    "SERIOUS problem. " + exc + "\nProbably due to deletion of people or unions.\n"
+                    + "Not your fault. Send copy of your SILK file to SILKin Team for correction.",
+                    "Data Corruption Error",
+                    JOptionPane.ERROR_MESSAGE);
+            saveSILKFile();
+            System.exit(9);
+        }
+        if (chart == null) {
+            chart = "A";
         }
         for (Link lk : Context.current.linkCensus) {
-            if (! lk.deleted) {
+            if (!lk.deleted && lk.homeChart.equals(chart)) {
                 Individual p = lk.personPointedTo;
                 if (p.serialNmbr == parent.getCurrentEgo()) {
                     lk.drawSymbol(g, myRect, Color.red);
                 } else if (lk.serialNmbr == whichLink) { // clicked on Link
                     lk.drawSymbol(g, myRect, Color.blue);
                     whichFolk = p.serialNmbr; // makes original blue also
+                    showInfo(p);
                 } else if (p.serialNmbr == whichFolk) {
                     lk.drawSymbol(g, myRect, Color.blue);
                 } else if (path.contains(p.serialNmbr)) {
@@ -727,12 +771,9 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             }
         }  //  end of loop thru Links, w/ default color = green
         for (Individual p : Person.folks) { // clicked on Individual
-            if (p != null && !p.deleted) {
+            if (p != null && !p.deleted && p.homeChart.equals(chart)) {
                 if (p.serialNmbr == whichFolk) {
-                    p.drawSymbol(g, myRect, Color.blue);
-                    if (lastFolk != whichFolk) {
-                        showInfo(p);
-                    }
+                    p.drawSymbol(g, myRect, Color.blue);                    
                 } else if (p.serialNmbr == parent.getCurrentEgo()) {
                     p.drawSymbol(g, myRect, Color.red);
                 } else if (path.contains(p.serialNmbr)) {
@@ -742,11 +783,14 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 }
             }
         }  //  end of loop thru Individuals
+        if (lastFolk != whichFolk && whichFolk >= 0) {
+            showInfo(Context.current.individualCensus.get(whichFolk));
+        }
         whichFolk = oldFolk;
         lastFolk = whichFolk;  // lastFolk == person previously displayed
         whichHalf = -1;
         for (Family m : Marriage.knots) {
-            if (m != null) {
+            if (m != null && m.homeChart.equals(chart)) {
                 theRect = m.bounds();
                 if (m.mid - 1 == whichKnot) {
                     m.drawSymbol(g, myRect, Color.blue);
@@ -990,7 +1034,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             repaint();
             return;
         }
-        if (altDn && whichLink > -1) {
+        if (altDn && whichLink > -1) { // Chose New Ego
             Individual ind = Context.current.linkCensus.get(whichLink).personPointedTo;
             parent.changeEgo(ind.serialNmbr);
             parent.getPPanel().resetEgoBox(parent.getCurrentEgo());
@@ -1070,55 +1114,20 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             tiedKnot = -1;
             selectLine = null;
             repaint();
-        } else if (ctrlDn) {  //  Control = deletion
-            int which;
-            if ((which = Person.findPerson(mouseX, mouseY)) >= 0) { //  Want to delete a Person
-                if (whichFolk == which) {
+        } else if (ctrlDn) {  //  Control = deletion and deletion gets messy
+            int serialNum;
+            if ((serialNum = Person.findPerson(mouseX, mouseY)) >= 0) { //  Want to delete a Person
+                if (whichFolk == serialNum) {
                     lastLoc = new Point(mouseX, mouseY);
                 } else {
-                    whichFolk = which;
-                }
+                    whichFolk = serialNum;
+                }                
                 Individual ind = Context.current.individualCensus.get(whichFolk);
-                if (ind.links != null && !ind.links.isEmpty()) {
-                    String title = "REMINDER: This Person Has Links.", msg = "",
-                           msg2 = "Deleting this person automatically deletes all their links on all charts.";
-                    if (!ind.marriages.isEmpty() || ind.birthFamily != null) {
-                        msg += "\nAt least one link was created to show a relationship. ";
-                        msg += "You must disconnect\nany links from families (break the relationship) ";
-                        msg += "before you delete this person.";
-                    }
-                    JOptionPane.showMessageDialog(parent, msg2 + msg, title, JOptionPane.PLAIN_MESSAGE);
-                }
-                if (Context.current.indSerNumGen > 1
-                        && (ind.node != null || ind.birthFamily != null || ind.marriages.size() > 0)) {
-                    String msg = "", title = "Deletion Cannot Be Performed";
-                    if (which == parent.getCurrentEgo()) {
-                        msg = "Cannot delete Ego. Must first choose a different Ego.";
-                    } else if (ind.birthFamily != null) {
-                        msg = "Cannot delete child while in family. First disconnect them, then delete.";
-                    } else if (ind.marriages.size() > 0) {
-                        msg = "Cannot delete spouse while married. First disconnect them, then delete.";
-                    }
-                    JOptionPane.showMessageDialog(parent, msg, title, JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-                ind.delPerson();
                 try {
-                    ind.delete();
-                } catch (KSInternalErrorException k) {
-                }  //  deleted persons may be messed up
-                if (which == Context.current.indSerNumGen - 1 //  Delete last person made
-                        && which != parent.getCurrentEgo()) {   //  if they are not Ego
-                    Person.folks.remove(--Context.current.indSerNumGen);
-                    parent.getPPanel().rebuildEgoBox();
-                } else {
-                    parent.getPPanel().updateEgoNames(ind);
-                    Person.folks.get(whichFolk).location = new Point(-100, -100);
+                    deleteIndividual(ind);
+                } catch (KinshipSystemException exc) {
+                    //  we refused the deletion; no big deal
                 }
-                Context.current.ktm.deletePerson(ind);
-                //  Because we do not allow deletion of persons who are married or have a birth family,
-                //  no recomputing of nodes is needed. Just delete this guy's row and column in the KTM
-                //  and any associated dyads.
                 whichFolk = -1;
                 dirty = true;
                 repaint();
@@ -1126,17 +1135,14 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             } else {
                 whichFolk = -1;
             }
-            if ((which = findMarriage(mouseX, mouseY)) >= 0) { //  Want to delete a Family
-                if (whichKnot == which) {
+            if ((serialNum = findMarriage(mouseX, mouseY)) >= 0) { //  Want to delete a Family
+                if (whichKnot == serialNum) {
                     lastLoc = new Point(mouseX, mouseY);
                 } else {
-                    whichKnot = which;
+                    whichKnot = serialNum;
                 }
                 Family fam = Marriage.knots.get(whichKnot);
-                fam.delete();
-                fam.delMarriage();
-                removePersonAndRecomputeNodes(fam.husband, fam);
-                fam.location = new Point(-100, -100);
+                deleteFamily(fam);
                 whichKnot = -1;
                 dirty = true;
                 repaint();
@@ -1144,29 +1150,18 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             } else {
                 whichKnot = -1;
             }
-            if ((which = Link.findLink(mouseX, mouseY)) >= 0) { // Want to delete a Link
-                if (whichLink == which) {
+            if ((serialNum = Link.findLink(mouseX, mouseY)) >= 0) { // Want to delete a Link
+                if (whichLink == serialNum) {
                     lastLoc = new Point(mouseX, mouseY);
                 } else {
-                    whichLink = which;
+                    whichLink = serialNum;
                 }
-                Link lk = Context.current.linkCensus.get(which);
-                Individual ind = lk.personPointedTo;
-                Family mar = null;
-                boolean linkIsKid = ind.birthFamily != null && ind.birthFamily.kidLinks.contains(lk);
-                boolean linkIsSpouse = (mar = spouseLinkIn(ind.marriages, lk)) != null;
-                if (Context.current.indSerNumGen > 1 && (linkIsKid || linkIsSpouse)) {
-                    String msg = "", title = "Deletion Cannot Be Performed";
-                    if (linkIsKid) {
-                        msg = "Cannot delete child while in family. First disconnect them, then delete.";
-                    } else if (linkIsSpouse) {
-                        msg = "Cannot delete spouse while married. First disconnect them, then delete.";
-                    }
-                    JOptionPane.showMessageDialog(parent, msg, title, JOptionPane.WARNING_MESSAGE);
-                    return;
+                Link lk = Context.current.linkCensus.get(serialNum);
+                try {
+                    deleteLink(lk);
+                } catch (KinshipSystemException exc) {
+                    //  deletion refused. It's OK.
                 }
-                Link.delete(lk);
-                lk.personPointedTo.links.remove(lk);
             } else {
                 whichLink = -1;
             }
@@ -1180,6 +1175,98 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         theRect.height *= 2;
         theRect.y -= theRect.height / 4;
         return theRect;
+    }
+    
+    void deleteIndividual(Individual ind) throws KinshipSystemException {
+        int serialNmbr = ind.serialNmbr;
+//        Don't think I need this test -- links to families will be cuaght below.
+//        if (ind.links != null && !ind.links.isEmpty()) {
+//            String title = ind.name + " Has Links.", msg = "",
+//                    msg2 = "Deleting this person automatically deletes all their links on all charts.";
+//            if (!ind.marriages.isEmpty() || ind.birthFamily != null) {
+//                msg += "\nAt least one link was created to show a relationship. ";
+//                msg += "You must disconnect\nany links from families (break the relationship) ";
+//                msg += "before you delete this person.";
+//            }
+//            JOptionPane.showMessageDialog(parent, msg2 + msg, title, JOptionPane.PLAIN_MESSAGE);
+//            throw new KinshipSystemException("");
+//        }
+        if (Context.current.indSerNumGen > 1
+                && (ind.node != null || ind.birthFamily != null || ind.marriages.size() > 0)) {
+            String msg = "", title = "Cannot Delete " + ind.name;
+            if (serialNmbr == parent.getCurrentEgo()) {
+                msg = "Cannot delete Ego. Must first choose a different Ego.";
+            } else if (ind.birthFamily != null) {
+                msg = "Cannot delete child while in family. First disconnect them, then delete.";
+            } else if (ind.marriages.size() > 0) {
+                msg = "Cannot delete spouse while married. First disconnect them, then delete.";
+            }
+            JOptionPane.showMessageDialog(parent, msg, title, JOptionPane.WARNING_MESSAGE);
+            throw new KinshipSystemException("");
+        }
+        ind.delPerson();
+        try {
+            ind.delete();
+        } catch (KSInternalErrorException k) {
+        }  //  deleted persons may be messed up
+        if (serialNmbr == Context.current.indSerNumGen - 1 //  Delete last person made
+                && serialNmbr != parent.getCurrentEgo()) {   //  if they are not Ego
+            Person.folks.remove(--Context.current.indSerNumGen);
+            parent.getPPanel().rebuildEgoBox();
+        } else {
+            parent.getPPanel().updateEgoNames(ind);
+            Person.folks.get(whichFolk).location = new Point(-100, -100);
+        }
+        Context.current.ktm.deletePerson(ind);
+        //  Because we do not allow deletion of persons who are married or have a birth family,
+        //  no recomputing of nodes is needed. Just delete this guy's row and column in the KTM
+        //  and any associated dyads.                
+    }
+    
+    void deleteLink(Link lk) throws KinshipSystemException {
+        if (!lk.deleted) {
+            Individual ind = lk.personPointedTo;
+            boolean linkIsKid = ind.birthFamily != null && ind.birthFamily.kidLinks.contains(lk);
+            boolean linkIsSpouse = (spouseLinkIn(ind.marriages, lk)) != null;
+            if (Context.current.indSerNumGen > 1 && (linkIsKid || linkIsSpouse)) {
+                String msg = "", title = "Cannot Delete " + lk.personPointedTo.name;
+                if (linkIsKid) {
+                    msg = "Cannot delete child while in family. First disconnect them, then delete.";
+                } else if (linkIsSpouse) {
+                    msg = "Cannot delete spouse while married. First disconnect them, then delete.";
+                }
+                JOptionPane.showMessageDialog(parent, msg, title, JOptionPane.WARNING_MESSAGE);
+                throw new KinshipSystemException("");
+            }
+            Link.delete(lk);
+            lk.personPointedTo.links.remove(lk);
+        }
+    }
+
+    void deleteFamily(Family fam) {
+        fam.delete();
+        fam.delMarriage();
+        if (fam.husbandLink != null) {
+            fam.husbandLink.deleted = true;
+            fam.husbandLink.homeChart = "deleted";
+            fam.husbandLink = null;
+        }
+        removePersonAndRecomputeNodes(fam.husband, fam);
+        if (fam.wifeLink != null) {
+            fam.wifeLink.deleted = true;
+            fam.wifeLink.homeChart = "deleted";
+            fam.wifeLink = null;
+        }
+        removePersonAndRecomputeNodes(fam.wife, fam);
+        while (!fam.children.isEmpty()) {
+            Individual kid = (Individual)fam.children.get(0);
+            removePersonAndRecomputeNodes(kid, fam);
+        }
+        for (Link lk : fam.kidLinks) {
+            lk.deleted = true;
+            lk.homeChart = "deleted";
+        }
+        fam.location = new Point(-100, -100);
     }
     
     void addOrDeleteSpouse(Individual ix, Family fx) {
@@ -1453,7 +1540,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
      *  in the KinTermMatrix and all dyads in the DyadTMaps that were affected.
      *
      * @param ix   Individual to be removed.
-     * @param fam  Family object from which to remove ix.
+     * @param fam  Family object from serialNum to remove ix.
      */
     void removePersonAndRecomputeNodes(Individual ix, Family fam) {
         recomputingDyads = true;
@@ -1950,17 +2037,22 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 MainPane.displayError(msg, "Internal Problem", JOptionPane.WARNING_MESSAGE);
             }
             Person.folks = ctxt.individualCensus;
-            Marriage.knots = ctxt.familyCensus;            
+            Marriage.knots = ctxt.familyCensus;
+            parent.rebuildChartCombo();
             String frameTitle = fc.getName(saveFile);
             parent.setTitle("Editing: " + frameTitle);
             //  We read in some people, so update egoChoiceBox
             parent.getPPanel().rebuildEgoBox();
             checkSizeOfChart(ctxt);
             loading = false;
-            setPreferredSize(area);
-            revalidate();
-            repaint();
+            resizeAndRepaint();
         }
+    }
+    
+    void resizeAndRepaint() {
+        setPreferredSize(area);
+        revalidate();
+        repaint();
     }
     
     void checkSizeOfChart(Context ctxt) {
@@ -1968,7 +2060,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         int minX = 1000000, minY = 1000000, maxX = -1, 
             maxY = -1, sz = 20;
         for (Individual ind : ctxt.individualCensus) {
-            if (!ind.deleted) {
+            if (!ind.deleted && ind.homeChart.equals(ctxt.currentChart)) {
                 sz = ind.getSize();
                 minX = Math.min(minX, ind.location.x);
                 minY = Math.min(minY, ind.location.y);
@@ -1977,7 +2069,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             }
         }
         for (Family f : ctxt.familyCensus) {
-            if (!f.deleted) {
+            if (!f.deleted && f.homeChart.equals(ctxt.currentChart)) {
                 sz = f.getSize();
                 minX = Math.min(minX, f.location.x);
                 minY = Math.min(minY, f.location.y);
@@ -1986,7 +2078,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             }
         }
         for (Link lk : ctxt.linkCensus) {
-            if (!lk.deleted) {
+            if (!lk.deleted && lk.homeChart.equals(ctxt.currentChart)) {
                 sz = lk.getSize();
                 minX = Math.min(minX, lk.location.x);
                 minY = Math.min(minY, lk.location.y);
@@ -1996,20 +2088,26 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         }
         Point idealTopLeft = gridSnap(new Point(2 * sz, 2 * sz));
         int adjustX = idealTopLeft.x - minX,
-            adjustY = idealTopLeft.y - minY,
-            idealWidth = maxX - minX + (3 * idealTopLeft.x) + adjustX,
-            idealHeight = maxY - minY + (3 * idealTopLeft.y) + adjustY;
+                adjustY = idealTopLeft.y - minY,
+                idealWidth = maxX - minX + (3 * idealTopLeft.x) + adjustX,
+                idealHeight = maxY - minY + (3 * idealTopLeft.y) + adjustY;
         if (adjustX != 0 || adjustY != 0) {
             for (Individual ind : ctxt.individualCensus) {
-                ind.adjustLocation(adjustX, adjustY);
+                if (ind.homeChart.equals(ctxt.currentChart)) {
+                    ind.adjustLocation(adjustX, adjustY);
+                }
             }
             for (Link lk : ctxt.linkCensus) {
-                lk.adjustLocation(adjustX, adjustY);
+                if (lk.homeChart.equals(ctxt.currentChart)) {
+                    lk.adjustLocation(adjustX, adjustY);
+                }
             }
             for (Family f : ctxt.familyCensus) {
-                f.adjustLocation(adjustX, adjustY);
-                for (Marriage.BirthGroup bg : f.birthGrps) {
-                    bg.topPtX += adjustX;
+                if (f.homeChart.equals(ctxt.currentChart)) {
+                    f.adjustLocation(adjustX, adjustY);
+                    for (Marriage.BirthGroup bg : f.birthGrps) {
+                        bg.topPtX += adjustX;
+                    }
                 }
             }
         }

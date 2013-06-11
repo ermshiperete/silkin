@@ -23,8 +23,8 @@ public class Link implements Locatable, Serializable {
     
     public Point location;
     Kind sex;
-    String dataChangeDate, dataAuthor;
-    int homeChart = 0, serialNmbr;
+    String dataChangeDate, dataAuthor, homeChart = "";
+    int serialNmbr;
     Individual personPointedTo;
     boolean drawn = false, deleted = false;
     
@@ -33,7 +33,7 @@ public class Link implements Locatable, Serializable {
         ctxt.linkCensus.add(this);
     }
     
-    public Link(Individual ind, int chart, Point loc) {
+    public Link(Individual ind, String chart, Point loc) {
         personPointedTo = ind;
         if (ind.links == null) {
             ind.links = new ArrayList<Link>();
@@ -109,7 +109,9 @@ public class Link implements Locatable, Serializable {
         }
         int size = Context.current.linkCensus.size();
         for (int i = size - 1; i >= 0; i--) {
-            if (Context.current.linkCensus.get(i).bounds().contains(x, y)) {
+            Link lk = Context.current.linkCensus.get(i);
+            if (lk.bounds().contains(x, y) && 
+                    lk.homeChart.equals(Context.current.currentChart)) {
                 return i;
             }
         }
@@ -122,7 +124,7 @@ public class Link implements Locatable, Serializable {
             Context.current.linkSerNumGen--;
         }else {
             lk.deleted = true;
-            lk.homeChart = -1;
+            lk.homeChart = "";
             lk.location = new Point(-100, -100);
         }
     }

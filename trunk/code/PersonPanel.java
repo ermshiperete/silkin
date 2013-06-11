@@ -26,21 +26,29 @@ public class PersonPanel extends javax.swing.JPanel {
 
     /** Creates new form PersonPanel */
     public PersonPanel() {
+        storing = true;
         initComponents();
+        linksLabel.setVisible(false);
+        linksComboBox.setVisible(false);
+        chartLabel.setVisible(false);
+        chartField.setVisible(false);
         parent = SIL_Edit.editWindow;
         alterID.setColumns(3);
         alterRefTerm.setEditable(false);
         recipRefTerm.setEditable(false);
         egoChoiceModel = (DefaultComboBoxModel)egoChoiceBox.getModel();
         egoChoiceModel.removeAllElements();  //  ready for first person
+        linksComboModel = (DefaultComboBoxModel)linksComboBox.getModel();
+        linksComboModel.removeAllElements();  //  ready for first person
         personComments.getDocument().addDocumentListener(new CommentListener());
+        storing = false;
 //        buildFocusFields();
     }
 
     SIL_Edit parent = null;  //  The container holding this JPanel.
     String kinterm = null,
            reciprocalKinTerm = null;
-    DefaultComboBoxModel egoChoiceModel;
+    DefaultComboBoxModel egoChoiceModel, linksComboModel;
 
     boolean dirty = false;  //  This 'dirty bit' applies only to the current
                             //  infoPerson.
@@ -108,8 +116,12 @@ public class PersonPanel extends javax.swing.JPanel {
         personDeathDD = new javax.swing.JTextField();
         dataChgDateLabel = new javax.swing.JLabel();
         dataChgDate = new javax.swing.JTextField();
+        chartLabel = new javax.swing.JLabel();
+        chartField = new javax.swing.JTextField();
+        linksLabel = new javax.swing.JLabel();
+        linksComboBox = new javax.swing.JComboBox();
 
-        setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Current Alter", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 13), new java.awt.Color(0, 0, 204))); // NOI18N
+        setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Current Alter", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 0, 204)));
         setMaximumSize(new java.awt.Dimension(907, 309));
         setMinimumSize(new java.awt.Dimension(907, 309));
 
@@ -171,8 +183,8 @@ public class PersonPanel extends javax.swing.JPanel {
 
         jLabel8.setText("Born:");
 
-        personBirthMM.setColumns(2);
         personBirthMM.setEditable(false);
+        personBirthMM.setColumns(2);
         personBirthMM.setText("MM");
         personBirthMM.setMaximumSize(new java.awt.Dimension(64, 28));
         personBirthMM.setMinimumSize(new java.awt.Dimension(64, 28));
@@ -182,8 +194,8 @@ public class PersonPanel extends javax.swing.JPanel {
             }
         });
 
-        personBirthYr.setColumns(4);
         personBirthYr.setEditable(false);
+        personBirthYr.setColumns(4);
         personBirthYr.setText("YYYY");
         personBirthYr.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -197,8 +209,8 @@ public class PersonPanel extends javax.swing.JPanel {
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel12.setText("Notes on Alter");
 
-        personDeathYear.setColumns(4);
         personDeathYear.setEditable(false);
+        personDeathYear.setColumns(4);
         personDeathYear.setText("YYYY");
         personDeathYear.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -209,8 +221,8 @@ public class PersonPanel extends javax.swing.JPanel {
             }
         });
 
-        personDeathMon.setColumns(2);
         personDeathMon.setEditable(false);
+        personDeathMon.setColumns(2);
         personDeathMon.setText("MM");
         personDeathMon.setMaximumSize(new java.awt.Dimension(73, 28));
         personDeathMon.setMinimumSize(new java.awt.Dimension(64, 28));
@@ -294,6 +306,19 @@ public class PersonPanel extends javax.swing.JPanel {
 
         dataChgDate.setEditable(false);
 
+        chartLabel.setText("Chart:");
+
+        chartField.setText("A   ");
+
+        linksLabel.setText("Links:");
+
+        linksComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        linksComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                linksComboBoxActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -301,7 +326,7 @@ public class PersonPanel extends javax.swing.JPanel {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                    .add(layout.createSequentialGroup()
                         .add(15, 15, 15)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 38, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -328,13 +353,18 @@ public class PersonPanel extends javax.swing.JPanel {
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                     .add(personDeathDD, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                    .add(personBirthDD, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                                    .add(layout.createSequentialGroup()
+                                        .add(personBirthDD, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .add(39, 39, 39)
+                                        .add(chartLabel)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(chartField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
                             .add(layout.createSequentialGroup()
                                 .add(alterFirstNames, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 159, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                 .add(2, 2, 2)
                                 .add(alterLastName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 119, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 167, Short.MAX_VALUE))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                        .add(0, 0, Short.MAX_VALUE))
+                    .add(layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel10)
                             .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel11)
@@ -342,30 +372,24 @@ public class PersonPanel extends javax.swing.JPanel {
                             .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel3))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(alterRefTerm, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
-                            .add(recipRefTerm, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
-                            .add(alterAdrTerm, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
-                            .add(recipAdrTerm, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE))
-                        .add(93, 93, 93)))
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(alterRefTerm, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+                            .add(recipRefTerm, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+                            .add(alterAdrTerm, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+                            .add(recipAdrTerm, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE))))
+                .add(50, 50, 50)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(egoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
-                        .add(13, 13, 13)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                            .add(linksLabel)
+                            .add(dataChgDateLabel))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(layout.createSequentialGroup()
-                                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE)
-                                .add(20, 20, 20))
-                            .add(layout.createSequentialGroup()
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(egoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                    .add(layout.createSequentialGroup()
-                                        .add(dataChgDateLabel)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(dataChgDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 174, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap())))
-                    .add(layout.createSequentialGroup()
-                        .add(127, 127, 127)
-                        .add(jLabel12)
-                        .addContainerGap())))
+                            .add(linksComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(dataChgDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 174, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jLabel12)))
+                    .add(jScrollPane1))
+                .add(15, 15, 15))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -386,7 +410,9 @@ public class PersonPanel extends javax.swing.JPanel {
                             .add(bornYrLabel)
                             .add(personBirthYr, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(personBirthMM, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(personBirthDD, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(personBirthDD, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(chartLabel)
+                            .add(chartField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(jLabel9)
@@ -395,31 +421,38 @@ public class PersonPanel extends javax.swing.JPanel {
                             .add(personDeathDD, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                     .add(layout.createSequentialGroup()
                         .add(egoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(27, 27, 27)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(linksLabel)
+                            .add(linksComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(5, 5, 5)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(dataChgDateLabel)
                             .add(dataChgDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jLabel10)
-                    .add(alterRefTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel12))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                     .add(layout.createSequentialGroup()
+                        .add(19, 19, 19)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(jLabel11)
-                            .add(recipRefTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(alterRefTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jLabel10))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(jLabel2)
-                            .add(alterAdrTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(recipRefTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jLabel11))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(jLabel3)
-                            .add(recipAdrTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                    .add(jScrollPane1))
-                .addContainerGap())
+                            .add(alterAdrTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jLabel2))
+                        .add(12, 12, 12)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(recipAdrTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jLabel3)))
+                    .add(layout.createSequentialGroup()
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jLabel12)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jScrollPane1)))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -539,6 +572,22 @@ public class PersonPanel extends javax.swing.JPanel {
         dirty = true;
     }//GEN-LAST:event_personBirthDDFocusGained
 
+    private void linksComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linksComboBoxActionPerformed
+        if (storing) {
+            return;
+        }
+        String ch = (String) linksComboBox.getSelectedItem();
+        if (ch != null) {
+            Context.current.currentChart = ch.substring(0, ch.indexOf(":"));
+            if (parent.infoPerson != null) {
+                parent.chart.whichFolk = parent.infoPerson.serialNmbr;
+            }
+            parent.chartComboUpdateTitle();
+            parent.chart.checkSizeOfChart(Context.current);
+            parent.chart.resizeAndRepaint();
+        }
+    }//GEN-LAST:event_linksComboBoxActionPerformed
+
     
     void clearInfo() {
         storing = true;
@@ -588,6 +637,10 @@ public class PersonPanel extends javax.swing.JPanel {
         recipRefTerm.setText("reciprocal_kin_term");
         alterAdrTerm.setText("kin_term_of_address");
         recipAdrTerm.setText("reciprocal_kin_term_of_address");
+        linksLabel.setVisible(false);
+        linksComboBox.setVisible(false);
+        chartLabel.setVisible(false);
+        chartField.setVisible(false);
         storing = false;
     }
 
@@ -611,6 +664,17 @@ public class PersonPanel extends javax.swing.JPanel {
         personDeathMon.setEditable(true);
         personBirthYr.setEditable(true);
         personDeathYear.setEditable(true);
+        chartField.setText(ind.homeChart);
+        chartLabel.setVisible(true);
+        chartField.setVisible(true);
+        if (ind.links == null || ind.links.isEmpty()) {
+            linksLabel.setVisible(false);
+            linksComboBox.setVisible(false);
+        }else {
+            linksLabel.setVisible(true);
+            rebuildLinksBox(ind);
+            linksComboBox.setVisible(true);
+        }
         personComments.setEditable(true);
         if (ind.serialNmbr == parent.getCurrentEgo()) {
             alterRefTerm.setText("Ego");
@@ -844,7 +908,9 @@ public class PersonPanel extends javax.swing.JPanel {
     static boolean allBlanksPrecededByCommas(String s) {
         s = s.trim();
         int bl = s.indexOf(" "), start;
-        if (bl == -1) return true;
+        if (bl == -1) {
+            return true;
+        }
         while(bl > -1) {
             if (s.charAt(bl -1) != ',' && s.charAt(bl -1) != ' ') {
                 return false;
@@ -1208,7 +1274,6 @@ public class PersonPanel extends javax.swing.JPanel {
                                 duA.dyAdd(dy);
                             }
                         }
-
                     }
                 }
             }
@@ -1225,15 +1290,32 @@ public class PersonPanel extends javax.swing.JPanel {
         egoChoiceBox.removeAllItems();
         String newName;
         for (Individual ind : Context.current.individualCensus) {
-            newName = (ind.deleted ? "deleted" : ind.name+" <"+ind.serialNmbr+">");
+            newName = (ind.deleted ? 
+                    "deleted" : 
+                    ind.homeChart + ": " + ind.name+ " <" + ind.serialNmbr +">");
             egoChoiceModel.addElement(newName);
         }
         egoChoiceBox.setSelectedIndex(parent.getCurrentEgo());
         storing = false;
     }
 
+    void rebuildLinksBox(Individual ind) {
+        storing = true;
+        linksComboBox.removeAllItems();
+        String newChart;        
+        for (Link lk : ind.links) {
+            newChart = (lk.homeChart + ": ");
+            newChart += Context.current.getChartDescription(lk.homeChart);
+            linksComboModel.addElement(newChart);
+        }        
+        linksComboBox.setSelectedIndex(0);
+        storing = false;
+    }
+
     void addToEgoChoices(Individual ind) {
-        String newName = (ind.deleted ? "deleted" : ind.name+" <"+ind.serialNmbr+">");
+        String newName = (ind.deleted ? 
+                "deleted" : 
+                ind.homeChart + ": " + ind.name + " <" + ind.serialNmbr + ">");
         egoChoiceModel.addElement(newName);
         if (egoChoiceModel.getSize() == 1) {
             egoChoiceBox.setSelectedIndex(0);
@@ -1247,7 +1329,9 @@ public class PersonPanel extends javax.swing.JPanel {
 
     void updateEgoNames(Individual ind) {
         int ndx = ind.serialNmbr;
-        String newName = (ind.deleted ? "deleted" : ind.name+" <"+ind.serialNmbr+">");
+        String newName = (ind.deleted ? 
+                "deleted" : 
+                ind.homeChart + ": " + ind.name + " <" + ind.serialNmbr + ">");
         if (ndx < egoChoiceModel.getSize()) {
             egoChoiceModel.removeElementAt(ndx);
         }
@@ -1273,6 +1357,8 @@ public class PersonPanel extends javax.swing.JPanel {
     private javax.swing.JTextField alterLastName;
     private javax.swing.JTextField alterRefTerm;
     private javax.swing.JLabel bornYrLabel;
+    private javax.swing.JTextField chartField;
+    private javax.swing.JLabel chartLabel;
     private javax.swing.JTextField dataChgDate;
     private javax.swing.JLabel dataChgDateLabel;
     private javax.swing.JComboBox egoChoiceBox;
@@ -1287,6 +1373,8 @@ public class PersonPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JComboBox linksComboBox;
+    private javax.swing.JLabel linksLabel;
     private javax.swing.JTextField personBirthDD;
     private javax.swing.JTextField personBirthMM;
     private javax.swing.JTextField personBirthYr;
