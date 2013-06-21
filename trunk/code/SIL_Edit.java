@@ -190,17 +190,6 @@ public class SIL_Edit extends JFrame {
         });
         fileMenu.add(loadItem);
 
-//        loadItemPreXML.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.CTRL_MASK));
-//        loadItemPreXML.setText("Open Pre-XML");
-//        loadItemPreXML.addActionListener(new ActionListener() {
-//
-//            public void actionPerformed(ActionEvent evt) {
-//                loadItemPreXMLActionPerformed(evt);
-//            }
-//        });
-//        loadItemPreXML.setVisible(true);
-//        fileMenu.add(loadItemPreXML);
-
         exportSubMenu.setText("Export");
         exportDefinitionsItem.setText("Definitions");
         exportDefinitionsItem.addActionListener(new ActionListener() {
@@ -525,7 +514,8 @@ public class SIL_Edit extends JFrame {
         jMenuBar1.add(helpMenu);
 
         setJMenuBar(jMenuBar1);
-
+        
+// Layout the frame. Assemble the Chart Area        
         chart = new ChartPanel();
         chart.init(this);
         chartScrollPane.setPreferredSize(new Dimension(877, 350));
@@ -541,8 +531,6 @@ public class SIL_Edit extends JFrame {
         chartComboBox.setAlignmentX(0.5f);
         chartComboBox.setPreferredSize(new Dimension(400, 20));
         chartComboBox.setMaximumSize(new Dimension(400, 20));
-//        chartLabel = new JLabel("Draw Family Tree Charts Below");
-//        chartLabel.setAlignmentX(0.5f);
         chartScrollPane.setAlignmentX(0.5f);
         chartHolderPanel.setLayout(new BoxLayout(chartHolderPanel, BoxLayout.PAGE_AXIS));
         chartHolderPanel.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -553,21 +541,19 @@ public class SIL_Edit extends JFrame {
         chartHolderHorizontal.add(Box.createRigidArea(new Dimension(8, 0)));
         chartHolderHorizontal.setBackground(new Color(255, 228, 225));
 
-//        chartHolderPanel.add(chartLabel);
         chartHolderPanel.add(chartComboBox);
         chartHolderPanel.add(chartHolderHorizontal);
         chartHolderPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         chartHolderPanel.setBorder(BorderFactory.createEtchedBorder(Color.red, Color.blue));
         chartHolderPanel.setBackground(new Color(255, 228, 225));
-//        chartHolderPanel.setPreferredSize(new Dimension(907, 400));
 
-        // Add components to the JFrame's content pane
+// Add components to the JFrame's content pane
         setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
+        add(Box.createRigidArea(new Dimension(0, 5)));
+        add(chartHolderPanel);
         add(Box.createRigidArea(new Dimension(0, 5)));
         add(personPanel1);
         add(familyPanel1);
-        add(Box.createRigidArea(new Dimension(0, 5)));
-        add(chartHolderPanel);
     }
 
     private void prepComponents() {
@@ -607,10 +593,11 @@ public class SIL_Edit extends JFrame {
     void rebuildChartCombo() {
         loadingCharts = true;
         chartComboBox.removeAllItems();
-        String newItem = "Create New Chart";
-        chartComboModel.addElement(newItem);
-        int ndx = 0;
+        String newItem = "Draw Family Tree Charts Below";
         if (Context.current != null && Context.current.chartDescriptions != null) {
+            int ndx = 0;
+            newItem = "Create New Chart";
+            chartComboModel.addElement(newItem);
             for (int i = 0; i < Context.current.chartDescriptions.size(); i++) {
                 newItem = Context.current.chartLtrs[i];
                 if (newItem.equals(Context.current.currentChart)) {
@@ -622,8 +609,19 @@ public class SIL_Edit extends JFrame {
                 }
                 chartComboModel.addElement(newItem);
             }
-        }
-        chartComboBox.setSelectedIndex(ndx);
+            if (ndx == 0)  {  //  0 means chart descriptions are empty
+                newItem = "Default Chart";
+                chartComboModel.addElement(newItem);
+                Context.current.chartDescriptions.add(newItem);
+                ndx = 1;
+            }
+            chartComboBox.setSelectedIndex(ndx);
+            chartComboBox.setEnabled(true);
+        } else {
+            chartComboModel.addElement(newItem);
+            chartComboBox.setSelectedIndex(0);
+            chartComboBox.setEnabled(false);
+        }        
         loadingCharts = false;
     }
 
@@ -684,6 +682,13 @@ public class SIL_Edit extends JFrame {
         if (chart.editable) {
             chart.deleteAll();
             setTitle("");
+            loadingCharts = true;
+            chartComboBox.removeAllItems();
+            chartComboModel.addElement("Draw Family Tree Charts Below");
+            chartComboBox.setSelectedIndex(0);
+            chartComboBox.setEnabled(false);
+            loadingCharts = false;
+            
         }
     }
 
@@ -727,7 +732,7 @@ public class SIL_Edit extends JFrame {
         String msg = "New Description for Chart " + ch + ":\n";
         int ndx = Context.current.getChartIndex(ch);
         msg += Context.current.chartDescriptions.get(ndx);
-        String newDescription = JOptionPane.showInputDialog(msg);
+        String newDescription = JOptionPane.showInputDialog(this, msg);
         if (newDescription != null) {
             Context.current.chartDescriptions.set(ndx, newDescription);
             rebuildChartCombo();
@@ -819,29 +824,32 @@ public class SIL_Edit extends JFrame {
     }
     
     void deleteChart(String chrt) {
-        int ndx = Context.current.getChartIndex(chrt);
-        Context.current.chartDescriptions.remove(ndx);
-        if (ndx != Context.current.chartDescriptions.size()) {
+        Context ctxt = Context.current;
+        int ndx = ctxt.getChartIndex(chrt);
+        ctxt.chartDescriptions.remove(ndx);
+        if (ndx != ctxt.chartDescriptions.size()) {
             // wasn't the last one -- had to remove it from middle
-            for (Individual ind : Context.current.individualCensus) {
+            for (Individual ind : ctxt.individualCensus) {
                 if (! ind.deleted && ind.homeChart.compareTo(chrt) > 0) {
-                    ndx = Context.current.getChartIndex(ind.homeChart);
-                    ind.homeChart = Context.current.getChartLtr(ndx -1);
+                    ndx = ctxt.getChartIndex(ind.homeChart);
+                    ind.homeChart = ctxt.getChartLtr(ndx -1);
                 }
             }
-            for (Family fam : Context.current.familyCensus) {
+            for (Family fam : ctxt.familyCensus) {
                 if (! fam.deleted && fam.homeChart.compareTo(chrt) > 0) {
-                    ndx = Context.current.getChartIndex(fam.homeChart);
-                    fam.homeChart = Context.current.getChartLtr(ndx -1);
+                    ndx = ctxt.getChartIndex(fam.homeChart);
+                    fam.homeChart = ctxt.getChartLtr(ndx -1);
                 }
             }
-            for (Link lk : Context.current.linkCensus) {
+            for (Link lk : ctxt.linkCensus) {
                 if (! lk.deleted && lk.homeChart.compareTo(chrt) > 0) {
-                    ndx = Context.current.getChartIndex(lk.homeChart);
-                    lk.homeChart = Context.current.getChartLtr(ndx -1);
+                    ndx = ctxt.getChartIndex(lk.homeChart);
+                    lk.homeChart = ctxt.getChartLtr(ndx -1);
                 }
             }            
         }
+        ndx = ctxt.chartDescriptions.size() -1;
+        ctxt.currentChart = ctxt.getChartLtr(ndx);
         rebuildChartCombo();
         getPPanel().rebuildEgoBox();
         if (infoPerson != null) {
@@ -1329,9 +1337,7 @@ public class SIL_Edit extends JFrame {
 
     boolean changeEgo(int egoNum) {
         boolean oKay = true;
-        if (egoNum < 0
-                || egoNum == currentEgo
-                || chart.loading) {
+        if (egoNum < 0 || chart.loading) {
             return true;
         }
         Individual ind = Context.current.individualCensus.get(egoNum);

@@ -203,13 +203,6 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         originY = y;
     }  //  Only used once, for 0,0.   ???
 
-//	public void doFixEgo(int serialNum) {
-//		if (whichFolk == -1) {
-//			whichFolk = serialNum;
-//			return;
-//		}
-//		// do some alt action
-//	}  //  Never used
     
     void KinshipEditor_MouseDown(MouseEvent event) {
         int mouseX = event.getX(), mouseY = event.getY();
@@ -220,6 +213,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         if ((theInd + theLink + theFam) > -3) { // SOMETHING was clicked
             if (personMenu.isShowing()) {
                 personMenu.setVisible(false);
+                parent.loadingCharts = false;
             }
             try {
                 if (editable) {
@@ -365,6 +359,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         Context.current.editDirectory = Library.editDirectory;
         parent.ktm = Context.current.ktm;
         Context.current.loadDefaultLinkStuff();
+        parent.rebuildChartCombo();
         saveFile = null;
     }  //  end of Check when 1st person/union created
 
@@ -417,7 +412,8 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 String newName;
                 int index = 0;
                 for (Individual ind : Context.current.individualCensus) {
-                    newName = (ind.deleted ? "deleted" : ind.name + " <" + ind.serialNmbr + ">");
+                    newName = (ind.deleted ? "deleted" + " <" + ind.serialNmbr + ">" 
+                            : ind.homeChart + ": " + ind.name + " <" + ind.serialNmbr + ">");
                     people[index++] = newName;
                 }
                 String person = (String) JOptionPane.showInputDialog(
@@ -457,7 +453,6 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             delayedAreaCk(newMar);
             showInfo(newMar);
         } else if (newLink != null) {
-            newLink.homeChart = Context.current.currentChart;
             delayedAreaCk(newLink);
             showInfo(newLink.personPointedTo);
         }
@@ -476,7 +471,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
     }
 
     public int findMarriage(int x, int y) {
-        if (Marriage.knots == null) {
+        if (Marriage.knots == null || Context.current == null) {
             return -1;
         }
         for (Family m : Marriage.knots) {
@@ -1179,18 +1174,6 @@ public class ChartPanel extends JPanel implements MouseInputListener {
     
     void deleteIndividual(Individual ind) throws KinshipSystemException {
         int serialNmbr = ind.serialNmbr;
-//        Don't think I need this test -- links to families will be cuaght below.
-//        if (ind.links != null && !ind.links.isEmpty()) {
-//            String title = ind.name + " Has Links.", msg = "",
-//                    msg2 = "Deleting this person automatically deletes all their links on all charts.";
-//            if (!ind.marriages.isEmpty() || ind.birthFamily != null) {
-//                msg += "\nAt least one link was created to show a relationship. ";
-//                msg += "You must disconnect\nany links from families (break the relationship) ";
-//                msg += "before you delete this person.";
-//            }
-//            JOptionPane.showMessageDialog(parent, msg2 + msg, title, JOptionPane.PLAIN_MESSAGE);
-//            throw new KinshipSystemException("");
-//        }
         if (Context.current.indSerNumGen > 1
                 && (ind.node != null || ind.birthFamily != null || ind.marriages.size() > 0)) {
             String msg = "", title = "Cannot Delete " + ind.name;
@@ -1215,7 +1198,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             parent.getPPanel().rebuildEgoBox();
         } else {
             parent.getPPanel().updateEgoNames(ind);
-            Person.folks.get(whichFolk).location = new Point(-100, -100);
+            Person.folks.get(serialNmbr).location = new Point(-100, -100);
         }
         Context.current.ktm.deletePerson(ind);
         //  Because we do not allow deletion of persons who are married or have a birth family,
@@ -1314,12 +1297,11 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 repaint();
                 return;
             }
-            //  NEW CODE  -- Changing Ego forces flesh out of new Ego's KTM row
+            // Changing Ego forces flesh out of new Ego's KTM row
             int storedEgo = parent.getCurrentEgo();
             parent.changeEgo(ix.serialNmbr);
             parent.changeEgo(storedEgo);
-            //  end of NEW CODE
-
+            
             showInfo(ix);
             dirty = true;
         } else {  // ix is already a spouse in fx. This is a deletion request.
@@ -1337,6 +1319,9 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             }
             showInfo(ix);
             dirty = true;
+        }
+        if (ix.birthFamily != null) {
+            ix.birthFamily.computeBirthGrps();
         }
     }
 
@@ -1360,6 +1345,9 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             }
         }
         ix.setLocation(new Point(oldX, oldY));
+        if (ix.birthFamily != null) {
+            ix.birthFamily.computeBirthGrps();
+        }
     }
 
     void removeChild(Individual ix, Family fx) {
@@ -2033,11 +2021,18 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 parent.setActOnSuggsEnabled(ctxt.hasIssues());
             } catch (Exception e) {
                 String msg = "While reading " + saveFile.getName() + "\n" + e;
+                StackTraceElement[] bad = e.getStackTrace();
+                for (int i=0; i < 5; i++) {
+                    msg += "\n" + bad[i];
+                }
                 System.err.println(msg);
                 MainPane.displayError(msg, "Internal Problem", JOptionPane.WARNING_MESSAGE);
             }
             Person.folks = ctxt.individualCensus;
             Marriage.knots = ctxt.familyCensus;
+            if (ctxt.chartDescriptions.isEmpty()) {
+                ctxt.chartDescriptions.add("Default Chart");
+            }
             parent.rebuildChartCombo();
             String frameTitle = fc.getName(saveFile);
             parent.setTitle("Editing: " + frameTitle);
@@ -2062,6 +2057,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         for (Individual ind : ctxt.individualCensus) {
             if (!ind.deleted && ind.homeChart.equals(ctxt.currentChart)) {
                 sz = ind.getSize();
+//                System.out.println("I-" + ind.serialNmbr + "  " + ind.location);
                 minX = Math.min(minX, ind.location.x);
                 minY = Math.min(minY, ind.location.y);
                 maxX = Math.max(maxX, ind.location.x + sz);
@@ -2071,6 +2067,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         for (Family f : ctxt.familyCensus) {
             if (!f.deleted && f.homeChart.equals(ctxt.currentChart)) {
                 sz = f.getSize();
+//                System.out.println("F-" + f.serialNmbr + "  " + f.location);
                 minX = Math.min(minX, f.location.x);
                 minY = Math.min(minY, f.location.y);
                 maxX = Math.max(maxX, f.location.x + sz);
@@ -2080,6 +2077,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         for (Link lk : ctxt.linkCensus) {
             if (!lk.deleted && lk.homeChart.equals(ctxt.currentChart)) {
                 sz = lk.getSize();
+//                System.out.println("L-" + lk.serialNmbr + "  " + lk.location);
                 minX = Math.min(minX, lk.location.x);
                 minY = Math.min(minY, lk.location.y);
                 maxX = Math.max(maxX, lk.location.x + sz);
@@ -2088,23 +2086,32 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         }
         Point idealTopLeft = gridSnap(new Point(2 * sz, 2 * sz));
         int adjustX = idealTopLeft.x - minX,
-                adjustY = idealTopLeft.y - minY,
-                idealWidth = maxX - minX + (3 * idealTopLeft.x) + adjustX,
-                idealHeight = maxY - minY + (3 * idealTopLeft.y) + adjustY;
+            adjustY = idealTopLeft.y - minY,
+            idealWidth = maxX - minX + (3 * idealTopLeft.x),
+            idealHeight = maxY - minY + (3 * idealTopLeft.y);
+        // If diagram still fits on screen, don't adjust.
+        Rectangle currDimensions = getBounds(null);
+        if (idealWidth <= currDimensions.width 
+                && idealHeight <= currDimensions.height) {
+            return;
+        }
         if (adjustX != 0 || adjustY != 0) {
             for (Individual ind : ctxt.individualCensus) {
                 if (ind.homeChart.equals(ctxt.currentChart)) {
                     ind.adjustLocation(adjustX, adjustY);
+//                System.out.println("I-" + ind.serialNmbr + "  " + ind.location);
                 }
             }
             for (Link lk : ctxt.linkCensus) {
                 if (lk.homeChart.equals(ctxt.currentChart)) {
                     lk.adjustLocation(adjustX, adjustY);
+//                System.out.println("L-" + lk.serialNmbr + "  " + lk.location);
                 }
             }
             for (Family f : ctxt.familyCensus) {
                 if (f.homeChart.equals(ctxt.currentChart)) {
                     f.adjustLocation(adjustX, adjustY);
+//                System.out.println("F-" + f.serialNmbr + "  " + f.location);
                     for (Marriage.BirthGroup bg : f.birthGrps) {
                         bg.topPtX += adjustX;
                     }

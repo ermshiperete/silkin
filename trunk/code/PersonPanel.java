@@ -4,6 +4,7 @@ import java.text.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import java.awt.Dimension;
 
 /**
  * This class is part of the SILKin program's GUI. It is modeled after the
@@ -41,6 +42,8 @@ public class PersonPanel extends javax.swing.JPanel {
         linksComboModel = (DefaultComboBoxModel)linksComboBox.getModel();
         linksComboModel.removeAllElements();  //  ready for first person
         personComments.getDocument().addDocumentListener(new CommentListener());
+        setMaximumSize(new Dimension(910,320));
+        setMinimumSize(new Dimension(910,320));
         storing = false;
 //        buildFocusFields();
     }
@@ -646,7 +649,10 @@ public class PersonPanel extends javax.swing.JPanel {
 
     void showInfo(Individual ind) {
         storing = true;
-        if (focusFields == null) buildFocusFields();
+        parent.loadingCharts = false;
+        if (focusFields == null) {
+            buildFocusFields();
+        }
         alterFirstNames.setText(ind.firstNames);
         alterLastName.setText(ind.surname);
         alterID.setText(String.valueOf(ind.serialNmbr));

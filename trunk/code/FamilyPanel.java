@@ -1,5 +1,6 @@
 
 
+import java.awt.Dimension;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.util.*;
@@ -36,6 +37,8 @@ public class FamilyPanel extends JPanel {
         parent = SIL_Edit.editWindow;
         famComments.getDocument().addDocumentListener(new CommentListener());
         familyID.setColumns(3);
+        setMaximumSize(new Dimension(910,320));
+        setMinimumSize(new Dimension(910,320));
     }
 
     /** This method is called from within the constructor to
@@ -368,6 +371,7 @@ public class FamilyPanel extends JPanel {
 
     void showInfo(Family fam) {
         storing = true;
+        parent.loadingCharts = false;
         famComments.setText(PersonPanel.restoreLineBreaks(fam.comment));
         famStartDD.setText(fam.getMarriageDD());
         famEndDD.setText(fam.getDivorceDD());
