@@ -324,7 +324,7 @@ It is an extension of KSJInternalFrame so it will appear in the View menu.
 					Family bliss = new Family(editor.ctxt, editor.ind, mate);
 				// update display in the calling PersonEditor
 					if (editor.spousePicker != null) 
-						editor.spousePicker.addItem(mate.name + " (" + mate.serialNmbr + ")");
+						editor.spousePicker.addItem(mate.homeChart + ": " + mate.name + " <" + mate.serialNmbr + ">");
 					else  {  //  spousePicker-was-null
 						editor.marriageBox.removeAll();
 						editor.buildMarriageBox();

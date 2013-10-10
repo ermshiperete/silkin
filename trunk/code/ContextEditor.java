@@ -33,7 +33,7 @@ public class ContextEditor extends KSJInternalFrame {
     public CEListener listener;
 
     public ContextEditor(Context cntxt) {
-        super("Edit User Context: " + cntxt.languageName);
+        super("Edit User Context: " + localFileName(cntxt));
         ctxt = cntxt;
         windowNum = ctxt.languageName + " Context Editor";
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -49,7 +49,6 @@ public class ContextEditor extends KSJInternalFrame {
                 nameFocusLost(evt);
             }
         });
-
 
         JLabel nameLabel = new JLabel("Language Name: ");
         nameBox.add(nameLabel);
@@ -309,6 +308,15 @@ public class ContextEditor extends KSJInternalFrame {
         setSize(600, 620);
         setVisible(true);
     }  //  end of ContextEditor constructor
+    
+    public static String localFileName(Context cntxt) {
+        String fileName = cntxt.languageName;
+        if (SIL_Edit.editWindow != null && SIL_Edit.editWindow.chart != null
+                && SIL_Edit.editWindow.chart.saveFile != null) {
+            fileName = SIL_Edit.editWindow.chart.saveFile.getName(); 
+        }
+        return fileName;
+    }
 
     public void buildPopulationBox() {
         rebuilding = true;
@@ -378,9 +386,9 @@ public class ContextEditor extends KSJInternalFrame {
             ind = (Individual) indIter.next();
             item = "<no name>";
             if ((ind.name != null) && (ind.name.length() > 0)) {
-                item = ind.name;
+                item = ind.homeChart + ": " + ind.name;
             }
-            item += " (" + ind.serialNmbr + ")";
+            item += " <" + ind.serialNmbr + ">";
             if (ind.deleted) {
                 item += "     DELETED";
             }

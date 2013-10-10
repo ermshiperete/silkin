@@ -1,4 +1,4 @@
-
+import java.io.File;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -52,7 +52,7 @@ public class PrintChart implements Printable {
         }
         // Using page format selected, calculate how many sheets wide and
         // high the printed output must be for whole chart.
-        int[] chartSize = SIL_Edit.editWindow.chart.chartSize();
+        int[] chartSize = SIL_Edit.editWindow.chart.chartSize(null);
         if (chartSize[0] == 0) {
             String msg = "Must have at least one symbol on chart.";
             JOptionPane.showMessageDialog(SIL_Edit.editWindow, msg,
@@ -67,11 +67,11 @@ public class PrintChart implements Printable {
             nmbrOfPages = pagesWide * pagesHigh;
             //   Now calculate the page bounds for each sheet to be printed
             boundsArray = new Rectangle[nmbrOfPages];
-            int pgNmbr = 0;
+            int pgNmbr = 0, offsetX = chartSize[2], offsetY = chartSize[3];
             for (int w = 0; w < pagesWide; w++) {
                 for (int h = 0; h < pagesHigh; h++) {
                     int x = (w * pgWidth), y = (h * pgHeight);
-                    Rectangle pgBounds = new Rectangle(x, y, pgWidth, pgHeight);
+                    Rectangle pgBounds = new Rectangle(x + offsetX, y + offsetY, pgWidth, pgHeight);
                     boundsArray[pgNmbr++] = pgBounds;
                 }
             }
@@ -105,7 +105,12 @@ public class PrintChart implements Printable {
                         pf.getImageableY() - offsetY);
                 // Print page header
                 g2d.setFont(tinyFont);
-                g2d.drawString(chartTitle + " pg " + chartPageNmbr, offsetX + 5, offsetY + 15);
+                String header = chartTitle + " pg " + chartPageNmbr;
+                File saveFile = SIL_Edit.editWindow.chart.saveFile;
+                if (saveFile != null) {
+                    header += "\t\t\t\t\t\t\t\tFrom: " + saveFile.getName();
+                }
+                g2d.drawString(header, offsetX + 5, offsetY + 15);
                 g2d.setFont(printFont);
                 chart.paint0(g2d, segmentBounds, ctxt.currentChart);
                 return PAGE_EXISTS;
@@ -116,8 +121,11 @@ public class PrintChart implements Printable {
             }
             g2d.setFont(printFont);
             Rectangle segmentBounds = pane.getViewport().getViewRect();
-            int offsetX = segmentBounds.x,
-                    offsetY = segmentBounds.y;
+            // Adjust bounds to remove white space left and top
+            int[] chartSize = SIL_Edit.editWindow.chart.chartSize(segmentBounds);
+            // chartSize: width, height, offsetX, offsetY
+            int offsetX = chartSize[2],
+                    offsetY = chartSize[3];
             g2d.translate(pf.getImageableX() - offsetX,
                     pf.getImageableY() - offsetY);
             chart.paint0(g2d, segmentBounds, ctxt.currentChart);

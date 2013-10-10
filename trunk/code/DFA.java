@@ -75,18 +75,18 @@ public class DFA	{
                                     " of DFA Table load file appears to be out of order.\n"
                                      + "I figure it should have been " + rowNum);	
                                 }  // end of if
-			stop = thisLine.substring(start).indexOf(" ");
+			stop = thisLine.indexOf(" ", start);
 			rowNum++;
 			while (stop != -1)	{
-				stop = stop + start;  // because the index of the blank is relative to start.
+//				stop = stop + start;  // because the index of the blank is relative to start.
 				currentCell = new DFA_Cell();
 				currentCell.alphabit = thisLine.substring(start, stop);
 				start = stop + 1; 
-				stop = start + thisLine.substring(start).indexOf(" ");
+				stop = thisLine.indexOf(" ", start);
 				currentCell.newState = Integer.parseInt(thisLine.substring(start, stop));
 				start = stop + 1;
 				if (start >= thisLine.length()) stop = -1;
-				else stop = thisLine.substring(start).indexOf(" ");
+				else stop = thisLine.indexOf(" ", start);
 				currentRow.cells.add(cellNum++, currentCell);
 			}	//  done procesing these (string, int) pairs => cells.
 			table.add(currentRow);

@@ -1485,8 +1485,8 @@ public class DomainTheory extends DT_Abstract2 {
             KSBadHornClauseException, ClassNotFoundException, FileNotFoundException {
 
         int posSize = countLeaves(pos),
-                maxHits = (int) Math.floor(posSize * maxNoise / 100d),
-                ignorableHits = (int) Math.floor(posSize * ignorable / 100d);
+            maxHits = (int) Math.floor(posSize * maxNoise / 100d),
+            ignorableHits = (int) Math.floor(posSize * ignorable / 100d);
         KinTermDef ktd;
         TreeMap cbLists = new TreeMap();
         TreeMap ktdTreeSolid = makeTreeSets(solidCBMatches, false, cbLists); // For each KTD_Ptr the set of dyads that its CBs matched solidly
@@ -1525,8 +1525,8 @@ public class DomainTheory extends DT_Abstract2 {
                     int nmbr = posSize - listSetSolid.size() + negHits.size();  //  how many misfits there were
                     if (nmbr <= ignorableHits) {  //  ALMOST!
                         ArrayList<Object> posMisses = harvestLeaves(pos),
-                                triple = new ArrayList<Object>(), confirmedProblems;
-                        posMisses.removeAll(listSetSolid);  //  potMisses = POS minus the Solid hits
+                                          triple = new ArrayList<Object>(), confirmedProblems;
+                        posMisses.removeAll(listSetSolid);  //  posMisses = POS minus the Solid hits
                         if (ktd == null) {
                             ktd = ktdPtr.getKTD();
                         }
@@ -1547,7 +1547,7 @@ public class DomainTheory extends DT_Abstract2 {
                         }  //  end of actually have challengable dyads
                     } else if (nmbr <= maxHits) {  //  A few more dyads spoiled the match
                         ArrayList<Object> posMisses = harvestLeaves(pos), confirmedProblems;
-                        posMisses.removeAll(listSetSolid);  //  potMisses = POS minus the Solid hits
+                        posMisses.removeAll(listSetSolid);  //  posMisses = POS minus the Solid hits
                         confirmedProblems = confirmedScan(posMisses, negHits);
                         nmbr -= confirmedProblems.size();
                         if (nmbr > 0) {
@@ -3961,7 +3961,7 @@ public class DomainTheory extends DT_Abstract2 {
         if (!LiteralAbstract1.finalConstraintCheck(dad.ego.gender, bindings, constraints, cb.body, genderStuff, starStuff)) {
             return false;
         }
-        // finalConstraintCheck does post-processing & a final conflict-check. It sdds UDP constraints.
+        // finalConstraintCheck does post-processing & a final conflict-check. It adds UDP constraints.
         ArrayList<Object> bodyCopy = new ArrayList<Object>(cb.body), starStuffCopy = new ArrayList<Object>(starStuff);
         String kinTerm = cb.ktd.kinTerm;
         Literal next = null;
@@ -4055,32 +4055,28 @@ public class DomainTheory extends DT_Abstract2 {
                     posList = (ArrayList<Object>) pos.get(exactStr),
                     negList = (ArrayList<Object>) neg.get(exactStr);  // Lists of dyads
             int posLstSiz = (posList == null ? 0 : posList.size()),
-                    negLstSiz = (negList == null ? 0 : negList.size());
+                negLstSiz = (negList == null ? 0 : negList.size());
             for (int i = 0; i < cands.size(); i++) {  //  loop thru candidates
                 Library.CB_Ptr cbPtr = (Library.CB_Ptr) ((Library.CB_EQC) cands.get(i)).prototype;
                 ClauseBody candidate = cbPtr.getClause();
                 ArrayList<Object> posHitList = new ArrayList<Object>(), negHitList = new ArrayList<Object>();
                 int posHits = 0, negHits = 0;
-                if (posList != null) {
-                    for (int j = 0; j < posList.size(); j++) {
-                        Dyad dy = (Dyad) posList.get(j);
-                        if (fit(candidate, dy)) {
-                            posHits++;
-                            posHitList.add(dy);
-                        }
-                    }  //  end of loop thru POS
-                }
-                if (negList != null) {
-                    for (int j = 0; j < negList.size(); j++) {
+                for (int j = 0; j < posLstSiz; j++) {
+                    Dyad dy = (Dyad) posList.get(j);
+                    if (fit(candidate, dy)) {
+                        posHits++;
+                        posHitList.add(dy);
+                    }
+                }  //  end of loop thru POS                
+                for (int j = 0; j < negLstSiz; j++) {
                         Dyad dy = (Dyad) negList.get(j);
                         if (fit(candidate, dy)) {
                             negHits++;
                             negHitList.add(dy);
                         }
                     }  //  end of loop thru NEG
-                }
-                int posMisses = posLstSiz - posHits,
-                        negMisses = negLstSiz - negHits;
+//                int posMisses = posLstSiz - posHits,
+//                        negMisses = negLstSiz - negHits;
 //  System.out.println("\t" + cbPtr.languageName + ":" + cbPtr.kinTerm + ":" + cbPtr.cbSeqNmbr + " has " + posHits + " posHits, " + negHits + " negHits " 
 //  					+ posMisses + " posMisses, " + negMisses + " negMisses.");
                 float posRatio = (posHits * 1.0f) / (negHits + posHits),
@@ -4183,7 +4179,6 @@ public class DomainTheory extends DT_Abstract2 {
         Iterator candIter = candidates.entrySet().iterator();
         while (candIter.hasNext()) {
             Map.Entry entry = (Map.Entry) candIter.next();
-            String exactString = (String) entry.getKey();
             ArrayList<Object> candEQCs = (ArrayList<Object>) entry.getValue();
             Iterator eqcIter = candEQCs.iterator();
             while (eqcIter.hasNext()) {
@@ -4193,7 +4188,7 @@ public class DomainTheory extends DT_Abstract2 {
                     Library.CB_Ptr ptr = (Library.CB_Ptr) mbrIter.next();
                     String langTerm = ptr.languageName + ":" + ptr.kinTerm;
                     int cbCnt = cbCounts.getCount(langTerm, maxStringDist),
-                            hits = ((Counter) hitCounter.get(langTerm)).total();
+                        hits = ((Counter) hitCounter.get(langTerm)).total();
                     float perCent = 1f * hits / cbCnt;
                     if (perCent < minPerCent) {
                         mbrIter.remove();

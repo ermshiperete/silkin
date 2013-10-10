@@ -86,23 +86,64 @@ public class KinTermMatrix implements Serializable {
             lst.add(newTerm);
         }
     }
-
+    
+    public void renameChartableUDP(String oldName, String newName) {
+        String oldInverse = "*inverse_" + oldName.substring(1),
+               newInverse = "*inverse_" + newName.substring(1);
+        Iterator egoIter = matrix.values().iterator();
+        while (egoIter.hasNext()) {
+            TreeMap egoRow = (TreeMap) egoIter.next();
+            for (Object o : egoRow.values()) {
+                Node nod = (Node) o;
+                nod.pcString = nod.pcString.replace(oldName, newName);
+                nod.pcString = nod.pcString.replace(oldInverse, newInverse);
+                ArrayList<Object> newMiniPreds = new ArrayList<Object>();
+                for (Object obj : nod.miniPreds) {
+                    String s = (String) obj;
+                    int ndx = s.indexOf("(");
+                    String pred = s.substring(0, ndx);
+                    if (pred.equals(oldName)) {
+                        newMiniPreds.add(newName + s.substring(ndx));
+                    } else if (pred.equals(oldInverse)) {
+                        newMiniPreds.add(newInverse + s.substring(ndx));
+                    } else {
+                        newMiniPreds.add(s);
+                    }
+                }
+                nod.miniPreds = newMiniPreds;
+            }
+        }
+    }
+    
+    public void removeChartableUDP(String udName) {
+        String inverse = "*inverse_" + udName.substring(1);
+        Iterator egoIter = matrix.values().iterator();
+        while (egoIter.hasNext()) {
+            TreeMap egoRow = (TreeMap) egoIter.next();
+            Iterator rowIter = egoRow.values().iterator();
+            while (rowIter.hasNext()) {
+                Node nod = (Node) rowIter.next();
+                if (nod.pcString.contains(inverse) ||
+                        nod.pcString.contains(udName)) {
+                    rowIter.remove();
+                }
+            }            
+        }
+    }
+    
     public int numberOfKinTerms() {
-        int s = 0, ego, alter;
-        Iterator egoIter = matrix.entrySet().iterator(), altIter, ktIter;
+        int s = 0;
+        Iterator egoIter = matrix.entrySet().iterator(), altIter;
         Map.Entry egoEntry, altEntry;
         Node cell;
         while (egoIter.hasNext()) {
             egoEntry = (Map.Entry) egoIter.next();
-            ego = ((Integer) egoEntry.getKey()).intValue();
             altIter = ((TreeMap) egoEntry.getValue()).entrySet().iterator();
             while (altIter.hasNext()) {
                 altEntry = (Map.Entry) altIter.next();
-                alter = ((Integer) altEntry.getKey()).intValue();
                 cell = (Node) altEntry.getValue();
                 s += cell.nmbrOfKinTerms();
-            }  //  end of loop thru cells in the row
-            
+            }  //  end of loop thru cells in the row            
         }  //  end of loop thru the rows
         return s;
     }

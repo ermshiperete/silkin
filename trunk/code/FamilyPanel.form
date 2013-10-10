@@ -173,6 +173,9 @@
         <Property name="columns" type="int" value="2"/>
         <Property name="text" type="java.lang.String" value="MM"/>
       </Properties>
+      <Events>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="famStartMMFocusLost"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="famStartYear">
       <Properties>
@@ -194,6 +197,9 @@
         <Property name="columns" type="int" value="2"/>
         <Property name="text" type="java.lang.String" value="MM"/>
       </Properties>
+      <Events>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="famEndMMFocusLost"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="famEndYear">
       <Properties>
@@ -299,8 +305,8 @@
     </Component>
     <Component class="javax.swing.JTextField" name="familyID">
       <Properties>
-        <Property name="columns" type="int" value="3"/>
         <Property name="editable" type="boolean" value="false"/>
+        <Property name="columns" type="int" value="3"/>
         <Property name="text" type="java.lang.String" value="nnn"/>
       </Properties>
     </Component>

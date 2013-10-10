@@ -1,0 +1,55 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "hht://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Drawing Special (Non-genealogical) Relationships</title>
+</head>
+
+<body>
+<a name="intro"></a>
+<h3> Introduction</h3>
+<p>Most kinship systems around the world use combinations of genealogical factors (e.g. father, daughter, wife) to define their terms. But some include non-genealogical factors such as 'clan', 'phratry', or 'adoption' in their definitions. The genealogical factors are built-in to SILKin, plus a feature called 'User-Defined Properties' (or <span style="font-weight: bold">UDPs</span>) to handle everything else. Although <a href="ContextEdit.html#UDPs">UDPs</a> are designed to handle factors such as adoption or clans, they may be used to document any relationship or property of interest to the User. You could define a UDP like '*profession' or '*location' or '*income.' Note that all UDP names start with an asterisk ('*') and contain
+all lowercase letters; this is required.
+</p> 
+<a name="adoption"></a>
+<h3> Adoption is a Special User-Defined Property</h3>
+<p>SILKin has special features to handle adoption because -- when it is a factor in kinship terminology -- it should appear on charts. Adoption works differently in different societies; hopefully these features can accomodate almost all variations:
+<ul>
+	<li>If you define a UDP whose name (all lowercase) begins with an asterisk and contains the letters 'adopt', that UDP may be eligible to be drawn on charts. It must also have data type 'Person', allow multiple values, have 'Display on Charts' = YES, and have a line color chosen. When all these criteria are met, SILKin will recognize this as an adoptive relationship and will draw it on charts in the designated color. </li>
+	<li> You may have several different UDPs that meet these criteria. You may assign the same line color to all types of adoption UDP, or pick different colors to visually distinguish them. </li>
+	<li>In order for SILKin to draw your charts properly, both the adoptive parent and adopted child (or links to them) must appear on the same chart page. Then you can click the menu choice 'Draw Special Relationship' and choose the symbols that will be connected by the special-color line. <br/>
+<span style="font-weight: bold">For example: </span> &nbsp; Assume that Bill on chart A has adopted Johnny who is on chart C (with his birth family). You will make a link to Johnny on chart A, then click on an empty space in the chart to bring up the creation menu and choose 'Draw Special Relationship.' 
+<a name="rules"></a>
+<h3> Procedure</h3>
+<ol>
+<li>This help window will pop up and remain on the screen until you have completed the designation of the adoption. You can move this window around if necessary, put another window on top of it, or close it if you don't need it. (You can suppress this pop-up window in 'Edit Prefs'.)
+</li>
+<li>If there is more than one UDP that can be drawn on charts, you will be asked to choose which one to draw.
+</li>
+<li>You will be asked to click on the family, person, or <a href="Chart.html#links">link</a> who is the adoptive parent. If you click on an empty area, that will be ignored. 
+</li>
+<li>You will be asked to click on the person (or link) who is the adopted child. If you click on a family or an empty area, that will be ignored. 
+</li>
+<li>At any time in the process, you may click 'Cancel' and abort the entire designation.
+</li>
+<li>When you complete the designation, the special-color connection line will appear on your chart.
+</li>
+<li><span style="font-style: italic">Family Rule:</span> If you click on a 2-parent family as the parent, both the husband and the wife will adopt the same child (i.e. each of them will add that child to the value of their UDP), and a single connection line will be drawn from that family symbol to the child's symbol. If you click on a 1-parent family, only that parent will gain the child as a value for their UDP; the connecting line will still be drawn from the family. Only when you click directly on a parent's symbol will the connecting line be drawn from that person's symbol.
+</li>
+<li><span style="font-style: italic">Automatic Reciprocals:</span> When you indicate that Cain is the son of Adam, SILKin can 
+figure out that Adam is the father of Cain; 'father' is the implicit reciprocal of 'son.' Likewise, if you define a chartable UDP
+ called '*adopt' SILKin will automatically generate an implicit reciprocal named '*inverse_adopt'. Therefore, you should never create your own reciprocal of an adoption relationship -- it is already taken care of.
+</li>
+</ol>
+</li>
+<li>You may need to rearrange the symbols on your chart to minimize crossing lines. <a href="Chart.html#links">Links</a> are handy for this purpose.
+</li>
+</ul>
+<a name="delete"></a>
+<h3>Deleting A Special Relationship</h3>
+<p>You remove a Special Relationship (e.g. an adoption) similar to the way you remove a natural child from a family; 
+you 'Draw Special Relationship' again between the same parent/initiator and child/recipient. Doing it once creates the special relationship; doing it again removes it.
+</p>
+</body>
+</html>

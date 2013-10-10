@@ -1,4 +1,4 @@
-/**This interface is implemented by both Individuals and Links.
+/**This interface is implemented by Families, Individuals and Links.
  * Any object that can be represented by a symbol (for its Kind) on a chart in
  * SILKin should implement this interface.
  *
@@ -7,6 +7,8 @@
 import java.awt.Point;
 
 public interface Locatable {
+    
+    public int getSerialNmbr();
     
     public Point getLocation();
     
@@ -21,4 +23,6 @@ public interface Locatable {
     public void setLocationX(int x);
     
     public void setLocationY(int y);
+    
+    public java.awt.Rectangle bounds();
 }

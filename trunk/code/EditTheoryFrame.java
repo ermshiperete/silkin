@@ -1169,7 +1169,7 @@ public class EditTheoryFrame extends JFrame {
 
     private void helpBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpBtnActionPerformed
         //  Just launch the Help system, with Theory Editor page open.                                         
-        HelpFrame.help.displayPage(HelpFrame.THEORY_EDIT, "layout");
+        HelpFrame.window.displayPage(HelpFrame.THEORY_EDIT, "layout");
     }//GEN-LAST:event_helpBtnActionPerformed
 
     private void localTermComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_localTermComboActionPerformed

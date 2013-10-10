@@ -26,7 +26,11 @@ public class KSQ  {
         
         @param obj     the object to be added
     */
-    public void enQ(Object obj)  {  queue.add(obj); } 
+    public void enQ(Object obj)  {  
+        if (!queue.contains(obj)) {
+            queue.add(obj);
+        }         
+    } 
     
    
    /** This implements the standard test for membership.
@@ -37,7 +41,7 @@ public class KSQ  {
     */
     public boolean contains(Object obj)  {
         return queue.contains(obj);
-    }  //  end of method isEmpty
+    }  //  end of method contains
     
       
     /** This implements the standard test for emptiness.

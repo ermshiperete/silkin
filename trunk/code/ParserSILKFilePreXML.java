@@ -5,17 +5,17 @@ import java.text.*;
 import java.awt.*;
 import javax.swing.*;
 
-/** This SILKFileParserPreXML is an extension of the basic {@link Parser} class which reads in Domain Theories expressed in
+/** This ParserSILKFilePreXML is an extension of the basic {@link Parser} class which reads in Domain Theories expressed in
 Horn Clauses.  This one reads in a SILK file which has been saved to disk in a *.silk format.
 The Context-Free Grammar defining a *.silk file format is documented in {@link SILKFileGrammar}.
 <p>
-When constructed with a {@link Tokenizer}, this SILKFileParserPreXML will construct a {@link Context}
+When constructed with a {@link Tokenizer}, this ParserSILKFilePreXML will construct a {@link Context}
 from the tokens found in the <code>Tokenizer's</code> input file.
 </p>
 
 @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
-public class SILKFileParserPreXML extends Parser {
+public class ParserSILKFilePreXML extends ParserDomainTheory {
 
     Context newCtxt = new Context();
     int origIndCount, origFamCount, currentEgoSerialNmbr, lastPersonIndexed = -99;
@@ -46,11 +46,11 @@ public class SILKFileParserPreXML extends Parser {
     String validCodes = "<PR><PA><ER><EA><XR><XA>";  //  for KinTermMAtrix
     String issuesFor = "REF";
 
-    /** Construct a SILKFileParserPreXML.
+    /** Construct a ParserSILKFilePreXML.
 
     @param	tok	a <code>Tokenizer</code> which parses tokens from an input file on demand.
      */
-    public SILKFileParserPreXML(Tokenizer tok) {
+    public ParserSILKFilePreXML(Tokenizer tok) {
         super(tok);
     }
 
@@ -1194,9 +1194,9 @@ public class SILKFileParserPreXML extends Parser {
         if (!current.lexeme.equals("<stats>")) {
             error("parseStats seeking flag '<stats>', but found " + current.lexeme);
         }
-        ind.birthYr = readTaggedString("born", "parseStats");
+        ind.birthYY = readTaggedString("born", "parseStats");
         ind.yobq = "9";  //  I don't use these
-        ind.deathYr = readTaggedString("died", "parseStats");
+        ind.deathYY = readTaggedString("died", "parseStats");
         ind.yodq = "9";  //  I don't use these
         current = scanner.readToken();  //  consume the flag, which must be "</stats>"
         if (!current.lexeme.equals("</stats>")) {

@@ -16,6 +16,8 @@ It is an extension of KSJInternalFrame so it will appear in the View menu.
  */
 public class PersonEditor extends KSJInternalFrame implements ListSelectionListener {
 
+    public static PersonEditor current;  // most recently created editor
+    
     public Context ctxt;
     public KSJInternalFrame genericEd;
     public PEdListener listener;
@@ -39,6 +41,7 @@ public class PersonEditor extends KSJInternalFrame implements ListSelectionListe
     public PersonEditor(Context cntxt, KSJInternalFrame ctEd, String title,
             Individual person, Family bthFam, String fieldFlg, int selUDP) {
         super(title);
+        current = this;
         ctxt = cntxt;
         genericEd = ctEd;
         edTitle = title;
@@ -52,6 +55,7 @@ public class PersonEditor extends KSJInternalFrame implements ListSelectionListe
     public PersonEditor(Context cntxt, KSJInternalFrame ctEd, String title,
             Individual person, String fieldFlg, int selUDP) {
         super(title);
+        current = this;
         ctxt = cntxt;
         genericEd = ctEd;
         edTitle = title;
@@ -62,7 +66,7 @@ public class PersonEditor extends KSJInternalFrame implements ListSelectionListe
     }
 
     public void buildEditor() {
-        windowNum = "Person Editor: " + ind.name + " (" + ind.serialNmbr + ")";
+        windowNum = "Person Editor: " + ind.name + " <" + ind.serialNmbr + ">";
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addInternalFrameListener(this);  // allows View Menu to work
         Iterator edIter = MainPane.openPersonEditors.iterator();  //  Check for duplicates
@@ -299,7 +303,7 @@ public class PersonEditor extends KSJInternalFrame implements ListSelectionListe
         sideFrame.add(Box.createRigidArea(new Dimension(10, 0)));
         getContentPane().add(sideFrame);
         addInternalFrameListener(this);
-        setSize(550, 650);
+        pack();
         setVisible(true);
         rebuilding = false;
     }  //  end of method buildEditor
@@ -354,9 +358,9 @@ public class PersonEditor extends KSJInternalFrame implements ListSelectionListe
                 }
                 valor = (Individual) theUDP.value.get(i);
                 if ((valor.name != null) && (valor.name.length() > 0)) {
-                    valTextString += valor.name + " (" + valor.serialNmbr + ")";
+                    valTextString += valor.homeChart + ": " + valor.name + " <" + valor.serialNmbr + ">";
                 } else {
-                    valTextString += "Person #" + valor.serialNmbr;
+                    valTextString += valor.homeChart + ": " + "Person #" + valor.serialNmbr;
                 }
             }  //  end of loop through the values
             udpTextArea = new JTextArea(valTextString);
@@ -436,6 +440,7 @@ public class PersonEditor extends KSJInternalFrame implements ListSelectionListe
         } else {
             buildRestrictionBox();  //  finishes udpArea with restriction lines
         }
+        pack();
         rebuilding = false;
     }  //  end of method buildUDPArea
 
@@ -450,6 +455,10 @@ public class PersonEditor extends KSJInternalFrame implements ListSelectionListe
         }
         return menu;
     }  //  end of method genUDPMenu()
+    
+    public void selectUDPNmbr(int nmbr) {
+        udPick.setSelectedIndex(nmbr);
+    }
 
     public void buildBFamRow() {
         bFam.removeAll();
@@ -554,13 +563,13 @@ public class PersonEditor extends KSJInternalFrame implements ListSelectionListe
                 if (fam.wife == null) {
                     menu[i] = "No wife shown for marriage # " + fam.serialNmbr;
                 } else {
-                    menu[i] = fam.wife.name + " (" + fam.wife.serialNmbr + ")";
+                    menu[i] = fam.wife.homeChart + ": " + fam.wife.name + " <" + fam.wife.serialNmbr + ">";
                 }
             } else {
                 if (fam.husband == null) {
                     menu[i] = "No husband shown for marriage # " + fam.serialNmbr;
                 } else {
-                    menu[i] = fam.husband.name + " (" + fam.husband.serialNmbr + ")";
+                    menu[i] = fam.husband.homeChart + ": " + fam.husband.name + " <" + fam.husband.serialNmbr + ">";
                 }
             }
         }  //  end of loop thru marriages
@@ -762,6 +771,7 @@ public class PersonEditor extends KSJInternalFrame implements ListSelectionListe
                 ctxt.ktm.insertNewRow(ind.serialNmbr);
                 if (SIL_Edit.editWindow != null) {
                     SIL_Edit.editWindow.ktm.insertNewRow(ind.serialNmbr);
+                    ind.homeChart = Context.current.currentChart;
                 }
             } else if (e.getActionCommand().equals("new birthdate")) {
                 a = birthDay.getText();
@@ -1002,11 +1012,6 @@ public class PersonEditor extends KSJInternalFrame implements ListSelectionListe
                 buildUDPArea(selectedUDP);
                 editor.getBounds(bnds);
                 editor.repaint(bnds);
-                try {
-                    ed.setSelected(false);  // to force the repaint
-                    ed.setSelected(true);
-                } catch (PropertyVetoException pve) {
-                }
             } else if (e.getActionCommand().equals("udp add person")) {
                 ArrayList<Object> folks = new ArrayList<Object>();
                 Individual sumbody;
@@ -1049,11 +1054,7 @@ public class PersonEditor extends KSJInternalFrame implements ListSelectionListe
                     buildUDPArea(selectedUDP);
                     udpArea.getBounds(bnds);
                     udpArea.repaint(bnds);
-                    try {
-                        ed.setSelected(false);  // to force the repaint
-                        ed.setSelected(true);
-                    } catch (PropertyVetoException pve) {
-                    }
+//                    pack();
                     return;
                 }  //  end of only 1 item
                 Individual psn;
@@ -1352,6 +1353,9 @@ public class PersonEditor extends KSJInternalFrame implements ListSelectionListe
                 //  Now determine what must be updated on the calling editor
                 if (fieldFlag.equals("census")) {
                     //  the Context Editor is automaticaly updated on close of this editor
+                    if (SIL_Edit.editWindow != null && SIL_Edit.editWindow.getPPanel() != null) {
+                        SIL_Edit.editWindow.getPPanel().displayUDPVals(ind);
+                    }
                 } else if (fieldFlag.equals("child")) {
                     FamilyEditor editor = (FamilyEditor) genericEd;
                     editor.buildKidBox();

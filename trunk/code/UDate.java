@@ -248,6 +248,9 @@ public class UDate {
      * @return  true if it fits one of the allowed formats.
      */
     public static boolean validXSD(String ds) {
+        if (ds == null) {
+            return false;
+        }
         int len = ds.length();
         if (ds.equals("")) return true;
         try {
@@ -298,6 +301,57 @@ public class UDate {
         }
         return true;
     }
+    
+    /**Converts a date string in XSD format to European format (dd-MMM-yyy.
+     * NOTE: We assume ds is a valid XSD date string. If not sure of that,
+     * call <code>validXSD(ds)</code> to verify.
+     *
+     * @param ds    the XSD format string
+     * @return      the MEDIUM format string
+     * @throws KSDateParseException I think?!?
+     */
+    public static String xsdToEuropean(String ds) {
+        String dd, mm, yyyy;
+        int len = ds.length();
+        yyyy = ds.substring(0,4);
+        mm = monthNames[1].toUpperCase();
+        dd = "01";
+        if (len > 6) {
+            int mo = Integer.parseInt(ds.substring(5,7));
+            mm = monthNames[mo].toUpperCase();
+        }
+        if (len == 10) {
+            dd = ds.substring(8);
+        }
+        return dd + " " + mm + " " + yyyy;
+    }
+    
+    public static String europeanToXSD(String ds) throws KSDateParseException {
+        String xsd = "", month = "", day = "", year = "", pad;
+        int moStart = -1, yrStart = -1;
+        for (int i=0; i < ds.length(); i++) {
+            char ch = ds.charAt(i);
+            if (! Character.isDigit(ch)) {
+                moStart = i;
+                break;
+            }
+        }
+        if (moStart == -1 && ds.trim().length() == 4) {
+            return formatAsXSD(ds.trim(), month, day);
+        }
+        day = ds.substring(0, moStart);
+        for (int i = moStart; i < ds.length(); i++) {
+            char ch = ds.charAt(i);
+            if (Character.isDigit(ch)) {
+                yrStart = i;
+                break;
+            }
+        }
+        month = ds.substring(moStart, yrStart);
+        month = month.replace(",", "").trim();
+        year = ds.substring(yrStart);        
+        return formatAsXSD(year, month, day);
+    }
 
     /**Converts a date string in XSD format to Java DateFormat.MEDIUM format.
      * NOTE: We assume ds is a valid XSD date string. If not sure of that,
@@ -343,7 +397,7 @@ public class UDate {
     public static String getMonthNmbr(String mon) {
         String nmbr;
         for (int i=0; i < 13; i++) {
-            if (monthNames[i].equals(mon)) {
+            if (monthNames[i].equalsIgnoreCase(mon)) {
                 nmbr = (i < 10 ? "0" : "") + i;
                 return nmbr;
             }
@@ -375,6 +429,9 @@ public class UDate {
     }
 
     public static String convertToXSD(String ds) throws KSDateParseException {
+        if (ds == null) {
+            return "";
+        }
         Date d = parse(ds);
         return formatAsXSD(d);
     }

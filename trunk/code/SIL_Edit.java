@@ -104,7 +104,8 @@ public class SIL_Edit extends JFrame {
         newContextItem = new JMenuItem();
         newLiBrowserItem = new JMenuItem();
         loadItem = new JMenuItem();
-        exportSubMenu = new JMenu();
+        importGEDCOMitem = new JMenuItem();
+        gedcomSubMenu = new JMenu();
         exportGEDCOMItem = new JMenuItem();
         exportKAESItem = new JMenuItem();
         exportDefinitionsItem = new JMenuItem();
@@ -148,6 +149,7 @@ public class SIL_Edit extends JFrame {
         distinctAdrItem = new JCheckBoxMenuItem();
         editableItem = new JCheckBoxMenuItem();
         snapToGrid = new JCheckBoxMenuItem();
+        displayGEDCOM = new JCheckBoxMenuItem("Display GEDCOM Items");
         getSuggestionsItem = new JMenuItem();
         actOnSuggsItem = new JMenuItem();
         actOnSuggsItem.setEnabled(false);
@@ -155,8 +157,8 @@ public class SIL_Edit extends JFrame {
         helpMenu = new HelpFrame.HMenu();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        // Initialize help window, but keep invisible
-        HelpFrame.help = new HelpFrame();
+        // Initialize window window, but keep invisible
+        HelpFrame.window = new HelpFrame();
 
         fileMenu.setText("File");
 
@@ -189,8 +191,16 @@ public class SIL_Edit extends JFrame {
             }
         });
         fileMenu.add(loadItem);
+        
+        gedcomSubMenu.setText("GEDCOM");
+        importGEDCOMitem.setText("Import GEDCOM");
+        importGEDCOMitem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                importGEDCOMItemActionPerformed(evt);
+            }
+        });
+        gedcomSubMenu.add(importGEDCOMitem);
 
-        exportSubMenu.setText("Export");
         exportDefinitionsItem.setText("Definitions");
         exportDefinitionsItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -198,7 +208,7 @@ public class SIL_Edit extends JFrame {
             }
         });
         exportDefinitionsItem.setVisible(false);
-        exportGEDCOMItem.setText("GEDCOM Format");
+        exportGEDCOMItem.setText("Export GEDCOM");
         exportGEDCOMItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 exportGEDCOMItemActionPerformed(evt);
@@ -210,10 +220,12 @@ public class SIL_Edit extends JFrame {
                 exportKAESItemActionPerformed(evt);
             }
         });
-        exportSubMenu.add(exportDefinitionsItem);
-        exportSubMenu.add(exportKAESItem);
-        exportSubMenu.add(exportGEDCOMItem);
-        fileMenu.add(exportSubMenu);
+        exportKAESItem.setVisible(false);
+        
+//        gedcomSubMenu.add(exportDefinitionsItem);
+//        gedcomSubMenu.add(exportKAESItem);
+        gedcomSubMenu.add(exportGEDCOMItem);
+        fileMenu.add(gedcomSubMenu);
 
         fileMenu.add(jSeparator1);
 
@@ -471,15 +483,13 @@ public class SIL_Edit extends JFrame {
         });
         contextMenu.add(snapToGrid);
 
-//        testUnicodeItem = new JMenuItem("Unicode Test");
-//        testUnicodeItem.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent evt) {
-//                unicodeTestItemActionPerformed(evt);
-//            }
-//        });
-//        contextMenu.add(testUnicodeItem);
-//
-        // Above 2 items to be removed after PC testing
+        displayGEDCOM.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                displayGEDCOMActionPerformed(evt);
+            }
+        });
+        displayGEDCOM.setVisible(false);
+        contextMenu.add(displayGEDCOM);
 
         contextMenu.add(jSeparator1);
 
@@ -585,7 +595,7 @@ public class SIL_Edit extends JFrame {
         editMenu.add(adminSILKinItem);
         setSize(new Dimension(1050, 725));
         newLiBrowserItem.setEnabled(false);
-        exportGEDCOMItem.setEnabled(false);
+        exportGEDCOMItem.setEnabled(true);
         printAllCharts.setEnabled(true);
         pack();
     }
@@ -657,9 +667,50 @@ public class SIL_Edit extends JFrame {
         chart.loadSILKFile();
         Library.preXML = false;
     }
+    
+    private void importGEDCOMItemActionPerformed(ActionEvent evt) {
+        MainPane.topPane.importGEDCOM();
+        Context ctxt = Context.current;
+        if (ctxt == null) { // action cancelled
+            return;
+        }
+        Library.contextUnderConstruction = ctxt;
+        ktm = ctxt.ktm;
+        try {
+            DomainTheory dt = ctxt.domTheoryRef();
+            if (!dt.theory.containsKey("step_brother")) {
+                Linus macroLineServer = new Linus(Library.libraryDirectory + "Standard_Macros");
+                Tokenizer tok = new Tokenizer(Library.getDFA(), macroLineServer);
+                ParserDomainTheory parzer = new ParserDomainTheory(tok, tok);
+                parzer.parseStandardMacros(dt);
+            }
+            if (ctxt.kinTypeOrder == null) {
+                ctxt.loadDefaultKinTypeStuff();
+            }
+            ctxt.rebuildLinkMethods();
+        } catch(Exception exc) {
+            MainPane.displayError(exc.toString(), "Error Loading Standard Macros", 
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        rebuildChartCombo();
+        rebuildKTMatrixEtc();
+        Person.folks = ctxt.individualCensus;
+        Marriage.knots = ctxt.familyCensus;
+        personPanel1.rebuildEgoBox();
+        displayGEDCOM.setVisible(true);
+        displayGEDCOM.setSelected(true);
+        int n;
+        for (n=0; n < ctxt.indSerNumGen; n++) {
+            Individual ind = ctxt.individualCensus.get(n);
+            if (! ind.deleted) {
+                break;
+            }
+        }
+        changeEgo(n);
+    }
 
     private void exportGEDCOMItemActionPerformed(ActionEvent evt) {
-        chart.exportGEDCOMFile();
+        MainPane.topPane.exportGEDCOM();
     }
 
     private void exportKAESItemActionPerformed(ActionEvent evt) {
@@ -793,7 +844,7 @@ public class SIL_Edit extends JFrame {
             }
             // Proceed with deletion of people, families, and links
             for (Family fam : fams) {
-                chart.deleteFamily(fam);
+                chart.deleteFam(fam);
             }
             for (Individual ind : inds) {
                 try {
@@ -862,7 +913,7 @@ public class SIL_Edit extends JFrame {
     public void editPrefsItemActionPerformed(ActionEvent evt) {
         if (chart.saveFile == null) {
             String msg3 = "You must edit the Preferences for a particular context (SILK file).";
-            msg3 += "First OPEN a context (or create & SAVE one), then set it's preferences.";
+            msg3 += "\nFirst OPEN a context (or create & SAVE one), then set it's preferences.";
             JOptionPane.showMessageDialog(this, msg3, "Cannot Perform Your Command", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -1049,6 +1100,14 @@ public class SIL_Edit extends JFrame {
             Library.snapToGrid = false;
         }
     }
+    
+    // 
+    private void displayGEDCOMActionPerformed(ActionEvent evt) {
+        Context.current.displayGEDCOM = displayGEDCOM.isSelected();
+        personPanel1.repaint();
+    }
+    
+    
 
     public void setActOnSuggsEnabled(boolean yn) {
         actOnSuggsItem.setEnabled(yn);
@@ -1187,6 +1246,10 @@ public class SIL_Edit extends JFrame {
         chartComboBox.setSelectedIndex(c.getChartIndex(c.currentChart) + 1);
         loadingCharts = false;
     }
+    
+    public void chartComboSetEnabled(boolean bool) {
+        chartComboBox.setEnabled(bool);
+    }
 
     private void chartComboBoxActionPerformed(ActionEvent evt) {
         if (loadingCharts) {
@@ -1210,6 +1273,10 @@ public class SIL_Edit extends JFrame {
                 return;
             }
             String newDescription = JOptionPane.showInputDialog(this, "Short Description of This Chart (e.g. Smith Family)");
+            if (newDescription == null) {
+                chartComboBox.setSelectedIndex(Context.current.getChartIndex(Context.current.currentChart) +1);
+                return;
+            }
             Context.current.chartDescriptions.add(newDescription);
             Context.current.currentChart = nxtLtr;
             rebuildChartCombo();
@@ -1239,7 +1306,7 @@ public class SIL_Edit extends JFrame {
                 }
                 new SIL_Edit().setVisible(true);
                 if (helpScreenOnStartUp) {
-                    HelpFrame.help.displayPage(HelpFrame.START, "screen");
+                    HelpFrame.window.displayPage(HelpFrame.START, "screen");
                 }
             }
         });
@@ -1298,6 +1365,7 @@ public class SIL_Edit extends JFrame {
         for (Individual pers : Context.current.individualCensus) {
             pers.node = null;
         }
+        int oldEgo = currentEgo;
         for (Individual pers : Context.current.individualCensus) {
             if (!pers.deleted) {
                 int id = pers.serialNmbr;
@@ -1322,6 +1390,7 @@ public class SIL_Edit extends JFrame {
         Context.current.ktm = ktm;
         PersonPanel.fillDyadsFromMatrix();
         regenerateKTI();  // rebuild Kin Type Index
+        currentEgo = oldEgo;
     }
 
     void regenerateKTI() {
@@ -1375,7 +1444,9 @@ public class SIL_Edit extends JFrame {
         ChartPanel.doIndexes = true;
         Individual ego = Context.current.individualCensus.get(egoNum);
         ego.node = Node.makeSelfNode(Context.current.distinctAdrTerms);
-
+        if (oldRow == null) {
+            ktm.addNode(egoNum, egoNum, ego.node);
+        }
         //  2.2  NEW CODE  Uses a breadth-first queue (bfq)
         KSQ bfq = new KSQ();
         bfq.enQ(ego);
@@ -1387,7 +1458,9 @@ public class SIL_Edit extends JFrame {
             newRow = ktm.getRow(currentEgo);
             oKay = copyNodes(oldRowCopy, newRow);
         }
+        infoPerson = ego;
         showInfo(infoPerson);
+        personPanel1.resetEgoBox(currentEgo);
         chart.repaint();
         return oKay;
     }
@@ -1410,121 +1483,23 @@ public class SIL_Edit extends JFrame {
         }
         return true;
     }
-
-    /*   public static void propagateNodes(KSQ bfq, TreeMap newRow, Individual target) {
-     try {
-     while (!bfq.isEmpty()) {
-     Individual currInd = (Individual) bfq.deQ(), nextInd;
-     String relat = "";
-     if (currInd.birthFamily != null) {  //  to parents
-     nextInd = currInd.birthFamily.husband;
-     propagate(currInd, nextInd, "Fa", bfq, newRow, target);
-     nextInd = currInd.birthFamily.wife;
-     propagate(currInd, nextInd, "Mo", bfq, newRow, target);
-     }
-     for (Object o : currInd.marriages) {  //  to children
-     Family fam = (Family) o;
-     for (Object child : fam.children) {
-     nextInd = (Individual) child;
-     relat = (nextInd.gender.equals("M") ? "So" : "Da");
-     propagate(currInd, nextInd, relat, bfq, newRow, target);
-     }  //  to spouse
-     nextInd = (currInd.gender.equals("M") ? fam.wife : fam.husband);
-     if (nextInd != null) {
-     relat = (nextInd.gender.equals("M") ? "Hu" : "Wi");
-     }
-     propagate(currInd, nextInd, relat, bfq, newRow, target);
-     }
-     if (currInd.birthFamily != null) {
-     Family bFam = (Family) currInd.birthFamily;
-     //  to full siblings
-     for (Object o : bFam.children) {
-     if (o != currInd) {
-     nextInd = (Individual) o;
-     relat = (nextInd.gender.equals("M") ? "Bro" : "Sis");
-     propagate(currInd, nextInd, relat, bfq, newRow, target);
-     }
-     }
-     //  to half siblings
-     ArrayList<Individual> parents = new ArrayList<Individual>();
-     if (bFam.husband != null) {
-     parents.add(bFam.husband);
-     }
-     if (bFam.wife != null) {
-     parents.add(bFam.wife);
-     }
-     for (Individual naturalParent : parents) {
-     for (Object o : naturalParent.marriages) {
-     Family mar = (Family) o;
-     if (mar != bFam) {
-     for (Object chrt : mar.children) {
-     nextInd = (Individual) chrt;
-     relat = (nextInd.gender.equals("M") ? "Hbro" : "Hsis");
-     propagate(currInd, nextInd, relat, bfq, newRow, target);
-     }
-     //  to step parents
-     Individual stepParent = (naturalParent == mar.wife ? mar.husband : mar.wife);
-     if (stepParent != null) {
-     relat = (stepParent.gender.equals("M") ? "Stfa" : "Stmo");
-     propagate(currInd, stepParent, relat, bfq, newRow, target);
-     //  to step siblings
-     for (Object m : stepParent.marriages) {
-     Family stepFam = (Family) m;
-     if (stepFam != mar && stepFam != bFam) {
-     for (Object k : stepFam.children) {
-     nextInd = (Individual) k;
-     relat = (nextInd.gender.equals("M") ? "Stbro" : "Stsis");
-     propagate(currInd, nextInd, relat, bfq, newRow, target);
-     }
-     }
-     }
-     }
-     }
-     }
-     }  //  end of loop thru natural parents & their other marriages
-     }  //  end of currInd's birth family != null
-     //  to step children
-     for (Object o : currInd.marriages) {
-     Family fam = (Family) o;
-     Individual currIndSpouse = (currInd == fam.husband ? fam.wife : fam.husband);
-     if (currIndSpouse != null) {
-     for (Object f : currIndSpouse.marriages) {
-     Family spouseFam = (Family) f;
-     if (spouseFam != fam) {
-     for (Object kid : spouseFam.children) {
-     nextInd = (Individual) kid;
-     relat = (nextInd.gender.equals("M") ? "Stso" : "Stda");
-     propagate(currInd, nextInd, relat, bfq, newRow, target);
-     }
-     }
-     }
-     }
-     }
-     //  to star links
-     if (currInd.starLinks != null) {
-     for (Object o : currInd.starLinks) {
-     nextInd = (Individual) o;
-     propagate(currInd, nextInd, "**", bfq, newRow, target);
-     }
-     }
-     }  //  end of while BFQ is not empty    
-     } catch (KSDateParseException ksd) {
-     // If ksd is thrown, then target is non-null, and a node has been
-     // created for target with a PCString. We're done.
-     }
-     }  //  end of OLD method propagateNodes
-     */
+    
+    
     public static void propagateNodes(KSQ bfq, TreeMap newRow, Individual target) {
-        ArrayList<String> linkOrder = Context.current.linkOrder;
-        TreeMap<String, String> priorities = Context.current.linkPriorityTMap;
-        Iterator linkIter = linkOrder.iterator();
+        ArrayList<String> kinTypeOrder = Context.current.kinTypeOrder;
+        TreeMap<String, String> priorities = Context.current.kinTypePriorityTMap;
+        Iterator kinTypeIter = kinTypeOrder.iterator();
         try {
             while (!bfq.isEmpty()) {
                 Individual currInd = (Individual) bfq.deQ(), nextInd;
-                while (linkIter.hasNext()) {
-                    String link = (String) linkIter.next();
-                    PropagationMethod method = linkMethods.get(link);
-                    method.prop(currInd, link, bfq, newRow, target, priorities);
+                while (kinTypeIter.hasNext()) {
+                    String kt = (String) kinTypeIter.next();
+                    PropagationMethod method = linkMethods.get(kt);
+                    method.prop(currInd, kt, bfq, newRow, target, priorities);
+                    if (kt.startsWith("*")) {
+                        String inverse = "*inverse_" + kt.substring(1);
+                        method.prop(currInd, inverse, bfq, newRow, target, priorities);
+                    }
                 } //  and finally, star links
                 if (currInd.starLinks != null) {
                     for (Object o : currInd.starLinks) {
@@ -1532,7 +1507,7 @@ public class SIL_Edit extends JFrame {
                         propagate(currInd, nextInd, "**", bfq, newRow, target, priorities);
                     }
                 }
-                linkIter = linkOrder.iterator();
+                kinTypeIter = kinTypeOrder.iterator();
             }  //  end of while BFQ is not empty    
         } catch (KSDateParseException ksd) {
             // If ksd is thrown, then target is non-null, and a node has been
@@ -1541,42 +1516,30 @@ public class SIL_Edit extends JFrame {
     }  //  end of method propagateNodes
 
     public static void propagate(Individual currInd, Individual nextInd,
-            String relat, KSQ bfq, TreeMap newRow, Individual target,
+            String kinTyp, KSQ bfq, TreeMap newRow, Individual target,
             TreeMap<String, String> priorities)
             throws KSDateParseException {
         if (nextInd == null) {
             return;
         }
+        Context ctxt = Context.current;
         Node fromNode = currInd.node,
                 toNode = nextInd.node;
         if (toNode != null) {
             // If toNode has a shorter path to Ego than we can provide, quit
-            // UNLESS toNode's path contains starlinks and our path does not.
+            // UNLESS toNode's path contains non-chartable starlinks and our path does not.
             // If the 2 paths are equal length, quit if the new path is not 
             // higher priority.
             int toPathLength = toNode.miniPreds.size(),
                     newPathLength = fromNode.miniPreds.size() + 1;
             boolean newShorter = newPathLength < toPathLength,
-                    equalPaths = newPathLength == toPathLength,
-                    oldHasStars = false,
                     newHigherPriority = false,
-                    newMoreNatural = !relat.equals("**");
-            for (Object s : fromNode.miniPreds) {
-                if (s.toString().startsWith("*")) {
                     newMoreNatural = false;
-                    break;
-                }
+            if (ctxt.hasNonChartables(toNode.miniPreds) &&
+                    ! ctxt.hasNonChartables(fromNode.miniPreds)) {
+                newMoreNatural = true;
             }
-            for (Object s : toNode.miniPreds) {
-                if (s.toString().startsWith("*")) {
-                    oldHasStars = true;
-                    break;
-                }
-            }
-            if (!oldHasStars) {
-                newMoreNatural = false;
-            }
-            if (equalPaths) {
+            if (newPathLength == toPathLength) {
                 ArrayList<String> oldPCs = new ArrayList<String>(),
                         newPCs = new ArrayList<String>();
                 if (!toNode.pcString.isEmpty()) {
@@ -1585,7 +1548,7 @@ public class SIL_Edit extends JFrame {
                 if (!fromNode.pcString.isEmpty()) {
                     newPCs.addAll(KinTermDef.explodePCSymbols(fromNode.pcString));
                 }
-                newPCs.add(relat);
+                newPCs.add(kinTyp);
                 newHigherPriority = higherPriority(newPCs, oldPCs, priorities);
             }
             if (!newShorter && !newMoreNatural && !newHigherPriority) {
@@ -1594,7 +1557,7 @@ public class SIL_Edit extends JFrame {
             // Remove the kin type pair of the old path from KTI
             String oldKinType = toNode.pcString;
             Integer[] pair = KinTermDef.pluckEgoAndAlter(toNode.miniPreds);
-            Context.current.kti.removePair(oldKinType, pair);
+            ctxt.kti.removePair(oldKinType, pair);
         }
         //  Proceed to make or modify toNode
         if (toNode == null) {
@@ -1604,17 +1567,17 @@ public class SIL_Edit extends JFrame {
         }
         // The new path will replace any prior path
         toNode.miniPreds = new ArrayList<Object>(fromNode.miniPreds);
-        toNode.pcString = fromNode.pcString + relat;
-        String miniPred = relat + "(#" + nextInd.serialNmbr
+        toNode.pcString = fromNode.pcString + kinTyp;
+        String miniPred = kinTyp + "(#" + nextInd.serialNmbr
                 + ",#" + currInd.serialNmbr + ")";
         toNode.miniPreds.add(miniPred);
         int level = fromNode.getLevel();
-        if (relat.equals("Mo") || relat.equals("Fa") || relat.equals("Stmo")
-                || relat.equals("Stfa")) {
+        if (kinTyp.equals("Mo") || kinTyp.equals("Fa") || kinTyp.equals("Stmo")
+                || kinTyp.equals("Stfa") || ctxt.isAdoptionPred(kinTyp)) {
             level++;
         }
-        if (relat.equals("So") || relat.equals("Da") || relat.equals("Stso")
-                || relat.equals("Stda")) {
+        if (kinTyp.equals("So") || kinTyp.equals("Da") || kinTyp.equals("Stso")
+                || kinTyp.equals("Stda") || ctxt.isInverseAdoptionPred(kinTyp)) {
             level--;
         }
         toNode.setLevel(level);
@@ -1636,14 +1599,24 @@ public class SIL_Edit extends JFrame {
         for (String pcs : newPCS) {
             String pri = priorities.get(pcs);
             if (pri == null) {
-                throw new NullPointerException("No priority found for " + pcs);
+                if (pcs.startsWith("*inverse_")) {
+                    pri = priorities.get("*" + pcs.substring(9));
+                }
+                if (pri == null) {
+                    throw new NullPointerException("No priority found for " + pcs);
+                }
             }
             newPriorities.add(pri);
         }
         for (String pcs : oldPCS) {
             String pri = priorities.get(pcs);
             if (pri == null) {
-                throw new NullPointerException("No priority found for " + pcs);
+                if (pcs.startsWith("*inverse_")) {
+                    pri = priorities.get("*" + pcs.substring(9));
+                }
+                if (pri == null) {
+                    throw new NullPointerException("No priority found for " + pcs);
+                }
             }
             oldPriorities.add(pri);
         }
@@ -1795,6 +1768,7 @@ public class SIL_Edit extends JFrame {
             chart.dirty = true;
         }
     }
+    
     int suggsInFocus;
 
     TreeMap<String, ArrayList<Issue>> pickSuggs() {
@@ -1890,14 +1864,14 @@ public class SIL_Edit extends JFrame {
 
     static abstract class PropagationMethod {
 
-        abstract void prop(Individual currInd, String link, KSQ bfq,
+        abstract void prop(Individual currInd, String kinTyp, KSQ bfq,
                 TreeMap newRow, Individual target, TreeMap<String, String> priorities)
                 throws KSDateParseException;
     }
 
     static class ParentMethod extends PropagationMethod {
 
-        void prop(Individual currInd, String link, KSQ bfq,
+        void prop(Individual currInd, String kinTyp, KSQ bfq,
                 TreeMap newRow, Individual target, TreeMap<String, String> priorities)
                 throws KSDateParseException {
 
@@ -1905,15 +1879,15 @@ public class SIL_Edit extends JFrame {
                 return;
             }
             Individual nextInd;
-            if (link.equals("Fa") && currInd.birthFamily.husband != null
+            if (kinTyp.equals("Fa") && currInd.birthFamily.husband != null
                     && currInd.birthFamily.husband.gender.equals("M")) {
                 nextInd = currInd.birthFamily.husband;
                 propagate(currInd, nextInd, "Fa", bfq, newRow, target, priorities);
-            } else if (link.equals("Mo") && currInd.birthFamily.wife != null
+            } else if (kinTyp.equals("Mo") && currInd.birthFamily.wife != null
                     && currInd.birthFamily.wife.gender.equals("F")) {
                 nextInd = currInd.birthFamily.wife;
                 propagate(currInd, nextInd, "Mo", bfq, newRow, target, priorities);
-            } else if (link.equals("P")) {
+            } else if (kinTyp.equals("P")) {
                 nextInd = currInd.birthFamily.wife;
                 if (nextInd != null && nextInd.gender.equals("?")) {
                     propagate(currInd, nextInd, "P", bfq, newRow, target, priorities);
@@ -1928,7 +1902,7 @@ public class SIL_Edit extends JFrame {
 
     static class ChildMethod extends PropagationMethod {
 
-        void prop(Individual currInd, String link, KSQ bfq,
+        void prop(Individual currInd, String kinTyp, KSQ bfq,
                 TreeMap newRow, Individual target, TreeMap<String, String> priorities)
                 throws KSDateParseException {
 
@@ -1936,42 +1910,80 @@ public class SIL_Edit extends JFrame {
                 Family fam = (Family) o;
                 for (Object child : fam.children) {
                     Individual nextInd = (Individual) child;
-                    if ((link.equals("So") && nextInd.gender.equals("M"))
-                            || (link.equals("Da") && nextInd.gender.equals("F"))
-                            || (link.equals("C") && nextInd.gender.equals("?"))) {
-                        propagate(currInd, nextInd, link, bfq, newRow, target, priorities);
+                    if ((kinTyp.equals("So") && nextInd.gender.equals("M"))
+                            || (kinTyp.equals("Da") && nextInd.gender.equals("F"))
+                            || (kinTyp.equals("C") && nextInd.gender.equals("?"))) {
+                        propagate(currInd, nextInd, kinTyp, bfq, newRow, target, priorities);
                     }
                 }
             }
         } // end of prop method
     } // end of inner class ChildMethod
+    
+    static class AdoptMethod extends PropagationMethod {
+
+        void prop(Individual currInd, String kinTyp, KSQ bfq,
+                TreeMap newRow, Individual target, TreeMap<String, String> priorities)
+                throws KSDateParseException {
+            if (kinTyp.startsWith("*inverse")) {  // propagate to adoptive parents
+                String origKinTyp = "*" + kinTyp.substring(9);
+                if (Context.current.inverseSpecialRelationships == null
+                        || Context.current.inverseSpecialRelationships.get(currInd) == null) {
+                    return;
+                }
+                ArrayList<Individual> ir = Context.current.inverseSpecialRelationships.get(currInd).get(origKinTyp);
+                if (ir != null) {                    
+                    for (Individual next : ir) {
+                        propagate(currInd, next, kinTyp, bfq, newRow, target, priorities);
+                    } //  end of propagation to adoptive parents
+                }  
+            } else {  // propagate to adopted children and adoptive parents
+                if (Context.current.specialRelationships == null
+                        || Context.current.specialRelationships.isEmpty()) {
+                    return;
+                }
+                Individual nextInd;
+                Iterator udpIter = currInd.userDefinedProperties.values().iterator();
+                while (udpIter.hasNext()) {
+                    UserDefinedProperty udp = (UserDefinedProperty) udpIter.next();
+                    if (udp.starName.equals(kinTyp) && !udp.value.isEmpty()) {
+                        for (Object o : udp.value) {
+                            nextInd = (Individual) o;
+                            propagate(currInd, nextInd, kinTyp, bfq, newRow, target, priorities);
+                        }
+                    }
+                }  //  end of propagation to adopted children
+            }
+
+        } // end of prop method
+    } // end of inner class AdoptMethod
 
     static class SpouseMethod extends PropagationMethod {
 
-        void prop(Individual currInd, String link, KSQ bfq,
+        void prop(Individual currInd, String kinTyp, KSQ bfq,
                 TreeMap newRow, Individual target, TreeMap<String, String> priorities)
                 throws KSDateParseException {
 
-            if ((currInd.gender.equals("M") && link.equals("Hu"))
-                    || (currInd.gender.equals("F") && link.equals("Wi"))) {
+            if ((currInd.gender.equals("M") && kinTyp.equals("Hu"))
+                    || (currInd.gender.equals("F") && kinTyp.equals("Wi"))) {
                 return;
             }
             for (Object o : currInd.marriages) {
                 Family fam = (Family) o;
-                if (link.equals("Wi")) {
+                if (kinTyp.equals("Wi")) {
                     Individual nextInd = fam.wife;
                     if (nextInd != null && nextInd.gender.equals("F")) {
-                        propagate(currInd, nextInd, link, bfq, newRow, target, priorities);
+                        propagate(currInd, nextInd, kinTyp, bfq, newRow, target, priorities);
                     }
-                } else if (link.equals("Hu")) {
+                } else if (kinTyp.equals("Hu")) {
                     Individual nextInd = fam.husband;
                     if (nextInd != null && nextInd.gender.equals("M")) {
-                        propagate(currInd, nextInd, link, bfq, newRow, target, priorities);
+                        propagate(currInd, nextInd, kinTyp, bfq, newRow, target, priorities);
                     }
-                } else if (link.equals("S")) {
+                } else if (kinTyp.equals("S")) {
                     Individual nextInd = (currInd == fam.husband ? fam.wife : fam.husband);
                     if (nextInd != null && nextInd.gender.equals("?")) {
-                        propagate(currInd, nextInd, link, bfq, newRow, target, priorities);
+                        propagate(currInd, nextInd, kinTyp, bfq, newRow, target, priorities);
                     }
                 }
             }
@@ -1980,7 +1992,7 @@ public class SIL_Edit extends JFrame {
 
     static class SiblingMethod extends PropagationMethod {
 
-        void prop(Individual currInd, String link, KSQ bfq,
+        void prop(Individual currInd, String kinTyp, KSQ bfq,
                 TreeMap newRow, Individual target, TreeMap<String, String> priorities)
                 throws KSDateParseException {
 
@@ -1992,10 +2004,10 @@ public class SIL_Edit extends JFrame {
             for (Object o : bFam.children) {
                 if (o != currInd) {
                     nextInd = (Individual) o;
-                    if ((link.equals("Bro") && nextInd.gender.equals("M"))
-                            || (link.equals("Sis") && nextInd.gender.equals("F"))
-                            || (link.equals("Sib") && nextInd.gender.equals("?"))) {
-                        propagate(currInd, nextInd, link, bfq, newRow, target, priorities);
+                    if ((kinTyp.equals("Bro") && nextInd.gender.equals("M"))
+                            || (kinTyp.equals("Sis") && nextInd.gender.equals("F"))
+                            || (kinTyp.equals("Sib") && nextInd.gender.equals("?"))) {
+                        propagate(currInd, nextInd, kinTyp, bfq, newRow, target, priorities);
                     }
                 }
             }
@@ -2004,7 +2016,7 @@ public class SIL_Edit extends JFrame {
 
     static class HalfSiblingMethod extends PropagationMethod {
 
-        void prop(Individual currInd, String link, KSQ bfq,
+        void prop(Individual currInd, String kinTyp, KSQ bfq,
                 TreeMap newRow, Individual target, TreeMap<String, String> priorities)
                 throws KSDateParseException {
 
@@ -2026,9 +2038,9 @@ public class SIL_Edit extends JFrame {
                     if (mar != bFam) {
                         for (Object ch : mar.children) {
                             nextInd = (Individual) ch;
-                            if ((nextInd.gender.equals("M") && link.equals("Hbro"))
-                                    || (nextInd.gender.equals("F") && link.equals("Hsis"))) {
-                                propagate(currInd, nextInd, link, bfq, newRow, target, priorities);
+                            if ((nextInd.gender.equals("M") && kinTyp.equals("Hbro"))
+                                    || (nextInd.gender.equals("F") && kinTyp.equals("Hsis"))) {
+                                propagate(currInd, nextInd, kinTyp, bfq, newRow, target, priorities);
                             }
                         }
                     }
@@ -2039,7 +2051,7 @@ public class SIL_Edit extends JFrame {
 
     static class StepParentMethod extends PropagationMethod {
 
-        void prop(Individual currInd, String link, KSQ bfq,
+        void prop(Individual currInd, String kinTyp, KSQ bfq,
                 TreeMap newRow, Individual target, TreeMap<String, String> priorities)
                 throws KSDateParseException {
 
@@ -2061,9 +2073,9 @@ public class SIL_Edit extends JFrame {
                     if (mar != bFam) {
                         Individual stepParent = (naturalParent == mar.wife ? mar.husband : mar.wife);
                         if (stepParent != null) {
-                            if ((stepParent.gender.equals("M") && link.equals("Stfa"))
-                                    || (stepParent.gender.equals("F") && link.equals("Stmo"))) {
-                                propagate(currInd, stepParent, link, bfq, newRow, target, priorities);
+                            if ((stepParent.gender.equals("M") && kinTyp.equals("Stfa"))
+                                    || (stepParent.gender.equals("F") && kinTyp.equals("Stmo"))) {
+                                propagate(currInd, stepParent, kinTyp, bfq, newRow, target, priorities);
                             }
                         }
                     }
@@ -2074,7 +2086,7 @@ public class SIL_Edit extends JFrame {
 
     static class StepSiblingMethod extends PropagationMethod {
 
-        void prop(Individual currInd, String link, KSQ bfq,
+        void prop(Individual currInd, String kinTyp, KSQ bfq,
                 TreeMap newRow, Individual target, TreeMap<String, String> priorities)
                 throws KSDateParseException {
 
@@ -2101,9 +2113,9 @@ public class SIL_Edit extends JFrame {
                                 if (stepFam != mar && stepFam != bFam) {
                                     for (Object k : stepFam.children) {
                                         nextInd = (Individual) k;
-                                        if ((nextInd.gender.equals("M") && link.equals("Stbro"))
-                                                || (nextInd.gender.equals("F") && link.equals("Stsis"))) {
-                                            propagate(currInd, nextInd, link, bfq, newRow, target, priorities);
+                                        if ((nextInd.gender.equals("M") && kinTyp.equals("Stbro"))
+                                                || (nextInd.gender.equals("F") && kinTyp.equals("Stsis"))) {
+                                            propagate(currInd, nextInd, kinTyp, bfq, newRow, target, priorities);
                                         }
                                     }
                                 }
@@ -2117,7 +2129,7 @@ public class SIL_Edit extends JFrame {
 
     static class StepChildMethod extends PropagationMethod {
 
-        void prop(Individual currInd, String link, KSQ bfq,
+        void prop(Individual currInd, String kinTyp, KSQ bfq,
                 TreeMap newRow, Individual target, TreeMap<String, String> priorities)
                 throws KSDateParseException {
 
@@ -2130,9 +2142,9 @@ public class SIL_Edit extends JFrame {
                         if (spouseFam != fam) {
                             for (Object kid : spouseFam.children) {
                                 Individual nextInd = (Individual) kid;
-                                if ((nextInd.gender.equals("M") && link.equals("Stso"))
-                                        || (nextInd.gender.equals("F") && link.equals("Stda"))) {
-                                    propagate(currInd, nextInd, link, bfq, newRow, target, priorities);
+                                if ((nextInd.gender.equals("M") && kinTyp.equals("Stso"))
+                                        || (nextInd.gender.equals("F") && kinTyp.equals("Stda"))) {
+                                    propagate(currInd, nextInd, kinTyp, bfq, newRow, target, priorities);
                                 }
                             }
                         }
@@ -2154,6 +2166,7 @@ public class SIL_Edit extends JFrame {
     private JMenu contextMenu;
     private JMenuItem copyItem;
     private JMenuItem cutItem;
+    public JCheckBoxMenuItem displayGEDCOM;
     private JMenuItem deleteAllItem;
     private JMenuItem deleteCurrentChartItem;
     private JCheckBoxMenuItem distinctAdrItem;
@@ -2162,7 +2175,7 @@ public class SIL_Edit extends JFrame {
     private JMenu editMenu;
     private JMenuItem editChartDescriptionItem;
     private JMenuItem editPrefsItem;
-    private JMenu exportSubMenu;
+    private JMenu gedcomSubMenu;
     private JMenuItem exportGEDCOMItem;
     private JMenuItem exportKAESItem;
     private JMenuItem exportDefinitionsItem;
@@ -2172,6 +2185,7 @@ public class SIL_Edit extends JFrame {
     private JRadioButtonMenuItem firstNameBtn;
     private JMenuItem getSuggestionsItem;
     private JMenu helpMenu;
+    private JMenuItem importGEDCOMitem;
     private JRadioButtonMenuItem initialsBtn;
     private JMenuBar jMenuBar1;
     private JPopupMenu.Separator jSeparator1;

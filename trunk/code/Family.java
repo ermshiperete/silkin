@@ -14,7 +14,7 @@ In the Kinship system, societies are composed only of Families and {@link Indivi
 
 @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
-public class Family extends Marriage implements Serializable {
+public class Family extends Marriage implements Serializable, Locatable {
 
     /**	A unique, system-assigned ID for this family unit. May not be changed once assigned. */
     public int serialNmbr;
@@ -29,7 +29,10 @@ public class Family extends Marriage implements Serializable {
     and "yyyy-mm-dd" is an actual or estimated date the union commenced.	*/
     private String marriageMM, marriageDD, divorceMM, divorceDD;
     int nmbrOfKids = 0;
+    TreeMap<String, ParserGEDCOM.GEDCOMitem> gedcomItems;
 
+    public int getSerialNmbr() { return serialNmbr; }
+    
     public String getMarriageYr() {
         if (marriageYr == null) {
             return "";
@@ -624,6 +627,15 @@ public class Family extends Marriage implements Serializable {
         if (dataAuthor != null && dataAuthor.length() > 0) {
             result += "  <dataAuthor name=\"" + dataAuthor + "\"/>\n";
         }
+        if (gedcomItems != null && !gedcomItems.isEmpty()) {
+            result += "  <gedcomItems>";
+            Iterator itemIter = gedcomItems.values().iterator();
+            while (itemIter.hasNext()) {
+                ParserGEDCOM.GEDCOMitem item = (ParserGEDCOM.GEDCOMitem)itemIter.next();                
+                result += "\n" + item.toSILKString();
+            }  //  end of loop thru gedcomItems
+            result += "\n</gedcomItems>\n";
+        }
         if (!UDate.validXSD(dataChangeDate)) {
             dataChangeDate = UDate.convertToXSD(dataChangeDate);
         }
@@ -640,7 +652,121 @@ public class Family extends Marriage implements Serializable {
     public void addNote(String not) {
         comment += not;
         dataChangeDate = UDate.today();
+    }   
+    
+    
+    public ArrayList<String> specialItems = makeSpecialItems();
+    boolean titled = false;
+    
+    ArrayList<String> makeSpecialItems() {
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("NAME");  list.add("SEX");   list.add("BIRT");   list.add("DEAT");
+        list.add("FAMC");  list.add("FAMS");  list.add("MARR");   list.add("DIV");
+        list.add("HUSB");  list.add("WIFE");  list.add("CHIL");   list.add("CHAN");        
+        return list;
     }
+    
+    
+    String addTitle() {
+        if (titled) {
+            return "";
+        } else {
+            titled = true;
+            return "\n===== GEDCOM Items =====";
+        }
+    }
+    
+    public ParserGEDCOM.GEDCOMitem getItem(String key ,TreeMap<String, ParserGEDCOM.GEDCOMitem> tree) {
+        Iterator iter = tree.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry)iter.next();
+            String ndx = (String)entry.getKey();
+            if (ndx.startsWith(key)) {
+                return (ParserGEDCOM.GEDCOMitem)entry.getValue();
+            }
+        }
+        return null;
+    }
+    
+    public ArrayList<ParserGEDCOM.GEDCOMitem> findKidsInGEDCOM() {
+        ArrayList<ParserGEDCOM.GEDCOMitem> kids = new ArrayList<ParserGEDCOM.GEDCOMitem>();
+        Iterator iter = gedcomItems.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry)iter.next();
+            String key = (String) entry.getKey();
+            if (key.startsWith("CHIL")) {
+                kids.add((ParserGEDCOM.GEDCOMitem)entry.getValue());
+            }
+        }
+        return kids;
+    }
+    
+    public int getGEDCOMSerial(String ref) {
+        int start = -1, end = ref.lastIndexOf("@");
+        for (int i=0; i < ref.length(); i++) {
+            char ch = ref.charAt(i);
+            if (Character.isDigit(ch)) {
+                start = i;
+                break;
+            }
+        }
+        if (start == -1) {
+            return -1;
+        }
+        return Integer.parseInt(ref.substring(start, end));
+    }
+    
+    String makeGEDCOMItems() {
+        String s = "";
+        ParserGEDCOM.GEDCOMitem item;
+        titled = false;
+        item = getItem("HUSB", gedcomItems);
+        if (item != null && !item.subItems.isEmpty()) {
+            s += addTitle() + item.extraDataString();
+        }
+        item = getItem("WIFE", gedcomItems);
+        if (item != null && !item.subItems.isEmpty()) {
+            s += addTitle() + item.extraDataString();
+        }
+        ArrayList<ParserGEDCOM.GEDCOMitem> kids = findKidsInGEDCOM();
+        for (ParserGEDCOM.GEDCOMitem kid : kids) {
+            if (!item.subItems.isEmpty()) {
+                s += addTitle() + kid.extraDataString();
+            }
+        }
+        item = gedcomItems.get("MARR");
+        if (item != null && !item.subItems.isEmpty()) {
+            s += addTitle() + item.extraDataString();
+        }
+        item = gedcomItems.get("DIV");
+        if (item != null && !item.subItems.isEmpty()) {
+                s += addTitle() + item.extraDataString();
+            }
+        item = gedcomItems.get("CHAN");
+        if (item != null && !item.subItems.isEmpty()) {
+                s += addTitle() + item.extraDataString();
+        }
+       Iterator iter = gedcomItems.values().iterator();
+        while (iter.hasNext()) {
+            ParserGEDCOM.GEDCOMitem itm = (ParserGEDCOM.GEDCOMitem)iter.next();
+            if (!specialItems.contains(itm.tag)) {
+                s += addTitle() + itm.extraDataString();
+            }
+        }
+        return s;
+    }
+    
+//    ArrayList<Object> getAdoptees() {
+//        ArrayList<Object> adoptees = new ArrayList<Object>();
+//        if (husband != null) {
+//            adoptees.addAll(husband.getAdoptees());
+//        }
+//        if (wife != null) {
+//            adoptees.addAll(wife.getAdoptees());
+//        }
+//        return adoptees;
+//    }
+    
 
     /**
     Set dates of birth for all family members, if possible, via internal consistency checks.
@@ -728,6 +854,18 @@ public class Family extends Marriage implements Serializable {
         dataChangeDate = UDate.today();
         computeBirthGrps();
     }  // end of method addChild
+
+    /**
+    Add the Individual <code>kid</code> as a child of this Family.
+    * But do not alter the data change date. (for use in parsing)
+    @param	kid		Individual to be added.
+     */
+    public void addChild2(Individual kid) {
+        nmbrOfKids++;
+        children.add(kid);
+        kid.birthFamily = this;
+        computeBirthGrps();
+    }  // end of method addChild
     
     public void computeBirthGrps() {
             // To allow for multiple births (whose descent lines should all drop from a common point) we maintain "birth groups."
@@ -741,7 +879,7 @@ public class Family extends Marriage implements Serializable {
         for (Link lk : kidLinks) {
             Individual kid = lk.personPointedTo;
             linkees.add(kid);
-            if (kid.birthYr.isEmpty()) {
+            if (kid.birthYY.isEmpty()) {
             // No birth date info. Must be single birth
                 bg = new BirthGroup();
                 bg.links.add(lk);
@@ -758,7 +896,7 @@ public class Family extends Marriage implements Serializable {
         for (Object k : children) {
             Individual kid = (Individual) k;
             if (!linkees.contains(kid)) {
-                if (kid.birthYr.isEmpty()) {
+                if (kid.birthYY.isEmpty()) {
                     // No birth date info. Must be single birth
                     bg = new BirthGroup();
                     bg.members.add(kid);
@@ -881,30 +1019,77 @@ public class Family extends Marriage implements Serializable {
     @param	out		a PrintWriter to write to.
     @param	today	String: today's date as it should appear in the DataChange field of GEDCOM record.
      */
-    public void exportGEDCOM(PrintWriter out, String today) {
-        out.println("0 @F-" + serialNmbr + "@ FAM");
-        out.println("1 HUSB @I-" + husband.serialNmbr + "@");
-        out.println("1 WIFE @I-" + wife.serialNmbr + "@");
+    public void exportGEDCOM(PrintWriter out) {
+        out.println("0 @F" + serialNmbr + "@ FAM");
+        if (husband != null) {
+            out.println("1 HUSB @I" + husband.serialNmbr + "@");
+        }
+        if (wife != null) {
+            out.println("1 WIFE @I" + wife.serialNmbr + "@");
+        }
         if (!(getMarriageDate().equals(""))) {
             out.println("1 MARR ");
-            out.println("2 DATE " + getMarriageDate());
+            out.println("2 DATE " + UDate.xsdToEuropean(getMarriageDate()));
+            printSubItems(out, "MARR", true);
         }  //  end of wedding_date output
         if (hasDivorceDate()) {
             out.println("1 DIV");
-            out.println("2 DATE " + getDivorceDate());
+            out.println("2 DATE " + UDate.xsdToEuropean(getDivorceDate()));
+            printSubItems(out, "DIV", true);
         }  //  end of divorce_date output
         if (nmbrOfKids > 0) {
             for (int i = 0; i < nmbrOfKids; i++) {
                 Individual kid = (Individual) children.get(i);
-                out.println("1 CHIL @I-" + kid.serialNmbr + "@");
+                out.println("1 CHIL @I" + kid.serialNmbr + "@");
             }  // end of for-each-kid
         }  // end of if-kids
-        if (comment.length() > 7) {
-            out.println("1 NOTE " + comment.substring(7));
+        if (! comment.isEmpty()) {
+            out.println("1 NOTE " + comment);
         }
-        out.println("1 CHAN");
-        out.println("2 DATE " + today);
-        return;
+        if (gedcomItems != null) {
+            Iterator iter = gedcomItems.values().iterator();
+            while (iter.hasNext()) {
+                ParserGEDCOM.GEDCOMitem itm = (ParserGEDCOM.GEDCOMitem) iter.next();
+                if (!specialItems.contains(itm.tag)) {
+                    out.println(itm.toGEDCOMString());
+                }
+            }
+        }
+        if (dataAuthor != null) {
+            out.println("1 SUBM @" + Context.current.dataAuthors.indexOf(dataAuthor) + "@");
+        }
+        if (dataChangeDate != null && !dataChangeDate.isEmpty()
+                && dataChangeDate.length() >= 4) {
+            out.println("1 CHAN");
+            out.println("2 DATE " + UDate.xsdToEuropean(dataChangeDate));
+        }
     }  //  end of method exportGEDCOM
+    
+    void printSubItems(PrintWriter out, String tag, boolean suppressDate) {
+        if (gedcomItems != null) {
+            return;
+        }
+        String s = "";
+        boolean eolNeeded = false;
+        ParserGEDCOM.GEDCOMitem item = gedcomItems.get(tag);
+        if (item != null) {
+            for (ParserGEDCOM.GEDCOMitem sub : item.subItems) {
+                if (suppressDate && sub.tag.equals("DATE")) {
+                    continue;
+                }
+                if (eolNeeded) {
+                    s += "\n";
+                } else {
+                    eolNeeded = true;
+                }
+                s += sub.toGEDCOMString();
+            }
+        }
+        if (s.length() > 0) {
+            out.println(s);
+        }
+    }
+    
+    
 }  // end of public class Family
 

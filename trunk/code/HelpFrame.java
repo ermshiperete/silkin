@@ -16,15 +16,15 @@ import java.util.Arrays;
  */
 public class HelpFrame extends JFrame implements HyperlinkListener {
 
-    static HelpFrame help = null;
+    static HelpFrame window = null;
     static final int START = 0, CHART = 1, SUGGEST = 2, PREFS = 3, 
-            THEORY_EDIT = 4, CONTEXT = 5;
+            THEORY_EDIT = 4, CONTEXT = 5, NON_GEN = 6;
     static String[] filenames = {"Start.html", "Chart.html",
-        "Suggs.html", "Prefs.html", "HornClause.html", "ContextEdit.html"};    
+        "Suggs.html", "Prefs.html", "HornClause.html", "ContextEdit.html", "NonGen.html"};    
     static String[] titles = {"Getting Started", 
         "Drawing and Editing Genealogy Charts", "Suggestions", "Preferences", 
-        "Editing Definitions", "Editing The Context"};    
-    String[] pathNames = new String[6];
+        "Editing Definitions", "Editing The Context", "Non-Genealogical Factors"};    
+    String[] pathNames = new String[7];
     ArrayList<HyperlinkEvent> stack = new ArrayList<HyperlinkEvent>();
     ArrayList<String> titleStack = new ArrayList<String>();
     int stackPtr = 0;
@@ -39,7 +39,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             return;
         }
         initComponents();
-        help = this;
+        window = this;
     }
 
     void loadPaths() throws KSInternalErrorException {
@@ -73,7 +73,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
         helpTextPane.fireHyperlinkUpdate(event);
         topTitle.setText(titles[page]);
         titleStack.add(0, titles[page]);
-        help.setVisible(true);
+        window.setVisible(true);
         stack.add(0, event);
         backBtn.setEnabled(backable());
         fwdBtn.setEnabled(false);
@@ -322,6 +322,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             suggsSubMenu = new JMenu();
             prefsSubMenu = new JMenu();
             theoryEditSubMenu = new JMenu();
+            nonGenSubMenu = new JMenu();
 //          Start Sub-Menus
             screenItem = new JMenuItem();
             createProjectItem = new JMenuItem();
@@ -341,6 +342,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             deleteRelItem = new JMenuItem();
             deletePeopleItem = new JMenuItem();
             multiChartItem = new JMenuItem();
+            linkItem = new JMenuItem();
             deletingChartsItem = new JMenuItem();
             printChartItem = new JMenuItem();
 //          Context Editor Sub-Menus
@@ -362,6 +364,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             polygamyItem = new JMenuItem();
             nameCaptureItem = new JMenuItem();
             snapToGridItem = new JMenuItem();
+            adoptionHelpItem = new JMenuItem();
             linkPriorityItem = new JMenuItem();
             chartPrintingItem = new JMenuItem();
 //          Theory Edit Sub-Menus
@@ -374,6 +377,11 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             sampleSessionItem = new JMenuItem();
             variableGenItem = new JMenuItem();
             editCommentsItem = new JMenuItem();
+//          Adoption Sub-Menus
+            adoptionIntroItem = new JMenuItem();
+            adoptionItem = new JMenuItem();
+            adoptionRulesItem = new JMenuItem();
+            adoptionDeleteItem = new JMenuItem();
 
             // Getting Started SubMenu
             startSubMenu.setText("Getting Started");
@@ -383,7 +391,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             screenItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(START, "screen");
+                    window.displayPage(START, "screen");
                 }
             });
             startSubMenu.add(screenItem);
@@ -392,7 +400,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             createProjectItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(START, "create");
+                    window.displayPage(START, "create");
                 }
             });
             startSubMenu.add(createProjectItem);
@@ -401,7 +409,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             addPeopleItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(START, "add");
+                    window.displayPage(START, "add");
                 }
             });
             startSubMenu.add(addPeopleItem);
@@ -410,7 +418,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             detailDisplayItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(START, "detail");
+                    window.displayPage(START, "detail");
                 }
             });
             startSubMenu.add(detailDisplayItem);
@@ -419,7 +427,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             refAdrItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(START, "terms");
+                    window.displayPage(START, "terms");
                 }
             });
             startSubMenu.add(refAdrItem);
@@ -428,7 +436,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             dyadsItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(START, "dyads");
+                    window.displayPage(START, "dyads");
                 }
             });
             startSubMenu.add(dyadsItem);
@@ -437,7 +445,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             reservedItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(START, "reserved");
+                    window.displayPage(START, "reserved");
                 }
             });
             startSubMenu.add(reservedItem);
@@ -446,7 +454,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             commentsItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(START, "comments");
+                    window.displayPage(START, "comments");
                 }
             });
             startSubMenu.add(commentsItem);
@@ -459,7 +467,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             egoAlterItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(CHART, "ego");
+                    window.displayPage(CHART, "ego");
                 }
             });
             chartSubMenu.add(egoAlterItem);
@@ -468,7 +476,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             datesItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(CHART, "dates");
+                    window.displayPage(CHART, "dates");
                 }
             });
             chartSubMenu.add(datesItem);
@@ -477,7 +485,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             labelItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(CHART, "label");
+                    window.displayPage(CHART, "label");
                 }
             });
             chartSubMenu.add(labelItem);
@@ -486,7 +494,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             editableItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(CHART, "editable");
+                    window.displayPage(CHART, "editable");
                 }
             });
             chartSubMenu.add(editableItem);
@@ -495,7 +503,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             reshapingItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(CHART, "reshape");
+                    window.displayPage(CHART, "reshape");
                 }
             });
             chartSubMenu.add(reshapingItem);
@@ -504,7 +512,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             movingItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(CHART, "move");
+                    window.displayPage(CHART, "move");
                 }
             });
             chartSubMenu.add(movingItem);
@@ -513,7 +521,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             deleteRelItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(CHART, "del-rel");
+                    window.displayPage(CHART, "del-rel");
                 }
             });
             chartSubMenu.add(deleteRelItem);
@@ -522,34 +530,39 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             deletePeopleItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(CHART, "del-ppl");
+                    window.displayPage(CHART, "del-ppl");
                 }
             });
             chartSubMenu.add(deletePeopleItem);
             
             multiChartItem.setText("Multiple Charts");
             multiChartItem.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(CHART, "multicharts");
+                    window.displayPage(CHART, "multicharts");
                 }
             });
             chartSubMenu.add(multiChartItem);
             
+            linkItem.setText("Links Between Charts");
+            linkItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    window.displayPage(CHART, "links");
+                }
+            });
+            chartSubMenu.add(linkItem);
+            
             deletingChartsItem.setText("Deleting Charts");
             deletingChartsItem.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(CHART, "deletingcharts");
+                    window.displayPage(CHART, "deletingcharts");
                 }
             });
             chartSubMenu.add(deletingChartsItem);
             
             printChartItem.setText("Printing Charts");
             printChartItem.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(CHART, "print");
+                    window.displayPage(CHART, "print");
                 }
             });
             chartSubMenu.add(printChartItem);
@@ -563,7 +576,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             definitionItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(CONTEXT, "definition");
+                    window.displayPage(CONTEXT, "definition");
                 }
             });
             contextSubMenu.add(definitionItem);
@@ -572,7 +585,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             editorItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(CONTEXT, "editor");
+                    window.displayPage(CONTEXT, "editor");
                 }
             });
             contextSubMenu.add(editorItem);
@@ -581,7 +594,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             deletedRecsItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(CONTEXT, "deleted-records");
+                    window.displayPage(CONTEXT, "deleted-records");
                 }
             });
             contextSubMenu.add(deletedRecsItem);
@@ -590,7 +603,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             udpsItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(CONTEXT, "UDPs");
+                    window.displayPage(CONTEXT, "UDPs");
                 }
             });
             contextSubMenu.add(udpsItem);
@@ -599,7 +612,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             editTheoryItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(CONTEXT, "EditTheory");
+                    window.displayPage(CONTEXT, "EditTheory");
                 }
             });
             contextSubMenu.add(editTheoryItem);
@@ -613,7 +626,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             getSuggsItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(SUGGEST, "get");
+                    window.displayPage(SUGGEST, "get");
                 }
             });
             suggsSubMenu.add(getSuggsItem);
@@ -622,7 +635,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             actSuggsItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(SUGGEST, "act");
+                    window.displayPage(SUGGEST, "act");
                 }
             });
             suggsSubMenu.add(actSuggsItem);
@@ -631,7 +644,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             undoItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(SUGGEST, "undo");
+                    window.displayPage(SUGGEST, "undo");
                 }
             });
             suggsSubMenu.add(undoItem);
@@ -645,7 +658,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             prefIntroItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(PREFS, "intro");
+                    window.displayPage(PREFS, "intro");
                 }
             });
             prefsSubMenu.add(prefIntroItem);
@@ -654,7 +667,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             ignorableItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(PREFS, "ignore");
+                    window.displayPage(PREFS, "ignore");
                 }
             });
             prefsSubMenu.add(ignorableItem);
@@ -663,70 +676,71 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
             maxItem.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(PREFS, "max");
+                    window.displayPage(PREFS, "max");
                 }
             });
             prefsSubMenu.add(maxItem);
 
             subPatternItem.setText("Sub-Pattern Matches");
             subPatternItem.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(PREFS, "sub");
+                    window.displayPage(PREFS, "sub");
                 }
             });
             prefsSubMenu.add(subPatternItem);
 
             inductionItem.setText("Induction");
             inductionItem.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(PREFS, "induce");
+                    window.displayPage(PREFS, "induce");
                 }
             });
             prefsSubMenu.add(inductionItem);
 
             polygamyItem.setText("Polygamy");
             polygamyItem.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(PREFS, "poly");
+                    window.displayPage(PREFS, "poly");
                 }
             });
             prefsSubMenu.add(polygamyItem);
 
             nameCaptureItem.setText("Capturing Surnames and Birth Dates");
             nameCaptureItem.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(PREFS, "capture");
+                    window.displayPage(PREFS, "capture");
                 }
             });
             prefsSubMenu.add(nameCaptureItem);
 
             snapToGridItem.setText("Snap To Grid");
             snapToGridItem.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(PREFS, "grid");
+                    window.displayPage(PREFS, "grid");
                 }
             });
             prefsSubMenu.add(snapToGridItem);
 
-            linkPriorityItem.setText("Link Priorities");
-            linkPriorityItem.addActionListener(new ActionListener() {
-
+            adoptionHelpItem.setText("Help for Adoptions");
+            adoptionHelpItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(PREFS, "priority");
+                    window.displayPage(PREFS, "adoption");
+                }
+            });
+            prefsSubMenu.add(adoptionHelpItem);
+
+            linkPriorityItem.setText("Kin Type Priorities");
+            linkPriorityItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    window.displayPage(PREFS, "priority");
                 }
             });
             prefsSubMenu.add(linkPriorityItem);
             
             chartPrintingItem.setText("Fonts for Printing");
             chartPrintingItem.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(PREFS, "printing");
+                    window.displayPage(PREFS, "printing");
                 }
             });
             prefsSubMenu.add(chartPrintingItem);
@@ -737,84 +751,111 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
 
             layoutItem.setText("Theory Editor Window Layout");
             layoutItem.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(THEORY_EDIT, "layout");
+                    window.displayPage(THEORY_EDIT, "layout");
                 }
             });
             theoryEditSubMenu.add(layoutItem);
 
             tutorialItem.setText("What Is A Horn Clause? ");
             tutorialItem.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(THEORY_EDIT, "tutorial");
+                    window.displayPage(THEORY_EDIT, "tutorial");
                 }
             });
             theoryEditSubMenu.add(tutorialItem);
 
             rulesItem.setText("Rules For Writing Horn Clauses");
             rulesItem.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(THEORY_EDIT, "rules");
+                    window.displayPage(THEORY_EDIT, "rules");
                 }
             });
             theoryEditSubMenu.add(rulesItem);
 
             predefinedItem.setText("Pre-Defined Terms");
             predefinedItem.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(THEORY_EDIT, "pre-defined-terms");
+                    window.displayPage(THEORY_EDIT, "pre-defined-terms");
                 }
             });
             theoryEditSubMenu.add(predefinedItem);
 
             auxiliariesItem.setText("Auxiliary Terms");
             auxiliariesItem.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(THEORY_EDIT, "auxiliaries");
+                    window.displayPage(THEORY_EDIT, "auxiliaries");
                 }
             });
             theoryEditSubMenu.add(auxiliariesItem);
 
             bottomBtnsItem.setText("Validating and Accepting Definitions");
             bottomBtnsItem.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(THEORY_EDIT, "bottom-buttons");
+                    window.displayPage(THEORY_EDIT, "bottom-buttons");
                 }
             });
             theoryEditSubMenu.add(bottomBtnsItem);
 
             sampleSessionItem.setText("A Sample Session");
             sampleSessionItem.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(THEORY_EDIT, "sample-session");
+                    window.displayPage(THEORY_EDIT, "sample-session");
                 }
             });
             theoryEditSubMenu.add(sampleSessionItem);
 
             variableGenItem.setText("Automatic Variable Generation");
             variableGenItem.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(THEORY_EDIT, "variable-generation");
+                    window.displayPage(THEORY_EDIT, "variable-generation");
                 }
             });
             theoryEditSubMenu.add(variableGenItem);
 
             editCommentsItem.setText("Editing Comments");
             editCommentsItem.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent evt) {
-                    help.displayPage(THEORY_EDIT, "edit-comments");
+                    window.displayPage(THEORY_EDIT, "edit-comments");
                 }
             });
-            theoryEditSubMenu.add(editCommentsItem);            
+            theoryEditSubMenu.add(editCommentsItem);
+            
+ // Non-Genealogical SubMenu
+            nonGenSubMenu.setText("Non-Genealogical Factors");
+            add(nonGenSubMenu);
+
+           adoptionIntroItem.setText("Introduction");
+            adoptionIntroItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    window.displayPage(NON_GEN, "intro");
+                }
+            });
+            nonGenSubMenu.add(adoptionIntroItem);
+
+           adoptionItem.setText("Adoption");
+            adoptionItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    window.displayPage(NON_GEN, "adoption");
+                }
+            });
+            nonGenSubMenu.add(adoptionItem);
+
+           adoptionDeleteItem.setText("Deleting Special Relationships");
+            adoptionDeleteItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    window.displayPage(NON_GEN, "delete");
+                }
+            });
+            nonGenSubMenu.add(adoptionDeleteItem);
+
+           adoptionRulesItem.setText("Adoption Procedure");
+            adoptionRulesItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    window.displayPage(NON_GEN, "rules");
+                }
+            });
+            nonGenSubMenu.add(adoptionRulesItem);
         }
         
         private JMenu startSubMenu;
@@ -823,6 +864,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
         private JMenu suggsSubMenu;
         private JMenu prefsSubMenu;
         private JMenu theoryEditSubMenu;
+        private JMenu nonGenSubMenu;
         private JMenuItem screenItem;
         private JMenuItem createProjectItem;
         private JMenuItem addPeopleItem;
@@ -840,6 +882,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
         private JMenuItem deleteRelItem;
         private JMenuItem deletePeopleItem;
         private JMenuItem multiChartItem;
+        private JMenuItem linkItem;
         private JMenuItem deletingChartsItem;
         private JMenuItem printChartItem;
         private JMenuItem getSuggsItem;
@@ -853,6 +896,7 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
         private JMenuItem polygamyItem;
         private JMenuItem nameCaptureItem;
         private JMenuItem snapToGridItem;
+        private JMenuItem adoptionHelpItem;
         private JMenuItem linkPriorityItem;
         private JMenuItem chartPrintingItem;
         private JMenuItem layoutItem;
@@ -869,5 +913,9 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
         private JMenuItem deletedRecsItem;
         private JMenuItem udpsItem;
         private JMenuItem editTheoryItem;
+        private JMenuItem adoptionIntroItem;
+        private JMenuItem adoptionItem;
+        private JMenuItem adoptionDeleteItem;
+        private JMenuItem adoptionRulesItem;
     }
 }

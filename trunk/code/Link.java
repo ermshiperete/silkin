@@ -48,6 +48,8 @@ public class Link implements Locatable, Serializable {
         Context.current.linkCensus.add(this);
     }
 
+    public int getSerialNmbr() { return serialNmbr; }
+
     public Point getLocation() { return location; }
     
     public int getLocationX() { return location.x; }
@@ -85,7 +87,11 @@ public class Link implements Locatable, Serializable {
         // myBounds is used to compute the size of the symbol
         drawn = false;
         if (pbounds.contains(location)) {
-            sex.symbol.drawSymbol(g, myBounds);
+            if (personPointedTo.hasEnded()) {
+                sex.symbol.drawEndSymbol(g, myBounds);
+            } else {
+                sex.symbol.drawSymbol(g, myBounds);
+            }
             drawLabel(g, myBounds);
             drawn = true;
         }

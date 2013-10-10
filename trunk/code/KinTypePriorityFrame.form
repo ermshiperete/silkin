@@ -37,12 +37,16 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="row2Dn" min="-2" max="-2" attributes="0"/>
-                                  <Component id="row3Dn" min="-2" max="-2" attributes="0"/>
-                                  <Component id="row4Dn" min="-2" max="-2" attributes="0"/>
-                                  <Component id="row6Dn" min="-2" max="-2" attributes="0"/>
-                                  <Component id="row5Dn" min="-2" max="-2" attributes="0"/>
-                                  <Component id="row7Dn" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="row2Dn" min="-2" max="-2" attributes="0"/>
+                                      <Component id="row3Dn" min="-2" max="-2" attributes="0"/>
+                                      <Component id="row4Dn" min="-2" max="-2" attributes="0"/>
+                                      <Component id="row6Dn" min="-2" max="-2" attributes="0"/>
+                                      <Component id="row5Dn" min="-2" max="-2" attributes="0"/>
+                                      <Component id="row7Dn" min="-2" max="-2" attributes="0"/>
+                                      <Component id="row8Dn" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="row9Dn" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -52,32 +56,45 @@
                                   <Component id="row5Up" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="row6Up" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="row7Up" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="row8Up" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="row8Up" min="-2" max="-2" attributes="0"/>
+                                  <Component id="row9Up" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Component id="row1Dn" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="row1" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="row2" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="row3" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="row4" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="row5" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="row6" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="row7" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="row8" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="priorityGrp1" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="priorityGrp2" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="priorityGrp3" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="priorityGrp4" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="priorityGrp5" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="priorityGrp6" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="priorityGrp7" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="priorityGrp8" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="row1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="row2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="row3" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="row4" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="row5" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="row6" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="row7" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="priorityGrp1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="priorityGrp2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="priorityGrp3" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="priorityGrp4" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="priorityGrp5" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="priorityGrp6" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="priorityGrp7" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="row8" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="priorityGrp8" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="row9" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="priorityGrp9" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -94,8 +111,28 @@
                       <EmptySpace min="223" pref="223" max="-2" attributes="0"/>
                       <Component id="doneBtn" min="-2" max="-2" attributes="0"/>
                   </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="row10Dn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="row10Up" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="row10" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="priorityGrp10" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="row11Dn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="row11Up" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="row11" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="priorityGrp11" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace pref="37" max="32767" attributes="0"/>
+              <EmptySpace pref="31" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -153,12 +190,36 @@
                   <Component id="row7Up" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="row8" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="priorityGrp8" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="row8Up" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="priorityGrp8" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="row8Up" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="row8Dn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="row8" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="28" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="row9Up" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="row9" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="priorityGrp9" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="row9Dn" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="row10Up" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="row10" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="priorityGrp10" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="row10Dn" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="row11Up" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="row11" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="priorityGrp11" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="row11Dn" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="16" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="maleFirstBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="femaleFirstBtn" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -359,19 +420,19 @@
         <Property name="text" type="java.lang.String" value="Hbro, Hsis, Hsib"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="row8">
+    <Component class="javax.swing.JTextField" name="row9">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="text" type="java.lang.String" value="Hbro, Hsis, Hsib"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="priorityGrp8">
+    <Component class="javax.swing.JTextField" name="priorityGrp9">
       <Properties>
         <Property name="text" type="java.lang.String" value="A"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="priorityGrp8ActionPerformed"/>
-        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="priorityGrp8FocusLost"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="priorityGrp9ActionPerformed"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="priorityGrp9FocusLost"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="row7Dn">
@@ -399,12 +460,12 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="row7UpActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="row8Up">
+    <Component class="javax.swing.JButton" name="row9Up">
       <Properties>
         <Property name="text" type="java.lang.String" value="^"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="row8UpActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="row9UpActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="doneBtn">
@@ -436,6 +497,107 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="femaleFirstBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="row8Dn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="v"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="row8DnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="row8Up">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="^"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="row8UpActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="row8">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+        <Property name="text" type="java.lang.String" value="Hbro, Hsis, Hsib"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="priorityGrp8">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="A"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="priorityGrp8ActionPerformed"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="priorityGrp8FocusLost"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="row9Dn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="v"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="row9DnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="row10Dn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="v"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="row10DnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="row10Up">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="^"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="row10UpActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="row10">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+        <Property name="text" type="java.lang.String" value="Hbro, Hsis, Hsib"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="priorityGrp10">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="A"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="priorityGrp10ActionPerformed"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="priorityGrp10FocusLost"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="priorityGrp11">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="A"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="priorityGrp11ActionPerformed"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="priorityGrp11FocusLost"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="row11">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+        <Property name="text" type="java.lang.String" value="Hbro, Hsis, Hsib"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="row11Up">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="^"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="row11UpActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="row11Dn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="v"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="row11DnActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

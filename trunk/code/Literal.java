@@ -592,30 +592,37 @@ public class Literal extends LiteralAbstract2  {
 		}  //  end of method negatedConstraintsStrictlySatisfied
 	
 	
-    boolean fillInNames_bool(String kinTerm, ArrayList<Object> remLits, ArrayList<Object> starStuff, ClauseBody cb, TreeMap bindings, 
-            ConstraintObj constraints, Individual goalPerson, ArrayList<Object> path) 
-        throws KSBadHornClauseException, KSNoChainOfRelations2Alter, KSInternalErrorException, 
-               KSConstraintInconsistency, ClassNotFoundException      {
+    boolean fillInNames_bool(String kinTerm, ArrayList<Object> remLits, ArrayList<Object> starStuff, ClauseBody cb, TreeMap bindings,
+            ConstraintObj constraints, Individual goalPerson, ArrayList<Object> path)
+            throws KSBadHornClauseException, KSNoChainOfRelations2Alter, KSInternalErrorException,
+            KSConstraintInconsistency, ClassNotFoundException {
         //  This method mimics fillInNames above.  The difference is that this method does not label Alter
         //  if it successfully gets to the end of a logical chain of bindings - it merely returns 'true'
         //  to indicate that it COULD have.  This information is used by negatedConstraintsStrictlySatisfied
         //  to determine whether a negated constraint could be satisfied by objects already created.
-        if ((predicate.name.equals("parent")) || (predicate.name.equals("father")) 
-            || (predicate.name.equals("mother"))) 
+        //  It's also used the judge the fit of a candidate CB with a dyad in Active Learning.
+        if ((predicate.name.equals("parent")) || (predicate.name.equals("father"))
+                || (predicate.name.equals("mother"))) {
             return findAllBirthLinks_bool(1, kinTerm, remLits, starStuff, cb, bindings, constraints, goalPerson, path);
-        if ((predicate.name.equals("son")) || (predicate.name.equals("child")) 
-            || (predicate.name.equals("daughter"))) 
+        }
+        if ((predicate.name.equals("son")) || (predicate.name.equals("child"))
+                || (predicate.name.equals("daughter"))) {
             return findAllBirthLinks_bool(0, kinTerm, remLits, starStuff, cb, bindings, constraints, goalPerson, path);
-        if ((predicate.name.equals("spouse")) || (predicate.name.equals("husband")) 
-            || (predicate.name.equals("wife"))) 
+        }
+        if ((predicate.name.equals("spouse")) || (predicate.name.equals("husband"))
+                || (predicate.name.equals("wife"))) {
             return findAllSpice_bool(kinTerm, remLits, starStuff, cb, bindings, false, constraints, goalPerson, path);
-        if ((predicate.name.equals("divorced")) && (args.size() == 2)) 
+        }
+        if ((predicate.name.equals("divorced")) && (args.size() == 2)) {
             return findAllSpice_bool(kinTerm, remLits, starStuff, cb, bindings, true, constraints, goalPerson, path);
-        if (predicate.name.substring(0, 1).equals("*"))  
-			return findAllStarLinks_bool(kinTerm, remLits, starStuff, cb, bindings, constraints, goalPerson, path);
-		if ((predicate.name.equals("not")) || (predicate.category instanceof MathCategory))  
-			return findAllMathLinks_bool(kinTerm, remLits, starStuff, cb, bindings, constraints, goalPerson, path);
-		throw new KSInternalErrorException("Non-primitive predicate found in Literal.fillInNames_bool.");
+        }
+        if (predicate.name.substring(0, 1).equals("*")) {
+            return findAllStarLinks_bool(kinTerm, remLits, starStuff, cb, bindings, constraints, goalPerson, path);
+        }
+        if ((predicate.name.equals("not")) || (predicate.category instanceof MathCategory)) {
+            return findAllMathLinks_bool(kinTerm, remLits, starStuff, cb, bindings, constraints, goalPerson, path);
+        }
+        throw new KSInternalErrorException("Non-primitive predicate found in Literal.fillInNames_bool.");
     }  //  end of method fillInNames_bool
 
 
@@ -782,7 +789,7 @@ public class Literal extends LiteralAbstract2  {
             if (nextLit != null) 
                     return nextLit.fillInNames_bool(kinTerm, remLits, starStuff, cb, bindings, constraints, goalPerson, path);
             else {
-                if ((remLits.isEmpty()) && (alter != null)) {
+                if (remLits.isEmpty() && alter != null) {
                     if ((goalPerson == null) && (negatedConstraintsStrictlySatisfied(starStuff, bindings, constraints, kinTerm))) 
                         return true;
                     else if ((goalPerson != null) && (goalPerson == (Individual)bindings.get("Alter")) 

@@ -14,19 +14,22 @@ following alphabet:
 <li>	NonRightAngle	anything but '>'   </li>
 <li>	LeftSquare	'['   </li>
 <li>	RightSquare	']'   </li>
-<li>   LeftCurly       '{'   </li>
-<li>   RightCurly      '}'   </li>
-<li>   EqualSign       '='   </li>
+<li>    LeftCurly       '{'   </li>
+<li>    RightCurly      '}'   </li>
+<li>    EqualSign       '='   </li>
 <li>	Dash		'-'   </li>
+<li>	UnderScore	'_'   </li>
 <li>	Comma		','   </li>
 <li>	Period		'.'   </li>
 <li>	Colon		':'   </li>
 <li>	SemiColon	';'   </li>
 <li>	Bar             '|'   </li>
-<li>   Slash		'/'   </li>
-<li>   NonSlash	anything but '/'   </li>
-<li>   Pound		'#'   </li>
-<li>   Star		'*'   </li>
+<li>    Slash		'/'   </li>
+<li>    NonSlash	anything but '/'   </li>
+<li>    AtSign		'@'   </li>
+<li>    NonAtSign	anything but '@'   </li>
+<li>    Pound		'#'   </li>
+<li>    Star		'*'   </li>
 <li>	QuestionMark    '?'  </li>
 <li>	Exclamation	'!'   </li>
 <li>	LineTerm	any character that causes a new line to start (\n, \r, etc.)   </li>
@@ -114,12 +117,18 @@ public class JavaLex {
             answer = (ch == '}');
         } else if (target.equals("Dash")) {
             answer = (ch == '-');
+        } else if (target.equals("UnderScore")) {
+            answer = (ch == '_');
         } else if (target.equals("Colon")) {
             answer = (ch == ':');
         } else if (target.equals("Slash")) {
             answer = (ch == '/');
         } else if (target.equals("NonSlash")) {
             answer = (ch != '/');
+        } else if (target.equals("AtSign")) {
+            answer = (ch == '@');
+        } else if (target.equals("NonAtSign")) {
+            answer = (ch != '@');
         } else if (target.equals("Star")) {
             answer = (ch == '*');
         } else if (target.equals("Pound")) {

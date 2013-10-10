@@ -14,6 +14,7 @@ It is an extension of KSJInternalFrame because I want this to appear in the View
  */
 public class UDPEditor extends KSJInternalFrame {
 
+    public static final int MAXCHARTABLES = 3;
     public Context ctxt;
     public KSJInternalFrame ctxtEd;
     public boolean newUDP, newSingleValue, 
@@ -26,17 +27,18 @@ public class UDPEditor extends KSJInternalFrame {
     public UserDefinedProperty theUDP;	//  The various newxxx fields are holders for the
     public String newStarName, newType; //  new values entered into this editor.
     public ArrayList<Object> newValidEntries;   //  After validation, they'll be stored on theUDP.
+    Color newChartColor;
     Number newMinVal, newMaxVal;
     Object newDefaultValue;
     UDPListener listener;
     JComboBox typePick;
-    JRadioButton nocertain, yescertain, yesdefault, nodefault, nomulti;
+    JRadioButton nocertain, yescertain, yesdefault, nodefault, nomulti, yesmulti, chartYes, chartNo;
     JTextField minText, maxText;
     JTextArea certainText, name_1, defaultText;      
-    JLabel certainEditLabel, defeditLabel;
-    JButton udpCheckSave;
+    JLabel certainEditLabel, defeditLabel, colorSample;
+    JButton udpCheckSave, edColorBtn;
 //  This element of the editor GUI is accessed by the Listener
-    JPanel progBox;
+    JPanel progBox, colorBox;
 
     public UDPEditor(Context cntxt, KSJInternalFrame ctEd, String title, boolean newUDPee,
             UserDefinedProperty theUDPee) {
@@ -88,6 +90,54 @@ public class UDPEditor extends KSJInternalFrame {
         nameEdBox.setAlignmentX(0.5f);
         editor.add(nameEdBox);
 
+        //  CHARTABLE?
+        JPanel chartBox = new JPanel();
+        chartBox.setLayout(new BoxLayout(chartBox, BoxLayout.LINE_AXIS));
+        JLabel chartLabel = new JLabel("Display on Charts?");
+        chartYes = new JRadioButton("Yes");
+        chartYes.setActionCommand("chart yes");
+        chartYes.addActionListener(listener);
+        chartNo = new JRadioButton("No");
+        chartNo.setActionCommand("chart no");
+        chartNo.addActionListener(listener);
+        ButtonGroup chartBtns = new ButtonGroup();
+        chartBtns.add(chartYes);
+        chartBtns.add(chartNo);
+        if (theUDP.chartable) {
+            chartYes.setSelected(true);
+        } else {
+            chartNo.setSelected(true);
+        }
+        chartBox.add(chartLabel);
+        chartBox.add(chartYes);
+        chartBox.add(chartNo);
+        editor.add(Box.createRigidArea(new Dimension(0, 4)));
+        editor.add(chartBox);
+        
+        // COLOR SELECTION
+        colorBox = new JPanel();
+        colorBox.setLayout(new BoxLayout(colorBox, BoxLayout.LINE_AXIS));
+        JLabel colorLabel = new JLabel("Line Color on Charts:");
+        colorSample = new JLabel("-------");
+        colorSample.setBackground(Color.white);
+        edColorBtn = new JButton("Choose Color");
+        edColorBtn.setActionCommand("change color");
+        edColorBtn.addActionListener(listener);
+        colorBox.add(colorLabel);
+        colorBox.add(Box.createRigidArea(new Dimension(4, 0)));
+        colorBox.add(colorSample);
+        colorBox.add(Box.createRigidArea(new Dimension(6, 0)));
+        colorBox.add(edColorBtn);
+        editor.add(colorBox);
+        if (theUDP.chartable) {
+            colorSample.setForeground(newChartColor = theUDP.chartColor);
+            edColorBtn.setText("Change Color");
+            colorBox.setVisible(true);
+        } else {
+            colorSample.setText("_None_");
+            colorBox.setVisible(false);
+        }
+
         //  DATA TYPE
         JPanel dTypeBox = new JPanel();
         dTypeBox.setLayout(new BoxLayout(dTypeBox, BoxLayout.LINE_AXIS));
@@ -125,7 +175,7 @@ public class UDPEditor extends KSJInternalFrame {
         JPanel multiBox = new JPanel();
         multiBox.setLayout(new BoxLayout(multiBox, BoxLayout.LINE_AXIS));
         JLabel multiLabel = new JLabel("Multiple Values?");
-        JRadioButton yesmulti = new JRadioButton("Yes");
+        yesmulti = new JRadioButton("Yes");
         yesmulti.setActionCommand("multiVal yes");
         yesmulti.addActionListener(listener);
         nomulti = new JRadioButton("No");
@@ -180,6 +230,7 @@ public class UDPEditor extends KSJInternalFrame {
             certainText.setText("");
             certainEditLabel.setText("");
             certainText.setEditable(false);
+            newValidEntries = null;
         } else {
             certainText.setEditable(true);
             certainEditLabel.setText("Edit list of values.");
@@ -603,25 +654,32 @@ public class UDPEditor extends KSJInternalFrame {
         }  //  end of constructor
 
         public void actionPerformed(ActionEvent e) {
+            Set names;
+            if (ctxt.userDefinedProperties != null) {
+                names = ctxt.userDefinedProperties.keySet();
+            } else {
+                names = new TreeSet();
+            }
             if (name1Changed) {  //  This check always performed
-                String newName = name_1.getText(), msg;
-                char nonStar = newName.charAt(1);
-                if (!newName.startsWith("*")
+                String newName = name_1.getText(), msg,
+                       rest = newName.substring(1),
+                       test = rest.toLowerCase();                
+                if (!newName.startsWith("*") || !rest.equals(test)
                         || newName.length() < 2) {
                     msg = "The name '" + newName + "' violates the rules for names:\n"
-                            + "The name MUST start with a star ('*') and a lower case letter.";
+                            + "The name MUST start with a star ('*')\nfollowed by at least one lower case letter.";
                     JOptionPane.showMessageDialog(ed, msg, "Violation of Naming Rules",
                             JOptionPane.WARNING_MESSAGE);
                     flipFinalBtn("check");
                     name_1.setText("*");
                     name1Changed = false;
-                } else if (!Character.isLowerCase(nonStar)) {
-                    msg = "The name '" + newName + "' violates the rules for names:\n"
-                            + "The first character after the star must be a lower case letter.";
+                } else if (newUDP && names.contains(newName)) {
+                    msg = "The name '" + newName + "' duplicates an existing UDP name.";
                     JOptionPane.showMessageDialog(ed, msg, "Violation of Naming Rules",
                             JOptionPane.WARNING_MESSAGE);
                     flipFinalBtn("check");
                     name_1.setText("*");
+                    newName = "%%%%%%%%%%";
                     name1Changed = false;
                 } else {
                     try {
@@ -638,29 +696,7 @@ public class UDPEditor extends KSJInternalFrame {
                     newStarName = "*" + newName;
                     name_1.setText(newStarName);
                     if ((!newUDP) && (!newStarName.equals(theUDP.starName))) {  //  name change
-                        int numWithProp = 0, numWithVals = 0;
-                        Iterator indIter = ctxt.individualCensus.iterator();
-                        UserDefinedProperty udp;
-                        while (indIter.hasNext()) {
-                            udp = (UserDefinedProperty) ((Individual) indIter.next()).userDefinedProperties.get(theUDP.starName);
-                            if (udp != null) {
-                                numWithProp++;
-                                if (udp.value.size() > 0) {
-                                    numWithVals++;
-                                }
-                            }
-                        }  //  end of loop thru persons on this context
-                        int choice = JOptionPane.YES_OPTION;
-                        if (numWithProp > 0) {
-                            msg = "There are " + numWithProp + " persons with this property defined.\n"
-                                    + "There are " + numWithVals + " with a value for this property.\n"
-                                    + "Do you want to change the name of this UDP for every person?";
-                            choice = JOptionPane.showConfirmDialog(ed, msg, "Confirm", JOptionPane.YES_NO_OPTION);
-                        }  //  end of confirmed-delete-of-the UDPs-from-individuals
-                        if (choice == JOptionPane.YES_OPTION) {
-                            reName = true;
-                        }
-                        //  end of User-chose-to-delete-UDP-from-all-persons
+                        reName = true;
                     }  //  end of name-change
                     flipFinalBtn("check");
                     name1Changed = false;
@@ -671,7 +707,87 @@ public class UDPEditor extends KSJInternalFrame {
             }
             if (defaultTextChanged) {
                 validateDefaultVal();
-            }                        
+            }
+            
+            if (e.getActionCommand().equals("chart yes")) {
+                String s = newStarName, msg;
+                int count = 0;
+                if (ctxt.userDefinedProperties != null) {
+                    Iterator udpIter = ctxt.userDefinedProperties.values().iterator();
+                    while (udpIter.hasNext()) {
+                        UserDefinedProperty udie = (UserDefinedProperty) udpIter.next();
+                        if (udie.chartable) {
+                            count++;
+                        }
+                    }
+                    if (count >= MAXCHARTABLES) {
+                        msg = "You already have " + MAXCHARTABLES + " UDPs that are displayed on the chart.";
+                        msg += "\nThat is the maximum allowed.\nSee your Anthropology Coordinator for assistance.";
+                        JOptionPane.showMessageDialog(ctxtEd, msg, "Cannot Make Another Chartable",
+                                JOptionPane.ERROR_MESSAGE);
+                        chartNo.setSelected(true);
+                        colorBox.setVisible(false);
+                        return;
+                    }
+                }
+                // If a new UDP, reject for name error only.
+                // Other faults for new UDP => offer to fix.
+                if (newUDP) {
+                    if (s != null && !s.contains("adopt")) {
+                        msg = "A chartable UDP must have the letters 'adopt'\n"
+                                + "in its name (all lowercase).";
+                        JOptionPane.showMessageDialog(ctxtEd, msg, "Illegal Combination",
+                                JOptionPane.ERROR_MESSAGE);
+                        chartNo.setSelected(true);
+                        colorBox.setVisible(false);
+                        return;
+                    } else if (newSingleValue || newType == null 
+                            || !newType.equals("individual")) {
+                        msg = "A chartable UDP must allow multiple values of type 'Person'.\n"
+                                + "Shall I make those settings for you?";
+                        int ch = JOptionPane.showConfirmDialog(ctxtEd, msg, "Illegal Combination",
+                                JOptionPane.YES_NO_CANCEL_OPTION);
+                        if (ch == JOptionPane.YES_OPTION) {
+                            typePick.setSelectedItem("Person");
+                            yesmulti.setSelected(true);
+                        } else {
+                            chartNo.setSelected(true);
+                            colorBox.setVisible(false);
+                            return;
+                        }                        
+                    }
+                } else if ((s != null && !s.contains("adopt")) || newSingleValue  //  not new
+                        || ! newType.equals("individual")) {
+                    msg = "A chartable UDP must have the letters 'adopt'\n" +
+                            "in its name, allow multiple values, and\n"
+                            + "have values of type 'Person'";
+                    JOptionPane.showMessageDialog(ctxtEd, msg, "Illegal Combination",
+                            JOptionPane.ERROR_MESSAGE);
+                    chartNo.setSelected(true);
+                    colorBox.setVisible(false);
+                    return;
+                }
+                Color c = (theUDP.chartColor == null ? Color.black : theUDP.chartColor);
+                colorSample.setForeground(c);
+                colorSample.setBackground(Color.white);
+                edColorBtn.setText("Choose Color");
+                colorBox.setVisible(true);
+            }
+            
+            if (e.getActionCommand().equals("chart no")) {
+                newChartColor = null ;
+                colorBox.setVisible(false);
+            }
+            
+            if (e.getActionCommand().equals("change color")) {
+                newChartColor = JColorChooser.showDialog(ed,
+                        "Color of Connecting Lines on a Chart",
+                        colorSample.getBackground());
+                colorSample.setText("-------");
+                colorSample.setForeground(newChartColor);
+                edColorBtn.setText("Change Color");
+            }
+            
             if (e.getActionCommand().equals("data type")) {
                 String priorType = newType;  //  prior value
                 String typ = (String) typePick.getSelectedItem();
@@ -892,37 +1008,35 @@ public class UDPEditor extends KSJInternalFrame {
                 return;
             }
             if (e.getActionCommand().equals("delete")) {
-                int choice = JOptionPane.showConfirmDialog(ed,
-                        "Are you sure you want to delete this UDP?",
-                        "Confirm", JOptionPane.YES_NO_OPTION);
+                int numWithProp = ctxt.individualCensus.size(),
+                        numWithVals = 0;
+                Iterator indIter = ctxt.individualCensus.iterator();
+                UserDefinedProperty udp;
+                while (indIter.hasNext()) {
+                    udp = (UserDefinedProperty) ((Individual) indIter.next()).userDefinedProperties.get(theUDP.starName);
+                    if (udp != null && udp.value.size() > 0) {
+                        numWithVals++;
+                    }
+                }  //  end of loop thru persons on this context
+                String plural = (numWithVals == 1 ? "is" : "are");
+                String msg = "There are " + numWithProp + " persons with this property defined.\n" +
+                        "There " + plural + " " + numWithVals + " with a value for this property.\n"
+                        + "Are you sure you want to delete this UDP from every person?";
+                int choice  = JOptionPane.showConfirmDialog(ed, msg, "Confirm", JOptionPane.YES_NO_OPTION);
                 if (choice == JOptionPane.YES_OPTION) {
-                    ctxt.userDefinedProperties.remove(theUDP.starName);
-                    int numWithProp = 0, numWithVals = 0;
-                    Iterator indIter = ctxt.individualCensus.iterator();
-                    UserDefinedProperty udp;
+                    indIter = ctxt.individualCensus.iterator();
                     while (indIter.hasNext()) {
-                        udp = (UserDefinedProperty) ((Individual) indIter.next()).userDefinedProperties.get(theUDP.starName);
-                        if (udp != null) {
-                            numWithProp++;
-                            if (udp.value.size() > 0) {
-                                numWithVals++;
-                            }
-                        }
-                    }  //  end of loop thru persons on this context
-                    choice = JOptionPane.YES_OPTION;
-                    if (numWithVals > 0) {
-                        String msg = "There are " + numWithProp + " persons with this property defined.\n"
-                                + "There are " + numWithVals + " with a value for this property.\n"
-                                + "Do you want to delete this UDP from every person?";
-                        choice = JOptionPane.showConfirmDialog(ed, msg, "Confirm", JOptionPane.YES_NO_OPTION);
-                    }  //  end of confirmed-delete-of-the UDPs-from-individuals
-                    if (choice == JOptionPane.YES_OPTION) {
-                        indIter = ctxt.individualCensus.iterator();
-                        while (indIter.hasNext()) {
-                            ((Individual) indIter.next()).userDefinedProperties.remove(theUDP.starName);
-                        }
-                    }  //  end of User-chose-to-delete-UDP-from-all-persons
-                }  //  end of confirmed-delete-request
+                        ((Individual) indIter.next()).userDefinedProperties.remove(theUDP.starName);
+                    }
+                    ctxt.userDefinedProperties.remove(theUDP.starName); 
+                    if (theUDP.chartable) {                                                
+                        ctxt.removeChartableUDP(theUDP.starName);                        
+                    }
+                    if (SIL_Edit.editWindow != null) {
+                        SIL_Edit.editWindow.getPPanel().initUDPCombo();
+                        SIL_Edit.editWindow.chart.repaint();
+                    }
+                }  //  end of User-chose-to-delete-UDP-from-all-persons
                 try {
                     ed.setClosed(true);
                     ContextEditor newCtxtEd = new ContextEditor(ctxt);
@@ -930,6 +1044,7 @@ public class UDPEditor extends KSJInternalFrame {
                     ctxtEd.setClosed(true);
                     newCtxtEd.desktop = desktop;
                     desktop.add(newCtxtEd);
+                    MainPane.curr_CUC_Editor = newCtxtEd;
                     newCtxtEd.show();
                     newCtxtEd.moveToFront();
                     newCtxtEd.setSelected(true);
@@ -950,24 +1065,17 @@ public class UDPEditor extends KSJInternalFrame {
                 // CAUTION:  code copied from above.
                 boolean errorFlag = false;
 
-                String newName = name_1.getText(), msg;
-                if (!newName.startsWith("*") ||
+                String newName = name_1.getText(), msg,
+                       rest = newName.substring(1),
+                        test = rest.toLowerCase();
+                if (!newName.startsWith("*") || !rest.equals(test) ||
                         newName.length() < 2) {
                     msg = "The name '" + newName + "' violates the rules for names:\n"
-                            + "The name MUST start with a star ('*') and a lower case letter.";
+                            + "The name MUST start with a star ('*')\nfollowed by at least one lower case letter.";
                     JOptionPane.showMessageDialog(ed, msg, "Violation of Naming Rules",
                             JOptionPane.WARNING_MESSAGE);
                     flipFinalBtn("check");
                     name_1.setText("*");
-                    return;
-                }
-                char nonStar = newName.charAt(1);
-                if (! Character.isLowerCase(nonStar)) {
-                    msg = "The name '" + newName + "' violates the rules for names:\n"
-                            + "The first character after the star must be a lower case letter.";
-                    JOptionPane.showMessageDialog(ed, msg, "Violation of Naming Rules",
-                            JOptionPane.WARNING_MESSAGE);
-                    flipFinalBtn("check");
                     return;
                 }
                 try {
@@ -980,33 +1088,12 @@ public class UDPEditor extends KSJInternalFrame {
                 newStarName = "*" + newName;
                 name_1.setText(newStarName);
                 
-                if ((!newUDP) && (!reName) && (!newStarName.equals(theUDP.starName))) {  //  name change
-                    int numWithProp = 0, numWithVals = 0;
-                    Iterator indIter = ctxt.individualCensus.iterator();
-                    UserDefinedProperty udp;
-                    while (indIter.hasNext()) {
-                        udp = (UserDefinedProperty) ((Individual) indIter.next()).userDefinedProperties.get(theUDP.starName);
-                        if (udp != null) {
-                            numWithProp++;
-                            if (udp.value.size() > 0) {
-                                numWithVals++;
-                            }
-                        }
-                    }  //  end of loop thru persons on this context
-                    int choice = JOptionPane.YES_OPTION;
-                    if (numWithProp > 0) {
-                        msg = "There are " + numWithProp + " persons with this property defined.\n"
-                                + "There are " + numWithVals + " with a value for this property.\n"
-                                + "Do you want to change the name of this UDP for every person?";
-                        choice = JOptionPane.showConfirmDialog(ed, msg, "Confirm", JOptionPane.YES_NO_OPTION);
-                    }  //  end of confirmed-delete-of-the UDPs-from-individuals
-                    if (choice == JOptionPane.YES_OPTION) {
-                        reName = true;
-                    }
-                    //  end of User-chose-to-delete-UDP-from-all-persons
-                }  //  end of name-change
+                if (!newUDP && !reName && !newStarName.equals(theUDP.starName)) {  //  name change
+                    reName = true;
+                } 
 
-                if (((newType.equals("boolean")) || (newType.equals("individual"))) && (newValidEntries != null)) {
+                if ((newType.equals("boolean") || newType.equals("individual")) 
+                        && newValidEntries != null && newValidEntries.size() > 0) {
                     JOptionPane.showMessageDialog(ed, "Sorry.  When Data Type is '" + newType + "' you\n"
                             + "cannot Restrict to Certain Values",
                             "Illegal Combination",
@@ -1047,6 +1134,24 @@ public class UDPEditor extends KSJInternalFrame {
                 if (!validateMaxText()) {
                     errorFlag = true;
                 }
+                String s;
+                if (chartYes.isSelected() && (! newStarName.contains("adopt") || newSingleValue
+                        || ! newType.equals("individual"))) {
+                    s = "A chartable UDP must have the letters 'adopt'\n" +
+                            "in its name, allow multiple values, and\n"
+                            + "have values of type 'Person'";
+                    JOptionPane.showMessageDialog(ctxtEd, s, "Illegal Combination",
+                            JOptionPane.ERROR_MESSAGE);
+                    chartNo.setSelected(true);
+                    colorBox.setVisible(false);
+                    errorFlag = true;
+                }
+                if (chartYes.isSelected() && newChartColor == null) {
+                    s = "A chartable UDP must have a chart color.\nPick one.";
+                    JOptionPane.showMessageDialog(ctxtEd, s, "Illegal Combination",
+                            JOptionPane.ERROR_MESSAGE);
+                    errorFlag = true;
+                }
                 if (!errorFlag) {
                     flipFinalBtn("save");
                 }
@@ -1062,14 +1167,19 @@ public class UDPEditor extends KSJInternalFrame {
                 theUDP.defaultValue = newDefaultValue;
                 theUDP.minVal = newMinVal;
                 theUDP.maxVal = newMaxVal;
+                theUDP.chartable = chartYes.isSelected();
+                theUDP.chartColor = newChartColor;
                 if (newUDP || reName) {
                     if (ctxt.userDefinedProperties == null) {
                         ctxt.userDefinedProperties = new TreeMap();
                     }
                     ctxt.userDefinedProperties.put(newStarName, theUDP);
                 }
-                if ((reName) && (oldName != null)) {
-                    ctxt.userDefinedProperties.remove(oldName);
+                if (reName && oldName != null) {
+                    ctxt.userDefinedProperties.remove(oldName);  // Update UDPs
+                    if (theUDP.chartable) {                                                
+                        ctxt.renameChartableUDP(oldName, newStarName);                        
+                    }
                 }
                 // Now propogate the updated UDPs to each DomainTheory
                 if (ctxt.domTheoryRefExists()) {
@@ -1081,6 +1191,9 @@ public class UDPEditor extends KSJInternalFrame {
                             dt.userDefinedProperties = ctxt.userDefinedProperties;
                         }
                     } catch (Exception exc) {  } // No parsing errors expected.
+                }
+                if (SIL_Edit.editWindow != null) {
+                    SIL_Edit.editWindow.getPPanel().initUDPCombo();
                 }
                 progBox.setVisible(true);
                 UserDefinedProperty oldudp, newInstance;
@@ -1151,6 +1264,28 @@ public class UDPEditor extends KSJInternalFrame {
                         }  //  end of loop thru individuals
                     }
                 }
+                ArrayList<String> udpsToBeAdded = new ArrayList<String>();
+                Iterator udpIter = ctxt.userDefinedProperties.entrySet().iterator();
+                while (udpIter.hasNext()) {
+                    Map.Entry entry = (Map.Entry)udpIter.next();
+                    String udName = (String)entry.getKey();
+                    UserDefinedProperty ud = (UserDefinedProperty)entry.getValue();
+                    if (ud.chartable && !ctxt.kinTypeOrder.contains(udName)) {
+                        udpsToBeAdded.add(udName);
+                    }
+                }
+                if (!udpsToBeAdded.isEmpty()) {
+                    boolean mult = udpsToBeAdded.size() > 1;
+                    String plural = (mult ? "s were" : " was");
+                    String msg = "Your new/revised chartable UDP" + plural
+                            + "\ngiven a default kin type priority of '4th row'."
+                            + "\nYou can change this in 'Edit Prefs'.";
+                    JOptionPane.showMessageDialog(ctxtEd, msg, "Automatic Priority Assignment",
+                            JOptionPane.PLAIN_MESSAGE);
+                    for (String udName : udpsToBeAdded) {
+                        ctxt.insertAdoptionPriority(udName);
+                    }
+                }
                 try {
                     ed.setClosed(true);
                     ContextEditor newCtxtEd = new ContextEditor(ctxt);
@@ -1158,6 +1293,7 @@ public class UDPEditor extends KSJInternalFrame {
                     ctxtEd.setClosed(true);
                     newCtxtEd.desktop = desktop;
                     desktop.add(newCtxtEd);
+                    MainPane.curr_CUC_Editor = newCtxtEd;
                     newCtxtEd.show();
                     newCtxtEd.moveToFront();
                     newCtxtEd.setSelected(true);
@@ -1173,10 +1309,25 @@ public class UDPEditor extends KSJInternalFrame {
             }  //  end of action = save
             if (e.getActionCommand().equals("delete")) {
                 String msg = "Are you sure you want to DELETE this UDP?";
+                if (!ctxt.individualCensus.isEmpty()) {
+                    msg += "\nAll individuals in this context will lose any\nvalues they had for this UDP.";
+                    if (theUDP.chartable) {
+                        msg += "\nAll persons connected via this UDP will be\ndisconnected. This cannot be undone.";
+                    }
+                }
                 int choice = JOptionPane.showConfirmDialog(ed, msg, "Confirm", JOptionPane.YES_NO_OPTION);
                 if (choice == JOptionPane.YES_OPTION) {
                     ctxt.saveState = true;
                     ctxt.userDefinedProperties.remove(theUDP.starName);
+                    for (Individual ind : ctxt.individualCensus) {
+                        ind.userDefinedProperties.remove(theUDP.starName);
+                    }
+                    if (theUDP.chartable) {
+                        ctxt.removeAdoptionPriority(theUDP.starName);
+                        ctxt.ktm.removeChartableUDP(theUDP.starName);
+                        ctxt.kti.removeChartableUDP(theUDP.starName);
+                        SIL_Edit.editWindow.rebuildKTMatrixEtc();
+                    }
                     try {
                         ed.setClosed(true);
                         ContextEditor newCtxtEd = new ContextEditor(ctxt);
@@ -1184,6 +1335,7 @@ public class UDPEditor extends KSJInternalFrame {
                         ctxtEd.setClosed(true);
                         newCtxtEd.desktop = desktop;
                         desktop.add(newCtxtEd);
+                        MainPane.curr_CUC_Editor = newCtxtEd;
                         newCtxtEd.show();
                         newCtxtEd.moveToFront();
                         newCtxtEd.setSelected(true);

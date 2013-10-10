@@ -465,7 +465,7 @@ public class KinTermDef implements Serializable, Comparable {
                 try {
                     langName = domTh.languageName;
                     String fileName = Library.libraryDirectory + "Domain Theory Files/" + langName + ".thy";
-                    Parser parzer = new Parser(new Tokenizer(Library.getDFA(), new Linus(fileName)));
+                    ParserDomainTheory parzer = new ParserDomainTheory(new Tokenizer(Library.getDFA(), new Linus(fileName)));
                     KinTermDef ktdIn = parzer.parseKinTerm(kinTerm, false);
                     definitions = ktdIn.definitions;
                 } catch (Exception exc) {
@@ -538,7 +538,7 @@ public class KinTermDef implements Serializable, Comparable {
             try {
                 langName = domTh.languageName;
                 String fileName = Library.libraryDirectory + "Domain Theory Files/" + langName + ".thy";
-                Parser parzer = new Parser(new Tokenizer(Library.getDFA(), new Linus(fileName)));
+                ParserDomainTheory parzer = new ParserDomainTheory(new Tokenizer(Library.getDFA(), new Linus(fileName)));
                 KinTermDef ktdIn = parzer.parseKinTerm(kinTerm, false);
                 definitions = ktdIn.definitions;
             } catch (Exception exc) {
@@ -629,7 +629,7 @@ public class KinTermDef implements Serializable, Comparable {
                     try {
                         langName = domTh.languageName;  //  Library domTheory where def was found
                         String fileName = Library.libraryDirectory + "Domain Theory Files/" + langName + ".thy";
-                        Parser parzer = new Parser(new Tokenizer(Library.getDFA(), new Linus(fileName)));
+                        ParserDomainTheory parzer = new ParserDomainTheory(new Tokenizer(Library.getDFA(), new Linus(fileName)));
                         culturalKTD = parzer.parseKinTerm(cPred, false);
                         pcStringList = decodeString(culturalKTD.eqcSigExact);
                         for (Object o : pcStringList) {

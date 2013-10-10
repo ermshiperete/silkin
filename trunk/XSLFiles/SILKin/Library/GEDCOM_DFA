@@ -1,0 +1,6 @@
+0 None Digit 1 WhiteSpace 0 CapLtr 2 UnderScore 2 AtSign 3 
+1 level Digit 1 WhiteSpace -99 
+2 tag CapLtr 2 UnderScore 2 WhiteSpace -99 LineTerm -99 
+3 ref NonAtSign 3 AtSign -99 
+4 None LineTerm 0 WhiteSpace 4 AtSign 3 NonAtSign 5 
+5 text NonLineTerm 5 LineTerm -99 

@@ -618,7 +618,7 @@ public abstract class DT_Abstract1 implements Serializable {
             throws KSBadHornClauseException, JavaSystemException, KSInternalErrorException, KSConstraintInconsistency,
             KSNoChainOfRelations2Alter, ClassNotFoundException {
         try {
-            PrintWriter outFile = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
+            PrintWriter outFile = new PrintWriter(fileName, "UTF-8");
             addrTerms = addressTerms;
             current = (DomainTheory) this;
             KinTermDef ktd;
@@ -664,7 +664,7 @@ public abstract class DT_Abstract1 implements Serializable {
                 ego = (Individual) egoBag.get(i);
                 fillInNames(ego);
             }
-            hypo.exportGEDCOM(outFile, fileName, "Include");
+            hypo.exportGEDCOM(outFile, fileName, false, "Reunion", "Include");
             outFile.flush();
             outFile.close();
             if (options != null) {

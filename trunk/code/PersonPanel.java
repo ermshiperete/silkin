@@ -5,6 +5,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.Dimension;
+import java.beans.PropertyVetoException;
 
 /**
  * This class is part of the SILKin program's GUI. It is modeled after the
@@ -25,6 +26,7 @@ import java.awt.Dimension;
  */
 public class PersonPanel extends javax.swing.JPanel {
 
+    public static final int ADD = 2, DELETE = 1, CANCEL = 0;
     /** Creates new form PersonPanel */
     public PersonPanel() {
         storing = true;
@@ -41,24 +43,27 @@ public class PersonPanel extends javax.swing.JPanel {
         egoChoiceModel.removeAllElements();  //  ready for first person
         linksComboModel = (DefaultComboBoxModel)linksComboBox.getModel();
         linksComboModel.removeAllElements();  //  ready for first person
+        udpComboModel = (DefaultComboBoxModel)udpComboBox.getModel();
+        initUDPCombo();
         personComments.getDocument().addDocumentListener(new CommentListener());
         setMaximumSize(new Dimension(910,320));
         setMinimumSize(new Dimension(910,320));
         storing = false;
-//        buildFocusFields();
     }
 
     SIL_Edit parent = null;  //  The container holding this JPanel.
     String kinterm = null,
            reciprocalKinTerm = null;
-    DefaultComboBoxModel egoChoiceModel, linksComboModel;
+    DefaultComboBoxModel egoChoiceModel, linksComboModel, udpComboModel;
 
     boolean dirty = false;  //  This 'dirty bit' applies only to the current
                             //  infoPerson.
     boolean storing = false;  // true when storing info on Person
+    boolean udpsPresent = false;
     
     static String alterKinTermRefImg, alterKinTermAdrImg, recipKinTermRefImg, recipKinTermAdrImg;
     JTextField[] focusFields;
+    Individual currentInd = null;
 
     void buildFocusFields() {
         int size = 3, ndx = 0;
@@ -79,6 +84,34 @@ public class PersonPanel extends javax.swing.JPanel {
             focusFields[ndx++] = alterAdrTerm;
             focusFields[ndx++] = recipAdrTerm;
         }
+    }
+    
+    void initUDPCombo() {
+        boolean vis = true, chartable = false;
+        udpValTextArea.setEditable(false); // Display only.
+        if (Context.current == null
+                || Context.current.userDefinedProperties == null
+                || Context.current.userDefinedProperties.size() == 0) {
+            vis = false;
+        } else {
+            parent.chart.loading = true;
+            udpComboModel.removeAllElements();
+            for (Object o : Context.current.userDefinedProperties.keySet()) {
+                udpComboModel.addElement((String) o);
+            }
+            udpComboBox.setSelectedIndex(0);
+            udpValTextArea.setText("");
+            udpsPresent = true;
+            String udNam = (String) udpComboModel.getElementAt(0);
+            UserDefinedProperty udp = (UserDefinedProperty) Context.current.userDefinedProperties.get(udNam);
+            chartable = udp.chartable;
+            parent.chart.loading = false;
+        }
+        udpLabel.setVisible(vis);
+        udpComboBox.setVisible(vis);
+        udpScrollPane.setVisible(vis);
+        udpEditButton.setVisible(vis);
+        udpEditButton.setEnabled(!chartable);
     }
     
     /** This method is called from within the constructor to
@@ -123,6 +156,11 @@ public class PersonPanel extends javax.swing.JPanel {
         chartField = new javax.swing.JTextField();
         linksLabel = new javax.swing.JLabel();
         linksComboBox = new javax.swing.JComboBox();
+        udpLabel = new javax.swing.JLabel();
+        udpComboBox = new javax.swing.JComboBox();
+        udpScrollPane = new javax.swing.JScrollPane();
+        udpValTextArea = new javax.swing.JTextArea();
+        udpEditButton = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Current Alter", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 0, 204)));
         setMaximumSize(new java.awt.Dimension(907, 309));
@@ -169,7 +207,7 @@ public class PersonPanel extends javax.swing.JPanel {
             egoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(egoPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(egoChoiceBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 321, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(egoChoiceBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 288, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         egoPanelLayout.setVerticalGroup(
@@ -270,6 +308,9 @@ public class PersonPanel extends javax.swing.JPanel {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 alterAdrTermFocusGained(evt);
             }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                alterAdrTermFocusLost(evt);
+            }
         });
 
         recipAdrTerm.setEditable(false);
@@ -278,8 +319,12 @@ public class PersonPanel extends javax.swing.JPanel {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 recipAdrTermFocusGained(evt);
             }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                recipAdrTermFocusLost(evt);
+            }
         });
 
+        jScrollPane1.setMaximumSize(new java.awt.Dimension(240, 200));
         jScrollPane1.setViewportView(personComments);
 
         bornYrLabel.setText("Yr");
@@ -322,77 +367,113 @@ public class PersonPanel extends javax.swing.JPanel {
             }
         });
 
+        udpLabel.setText("User-Defined Properties:");
+
+        udpComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        udpComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                udpComboBoxActionPerformed(evt);
+            }
+        });
+
+        udpScrollPane.setMinimumSize(new java.awt.Dimension(23, 50));
+
+        udpValTextArea.setColumns(20);
+        udpValTextArea.setRows(5);
+        udpScrollPane.setViewportView(udpValTextArea);
+
+        udpEditButton.setText("Edit UDP Value");
+        udpEditButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                udpEditButtonActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                        .add(layout.createSequentialGroup()
+                            .add(21, 21, 21)
+                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 38, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel5))
+                            .add(2, 2, 2)
+                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                .add(layout.createSequentialGroup()
+                                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                        .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                                            .add(alterID, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                            .add(19, 19, 19)
+                                            .add(jLabel8))
+                                        .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel9))
+                                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                    .add(bornYrLabel)
+                                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                        .add(personDeathYear)
+                                        .add(personBirthYr))
+                                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                        .add(personDeathMon, 0, 1, Short.MAX_VALUE)
+                                        .add(personBirthMM, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 40, Short.MAX_VALUE))
+                                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                        .add(personDeathDD, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .add(layout.createSequentialGroup()
+                                            .add(personBirthDD, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                            .add(39, 39, 39)
+                                            .add(chartLabel)
+                                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                            .add(chartField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+                                .add(layout.createSequentialGroup()
+                                    .add(alterFirstNames, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 159, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(2, 2, 2)
+                                    .add(alterLastName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 119, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+                        .add(layout.createSequentialGroup()
+                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                .add(layout.createSequentialGroup()
+                                    .add(34, 34, 34)
+                                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                        .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel10)
+                                        .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel11)
+                                        .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel2)
+                                        .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel3)))
+                                .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                                    .addContainerGap()
+                                    .add(udpLabel)))
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                .add(recipAdrTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 346, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(alterAdrTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 346, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(recipRefTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 346, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(alterRefTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 346, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(layout.createSequentialGroup()
+                                    .add(6, 6, 6)
+                                    .add(udpComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 263, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
                     .add(layout.createSequentialGroup()
-                        .add(15, 15, 15)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 38, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel5))
-                        .add(2, 2, 2)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(layout.createSequentialGroup()
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                                        .add(alterID, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .add(19, 19, 19)
-                                        .add(jLabel8))
-                                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel9))
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(bornYrLabel)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                    .add(personDeathYear)
-                                    .add(personBirthYr))
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                    .add(personDeathMon, 0, 1, Short.MAX_VALUE)
-                                    .add(personBirthMM, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 40, Short.MAX_VALUE))
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(personDeathDD, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                    .add(layout.createSequentialGroup()
-                                        .add(personBirthDD, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .add(39, 39, 39)
-                                        .add(chartLabel)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(chartField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                            .add(layout.createSequentialGroup()
-                                .add(alterFirstNames, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 159, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(2, 2, 2)
-                                .add(alterLastName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 119, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                        .add(0, 0, Short.MAX_VALUE))
-                    .add(layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel10)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel11)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel2)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel3))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(alterRefTerm, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
-                            .add(recipRefTerm, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
-                            .add(alterAdrTerm, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
-                            .add(recipAdrTerm, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE))))
-                .add(50, 50, 50)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(egoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                            .add(linksLabel)
-                            .add(dataChgDateLabel))
+                        .addContainerGap()
+                        .add(udpEditButton)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(linksComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(dataChgDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 174, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(jLabel12)))
-                    .add(jScrollPane1))
-                .add(15, 15, 15))
+                        .add(udpScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 340, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 33, Short.MAX_VALUE)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                        .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(layout.createSequentialGroup()
+                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                .add(linksLabel)
+                                .add(dataChgDateLabel))
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                .add(linksComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(dataChgDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 174, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(jLabel12))))
+                    .add(egoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(36, 36, 36))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -432,7 +513,7 @@ public class PersonPanel extends javax.swing.JPanel {
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(dataChgDateLabel)
                             .add(dataChgDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(layout.createSequentialGroup()
                         .add(19, 19, 19)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
@@ -449,13 +530,26 @@ public class PersonPanel extends javax.swing.JPanel {
                         .add(12, 12, 12)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(recipAdrTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(jLabel3)))
+                            .add(jLabel3))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(udpComboBox, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(udpLabel))
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(layout.createSequentialGroup()
+                                .add(16, 16, 16)
+                                .add(udpEditButton)
+                                .addContainerGap(37, Short.MAX_VALUE))
+                            .add(layout.createSequentialGroup()
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(udpScrollPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addContainerGap())))
                     .add(layout.createSequentialGroup()
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jLabel12)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jScrollPane1)))
-                .addContainerGap(16, Short.MAX_VALUE))
+                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -495,8 +589,8 @@ public class PersonPanel extends javax.swing.JPanel {
         //  Entries are not validated until a new Person/Family is clicked.
         String s =  personBirthYr.getText();
         if (parent.infoPerson != null) {
-            if (parent.infoPerson.birthYr == null || ! parent.infoPerson.birthYr.equals(s)) {
-                parent.infoPerson.birthYr = s;
+            if (parent.infoPerson.birthYY == null || ! parent.infoPerson.birthYY.equals(s)) {
+                parent.infoPerson.birthYY = s;
                 dirty = true;
             }
         }
@@ -506,43 +600,64 @@ public class PersonPanel extends javax.swing.JPanel {
         //  Entries are not validated until a new Person/Family is clicked.
         String s =  personDeathYear.getText();
         if (parent.infoPerson != null) {
-            if (parent.infoPerson.deathYr == null || ! parent.infoPerson.deathYr.equals(s)) {
-                parent.infoPerson.deathYr = s;
+            if (parent.infoPerson.deathYY == null || ! parent.infoPerson.deathYY.equals(s)) {
+                parent.infoPerson.deathYY = s;
                 dirty = true;
             }
         }
     }//GEN-LAST:event_personDeathYearFocusLost
 
     private void alterRefTermFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_alterRefTermFocusLost
-        // TODO add your handling code here:
+        if (currentInd != null) {
+            String newTerm = alterRefTerm.getText();
+            JTextField temp = new JTextField();
+            fillTextField(currentInd.node, temp, false);
+            if (!temp.getText().equals(newTerm)) {
+                dirty = true;
+            }
+        }        
     }//GEN-LAST:event_alterRefTermFocusLost
 
     private void recipRefTermFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_recipRefTermFocusLost
-        // TODO add your handling code here:
+        if (currentInd != null) {
+            TreeMap tmap = parent.ktm.getRow(currentInd.serialNmbr);
+            Node altNode = null;
+            if (tmap != null) {
+                altNode = (Node) tmap.get(parent.getCurrentEgo());
+            }
+            if (altNode != null) {
+                String newTerm = recipRefTerm.getText();
+                JTextField temp = new JTextField();
+                fillTextField(altNode, temp, false);
+                if (!temp.getText().equals(newTerm)) {
+                    dirty = true;
+                }
+            }
+        }
     }//GEN-LAST:event_recipRefTermFocusLost
 
     private void alterFirstNamesFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_alterFirstNamesFocusGained
-        dirty = true;
+//        dirty = true;
     }//GEN-LAST:event_alterFirstNamesFocusGained
 
     private void alterLastNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_alterLastNameFocusGained
-        dirty = true;
+//        dirty = true;
     }//GEN-LAST:event_alterLastNameFocusGained
 
     private void personBirthYrFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_personBirthYrFocusGained
-        dirty = true;
+//        dirty = true;
     }//GEN-LAST:event_personBirthYrFocusGained
 
     private void personDeathYearFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_personDeathYearFocusGained
-        dirty = true;
+//        dirty = true;
     }//GEN-LAST:event_personDeathYearFocusGained
 
     private void alterRefTermFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_alterRefTermFocusGained
-        dirty = true;
+//        dirty = true;
     }//GEN-LAST:event_alterRefTermFocusGained
 
     private void recipRefTermFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_recipRefTermFocusGained
-        dirty = true;
+//        dirty = true;
     }//GEN-LAST:event_recipRefTermFocusGained
 
     private void egoChoiceBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_egoChoiceBoxActionPerformed
@@ -552,11 +667,11 @@ public class PersonPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_egoChoiceBoxActionPerformed
 
     private void alterAdrTermFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_alterAdrTermFocusGained
-        dirty = true;
+//        dirty = true;
     }//GEN-LAST:event_alterAdrTermFocusGained
 
     private void recipAdrTermFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_recipAdrTermFocusGained
-        dirty = true;
+//        dirty = true;
     }//GEN-LAST:event_recipAdrTermFocusGained
 
     private void personBirthMMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_personBirthMMActionPerformed
@@ -568,11 +683,11 @@ public class PersonPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_personBirthDDActionPerformed
 
     private void personDeathDDFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_personDeathDDFocusGained
-        dirty = true;
+//        dirty = true;
     }//GEN-LAST:event_personDeathDDFocusGained
 
     private void personBirthDDFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_personBirthDDFocusGained
-        dirty = true;
+//        dirty = true;
     }//GEN-LAST:event_personBirthDDFocusGained
 
     private void linksComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linksComboBoxActionPerformed
@@ -590,6 +705,181 @@ public class PersonPanel extends javax.swing.JPanel {
             parent.chart.resizeAndRepaint();
         }
     }//GEN-LAST:event_linksComboBoxActionPerformed
+
+    private void udpComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_udpComboBoxActionPerformed
+        if (parent.chart.loading) {
+            return;
+        }
+        displayUDPVals(currentInd);
+    }//GEN-LAST:event_udpComboBoxActionPerformed
+
+    private void udpEditButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_udpEditButtonActionPerformed
+        String udNam = (String) udpComboBox.getSelectedItem();
+        UserDefinedProperty udp = (UserDefinedProperty) parent.infoPerson.userDefinedProperties.get(udNam);
+        String[] choices = { "Cancel", "Delete", "Add" };
+        String newbie, msg = "Do you want to ADD a value, or DELETE one?";
+        int choice = JOptionPane.showOptionDialog(this, msg, "Type of Edit",
+                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, choices, choices[2]);
+        if (choice == CANCEL) {
+            return;
+        }
+        if (choice == DELETE && udp.value.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "There are no values to delete.");
+            return;
+        }
+        if (choice == ADD && udp.singleValue && udp.value.size() > 0) {
+            msg = "This UDP is limited to a single value, and already has one.";
+            JOptionPane.showMessageDialog(this, msg);
+            return;
+        }
+        if (udp.typ.equals("individual")) {
+            Individual ind, tempInd;
+            ArrayList<Individual> census = Context.current.individualCensus;
+            if (choice == DELETE) { 
+                if (udp.value.size() == 1) {
+                    ind = (Individual) udp.value.get(0);
+                } else { // must choose value to delete
+                    String[] people = new String[udp.value.size()];
+                    for (int i = 0; i < udp.value.size(); i++) {
+                        tempInd = (Individual) udp.value.get(i);
+                        people[i] = tempInd.homeChart + ": " + tempInd.name + " <" + tempInd.serialNmbr + ">";
+                    }
+                    msg = "Choose the person to DELETE as a value of " + udp.starName;
+                    String corpse = (String) JOptionPane.showInputDialog(this, msg, "Deleting A Value",
+                            JOptionPane.PLAIN_MESSAGE, null, people, people[0]);
+                    if (corpse == null) {
+                        return;
+                    }
+                    int serial = Integer.parseInt(corpse.substring(corpse.indexOf("<") + 1, corpse.indexOf(">")));
+                    ind = census.get(serial);
+                }
+                msg = "Delete " + ind.homeChart + ": " + ind.name + " <" + ind.serialNmbr + ">.\nRight?";
+                int confirm = JOptionPane.showConfirmDialog(this, msg, "Confirm Deletion",
+                        JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    udp.value.remove(ind);
+                    parent.showInfo(parent.infoPerson);
+                }
+            } else { //  choice is ADD
+                ArrayList<String> peopleList = new ArrayList<String>();
+                for (Individual tempI : census) {  //  filter out deleted persons
+                    if (!tempI.deleted) {
+                        peopleList.add(tempI.homeChart + ": " + tempI.name + " <" + tempI.serialNmbr + ">");
+                    }
+                }
+                String[] people = new String[peopleList.size()];
+                for (int i=0; i < peopleList.size(); i++) {
+                    people[i] = peopleList.get(i);
+                }
+                
+                msg = "Choose the person to ADD as a value of " + udp.starName;
+                newbie = (String) JOptionPane.showInputDialog(this, msg, "Adding A Value",
+                        JOptionPane.PLAIN_MESSAGE, null, people, people[0]);
+                if (newbie == null) {
+                    return;
+                }
+                int serial = Integer.parseInt(newbie.substring(newbie.indexOf("<") + 1, newbie.indexOf(">")));
+                ind = census.get(serial);
+                udp.value.add(ind);
+                parent.showInfo(parent.infoPerson);
+            }
+        } else {  // it's integer, float, boolean, or string
+            if (choice == DELETE) {
+                String val;
+                int index;
+                if (udp.value.size() == 1) {
+                    val = udp.value.get(0).toString();
+                    index = 0;
+                } else { // must choose value to delete
+                    String[] vals = new String[udp.value.size()];
+                    for (int i = 0; i < udp.value.size(); i++) {
+                        vals[i] = udp.value.get(i).toString();
+                    }
+                    msg = "Choose the value to DELETE for " + udp.starName;
+                    val = (String) JOptionPane.showInputDialog(this, msg, "Deleting A Value",
+                            JOptionPane.PLAIN_MESSAGE, null, vals, vals[0]);
+                    if (val == null) {
+                        return;
+                    }
+                    for (index = 0; index < vals.length; index++) {
+                        if (val.equals(vals[index])) {
+                            break;
+                        }
+                    }
+                }
+                msg = "Delete the value '" + val + "'.\nRight?";
+                int confirm = JOptionPane.showConfirmDialog(this, msg, "Confirm Deletion",
+                        JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    udp.value.remove(index);
+                    parent.showInfo(parent.infoPerson);
+                }
+            } else {  //  choice = ADD
+                Object newObj;
+                if (udp.validEntries != null && !udp.validEntries.isEmpty()) {
+                    String[] valids = udp.getValidEntryArray();
+                    msg = "Choose the new value.";
+                    newbie = (String) JOptionPane.showInputDialog(this, msg, "Adding A Value",
+                            JOptionPane.PLAIN_MESSAGE, null, valids, valids[0]);
+                } else {
+                    msg = "Enter the new value for " + udp.starName;
+                    newbie = JOptionPane.showInputDialog(this, msg,
+                            "New Value", JOptionPane.PLAIN_MESSAGE);
+                }
+                if (newbie == null) {
+                    return;
+                }
+                try {
+                    if (udp.typ.equals("integer")) {
+                        newObj = new Integer(newbie);
+                    } else if (udp.typ.equals("float")) {
+                        newObj = new Float(newbie);
+                    } else if (udp.typ.equals("boolean")) {
+                        newObj = new Boolean(newbie);
+                    } else {
+                        newObj = newbie;
+                    }
+                } catch (Exception exc) {
+                    msg = "Sorry. Could not interpret your input as a " + udp.typ
+                            + ".\n" + exc;
+                    JOptionPane.showMessageDialog(this, msg,
+                            "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                udp.value.add(newObj);
+                parent.showInfo(parent.infoPerson);
+            }
+        }
+    }//GEN-LAST:event_udpEditButtonActionPerformed
+
+    private void alterAdrTermFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_alterAdrTermFocusLost
+        if (currentInd != null) {
+            String newTerm = alterAdrTerm.getText();
+            JTextField temp = new JTextField();
+            fillTextField(currentInd.node, temp, true);
+            if (!temp.getText().equals(newTerm)) {
+                dirty = true;
+            }
+        }  
+    }//GEN-LAST:event_alterAdrTermFocusLost
+
+    private void recipAdrTermFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_recipAdrTermFocusLost
+        if (currentInd != null) {
+            TreeMap tmap = parent.ktm.getRow(currentInd.serialNmbr);
+            Node altNode = null;
+            if (tmap != null) {
+                altNode = (Node) tmap.get(parent.getCurrentEgo());
+            }
+            if (altNode != null) {
+                String newTerm = recipAdrTerm.getText();
+                JTextField temp = new JTextField();
+                fillTextField(altNode, temp, true);
+                if (!temp.getText().equals(newTerm)) {
+                    dirty = true;
+                }
+            }
+        }
+    }//GEN-LAST:event_recipAdrTermFocusLost
 
     
     void clearInfo() {
@@ -620,6 +910,10 @@ public class PersonPanel extends javax.swing.JPanel {
         personBirthYr.setEditable(false);
         personDeathYear.setEditable(false);
         personComments.setEditable(false);
+        linksLabel.setVisible(false);
+        linksComboBox.setVisible(false);
+        chartLabel.setVisible(false);
+        chartField.setVisible(false);
         storing = false;
     }
 
@@ -644,12 +938,16 @@ public class PersonPanel extends javax.swing.JPanel {
         linksComboBox.setVisible(false);
         chartLabel.setVisible(false);
         chartField.setVisible(false);
+        if (udpsPresent) {
+            udpValTextArea.setText("Value(s) -- if any -- for this person's UDP.");
+        }
         storing = false;
     }
 
     void showInfo(Individual ind) {
         storing = true;
         parent.loadingCharts = false;
+        currentInd = ind;
         if (focusFields == null) {
             buildFocusFields();
         }
@@ -664,6 +962,10 @@ public class PersonPanel extends javax.swing.JPanel {
         personDeathYear.setText(ind.getDeathYr());
         dataChgDate.setText(ind.dataChangeDate);
         personComments.setText(restoreLineBreaks(ind.comment));
+        if (Context.current.displayGEDCOM) {
+            String items = ind.addGEDCOMItems();
+            personComments.setText(personComments.getText() + items);
+        }
         alterFirstNames.setEditable(true);
         alterLastName.setEditable(true);
         personBirthMM.setEditable(true);
@@ -671,6 +973,7 @@ public class PersonPanel extends javax.swing.JPanel {
         personBirthYr.setEditable(true);
         personDeathYear.setEditable(true);
         chartField.setText(ind.homeChart);
+        chartField.setEditable(false);
         chartLabel.setVisible(true);
         chartField.setVisible(true);
         if (ind.links == null || ind.links.isEmpty()) {
@@ -730,6 +1033,9 @@ public class PersonPanel extends javax.swing.JPanel {
         alterKinTermAdrImg = alterAdrTerm.getText();
         recipKinTermRefImg = recipRefTerm.getText();
         recipKinTermAdrImg = recipAdrTerm.getText();
+        if (udpsPresent && ind.userDefinedProperties != null) {
+            displayUDPVals(ind);
+        }
         for (JTextField fld : focusFields) {
             if (fld.getText().equals("")) {
                 fld.grabFocus();
@@ -737,6 +1043,24 @@ public class PersonPanel extends javax.swing.JPanel {
             }
         }
         storing = false;
+    }
+
+    void displayUDPVals(Individual ind) {
+        String st = (String) udpComboBox.getSelectedItem();
+        UserDefinedProperty udp = (UserDefinedProperty) ind.userDefinedProperties.get(st);
+        String fill = "", valueText;
+        udpValTextArea.setText(""); // erase it
+        for (Object o : udp.value) {
+            if (udp.typ.equals("individual")) {
+                Individual i2 = (Individual) o;
+                valueText = (i2.deleted ? "deleted" : i2.homeChart + ": " + i2.name + " <" + i2.serialNmbr + ">");
+            } else {
+                valueText = o.toString();
+            }
+            udpValTextArea.append(fill + valueText);
+            fill = "\n";
+        }
+        udpEditButton.setEnabled(!udp.chartable);
     }
     
     static String restoreLineBreaks(String in) {        
@@ -932,7 +1256,7 @@ public class PersonPanel extends javax.swing.JPanel {
             throws KSParsingErrorException, JavaSystemException,
 		   KSBadHornClauseException, KSInternalErrorException,
                    KSConstraintInconsistency, KSDateParseException {
-//	if (! dirty) return;  //  No changes have been made
+	if (! dirty) return;  //  No changes have been made
         storing = true;
         String a, b, c;
         int currEgoNum = parent.getCurrentEgo();
@@ -1344,6 +1668,11 @@ public class PersonPanel extends javax.swing.JPanel {
         egoChoiceModel.insertElementAt(newName, ndx);
         egoChoiceBox.setSelectedIndex(parent.getCurrentEgo());
     }
+    
+    void setUDPSelection(String udpName) {
+        int ndx = udpComboModel.getIndexOf(udpName);
+        udpComboBox.setSelectedIndex(ndx);
+    }
 
     void setDistinctAdrTerms(boolean val) {
         parent.chart.distinctAdrTerms = val;
@@ -1390,6 +1719,11 @@ public class PersonPanel extends javax.swing.JPanel {
     private javax.swing.JTextField personDeathYear;
     private javax.swing.JTextField recipAdrTerm;
     private javax.swing.JTextField recipRefTerm;
+    private javax.swing.JComboBox udpComboBox;
+    private javax.swing.JButton udpEditButton;
+    private javax.swing.JLabel udpLabel;
+    private javax.swing.JScrollPane udpScrollPane;
+    private javax.swing.JTextArea udpValTextArea;
     // End of variables declaration//GEN-END:variables
 
     class CommentListener implements DocumentListener {

@@ -1,5 +1,4 @@
 
-
 import java.util.* ;
 import java.io.* ;
 import java.awt.Point;
@@ -12,12 +11,12 @@ import java.awt.Point;
   
    @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
-public class Individual extends Person implements Serializable  {
+public class Individual extends Person implements Serializable, Locatable, Comparable   {
     /**	A unique, system-assigned ID for this individual. May not be changed once assigned. */
     public int serialNmbr,
             tempTreeLevel;
     String surname, firstNames, gender, dataChangeDate, dataAuthor;
-    
+    TreeMap<String, ParserGEDCOM.GEDCOMitem> gedcomItems;
     ArrayList<Object> nameHistory = new ArrayList<Object>();
     boolean deleted = false;
     Node node = null;
@@ -45,6 +44,17 @@ public class Individual extends Person implements Serializable  {
     /**  A TreeMap of all non-genealogical relationships for this Individual, i.e. a bond defined
 		 by some shared UDP (*-property).  */
     public ArrayList<Object> starLinks;
+    
+    public int getSerialNmbr() { return serialNmbr; }
+    
+    public int compareTo(Object other) throws ClassCastException {
+        if (!(other instanceof Person)) {
+            throw new ClassCastException("");
+        }
+        Integer mySerial = serialNmbr,
+                otherSerial = ((Individual)other).serialNmbr;
+        return mySerial.compareTo(otherSerial);
+    }  //  end of method required by Interface Comparable
 
     public String getBirthMM() { 
         if (birthMM == null) {
@@ -63,10 +73,10 @@ public class Individual extends Person implements Serializable  {
     }
 
     public String getBirthYr() {
-        if (birthYr == null) {
+        if (birthYY == null) {
             return "";
         }else {
-        return birthYr;
+        return birthYY;
         }
     }
 
@@ -87,16 +97,16 @@ public class Individual extends Person implements Serializable  {
     }
 
     public String getDeathYr() {
-        if (deathYr == null) {
+        if (deathYY == null) {
             return "";
         }else {
-        return deathYr;
+        return deathYY;
         }
     }
 
     public String getDateOfBirth() {
         try {
-        return UDate.formatAsXSD(birthYr, birthMM, birthDD);
+        return UDate.formatAsXSD(birthYY, birthMM, birthDD);
         }catch(Exception ex) {
             return "";
         }
@@ -105,7 +115,7 @@ public class Individual extends Person implements Serializable  {
     public String getYYYYMMOfBirth() {
         
         try {
-        return UDate.formatAsXSD(birthYr, birthMM, null);
+        return UDate.formatAsXSD(birthYY, birthMM, null);
         }catch(Exception ex) {
             return "";
         }
@@ -113,7 +123,7 @@ public class Individual extends Person implements Serializable  {
 
     public String getDateOfDeath() { 
         try {
-        return UDate.formatAsXSD(deathYr, deathMM, deathDD);
+        return UDate.formatAsXSD(deathYY, deathMM, deathDD);
         }catch(Exception ex) {
             return "";
         }
@@ -122,26 +132,42 @@ public class Individual extends Person implements Serializable  {
     public void setDateOfBirth(String dob) {
         if (dob == null) dob = "";
         String[] components = UDate.readXSDComponents(dob);
-        birthYr = components[0];
+        birthYY = components[0];
         birthMM = components[1];
         birthDD = components[2];
         if (birthFamily != null) {
             birthFamily.computeBirthGrps();
         }
     }
+    
+    public void setBirthMM(String month) {
+        birthMM = month;
+    }
+    
+    public void setBirthDD(String day) {
+        birthDD = day;
+    }
 
     public void setDateOfDeath(String dod) { 
         if (dod == null) dod = "";
         String[] components = UDate.readXSDComponents(dod);
-        deathYr = components[0];
+        deathYY = components[0];
         deathMM = components[1];
         deathDD = components[2];
+    }
+
+    public void setDeathMM(String month) {
+        deathMM = month;
+    }
+    
+    public void setDeathDD(String day) {
+        deathDD = day;
     }
 
     public boolean hasDoB() {
         String dob = "";
         try {
-            dob = UDate.formatAsXSD(birthYr, birthMM, birthDD);
+            dob = UDate.formatAsXSD(birthYY, birthMM, birthDD);
         }catch(Exception ex) {
             return false;
         }
@@ -156,7 +182,7 @@ public class Individual extends Person implements Serializable  {
 public boolean hasDoD() {
         String dod = "";
         try {
-            dod = UDate.formatAsXSD(deathYr, deathMM, deathDD);
+            dod = UDate.formatAsXSD(deathYY, deathMM, deathDD);
         }catch(Exception ex) {
             return false;
         }
@@ -167,7 +193,15 @@ public boolean hasDoD() {
         return ! hasDoD();
     }
 
-
+    public boolean hasChildren() {
+        for (Object f : marriages) {
+            Family fam = (Family)f;
+            if (!fam.children.isEmpty()) {
+                return true;
+            }
+        }        
+        return false;
+    }
 
 
     /** Constructor with w/ name, sex, birth-family & birth date.
@@ -538,7 +572,7 @@ public boolean hasDoD() {
                         image += nameHistory.get(j) + " ";
                 image += ".\n";
                 }  //  end of if-nameHistory-not-empty
-        if (comment.length() > 7) image += comment + "\n";
+        if (comment.length() > 0) image += comment + "\n";
         if (birthFamily != null) image += "     BirthFamily: " + birthFamily.serialNmbr + "\n";
         if (marriages.size() > 0)  {
                 image += "     Marriages:\n";
@@ -633,14 +667,16 @@ public boolean hasDoD() {
             }  //  end of loop thru starLinks
             result += "</starLinks>\n";
         }
+        if (gedcomItems != null && !gedcomItems.isEmpty()) {
+            result += "  <gedcomItems>";
+            Iterator itemIter = gedcomItems.values().iterator();
+            while (itemIter.hasNext()) {
+                ParserGEDCOM.GEDCOMitem item = (ParserGEDCOM.GEDCOMitem)itemIter.next();                
+                result += "\n" + item.toSILKString();
+            }  //  end of loop thru gedcomItems
+            result += "\n</gedcomItems>\n";
+        }
 //  DON'T WRITE OUT THE LINKS LIST. IT WILL BE RE-CREATED FROM BACK-POINTERS IN THE LINKS.
-//        if (links != null && !links.isEmpty()) {
-//            result += "  <links>\n";
-//            for (Link lk : links) {
-//                result += "    " + lk.toSILKString();
-//            }
-//            result += "  </links>\n";
-//        }
         result += "</individual>\n";
         return result;
     }  //  end of method toSILKString
@@ -667,101 +703,106 @@ public boolean hasDoD() {
     @param	out		a PrintWriter to write to.
     @param	today	String: today's date as it should appear in the DataChange field of GEDCOM record.
     */
-    public void exportGEDCOM(PrintWriter out, String today, String choice, ArrayList<Object> nonTerms) {
+    public void exportGEDCOM(PrintWriter out, boolean realData, String includeAux, 
+            ArrayList<Object> nonTerms, String adoptNote) {
         // Write out one Individual record in GEDCOM format
-        out.println("0 @I-" + serialNmbr + "@ INDI");
-        String outText = "#" + serialNmbr + ": ";
-        int startLength = outText.length();
-        if (node != null) {
-            if (node.extKinTermsAddr.size() > 0) {
-                //  if a kinTerm appears as both primary & extended, remove it from extendedKinTermsAddr
-                int where;
-                for (int i = 0; i < node.kinTermsAddr.size(); i++) {
-                    where = node.extKinTermsAddr.indexOf(node.kinTermsAddr.get(i));
-                    if (where != -1) {
-                        node.extKinTermsAddr.remove(where);
-                    }
-                }  //  end of loop thru primary kinTerms
-            }  //  end of extended-node.kinTermsAddr-is-not-empty
-            if (node.extKinTermsRef.size() > 0) {
-                //  if a kinTerm appears as both primary & extended, remove it from extendedKinTermsRef
-                int where;
+//        if (serialNmbr == 26) Context.breakpoint();
+        out.println("0 @I" + serialNmbr + "@ INDI");
+        String outText = "";
+        if (realData) {
+            outText += firstNames + "/" + surname + "/";
+        } else {
+            int startLength = 0;
+            if (node != null) {
+                if (node.extKinTermsAddr.size() > 0) {
+                    //  if a kinTerm appears as both primary & extended, remove it from extendedKinTermsAddr
+                    int where;
+                    for (int i = 0; i < node.kinTermsAddr.size(); i++) {
+                        where = node.extKinTermsAddr.indexOf(node.kinTermsAddr.get(i));
+                        if (where != -1) {
+                            node.extKinTermsAddr.remove(where);
+                        }
+                    }  //  end of loop thru primary kinTerms
+                }  //  end of extended-node.kinTermsAddr-is-not-empty
+                if (node.extKinTermsRef.size() > 0) {
+                    //  if a kinTerm appears as both primary & extended, remove it from extendedKinTermsRef
+                    int where;
+                    for (int i = 0; i < node.kinTermsRef.size(); i++) {
+                        where = node.extKinTermsRef.indexOf(node.kinTermsRef.get(i));
+                        if (where != -1) {
+                            node.extKinTermsRef.remove(where);
+                        }
+                    }  //  end of loop thru primary kinTerms
+                }  //  end of extended-node.kinTermsRef-is-not-empty
+                boolean showFlags = (includeAux.equals("Include") ? true : false);
+                String term = "";
                 for (int i = 0; i < node.kinTermsRef.size(); i++) {
-                    where = node.extKinTermsRef.indexOf(node.kinTermsRef.get(i));
-                    if (where != -1) {
-                        node.extKinTermsRef.remove(where);
-                    }
-                }  //  end of loop thru primary kinTerms
-            }  //  end of extended-node.kinTermsRef-is-not-empty
-            boolean showFlags = true;
-            if (choice.equals("Don't Include")) {
-                showFlags = false;
-            }
-            String term = "";
-            for (int i = 0; i < node.kinTermsRef.size(); i++) {
-                term = (String) node.kinTermsRef.get(i) + node.ktSuffix;
-                if ((showFlags || (term.indexOf("<[") == -1))
-                        && (!nonTerms.contains(term))) {
-                    outText += term;
-                    if (i < (node.kinTermsRef.size() - 1)) {
-                        outText += ", ";
-                    }
-                }
-            }  //  end of loop thru primary node.kinTermsRef
-            if (node.extKinTermsRef.size() > 0) {
-                outText += "  [";
-                for (int i = 0; i < node.extKinTermsRef.size(); i++) {
-                    term = (String) node.extKinTermsRef.get(i) + node.ktSuffix;
-                    if ((showFlags || (term.indexOf("[") == -1))
+                    term = (String) node.kinTermsRef.get(i) + node.ktSuffix;
+                    if ((showFlags || (term.indexOf("<[") == -1))
                             && (!nonTerms.contains(term))) {
                         outText += term;
-                        if (i < (node.extKinTermsRef.size() - 1)) {
+                        if (i < (node.kinTermsRef.size() - 1)) {
                             outText += ", ";
                         }
                     }
-                }  //  end of loop thru primary node.extKinTermsRef
-                outText += "]";
-            }  //  end of if-extended-KinTermsRef-isn't-empty
-            for (int i = 0; i < node.kinTermsAddr.size(); i++) {
-                term = (String) node.kinTermsAddr.get(i) + node.ktSuffix;
-                if ((showFlags || (term.indexOf("[") == -1))
-                        && (!nonTerms.contains(term))) {
-                    outText += "*" + term;
-                    if (i < (node.kinTermsAddr.size() - 1)) {
-                        outText += ", ";
-                    }
-                }
-            }  //  end of loop thru primary node.kinTermsAddr
-            if (node.extKinTermsAddr.size() > 0) {
-                outText += "  [";
-                for (int i = 0; i < node.extKinTermsAddr.size(); i++) {
-                    term = (String) node.extKinTermsAddr.get(i) + node.ktSuffix;
+                }  //  end of loop thru primary node.kinTermsRef
+                if (node.extKinTermsRef.size() > 0) {
+                    outText += "  [";
+                    for (int i = 0; i < node.extKinTermsRef.size(); i++) {
+                        term = (String) node.extKinTermsRef.get(i) + node.ktSuffix;
+                        if ((showFlags || (term.indexOf("[") == -1))
+                                && (!nonTerms.contains(term))) {
+                            outText += term;
+                            if (i < (node.extKinTermsRef.size() - 1)) {
+                                outText += ", ";
+                            }
+                        }
+                    }  //  end of loop thru primary node.extKinTermsRef
+                    outText += "]";
+                }  //  end of if-extended-KinTermsRef-isn't-empty
+                for (int i = 0; i < node.kinTermsAddr.size(); i++) {
+                    term = (String) node.kinTermsAddr.get(i) + node.ktSuffix;
                     if ((showFlags || (term.indexOf("[") == -1))
                             && (!nonTerms.contains(term))) {
                         outText += "*" + term;
-                        if (i < (node.extKinTermsAddr.size() - 1)) {
+                        if (i < (node.kinTermsAddr.size() - 1)) {
                             outText += ", ";
                         }
                     }
-                }  //  end of loop thru primary node.extKinTermsAddr
-                outText += "]";
-            }  //  end of if-extended-KinTermsAddr-isn't-empty
-        }
-        if (outText.length() == startLength) {
-            outText += "No Term";
-        }
-        if (!(gender.equals("?"))) {
-            outText += " (" + gender + ")";
+                }  //  end of loop thru primary node.kinTermsAddr
+                if (node.extKinTermsAddr.size() > 0) {
+                    outText += "  [";
+                    for (int i = 0; i < node.extKinTermsAddr.size(); i++) {
+                        term = (String) node.extKinTermsAddr.get(i) + node.ktSuffix;
+                        if ((showFlags || (term.indexOf("[") == -1))
+                                && (!nonTerms.contains(term))) {
+                            outText += "*" + term;
+                            if (i < (node.extKinTermsAddr.size() - 1)) {
+                                outText += ", ";
+                            }
+                        }
+                    }  //  end of loop thru primary node.extKinTermsAddr
+                    outText += "]";
+                }  //  end of if-extended-KinTermsAddr-isn't-empty
+            }
+            if (outText.length() == startLength) {
+                outText += "No Term";
+            }
+            if (!(gender.equals("?"))) {
+                outText += " (" + gender + ")";
+            }
         }
         out.println("1 NAME " + outText);
-        name = outText;
-        if (birthYr != null) {
+        printSubItems(out, "NAME", false);
+        if (birthYY != null && !birthYY.isEmpty()) {
             out.println("1 BIRT");
-            out.println("2 DATE " + getDateOfBirth());
+            out.println("2 DATE " + UDate.xsdToEuropean(getDateOfBirth()));
+            printSubItems(out, "BIRT", true);
         }  //  end of birthdate output
-        if (deathYr != null) {
+        if (deathYY != null && !deathYY.isEmpty()) {
             out.println("1 DEAT");
-            out.println("2 DATE " + getDateOfDeath());
+            out.println("2 DATE " + UDate.xsdToEuropean(getDateOfDeath()));
+            printSubItems(out, "DEAT", true);
         }  //  end of death_date output
         if ((gender.equals("M")) || (gender.equals("F"))) {
             out.println("1 SEX " + gender);
@@ -769,20 +810,74 @@ public boolean hasDoD() {
         if (marriages.size() > 0) {
             for (int i = 0; i < marriages.size(); i++) {
                 Family fam = (Family) marriages.get(i);
-                out.println("1 FAMS @F-" + fam.serialNmbr + "@");
+                out.println("1 FAMS @F" + fam.serialNmbr + "@");
             }  // end of for-each-marriage
         }  // end of if-marriages
-        if (birthFamily != null) {
-            out.println("1 FAMC @F-" + birthFamily.serialNmbr + "@");
+//        if (Context.current.specialRelationships != null) {
+//            Iterator udpIter = userDefinedProperties.values().iterator();
+//            while (udpIter.hasNext()) {
+//                UserDefinedProperty udp = (UserDefinedProperty)udpIter.next();
+//                if (udp.chartable && !udp.value.isEmpty()) {
+//                    for (Object p : udp.value) {
+//                        Individual adoptee = (Individual)p;
+//                        out.println("1 ADOP @I" + adoptee.serialNmbr + "@");
+//                    }
+//                }
+//            }
+//        }
+     // GEDCOM record adoptions on the child's record  
+        if (adoptNote != null) {
+            out.print(adoptNote);  // adoption notes end with a newLine
         }
-        if (comment.length() > 7) {
-            out.println("1 NOTE " + comment.substring(7));
+        if (birthFamily != null) {
+            out.println("1 FAMC @F" + birthFamily.serialNmbr + "@");
+        }
+        if (comment.length() > 0) {
+            out.println("1 NOTE " + comment);
+        }
+        // Now add any extra GEDCOM Items stored on this person
+        if (gedcomItems != null) {
+            Iterator iter = gedcomItems.values().iterator();
+            while (iter.hasNext()) {
+                ParserGEDCOM.GEDCOMitem itm = (ParserGEDCOM.GEDCOMitem) iter.next();
+                if (!specialItems.contains(itm.tag)) {
+                    out.println(itm.toGEDCOMString());
+                }
+            }
+        }
+        if (dataAuthor != null) {
+            out.println("1 SUBM @" + Context.current.dataAuthors.indexOf(dataAuthor) + "@");
         }
         out.println("1 CHAN");
-        out.println("2 DATE " + today);
+        out.println("2 DATE " + UDate.xsdToEuropean(dataChangeDate));
         return;
     }  //  end of method exportGEDCOM
     
+    
+    void printSubItems(PrintWriter out, String tag, boolean suppressDate) {
+        if (gedcomItems == null) {
+            return;
+        }
+        String s = "";
+        boolean eolNeeded = false;
+        ParserGEDCOM.GEDCOMitem item = gedcomItems.get(tag);
+        if (item != null) {
+            for (ParserGEDCOM.GEDCOMitem sub : item.subItems) {
+                if (suppressDate && sub.tag.equals("DATE")) {
+                    continue;
+                }
+                if (eolNeeded) {
+                    s += "\n";
+                } else {
+                    eolNeeded = true;
+                }
+                s += sub.toGEDCOMString();
+            }
+        }
+        if (s.length() > 0) {
+            out.println(s);
+        }
+    }
     
     /**
     Convert various forms of gender designation into 'M' or 'F'.
@@ -846,17 +941,166 @@ public boolean hasDoD() {
             surname = nam.substring(start, nam.length());
             if (start >= 2) firstNames = nam.substring(0, start).trim();
         }  // end of default processing
+        name = firstNames + " " + surname;
     }  // end of method processNames
             
     /**
-    Append the String <code>not</code> to the 'comment' field for this Individual.
+     * Append the String
+     * <code>not</code> to the 'comment' field for this Individual.
+     *
+     * @param	not	the String to be added.
+     */
+    public void addNote(String not) {
+        comment += not;
+        dataChangeDate = UDate.today();
+    }
     
-    @param	not		the String to be added.
-    */
-    public void addNote(String not)  { 
-            comment += not;
-            dataChangeDate = UDate.today();
+    public static ArrayList<String> specialItems = makeSpecialItems();
+    
+    static ArrayList<String> makeSpecialItems() {
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("NAME");  list.add("SEX");   list.add("BIRT");   list.add("DEAT");
+        list.add("FAMC");  list.add("FAMS");  list.add("MARR");   list.add("DIV");
+        list.add("HUSB");  list.add("WIFE");  list.add("CHIL");   list.add("CHAN");        
+        return list;
+    }
+    
+    public ArrayList<ParserGEDCOM.GEDCOMitem> findMarriagesInGEDCOM() {
+        ArrayList<ParserGEDCOM.GEDCOMitem> spice = new ArrayList<ParserGEDCOM.GEDCOMitem>();
+        Iterator iter = gedcomItems.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry)iter.next();
+            String key = (String) entry.getKey();
+            if (key.startsWith("FAMS")) {
+                spice.add((ParserGEDCOM.GEDCOMitem)entry.getValue());
             }
+        }
+        return spice;
+    }
+    
+    ArrayList<ParserGEDCOM.GEDCOMitem> findAdoptionsInGEDCOM() {
+        ArrayList<ParserGEDCOM.GEDCOMitem> items = new ArrayList<ParserGEDCOM.GEDCOMitem>();
+        if (gedcomItems != null) {
+            Iterator iter = gedcomItems.values().iterator();
+            while (iter.hasNext()) {                
+                ParserGEDCOM.GEDCOMitem item = (ParserGEDCOM.GEDCOMitem)iter.next();
+                if (item.tag.startsWith("ADOP")) {
+                    items.add(item);
+                }
+            }
+        }        
+        return items;
+    }
+    
+    ArrayList<Individual> getAdoptees() {
+        ArrayList<Individual> adoptees = new ArrayList<Individual>();
+        if (userDefinedProperties != null) {
+            Iterator iter = userDefinedProperties.values().iterator();
+            while (iter.hasNext()) {
+                UserDefinedProperty udp = (UserDefinedProperty)iter.next();
+                if (udp.chartable && udp.starName.toLowerCase().contains("adopt")) {
+                    for (Object o : udp.value) {
+                    adoptees.add((Individual)o);
+                    }
+                }
+            }
+        }
+        return adoptees;
+    }
+    
+    void addAdoptee(Individual kid, String udpName) {
+        UserDefinedProperty udp = (UserDefinedProperty)userDefinedProperties.get(udpName);
+        udp.value.add(kid);
+    }
+    
+    boolean titled = false;
+    
+    String addTitle() {
+        if (titled) {
+            return "";
+        } else {
+            titled = true;
+            return "\n===== GEDCOM Items =====";
+        }
+    }
+    
+    String addGEDCOMItems() {
+        ParserGEDCOM.GEDCOMitem item;
+        titled = false;
+        String s = "";
+        item = gedcomItems.get("NAME");
+        if (item != null && !item.subItems.isEmpty()) {
+            s += addTitle() + item.extraDataString();
+        }
+        item = gedcomItems.get("SEX");
+        if (item != null && !item.subItems.isEmpty()) {
+            s += addTitle() + item.extraDataString();
+        }
+        item = gedcomItems.get("BIRT");
+        if (item != null && !item.subItems.isEmpty()) {
+            s += addTitle() + item.extraDataString();
+        }
+        item = gedcomItems.get("DEAT");
+        if (item != null && !item.subItems.isEmpty()) {
+            s += addTitle() + item.extraDataString();
+        }
+        item = findBirthFamInGEDCOM();
+        if (item != null && item.subItems != null) {
+            s += addTitle() + item.extraDataString();
+        }
+        ArrayList<ParserGEDCOM.GEDCOMitem> spice = findMarriagesInGEDCOM();
+        for (ParserGEDCOM.GEDCOMitem mar : spice) {
+            if (!mar.subItems.isEmpty()) {
+                s += mar.extraDataString();
+            }
+        }
+        item = gedcomItems.get("CHAN");
+        if (item != null && !item.subItems.isEmpty()) {
+                s += addTitle() + item.extraDataString();
+            }
+        Iterator iter = gedcomItems.values().iterator();
+        while (iter.hasNext()) {
+            ParserGEDCOM.GEDCOMitem itm = (ParserGEDCOM.GEDCOMitem)iter.next();
+            if (!specialItems.contains(itm.tag)) {
+                s += addTitle() + "\n" + itm;
+            }
+        }
+        int st = s.indexOf("===== GEDCOM Items =====");
+        if (st > -1) {
+            st += 10;
+            s = s.substring(0, st) + s.substring(st).replace("\n\n", "\n");
+        }
+        return s;
+    }
+    
+    public ParserGEDCOM.GEDCOMitem findBirthFamInGEDCOM() {
+        Iterator iter = gedcomItems.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry)iter.next();
+            String key = (String) entry.getKey();
+            if (key.startsWith("FAMC")) {
+                return (ParserGEDCOM.GEDCOMitem)entry.getValue();
+            }
+        }
+        return null;
+    }
+    
+    public int getGEDCOMSerial(String ref) {
+        int start = -1, end = ref.lastIndexOf("@");
+        for (int i=0; i < ref.length(); i++) {
+            char ch = ref.charAt(i);
+            if (Character.isDigit(ch)) {
+                start = i;
+                break;
+            }
+        }
+        if (start == -1) {
+            return -1;
+        }
+        return Integer.parseInt(ref.substring(start, end));
+    }
+    
+    
     
     /**
     Append <code>newfam</code> to the 'marriages' field for this Individual.
@@ -878,8 +1122,9 @@ public boolean hasDoD() {
         homeChart = "deleted";
         if (birthFamily != null) {
             birthFamily.deleteChild(this);
-        }
-        for (Object f : marriages) {
+        }  //  Make copy to avoid concurrent modification error
+        ArrayList unions = new ArrayList(marriages);        
+        for (Object f : unions) {
             ((Family) f).deleteSpouse(this);
         }
         dataChangeDate = UDate.today();

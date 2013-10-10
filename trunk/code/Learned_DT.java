@@ -195,9 +195,8 @@ public class Learned_DT extends DomainTheory implements Serializable {
             MainPane.activity.log.append(msg);
             return;  //  there aren't enough terms to make negative examples.
         }
-        Library.ClauseIndex cbEQCs = Library.cbIndex;
         Counter maxDist = new Counter();
-        TreeMap candidates = findCandidates(cbEQCs, pos, Library.cbCounts, sourceDT, maxDist);  //  candidates is exactStr -> List of CB_EQCs
+        TreeMap candidates = findCandidates(Library.cbIndex, pos, Library.cbCounts, sourceDT, maxDist);  //  candidates is exactStr -> List of CB_EQCs
         evalCandidates(candidates, solidCBMatches, potFalseNeg, potFalsePos, pos, neg, maxNoise);
         findKTMatches(kinTerm, solidCBMatches, potFalseNeg, potFalsePos, pos, neg, maxNoise, ignorable,
                 solidKTMatches, noisyKTMatches, anomalies, rejectedDefs);

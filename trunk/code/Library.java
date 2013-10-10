@@ -35,7 +35,7 @@ public class Library {
     public static Context contextUnderConstruction;
     static ClauseIndex cbIndex, baseCBIndex;
     static ClauseCounts cbCounts;
-    private static DFA theDFA;
+    private static DFA theDFA, gedcomDFA;
     static TreeMap ktSigTree, ktSigCompressed;
     static TreeMap predEncodings;		//  langName => predName => KTD_Coder
     static TreeMap predDecodings;		// langName => String[] where the element #codeNmbr is the predName
@@ -78,6 +78,16 @@ public class Library {
         }
         return theDFA;
     }  //  end of method getDFA
+
+    static DFA gedcomDFA() throws KSParsingErrorException {
+        if (gedcomDFA != null) {
+            return gedcomDFA;
+        } else {
+            gedcomDFA = new DFA();
+            gedcomDFA.loadFromFile(libraryDirectory + "GEDCOM_DFA");
+        }
+        return gedcomDFA;
+    }  //  end of method gedcomDFA
 
     static String makeLibDir() {
         String userHOME = System.getProperty("user.dir");
@@ -1108,7 +1118,7 @@ public class Library {
         //  CCBS: encodedLits level
         int start = 1, end = compactCBString.indexOf("]");
         String decoded = predDecode(compactCBString.substring(start, end) + ".", dt.languageName);
-        Parser stringParser = new Parser(new Tokenizer(getDFA(), new LinusFromString(decoded)));
+        ParserDomainTheory stringParser = new ParserDomainTheory(new Tokenizer(getDFA(), new LinusFromString(decoded)));
         ClauseBody cb = stringParser.parseCBfromString(dt);
         cb.pcString = pcString;
         cb.pcStringStructural = ClauseBody.structStr(pcString);
@@ -1128,7 +1138,7 @@ public class Library {
     public static ClauseBody readCBfromString(String txtCB, DomainTheory dt)
      throws KSInternalErrorException, JavaSystemException, KSParsingErrorException {
         
-        Parser stringParser = new Parser(new Tokenizer(getDFA(), new LinusFromString(txtCB)));
+        ParserDomainTheory stringParser = new ParserDomainTheory(new Tokenizer(getDFA(), new LinusFromString(txtCB)));
         ClauseBody cb = stringParser.parseCBfromString(dt);
         
         return cb;
@@ -1561,7 +1571,7 @@ public class Library {
             String fileName = libraryDirectory + "Domain Theory Files/" + languageName + ".thy";
             Linus dtLineServer = new Linus(fileName),
                     macroLineServer = new Linus(libraryDirectory + "Standard_Macros");
-            Parser parzer = new Parser(new Tokenizer(getDFA(), dtLineServer), new Tokenizer(getDFA(), macroLineServer));
+            ParserDomainTheory parzer = new ParserDomainTheory(new Tokenizer(getDFA(), dtLineServer), new Tokenizer(getDFA(), macroLineServer));
             ktd = parzer.parseKinTerm(kinTerm, true);
             DomainTheory dt = ktd.domTh;
             cache.put(languageName, dt);
@@ -2514,7 +2524,7 @@ public class Library {
             } else {
                 //  3rd choice: parse it from disk
                 String fileName = libraryDirectory + "Domain Theory Files/" + languageName + ".thy";
-                Parser parzer = new Parser(new Tokenizer(getDFA(), new Linus(fileName)));
+                ParserDomainTheory parzer = new ParserDomainTheory(new Tokenizer(getDFA(), new Linus(fileName)));
                 clause = parzer.parseSingleClause(kinTerm, cbSeqNmbr, dt, ktd);
                 if (ktd == null) {
                     ktd = clause.ktd;
@@ -2711,7 +2721,7 @@ public class Library {
                 dt.theory.remove(kinTerm);
             }
             String fileName = libraryDirectory + "Domain Theory Files/" + languageName + ".thy";
-            Parser parzer = new Parser(new Tokenizer(getDFA(), new Linus(fileName)));
+            ParserDomainTheory parzer = new ParserDomainTheory(new Tokenizer(getDFA(), new Linus(fileName)));
             clause = parzer.parseSingleClause(kinTerm, cbSeqNmbr, dt, null, "base");
             ktd = clause.ktd;
             if (dt == null) {
@@ -2751,7 +2761,7 @@ public class Library {
             } else {
                 //  3rd choice: parse it from disk
                 String fileName = libraryDirectory + "Domain Theory Files/" + languageName + ".thy";
-                Parser parzer = new Parser(new Tokenizer(getDFA(), new Linus(fileName)));
+                ParserDomainTheory parzer = new ParserDomainTheory(new Tokenizer(getDFA(), new Linus(fileName)));
                 clause = parzer.parseSingleClause(kinTerm, cbSeqNmbr, dt, ktd, "base");
                 if (ktd == null) {
                     ktd = clause.ktd;
@@ -2939,7 +2949,7 @@ public class Library {
             throws KSParsingErrorException, JavaSystemException, KSBadHornClauseException,
             KSInternalErrorException, KSConstraintInconsistency {
         //  Read in a domain theory stored in a .thy file.
-        Parser parzer = new Parser(new Tokenizer(getDFA(), new Linus(fileName)));
+        ParserDomainTheory parzer = new ParserDomainTheory(new Tokenizer(getDFA(), new Linus(fileName)));
         DomainTheory dt = parzer.parseDomainTheory();
         //  Check for over-write of an already-active context.
         String langName = dt.languageName;
@@ -3101,7 +3111,7 @@ public class Library {
             NotSerializableException, KSBadHornClauseException, KSInternalErrorException, IOException {
         Linus dtLineServer = new Linus(file),
                 macroLineServer = new Linus(libraryDirectory + "Standard_Macros");
-        Parser parzer = new Parser(new Tokenizer(getDFA(), dtLineServer), new Tokenizer(getDFA(), macroLineServer));
+        ParserDomainTheory parzer = new ParserDomainTheory(new Tokenizer(getDFA(), dtLineServer), new Tokenizer(getDFA(), macroLineServer));
         DomainTheory dt = parzer.parseDomainTheory();
         addDomainTheory(dt);
     }
@@ -3121,10 +3131,10 @@ public class Library {
         Linus silkLineServer = new Linus(file, "UTF8");
         Tokenizer tok = new Tokenizer(getDFA(), silkLineServer);
         if (preXML) {
-            SILKFileParserPreXML parzer = new SILKFileParserPreXML(tok);
+            ParserSILKFilePreXML parzer = new ParserSILKFilePreXML(tok);
             contextUnderConstruction = parzer.parseSILKFile();
         } else {
-            SILKFileParser parzer = new SILKFileParser(tok);
+            ParserSILKFile parzer = new ParserSILKFile(tok);
             contextUnderConstruction = parzer.parseSILKFile();
         }
         contextUnderConstruction.saveState = false;  //  will change if any edits made
@@ -3148,7 +3158,7 @@ public class Library {
             KSParsingErrorException, JavaSystemException, NotSerializableException, IOException, KSConstraintInconsistency {
         Linus dtLineServer = new Linus(pathName),
                 macroLineServer = new Linus(libraryDirectory + "Standard_Macros");
-        Parser parzer = new Parser(new Tokenizer(getDFA(), dtLineServer), new Tokenizer(getDFA(), macroLineServer));
+        ParserDomainTheory parzer = new ParserDomainTheory(new Tokenizer(getDFA(), dtLineServer), new Tokenizer(getDFA(), macroLineServer));
         DomainTheory dt = parzer.parseDomainTheory();
         addDomainTheory(dt);
     }

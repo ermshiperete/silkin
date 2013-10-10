@@ -128,7 +128,7 @@ public class MainPane extends JFrame implements ActionListener {
         JMenu menuHelp = new HelpFrame.HMenu();
         menuHelp.setText("Help");
         menuHelp.setMnemonic(KeyEvent.VK_H);
-        HelpFrame.help = new HelpFrame();
+        HelpFrame.window = new HelpFrame();
 
 //        JMenu menuFileNew = new JMenu("New");
         miFileNewBrowser = menuFile.add("New Library Browser");
@@ -334,6 +334,8 @@ public class MainPane extends JFrame implements ActionListener {
             KSJInternalFrame frame = (KSJInternalFrame) desktop.getSelectedFrame();
             if (frame != null) {
                 frame.doDefaultCloseAction();
+            } else {
+                setVisible(false);
             }
         } //  end of action-is-close-window
         else if (e.getActionCommand().equals("exit")) {
@@ -792,63 +794,8 @@ public class MainPane extends JFrame implements ActionListener {
             changeActivity(Library.DATA_GATHERING);
         } //  end of action-is-save-context-as
         else if (e.getActionCommand().equals("export GEDCOM")) {
-
-            int population = Context.current.indSerNumGen + Context.current.famSerNumGen;
-            if (population < 2) {
-                JOptionPane.showMessageDialog(desktop,
-                        "You are requesting export of a total of " + population + " people and families.\n"
-                        + "That makes no sense.  Make sure you have chosen the correct\n"
-                        + "context and generated a population before exporting.",
-                        "Nothing To Export",
-                        JOptionPane.ERROR_MESSAGE);
-            } //  end of too-small-population
-            else {  //  normal-population-numberOfKinTerms
-                if (fc == null) {
-                    fc = new JFileChooser();
-                }
-                fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-                fc.setDialogTitle("Location for GEDCOM file -- .ged extension recommended");
-                if (currGEDCOMDir != null) {
-                    fc.setCurrentDirectory(currGEDCOMDir);
-                }
-                //  Display File-Open dialog and get User's selection
-                int returnVal = fc.showSaveDialog(desktop);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    File file = fc.getSelectedFile();
-                    currGEDCOMDir = fc.getCurrentDirectory();
-                    String fName = file.getName(), fPath = file.getPath();
-                    Object[] options2 = {"Include", "Don't Include"};
-                    int choice1 = 1;
-                    choice1 = JOptionPane.showOptionDialog(desktop,
-                            "Some names have 'flags' like <aux> embedded in them.  Include those?",
-                            "Include Names With Tags?",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null, //don't use a custom Icon
-                            options2, //the titles of buttons
-                            options2[1]); //default is "Don't Include"
-
-                    try {
-                        PrintWriter outFile = new PrintWriter(new BufferedWriter(new FileWriter(fPath)));
-                        Context.current.exportGEDCOM(outFile, fName, (String) options2[choice1]);
-                        outFile.flush();
-                        outFile.close();
-                    } catch (IOException exc) {
-                        String msg = "PROBLEM: While exporting a GEDCOM file, " + prettify(exc.toString())
-                                + "\nRECOMMENDATION: Check for disk, directory, or permissions problems.";
-                        JOptionPane.showMessageDialog(desktop, msg, "File System Error",
-                                JOptionPane.ERROR_MESSAGE);
-                        activity.log.append(msg + "\n\n");
-                    } catch (Exception exc) {
-                        String msg = "PROBLEM: While exporting a GEDCOM file, " + prettify(exc.toString())
-                                + "\nRECOMMENDATION: Submit a Bug Report!";
-                        JOptionPane.showMessageDialog(desktop, msg, "General Error",
-                                JOptionPane.ERROR_MESSAGE);
-                        activity.log.append(msg + "\n\n");
-                    }  //  end of catch bodies
-                }  //  end of if-APPROVE_OPTION
-            }  //  end of normal-population-numberOfKinTerms
-        } //  end of action-is-export-GEDCOM
+            exportGEDCOM();
+        } 
         else if (e.getActionCommand().equals("export domain theory")) {
             //  Add Here the code to write out a .thy file to location of User's choice (EXCEPT LIBRARY).
             //  REMEMBER TO RE-USE FILE CHOOSER
@@ -1396,7 +1343,7 @@ public class MainPane extends JFrame implements ActionListener {
         }  //  end of action-is-Gen-CUC-Population
 
     }  //  end of listener actionPerformed
-
+    
     public void browseCurrentContext() {
         // Strategy: Make sure the current context is listed in the Library's
         // stub file, and that the .ctxt file has been created or updated.
@@ -1473,6 +1420,123 @@ public class MainPane extends JFrame implements ActionListener {
             }
         }  //  end of create-new-Editor
         changeActivity(Library.DATA_GATHERING);
+    }
+    
+    public void exportGEDCOM() {
+        String msg;
+        boolean realData;
+        if (Context.current == null) {
+            msg = "You must choose a context first, then export data.";
+            JOptionPane.showMessageDialog(desktop, msg,
+                    "Nothing To Export",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int population = Context.current.indSerNumGen + Context.current.famSerNumGen;
+        if (population < 2) {
+            JOptionPane.showMessageDialog(desktop,
+                    "You are requesting export of a total of " + population + " people and families.\n"
+                    + "That makes no sense.  Make sure you have chosen the correct\n"
+                    + "context and generated a population before exporting.",
+                    "Nothing To Export",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        } //  end of too-small-population
+        msg = "You have 2 options:\n  - export names, birthdates, etc. for a real population";
+        msg += "\n  - export a diagram of kin terms for the current Ego";
+        Object[] options = {"Actual Data", "Kin Terms"};
+        int choice = JOptionPane.showOptionDialog(desktop, msg,
+                "Type of GEDCOM Export",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null, //don't use a custom Icon
+                options, //the titles of buttons
+                options[0]); //default is actual data
+        realData = (choice == 0);
+        msg = "To what software program are you exporting data?";
+        String destination = JOptionPane.showInputDialog(desktop, msg);
+        if (fc == null) {
+            fc = new JFileChooser();
+        }
+        File file = null;
+        fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        fc.setDialogTitle("Location for GEDCOM file -- .ged extension required.");
+        if (currGEDCOMDir != null) {
+            fc.setCurrentDirectory(currGEDCOMDir);
+        }
+        //  Display File-Open dialog and get User's selection
+        int returnVal = fc.showSaveDialog(desktop);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            file = fc.getSelectedFile();
+            currGEDCOMDir = fc.getCurrentDirectory();
+            String fName = file.getName(), fPath = file.getPath();
+            int extLoc = fName.lastIndexOf(".");
+            String ext = (extLoc == -1 ? "" : fName.substring(extLoc));
+            if (! ext.equalsIgnoreCase(".GED")) {
+                msg = "File name MUST end in '.ged'\nExport Request Denied";
+                JOptionPane.showMessageDialog(desktop, msg, "File Name Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (!realData) {
+                options[0] = "Include";
+                options[1] = "Don't Include";
+                choice = JOptionPane.showOptionDialog(desktop,
+                        "Some names have 'flags' like <aux> embedded in them.  Include those?",
+                        "Include Names With Tags?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null, //don't use a custom Icon
+                        options, //the titles of buttons
+                        options[1]); //default is "Don't Include"
+            }
+            try {
+                PrintWriter outFile = new PrintWriter(fPath, "UTF-8");
+                Context.current.exportGEDCOM(outFile, fName, realData, destination, (String) options[choice]);
+                outFile.flush();
+                outFile.close();
+            } catch (IOException exc) {
+                msg = "PROBLEM: While exporting a GEDCOM file, " + prettify(exc.toString())
+                        + "\nRECOMMENDATION: Check for disk, directory, or permissions problems.";
+                JOptionPane.showMessageDialog(desktop, msg, "File System Error",
+                        JOptionPane.ERROR_MESSAGE);
+                activity.log.append(msg + "\n\n");
+            } catch (Exception exc) {
+                msg = "PROBLEM: While exporting a GEDCOM file, " + prettify(exc.toString())
+                        + "\nRECOMMENDATION: Submit a Bug Report!";
+                JOptionPane.showMessageDialog(desktop, msg, "General Error",
+                        JOptionPane.ERROR_MESSAGE);
+                activity.log.append(msg + "\n\n");
+            }  //  end of catch bodies
+        }  //  end of if-APPROVE_OPTION
+    }
+    
+    public void importGEDCOM() {
+        File ged = null;
+        try {
+            DFA gdfa = Library.gedcomDFA();
+            if (fc == null) {
+                fc = new JFileChooser();
+            }
+            fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            fc.setDialogTitle("GEDCOM File (.ged)");
+            int returnVal = fc.showOpenDialog(desktop);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                ged = fc.getSelectedFile();
+            } else {
+                return;
+            }
+            TokenizerGEDCOM tok = new TokenizerGEDCOM(gdfa, new Linus(ged, "UTF8"));
+            ParserGEDCOM parser = new ParserGEDCOM(tok);
+            parser.parseFile(ged);
+        } catch (Exception exc) {
+            String msg = "While importing GEDCOM file:  " + exc + "\n" + exc;
+            StackTraceElement[] bad = exc.getStackTrace();
+            for (int i = 0; i < 5; i++) {
+                msg += "\n" + bad[i];
+            }
+            displayError(msg, "GEDCOM Import Failed", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public void changeActivity(int activityCode) {
@@ -1723,7 +1787,7 @@ public class MainPane extends JFrame implements ActionListener {
             int[] minHitPercents, int maxNoise, int ignorable, int minDyadsPerPCStr)
             throws KSParsingErrorException, KSConstraintInconsistency, KSBadHornClauseException, FileNotFoundException, IOException,
             KSInternalErrorException, KinshipSystemException, ClassNotFoundException, JavaSystemException {
-        Parser parzer = new Parser(new Tokenizer(Library.getDFA(), new Linus(sourceFile)));
+        ParserDomainTheory parzer = new ParserDomainTheory(new Tokenizer(Library.getDFA(), new Linus(sourceFile)));
         DomainTheory sourceDT = parzer.parseDomainTheory();
         Context sourceCtxt = new Context(sourceDT);
         Iterator ktdIter = sourceDT.theory.values().iterator();
@@ -1737,7 +1801,7 @@ public class MainPane extends JFrame implements ActionListener {
         Learned_DT learner = new Learned_DT(sourceDT);
         Linus macroLineServer = new Linus(Library.libraryDirectory + "Standard_Macros");
         Tokenizer tok = new Tokenizer(Library.getDFA(), macroLineServer);
-        parzer = new Parser(tok, tok);
+        parzer = new ParserDomainTheory(tok, tok);
         parzer.parseStandardMacros(learner);
         leaveOneOut(learner, sourceDT, logFile, tabFile, nmbrOfRounds, distanceLimits, minHitPercents, maxNoise,
                 ignorable, minDyadsPerPCStr, false, 1);
@@ -2205,7 +2269,7 @@ public class MainPane extends JFrame implements ActionListener {
                     ArrayList<Object> people = (ArrayList<Object>) genderVars.get(arg0.argName);
                     people.add(arg1.argName);
                 }
-                //  Now identify all parent pairs
+                //  Now identify all edWin pairs
                 if (predName.equals("father") || predName.equals("son") || predName.equals("mother")
                         || predName.equals("daughter") || predName.equals("parent") || predName.equals("child")) {
                     boolean parental = (predName.equals("father") || predName.equals("parent") || predName.equals("mother"));
@@ -2308,7 +2372,8 @@ public class MainPane extends JFrame implements ActionListener {
     public class CleanUpThread extends Thread {
 
         public void run() {
-            if (SIL_Edit.editWindow.chart.saveFile != null) {
+            if (SIL_Edit.editWindow != null &&
+                    SIL_Edit.editWindow.chart.saveFile != null) {
                 try {
                     SIL_Edit.editWindow.chart.saveSILKFile();
                     System.out.println("Wrote: " + SIL_Edit.editWindow.chart.saveFile);
@@ -2316,12 +2381,13 @@ public class MainPane extends JFrame implements ActionListener {
                     System.out.println("Hit File-Save exception in clean-up thread.");
                 }
             }
-
 //            Iterator iter = Library.activeContexts.values().iterator();
 //            Context ctxt;
             try {
                 Library.writeStubFile();
-                //  if (Library.clSt != null) Library.saveClusterStateToDisk();
+                if (curr_CUC_Editor != null) {
+                    curr_CUC_Editor.setClosed(true);
+                }
                 writeActivityLog();
             } catch (Exception goof) {
                 System.out.println("Error writing Library.stubs file or Error Log: " + goof + "\n\n");

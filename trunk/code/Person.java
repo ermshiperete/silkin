@@ -37,7 +37,7 @@ import java.awt.*;
 import java.util.StringTokenizer;
 import java.util.*;
 
-public class Person implements Locatable  {
+public class Person  {
     public static int id_no = 0;
     public static int size = 16; // default size;
     public static String refYear = ""; // reference year for drawing genealology
@@ -49,9 +49,9 @@ public class Person implements Locatable  {
     public boolean drawn = false; // was this symbol drawn last time?
     String name = "New";
     String comment = "";
-    String birthYr = "";
+    String birthYY = "";
     String yobq = "9";
-    String deathYr = "";
+    String deathYY = "";
     String yodq = "9";
     String homeChart = "";
     public Point location = new Point(0, 0);
@@ -247,19 +247,19 @@ public class Person implements Locatable  {
 		g.setColor(x);
 	}
 	public boolean hasBegun() {
-		if (!birthYr.equals("") && !refYear.equals(""))
-			return (birthYr.compareTo(refYear) <= 0);
+		if (!birthYY.equals("") && !refYear.equals(""))
+			return (birthYY.compareTo(refYear) <= 0);
 		else return true;
 	}
         /* Modified this method for SILKin, since refYear is
          * not used. Original version below:
          *
-         * if (!deathYr.equals("") && !refYear.equals(""))
-	 *	return(deathYr.compareTo(refYear) <= 0);
+         * if (!deathYY.equals("") && !refYear.equals(""))
+	 *	return(deathYY.compareTo(refYear) <= 0);
 	 *	else return false;
          */
 	public boolean hasEnded() {
-		if (!deathYr.equals(""))
+		if (!deathYY.equals(""))
 			return true;
 		else return false;
 	}
@@ -364,13 +364,11 @@ public class Person implements Locatable  {
         if (pbounds.contains(location)) {
             if (hasEnded()) {
                 sex.symbol.drawEndSymbol(g, myBounds);
-                drawLabel(g, myBounds);
-                drawn = true;
-            } else if (hasBegun()) {
+            } else {
                 sex.symbol.drawSymbol(g, myBounds);
-                drawLabel(g, myBounds);
-                drawn = true;
             }
+            drawLabel(g, myBounds);
+            drawn = true;
         }
     }
 	
@@ -388,8 +386,8 @@ public class Person implements Locatable  {
 		else image += "Neuter";
             image += "</sex>"+XFile.Eol;
             // born and died blocks are written as 1-piece tags
-            image += "  <stats> <born>" + birthYr + "</born>";
-            image += " <died>" + deathYr + "</died>";
+            image += "  <stats> <born>" + birthYY + "</born>";
+            image += " <died>" + deathYY + "</died>";
             image += " </stats>"+XFile.Eol;
             image += "  <location x=\"" + location.x + "\" y=\"" +
                     location.y + "\"/>"+XFile.Eol;
@@ -413,9 +411,9 @@ public class Person implements Locatable  {
 		else pf.printF("Neuter");
                 pf.printf("    <stats><born q=\"%s\">%s</born><died q=\"%s\">%s</died></stats>"+XFile.Eol,
 		yobq);
-		pf.printF(birthYr.replace(' ','#'));
+		pf.printF(birthYY.replace(' ','#'));
 		pf.printF(yodq);
-		pf.printF(deathYr.replace(' ','#'));
+		pf.printF(deathYY.replace(' ','#'));
 
 		pf.printf("    <location><x>%d</x><y>%d</y></location>"+XFile.Eol,location.x);
 		pf.printF(location.y);
@@ -472,8 +470,8 @@ public class Person implements Locatable  {
 		retp.name = name;
 		retp.myId = pid;
 		retp.comment = comment;
-		retp.birthYr = born;
-		retp.deathYr = died;
+		retp.birthYY = born;
+		retp.deathYY = died;
 		retp.yobq = bornqual;
 		retp.yodq = diedqual;
 		Person.id_no = pid; // Check this out!!!

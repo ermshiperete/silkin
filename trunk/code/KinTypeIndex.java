@@ -83,6 +83,34 @@ public class KinTypeIndex implements Serializable {
         }
         tmap.put(kTyp, egoMap);
     }
+    
+    public void renameChartableUDP(String oldName, String newName) {
+        String oldInverse = "*inverse_" + oldName.substring(1),
+                newInverse = "*inverse_" + newName.substring(1);
+        TreeMap<String, TreeMap<Integer, ArrayList<Integer>>> newTMap =
+                new TreeMap<String, TreeMap<Integer, ArrayList<Integer>>>();
+        Iterator iter = tmap.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry)iter.next();
+            String kinType = (String)entry.getKey();
+            kinType = kinType.replace(oldName, newName);
+            kinType = kinType.replace(oldInverse, newInverse);
+            newTMap.put(kinType, (TreeMap<Integer, ArrayList<Integer>>)entry.getValue());
+        }
+        tmap = newTMap;
+    }
+    
+    public void removeChartableUDP(String udName) {
+        String inverse = "*inverse_" + udName.substring(1);
+        Iterator iter = tmap.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry)iter.next();
+            String kinType = (String)entry.getKey();
+            if (kinType.contains(udName) || kinType.contains(inverse)) {
+                iter.remove();
+            }            
+        }
+    }
 
     /**
      * Returns the list of pairs indexed under this kin type (PC-String).

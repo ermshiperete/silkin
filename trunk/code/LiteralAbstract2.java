@@ -8,7 +8,7 @@ import java.io.* ;
 	Horn Clauses.  They also are the level at which 90% of the action takes place in Example-Generation.
 	<p>
 	Because so many methods are defined at the Literal level, the code files are broken into 3 classes:  LiteralAbstract2, this one,
-	and Literal.
+	and Literal. 
 
   @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
 */
@@ -79,89 +79,117 @@ public abstract class LiteralAbstract2 extends LiteralAbstract1  {
 
 
     boolean findOrCreateBirthLink(String parSex, String kidSex, int parArg, ArrayList<Object> remLits, ArrayList<Object> starStuff, TreeMap bindings,
-                TreeMap badBindings, ArrayList<Object> starBindings, ConstraintObj constraints, int kidFlag, int parFlag,
-                boolean keepBB, String kinTerm, ClauseBody cb, ArrayList<Object> pcStr, Dyad dyad)
-        throws KSBadHornClauseException, KSInternalErrorException, KSConstraintInconsistency, ClassNotFoundException   {
-            //  This handles parent, father, mother, son, & daughter predicates via the 1st 3 parameters.
-            //  For each arg, either (1) a suitable Individual already exists in the Indiv-Census
-            //  so we find it and bind it, then recurse on remLits.   OR
-            //  (2) we create a suitable Individual and add it to the bindings - honoring constraints - then recurse.
-            //  badBindings is a TreeMap of variables (argNames) & lists of prohibited bindings (individuals)
-            int kidArg, resetInd = Context.current.indSerNumGen,  resetFam = Context.current.famSerNumGen;
-            int sbSize = starBindings.size();
-			kidArg = (parArg + 1) % 2;
-            Variable parent = (Variable)args.get(parArg), child = (Variable)args.get(kidArg);
-            Individual parentIndiv = (Individual)bindings.get(parent.argName), childIndiv = (Individual)bindings.get(child.argName);
-            String bindingMade = null, parentSex = parSex;
+            TreeMap badBindings, ArrayList<Object> starBindings, ConstraintObj constraints, int kidFlag, int parFlag,
+            boolean keepBB, String kinTerm, ClauseBody cb, ArrayList<Object> pcStr, Dyad dyad)
+            throws KSBadHornClauseException, KSInternalErrorException, KSConstraintInconsistency, ClassNotFoundException {
+        //  This handles parent, father, mother, son, & daughter predicates via the 1st 3 parameters.
+        //  For each arg, either (1) a suitable Individual already exists in the Indiv-Census
+        //  so we find it and bind it, then recurse on remLits.   OR
+        //  (2) we create a suitable Individual and add it to the bindings - honoring constraints - then recurse.
+        //  badBindings is a TreeMap of variables (argNames) & lists of prohibited bindings (individuals)
+        int kidArg, resetInd = Context.current.indSerNumGen, resetFam = Context.current.famSerNumGen;
+        int sbSize = starBindings.size();
+        kidArg = (parArg + 1) % 2;
+        Variable parent = (Variable) args.get(parArg), child = (Variable) args.get(kidArg);
+        Individual parentIndiv = (Individual) bindings.get(parent.argName), childIndiv = (Individual) bindings.get(child.argName);
+        String bindingMade = null, parentSex = parSex;
 
-	//  if (Context.breakFlag) System.out.println("F/C_BirthLink on " + this);
-	    Argument argBound = null;
-            ArrayList<Object> parentSexList;
-            if (parSex.equals("?")) {
-                parentSexList = resolveOppo(bindings, constraints, parent);
-                if (parentSexList == null) parentSex = "?";
-                else if (parentSexList.contains("F")) parentSex = "F";
-                else if  (parentSexList.contains("M")) parentSex = "M";
+        //  if (Context.breakFlag) System.out.println("F/C_BirthLink on " + this);
+        Argument argBound = null;
+        ArrayList<Object> parentSexList;
+        if (parSex.equals("?")) {
+            parentSexList = resolveOppo(bindings, constraints, parent);
+            if (parentSexList == null) {
+                parentSex = "?";
+            } else if (parentSexList.contains("F")) {
+                parentSex = "F";
+            } else if (parentSexList.contains("M")) {
+                parentSex = "M";
+            }
+        }
+        Family fam = null;
+        if (LiteralAbstract1.negativeConstraintPhase) {
+            //  One or both of these may have been bound earlier in a 'positive' phase, and carried (via bindings
+            //  list) into a 'negatedConstraintsSatisfied' phase.  So double check constraints.  Use the _Strictly_
+            //  versions,'cuz we don't want to change anything on a bound arg/object pair.
+            if ((childIndiv != null) && (!childIndiv.meetsConstraintsStrictly(child, constraints, bindings, starBindings))) {
+                return false;
+            }
+            if ((parentIndiv != null) && (!parentIndiv.meetsConstraintsStrictly(parent, constraints, bindings, starBindings))) {
+                return false;
+            }
+        }  //  end of if-negativeConstraintPhase
+        //  we know that either parent or child (maybe both) already exists
+        if ((parentIndiv != null) && (childIndiv == null)) {  // parent already exists; look for child of right sex
+            Individual existingKid;
+            ArrayList<Object> badKids = (ArrayList<Object>) badBindings.get(child.argName);  //  list of individuals we can NOT accept
+            if (badKids == null) {
+                badKids = new ArrayList<Object>();
+            }
+            existingKid = kidSearch(parentIndiv, kidSex, child, constraints, bindings, badKids, starBindings, cb);
+            if (existingKid == null) {  // no match found among existing kids
+                ArrayList<Object> kidSexList;
+                if (kidSex.equals("?")) {
+                    kidSexList = resolveOppo(bindings, constraints, child);
+                    if (kidSexList == null) {
+                        kidSex = "?";
+                    } else if (kidSexList.contains("F")) {
+                        kidSex = "F";
+                    } else if (kidSexList.contains("M")) {
+                        kidSex = "M";
+                    }
                 }
-            Family fam = null;
-            if (LiteralAbstract1.negativeConstraintPhase) {
-				//  One or both of these may have been bound earlier in a 'positive' phase, and carried (via bindings
-				//  list) into a 'negatedConstraintsSatisfied' phase.  So double check constraints.  Use the _Strictly_
-				//  versions,'cuz we don't want to change anything on a bound arg/object pair.
-				if ((childIndiv != null)  && (! childIndiv.meetsConstraintsStrictly(child, constraints, bindings, starBindings)))
-					return false;
-				if ((parentIndiv != null)  && (! parentIndiv.meetsConstraintsStrictly(parent, constraints, bindings, starBindings)))
-			        return false;
-				}  //  end of if-negativeConstraintPhase
-            //  we know that either parent or child (maybe both) already exists
-            if ((parentIndiv != null) && (childIndiv == null))  {  // parent already exists; look for child of right sex
-                Individual existingKid;
-                ArrayList<Object> badKids = (ArrayList<Object>)badBindings.get(child.argName);  //  list of individuals we can NOT accept
-                if (badKids == null) badKids = new ArrayList<Object>();
-                existingKid = kidSearch(parentIndiv, kidSex, child, constraints, bindings, badKids, starBindings, cb);
-                if (existingKid == null)  {  // no match found among existing kids
-                    ArrayList<Object> kidSexList;
-                    if (kidSex.equals("?")) {
-                        kidSexList = resolveOppo(bindings, constraints, child);
-                        if (kidSexList == null) kidSex = "?";
-                        else if (kidSexList.contains("F")) kidSex = "F";
-                        else if (kidSexList.contains("M")) kidSex = "M";
-                        }
-                    //  kidFlag = 0 means we've never created a kid for this variable
-                    //  kidFlag = 1-2 means we created a kid in family#0 previously (M & F) & it didn't work
-                    //  kidFlag = 3-4 means we've used or created a 2nd marriage & new kid - still didn't work
-                    //  kidFlag = 5-6 means we've created a new marriage & new kid - nothing works
-                    if (kidFlag == 0) fam = findOrMakeMarriage(parentIndiv, 0, parent.argName, constraints);
-                    else if (kidFlag <= 2) //  try 2nd marriage
-                        fam = findOrMakeMarriage(parentIndiv, 1, parent.argName, constraints);
-                    else if (kidFlag <= 4) //  force a new marriage
-                        fam = findOrMakeMarriage(parentIndiv, 99, parent.argName, constraints);
-                    else if (kidFlag >= 5) return false;  // nothing left to try
-                    kidFlag++;
-                    BoolFlag failFlag = new BoolFlag(false);
-                    childIndiv = new Individual("*&^%$", kidSex, fam, null, child.argName, null, bindings,
-                                                starBindings, constraints, child, failFlag, cb);
-                    if (failFlag.value) {
-                        LiteralAbstract1.failReason = failFlag.reason;
-                        return false;
-                    }  //  end of failFlag===true
-                    if ((fam != null) && (fam.getMarriageDate().length() < 4)) fam.generateMarriageDate();
-                    }  //  end of if-no-suitable-existingKid-found
-                else childIndiv = existingKid;
-                bindings.put(child.argName, childIndiv);
-				if (childIndiv.node == null) childIndiv.node = new Node();
-				else childIndiv.node.appearances++;
-                bindingMade = child.argName;
-				if (dyad != null) dyad.path.add(childIndiv);
-				argBound = child;
-                cb.pcCounter++;
-				addToPCString(pcStr, parentIndiv, childIndiv, false);
-                child.treeLevel = parent.treeLevel - 1;
-                if (bindingMade.equals("Alter")) {
-					cb.level = child.treeLevel;
-					if (dyad != null) dyad.alter = childIndiv;
-					}
-            }  //  end of if-parent-already-exists
+                //  kidFlag = 0 means we've never created a kid for this variable
+                //  kidFlag = 1-2 means we created a kid in family#0 previously (M & F) & it didn't work
+                //  kidFlag = 3-4 means we've used or created a 2nd marriage & new kid - still didn't work
+                //  kidFlag = 5-6 means we've created a new marriage & new kid - nothing works
+                if (kidFlag == 0) {
+                    fam = findOrMakeMarriage(parentIndiv, 0, parent.argName, constraints);
+                } else if (kidFlag <= 2) //  try 2nd marriage
+                {
+                    fam = findOrMakeMarriage(parentIndiv, 1, parent.argName, constraints);
+                } else if (kidFlag <= 4) //  force a new marriage
+                {
+                    fam = findOrMakeMarriage(parentIndiv, 99, parent.argName, constraints);
+                } else if (kidFlag >= 5) {
+                    return false;  // nothing left to try
+                }
+                kidFlag++;
+                BoolFlag failFlag = new BoolFlag(false);
+                childIndiv = new Individual("*&^%$", kidSex, fam, null, child.argName, null, bindings,
+                        starBindings, constraints, child, failFlag, cb);
+                if (failFlag.value) {
+                    LiteralAbstract1.failReason = failFlag.reason;
+                    return false;
+                }  //  end of failFlag===true
+                if ((fam != null) && (fam.getMarriageDate().length() < 4)) {
+                    fam.generateMarriageDate();
+                }
+            } //  end of if-no-suitable-existingKid-found
+            else {
+                childIndiv = existingKid;
+            }
+            bindings.put(child.argName, childIndiv);
+            if (childIndiv.node == null) {
+                childIndiv.node = new Node();
+            } else {
+                childIndiv.node.appearances++;
+            }
+            bindingMade = child.argName;
+            if (dyad != null) {
+                dyad.path.add(childIndiv);
+            }
+            argBound = child;
+            cb.pcCounter++;
+            addToPCString(pcStr, parentIndiv, childIndiv, false);
+            child.treeLevel = parent.treeLevel - 1;
+            if (bindingMade.equals("Alter")) {
+                cb.level = child.treeLevel;
+                if (dyad != null) {
+                    dyad.alter = childIndiv;
+                }
+            }
+        }  //  end of if-parent-already-exists
             else if ((parentIndiv == null) && (childIndiv != null))  { //  kid already exists, parent doesn't
                 BoolFlag failFlag = new BoolFlag(false);
                 fam = findOrMakeBirthFamily(childIndiv, parentSex, parent.argName, null, bindings,
@@ -496,34 +524,45 @@ public abstract class LiteralAbstract2 extends LiteralAbstract1  {
 
 
 
-	public void addToPCString(ArrayList<Object> pcStr, Individual preBound, Individual newBound, boolean preIsKid)  {
-		//	Create a standardized literal expressing the BirthLink relationship of newBound to preBound.
-		//	NewBound should be arg0 of that literal, and preBound should be arg1.
-		String preBoundTag = "#" + preBound.serialNmbr, newBoundTag = "#" + newBound.serialNmbr,
-				pc, newBoundSex = newBound.gender;
-		if (preIsKid)  {  //  must create a parental pc
-			if (newBoundSex.equals("M")) pc = "Fa";
-			else if (newBoundSex.equals("F")) pc = "Mo";
-			else pc = "P";
-		}else {  //  Must create a child pc
-			if (newBoundSex.equals("M")) pc = "So";
-			else if (newBoundSex.equals("F")) pc = "Da";
-			else pc = "C";	}
-		pcStr.add(pc + "(" + newBoundTag + "," + preBoundTag + ")");
-		}  //  end of method addToPCString for BirthLinks
+    public void addToPCString(ArrayList<Object> pcStr, Individual preBound, Individual newBound, boolean preIsKid) {
+        //	Create a standardized literal expressing the BirthLink relationship of newBound to preBound.
+        //	NewBound should be arg0 of that literal, and preBound should be arg1.
+        String preBoundTag = "#" + preBound.serialNmbr, newBoundTag = "#" + newBound.serialNmbr,
+                pc, newBoundSex = newBound.gender;
+        if (preIsKid) {  //  must create a parental pc
+            if (newBoundSex.equals("M")) {
+                pc = "Fa";
+            } else if (newBoundSex.equals("F")) {
+                pc = "Mo";
+            } else {
+                pc = "P";
+            }
+        } else {  //  Must create a child pc
+            if (newBoundSex.equals("M")) {
+                pc = "So";
+            } else if (newBoundSex.equals("F")) {
+                pc = "Da";
+            } else {
+                pc = "C";
+            }
+        }
+        pcStr.add(pc + "(" + newBoundTag + "," + preBoundTag + ")");
+    }  //  end of method addToPCString for BirthLinks
 
-
-	public void addToPCString(ArrayList<Object> pcStr, boolean divReq, Individual preBound, Individual newBound)  {
-		//	Create a standardized literal expressing the SpouseLink relationship of newBound to preBound.
-		//	NewBound should be arg0 of that literal, and preBound should be arg1.
-		String preBoundTag = "#" + preBound.serialNmbr, newBoundTag = "#" + newBound.serialNmbr,
-				pc, newBoundSex = newBound.gender;
-		if (newBoundSex.equals("M")) pc = "Hu";
-		else if (newBoundSex.equals("F")) pc = "Wi";
-		else pc = "Sp";
-		pcStr.add(pc + "(" + newBoundTag + "," + preBoundTag + ")");
-		}  //  end of method addToPCString for SpouseLink
-
+    public void addToPCString(ArrayList<Object> pcStr, boolean divReq, Individual preBound, Individual newBound) {
+        //	Create a standardized literal expressing the SpouseLink relationship of newBound to preBound.
+        //	NewBound should be arg0 of that literal, and preBound should be arg1.
+        String preBoundTag = "#" + preBound.serialNmbr, newBoundTag = "#" + newBound.serialNmbr,
+                pc, newBoundSex = newBound.gender;
+        if (newBoundSex.equals("M")) {
+            pc = "Hu";
+        } else if (newBoundSex.equals("F")) {
+            pc = "Wi";
+        } else {
+            pc = "Sp";
+        }
+        pcStr.add(pc + "(" + newBoundTag + "," + preBoundTag + ")");
+    }  //  end of method addToPCString for SpouseLink
 
     boolean findOrCreateStarLink(ArrayList<Object> remLits, ArrayList<Object> starStuff, TreeMap bindings, TreeMap badBindings, ArrayList<Object> starBindings,
                         ConstraintObj constraints, int tryFlag, boolean keepBB, String kinTerm, ClauseBody cb, ArrayList<Object> pcStr, Dyad dyad)

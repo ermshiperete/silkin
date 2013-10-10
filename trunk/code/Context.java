@@ -24,6 +24,7 @@ public class Context implements Serializable {
     static int breakCount1 = 0;
     static int breakCount2 = 0;
     static boolean breakFlag = false;
+    
     //  ---  Instance Variables  --- 
     /**	Comments hold special comment from (or about) the author of the data about this culture.	*/
     public String comments = "",
@@ -55,7 +56,7 @@ public class Context implements Serializable {
     /**	True if polygamy is accepted in this culture (regardless of whether it has ever happened).	*/
     public boolean polygamyPermit, featuresHaveChanged = false;  //  flag -> true when definition added
     // These 2 parameters (plus maxNoiseP and ignorableP) control the Learning Algorithm
-    public boolean doBaseCBs = false, doInduction = false;
+    public boolean doBaseCBs = false, doInduction = false, adoptionHelp = true;
     /**	Optional extra fields, defined by user.  Stored as a TreeMap of pairs:
     property-name (must begin with '*') -> UserDefinedProperty-object.	*/
     public TreeMap userDefinedProperties;
@@ -72,26 +73,33 @@ public class Context implements Serializable {
      *  It is used to determine if we should attempt to pre-fill the kinTerm field for a new Alter.  */
     public TreeMap<String, ArrayList<CB_Ptr>> autoDefRef = new TreeMap<String, ArrayList<CB_Ptr>>();
     public TreeMap<String, ArrayList<CB_Ptr>> autoDefAdr;
-    public String[] defaultLinkOrder = { "Fa", "Mo", "P", "So", "Da", "C", "Hu", "Wi", "S",
+    public String[] defaultKinTypeOrder = { "Fa", "Mo", "P", "So", "Da", "C", "Hu", "Wi", "S",
            "Bro", "Sis", "Sib", "Hbro", "Hsis", "Stfa", "Stmo", "Stbro", "Stsis", "Stso", "Stda" };
-    public String[] defaultLinkPriority = { "A", "A", "A", "B", "B", "B", "B", "B", "B", 
-            "C", "C", "C", "D", "D", "E", "E", "E", "E", "E", "E" };
-    public ArrayList<String> linkOrder, linkPriority;
-    public TreeMap<String, String> linkPriorityTMap;
-    
+    public String[] defaultKinTypePriority = { "A", "A", "A", "A", "A", "A", "B", "B", "B", 
+            "D", "D", "D", "E", "E", "F", "F", "F", "F", "F", "F" };
+    public ArrayList<String> kinTypeOrder, kinTypePriority;
+    public TreeMap<String, String> kinTypePriorityTMap;
+    public TreeMap<String, ArrayList<SpecRelTriple>> specialRelationships;
+    // Inverse is TMap Child > (TMap predName -> AList of adoptiveParents)
+    public TreeMap<Individual, TreeMap<String, ArrayList<Individual>>> inverseSpecialRelationships;
+    public TreeMap<String, ParserGEDCOM.GEDCOMitem> gedcomHeaderItems;
+    public TreeMap<String, ParserGEDCOM.GEDCOMitem> gedcomNotes;
+    public TreeMap<String, ParserGEDCOM.GEDCOMitem> gedcomSources;
+    public TreeMap<String, ParserGEDCOM.GEDCOMitem> gedcomExtra;
+        
     /* The following fields were added to allow a Context to carry the parameters
      * needed by KAES back to the loadFile method.     */
     public Point origin;
     public Dimension area;
     public int infoPerson, infoMarriage, labelChoice, ktLabelChoice, maxNoiseP = 25, ignorableP = 5;
     public boolean editable, distinctAdrTerms, birthDateNormallyCaptured = false,
-            surnameNormallyCaptured = true;
+            surnameNormallyCaptured = true, displayGEDCOM = false;
 
     /** This zero-arg constructor is for use by Serialization ONLY.  */
     public Context() {
         createDate = UDate.today();
         Context.current = this;
-        loadDefaultLinkStuff();
+        loadDefaultKinTypeStuff();
     }
 // end of zero-arg constructor
 
@@ -116,7 +124,7 @@ public class Context implements Serializable {
         }
         polygamyPermit = dt.polygamyOK;
         userDefinedProperties = dt.userDefinedProperties;
-        loadDefaultLinkStuff();
+        loadDefaultKinTypeStuff();
         Library.activeContexts.put(languageName, this);
     }  // end of theory-only constructor
 
@@ -143,7 +151,7 @@ public class Context implements Serializable {
         }
         polygamyPermit = dt.polygamyOK;
         userDefinedProperties = dt.userDefinedProperties;
-        loadDefaultLinkStuff();
+        loadDefaultKinTypeStuff();
         Library.activeContexts.put(languageName, this);
     }  // end of 2-arg constructor
 
@@ -589,50 +597,384 @@ public class Context implements Serializable {
     @param	outFile		a {@link PrintWriter} to write to.
     @param	fileName	direct filename; required extension is '.ged'
      */
-    public void exportGEDCOM(PrintWriter outFile, String fileName, String choice) {
+    public void exportGEDCOM(PrintWriter outFile, String fileName, boolean realData, 
+            String destination, String includeAuxs) {
         // Write out the header, all individual and family records, & then trailer.
         outFile.println("0 HEAD");
         outFile.println("1 SOUR SILKin");
-        outFile.println("2 VERS 1.0");
+        outFile.println("2 VERS 1.2");
         outFile.println("2 NAME SIL Kinship Analysis Tools");
-        outFile.println("1 DEST Reunion");
+        outFile.println("1 DEST " + destination);
         String today = UDate.today();
-        outFile.println("1 DATE " + today);
-        outFile.println("1 FILE " + fileName);
+        outFile.println("1 DATE " + UDate.xsdToEuropean(today));
+        //  File is required to have extension ".GED"
+        outFile.println("1 FILE " + fileName.substring(0, fileName.lastIndexOf(".")));
         outFile.println("1 GEDC");
         outFile.println("2 VERS 5.5");
         outFile.println("2 FORM LINEAGE-LINKED");
-        outFile.println("1 CHAR ASCII");
+        outFile.println("1 CHAR UTF-8");
+        if (domTheoryRef != null && domTheoryRef.author != null && !domTheoryRef.author.isEmpty()) {
+            int ref = dataAuthors.indexOf(domTheoryRef.author);
+            if (ref > -1) {
+                outFile.println("1 SUBM @" + ref + "@");
+            }
+        }
+        for (int d=0; d < dataAuthors.size(); d++) {
+            outFile.println("0 @" + d + "@ SUBM");
+            outFile.println("1 NAME " + dataAuthors.get(d));
+        }        
         Individual ind;
         Family fam;
+        if (DomainTheory.current == null) {
+            DomainTheory.current = domTheoryRef;
+        }
         Iterator iter1 = individualCensus.iterator();
         while (iter1.hasNext()) {
             ind = (Individual) iter1.next();
-            ind.exportGEDCOM(outFile, today, choice, DomainTheory.current.nonTerms);
+            String adoptNote = encodeAdoptionEvent(ind);
+            if (! ind.deleted) {
+                ind.exportGEDCOM(outFile, realData, includeAuxs, 
+                        DomainTheory.current.nonTerms, adoptNote);
+            }
         }  //  end of loop through Individuals
-        Iterator iter2 = familyCensus.iterator();
-        while (iter2.hasNext()) {
-            fam = (Family) iter2.next();
-            fam.exportGEDCOM(outFile, today);
+        iter1 = familyCensus.iterator();
+        while (iter1.hasNext()) {
+            fam = (Family) iter1.next();
+            if (! fam.deleted) {
+                fam.exportGEDCOM(outFile);
+            }
         }  //  end of loop through Families
+        if (gedcomNotes != null) {
+            iter1 = gedcomNotes.values().iterator();
+            while (iter1.hasNext()) {
+                ParserGEDCOM.GEDCOMitem itm = (ParserGEDCOM.GEDCOMitem)iter1.next();
+                outFile.println(itm.toGEDCOMString());
+            }
+        }
+        if (gedcomSources != null) {
+            iter1 = gedcomSources.values().iterator();
+            while (iter1.hasNext()) {
+                ParserGEDCOM.GEDCOMitem itm = (ParserGEDCOM.GEDCOMitem)iter1.next();
+                outFile.println(itm.toGEDCOMString());
+            }
+        }
+        if (gedcomExtra != null) {
+            iter1 = gedcomExtra.values().iterator();
+            while (iter1.hasNext()) {
+                ParserGEDCOM.GEDCOMitem itm = (ParserGEDCOM.GEDCOMitem)iter1.next();
+                outFile.println(itm.toGEDCOMString());
+            }
+        }
         outFile.println("0 TRLR");
         return;
     }  // end of method exportGEDCOM
     
-    void loadDefaultLinkStuff() {
+    String encodeAdoptionEvent(Individual ind) {
+        String note = "";
+        TreeMap<String, ArrayList<Individual>> adoptions =
+                inverseSpecialRelationships.get(ind);
+        if (adoptions == null) {
+            return null;
+        }
+        ArrayList<Individual> parents = new ArrayList<Individual>();
+        Iterator iter = adoptions.values().iterator();
+        while (iter.hasNext()) {
+            ArrayList<Individual> subList = (ArrayList<Individual>)iter.next();
+            for (Individual p : subList) {
+                if (! parents.contains(p)) {
+                    parents.add(p);
+                }
+            }
+        }
+        ArrayList familyUnits = findAdoptiveFamilies(parents);  
+        while (! familyUnits.isEmpty()) {
+            //  always an even number of elements
+            Family fam = (Family)familyUnits.remove(0);
+            String typ = (String)familyUnits.remove(0);
+            note += "1 ADOP Y\n2 FAMC @F" + fam.serialNmbr + "@";
+            note += "\n2 ADOPTED_BY_WHICH_PARENT " + typ + "\n";
+        }        
+        return note;
+    }
+
+    ArrayList findAdoptiveFamilies(ArrayList<Individual> parents) {
+        // return as many pairs as possible: pair = Family, HUSB/WIFE/BOTH
+        ArrayList results = new ArrayList();
+        while (!parents.isEmpty()) {
+            Family fam = null;
+            String typ = "";
+            Individual mate1 = parents.remove(0),
+                    mate2 = null;
+            if (mate1.marriages.isEmpty()) {
+                // Must be a single adoptive parent. Make a single-parent family unit
+                try {
+                    fam = new Family(this, true);
+                    typ = (mate1.gender.equals("M") ? "HUSB" : "WIFE");
+                    fam.addParent(mate1);
+                    fam.homeChart = mate1.homeChart;
+                    fam.location = new Point(mate1.location.x + 10, mate1.location.y);
+                    fam.comment += "This family created to provide a GEDCOM";
+                    fam.comment += "$$br$$adoptive family. No sexual union is implied.";
+                } catch (Exception exc) {
+                    //  addParent should have no exceptions
+                }
+            } else {  // she's married
+                for (Object f : mate1.marriages) {
+                    fam = (Family) f;
+                    Individual mate = (fam.wife == mate1 ? fam.husband : fam.wife);
+                    if (mate != null && parents.contains(mate)) {
+                        mate2 = mate;
+                        parents.remove(mate);
+                        typ = "BOTH";
+                        break;
+                    }
+                } // 
+                if (typ.isEmpty()) {
+                    typ = (mate1.gender.equals("M") ? "HUSB" : "WIFE");
+                }
+            }
+            results.add(fam);
+            results.add(typ);
+        }
+        return results;
+    }
+    boolean adoptionsInitialized = false;
+    
+    void initializeAdoptions(String adoptionPred) {
+        if (adoptionsInitialized) {
+            return;
+        }
+        if (specialRelationships == null) {
+            specialRelationships = new TreeMap<String, ArrayList<SpecRelTriple>>();
+        }
+        if (inverseSpecialRelationships == null) {
+            inverseSpecialRelationships = new TreeMap<Individual, TreeMap<String, ArrayList<Individual>>>();
+        }
+        if (userDefinedProperties == null) {
+            userDefinedProperties = new TreeMap<String, UserDefinedProperty>();
+        }
+        UserDefinedProperty defaultUDP = (UserDefinedProperty) userDefinedProperties.get(adoptionPred);
+        if (defaultUDP == null) {
+            defaultUDP = new UserDefinedProperty(adoptionPred);
+            userDefinedProperties.put(adoptionPred, defaultUDP);
+            defaultUDP.chartable = true;
+            defaultUDP.singleValue = false;
+            defaultUDP.typ = "individual";
+            defaultUDP.chartColor = Color.RED;
+        }
+        if (domTheoryRefExists()) {
+            try {
+                DomainTheory dt = domTheoryRef();
+                dt.userDefinedProperties = userDefinedProperties;
+                if (domTheoryAdrExists()) {
+                    dt = domTheoryAdr();
+                    dt.userDefinedProperties = userDefinedProperties;
+                }
+            } catch (Exception exc) {
+            } // No parsing errors expected.
+        }
+        if (SIL_Edit.editWindow != null) {
+            SIL_Edit.editWindow.getPPanel().initUDPCombo();
+        }
+        Individual ind;
+        UserDefinedProperty newInstance;
+        Iterator indIter = individualCensus.iterator();
+        while (indIter.hasNext()) {
+            ind = (Individual) indIter.next();
+            newInstance = new UserDefinedProperty(defaultUDP, true);  //  clone the new template
+            if (ind.userDefinedProperties == null) {
+                ind.userDefinedProperties = new TreeMap<String, UserDefinedProperty>();
+            }
+            ind.userDefinedProperties.put(adoptionPred, newInstance);
+        }  //  end of loop thru individuals
+        insertAdoptionPriority(adoptionPred);
+        saveState = true;
+        adoptionsInitialized = true;
+    }
+    
+    void addSpecialRelationship(SpecRelTriple trpl, String chartLtr) {
+        // This method used only by GEDCOM Parser, so child/parent are never links.
+        if (specialRelationships.get(chartLtr) == null) {
+            specialRelationships.put(chartLtr, new ArrayList<SpecRelTriple>());
+        }
+        ArrayList<SpecRelTriple> array = specialRelationships.get(chartLtr);
+        array.add(trpl);
+        Individual kid;
+        if (trpl.child instanceof Link) {
+            kid = ((Link)trpl.child).personPointedTo;
+        } else {
+            kid = (Individual)trpl.child;
+        }
+        Locatable parent = (Locatable)trpl.parent;        
+        if (inverseSpecialRelationships.get(kid) == null) {
+            inverseSpecialRelationships.put(kid, new TreeMap<String, ArrayList<Individual>>());
+        }
+        TreeMap<String, ArrayList<Individual>> tmap = inverseSpecialRelationships.get(kid);
+        if (tmap.get(trpl.udpName) == null) {
+            tmap.put(trpl.udpName, new ArrayList<Individual>());
+        }
+        if (parent instanceof Individual) {
+            tmap.get(trpl.udpName).add((Individual)parent);    
+        } else {
+            Family f = (Family)parent;
+            if (f.husband != null) {
+                tmap.get(trpl.udpName).add(f.husband);
+            }
+            if (f.wife != null) {
+                tmap.get(trpl.udpName).add(f.wife);
+            }
+        }
+    }
+    
+    void loadDefaultKinTypeStuff() {
     //  Since no link priority order is specified for this context, load the deaults
-        linkOrder = new ArrayList<String>();
-        linkPriority = new ArrayList<String>();
-        for (String link : defaultLinkOrder) {
-            linkOrder.add(link);
+        kinTypeOrder = new ArrayList<String>();
+        kinTypePriority = new ArrayList<String>();
+        for (String kt : defaultKinTypeOrder) {
+            kinTypeOrder.add(kt);
         }
-        for (String prio : defaultLinkPriority) {
-            linkPriority.add(prio);
+        for (String prio : defaultKinTypePriority) {
+            kinTypePriority.add(prio);
         }
-        linkPriorityTMap = new TreeMap<String, String>();
-        for (int i=0; i < linkOrder.size(); i++) {
-            linkPriorityTMap.put(defaultLinkOrder[i], defaultLinkPriority[i]);
+        kinTypePriorityTMap = new TreeMap<String, String>();
+        for (int i=0; i < kinTypeOrder.size(); i++) {
+            kinTypePriorityTMap.put(defaultKinTypeOrder[i], defaultKinTypePriority[i]);
         }
+    }
+    
+    public void rebuildLinkMethods() {
+        SIL_Edit.linkMethods = SIL_Edit.buildLinkMethods();
+        if (userDefinedProperties != null) {
+            Iterator udIter = userDefinedProperties.values().iterator();
+            while (udIter.hasNext()) {
+                UserDefinedProperty ud = (UserDefinedProperty) udIter.next();
+                if (ud.chartable) {
+                    SIL_Edit.linkMethods.put(ud.starName, new SIL_Edit.AdoptMethod());
+                }
+            }
+        }
+    }
+    
+    public boolean hasNonChartables(ArrayList miniPreds) {
+        for (Object o : miniPreds) {
+            String s = (String)o;
+            if ((s.startsWith("*inverse_") && ! kinTypeOrder.contains(s.substring(9)))) {
+                return true;
+            }
+            if (s.startsWith("*") && ! kinTypeOrder.contains(s)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean isAdoptionPred(String pred) {
+        return (pred.startsWith("*") && !pred.startsWith("*inverse_")
+                && kinTypeOrder.contains(pred));
+    }
+    
+    public boolean isInverseAdoptionPred(String pred) {
+        return (pred.startsWith("*inverse_") && 
+                kinTypeOrder.contains(pred.substring(9)));
+    }
+    
+    public void insertAdoptionPriority(String newUDPname) {
+        ArrayList<String> refSet = new ArrayList<String>();
+        for (int i=0; i < 9; i++) {
+            refSet.add(defaultKinTypeOrder[i]);
+        }
+        int ndx;
+        for (ndx=0; ndx < kinTypeOrder.size(); ndx++) {
+            refSet.remove(kinTypeOrder.get(ndx));
+            if (refSet.isEmpty()) {
+                break;
+            }
+        }
+        kinTypeOrder.add(++ndx, newUDPname);
+        kinTypePriority.add(ndx, "C");
+        kinTypePriorityTMap.put(newUDPname, "C");
+        if (SIL_Edit.linkMethods.get(newUDPname) == null) {
+            SIL_Edit.linkMethods.put(newUDPname, new SIL_Edit.AdoptMethod());
+        }
+    }
+    
+    public void removeAdoptionPriority(String udName) {
+        kinTypeOrder.remove(udName);
+        kinTypePriority.remove(udName);
+        kinTypePriorityTMap.remove(udName);
+        SIL_Edit.linkMethods.remove(udName);
+    }
+    
+    public void renameChartableUDP(String oldName, String newName) {
+        if (specialRelationships != null) {
+            Iterator srIter = specialRelationships.values().iterator();
+            while (srIter.hasNext()) {  //  Update Special Relationships
+                ArrayList<Context.SpecRelTriple> trips =
+                        (ArrayList<Context.SpecRelTriple>) srIter.next();
+                for (Context.SpecRelTriple triple : trips) {
+                    if (triple.udpName.equals(oldName)) {
+                        triple.udpName = newName;
+                    }
+                }
+            }
+        }
+        if (inverseSpecialRelationships != null) {
+            Iterator irs = inverseSpecialRelationships.values().iterator();
+            while (irs.hasNext()) {  //  Update Inverse Special Relationships
+                TreeMap<String, ArrayList<Individual>> ir =
+                        (TreeMap<String, ArrayList<Individual>>) irs.next();
+                if (ir.get(oldName) != null) {
+                    ArrayList<Individual> lst = ir.get(oldName);
+                    ir.remove(oldName);
+                    ir.put(newName, lst);
+                }
+            }
+        }
+        rebuildLinkMethods();    //  Update link methods
+        int ndx = kinTypeOrder.indexOf(oldName);  //  Update Kin Type Ordering
+        if (ndx > -1) {
+            kinTypeOrder.remove(ndx);
+            kinTypeOrder.add(ndx, newName);
+            kinTypePriorityTMap.remove(oldName);
+            kinTypePriorityTMap.put(newName, kinTypePriority.get(ndx));
+        }
+        ktm.renameChartableUDP(oldName, newName);
+        kti.renameChartableUDP(oldName, newName);
+    }
+    
+    public void removeChartableUDP(String udpName) {
+        if (specialRelationships != null) {
+            Iterator srIter = specialRelationships.values().iterator();
+            while (srIter.hasNext()) {  //  Update Special Relationships
+                ArrayList<Context.SpecRelTriple> trips =
+                        (ArrayList<Context.SpecRelTriple>) srIter.next();
+                Iterator tripIter = trips.iterator();
+                while (tripIter.hasNext()) {
+                    Context.SpecRelTriple triple = (Context.SpecRelTriple)tripIter.next();
+                    if (triple.udpName.equals(udpName)) {
+                        tripIter.remove();
+                    }
+                }
+            }
+        }
+        if (inverseSpecialRelationships != null) {
+            Iterator irs = inverseSpecialRelationships.values().iterator();
+            while (irs.hasNext()) {  //  Update Inverse Special Relationships
+                TreeMap<String, ArrayList<Individual>> ir =
+                        (TreeMap<String, ArrayList<Individual>>) irs.next();
+                ir.remove(udpName);
+                if (ir.isEmpty()) {
+                    irs.remove();
+                }
+            }
+        }
+        rebuildLinkMethods();    //  Update link methods
+        int ndx = kinTypeOrder.indexOf(udpName);  //  Update Kin Type Ordering
+        if (ndx > -1) {
+            kinTypeOrder.remove(ndx);
+            kinTypePriorityTMap.remove(udpName);
+        }
+        SIL_Edit.editWindow.rebuildKTMatrixEtc();
     }
     
     public String getChartDescription(String chart) {
@@ -658,6 +1000,11 @@ public class Context implements Serializable {
             return null;
         }
         return chartLtrs[nextIndex];
+    }
+    
+    public int getLinkSerial(String mapLtr, String indName) {
+        
+        return 0;
     }
     
     private String editorParameters = "";
@@ -800,16 +1147,54 @@ public class Context implements Serializable {
         if (kti.lastSerial != -1) {
             silk.println("  <lastPersonIndexed>" + kti.lastSerial + "</lastPersonIndexed>");
         }
-        if (linkOrder != null && ! linkOrder.isEmpty()) {
-            silk.println("  <linkPriorities maleFirst=\"" + maleFirst + "\">");
-            for (int i=0; i < linkOrder.size(); i++) {
-                silk.println("\t<link name=\"" + linkOrder.get(i) + "\" priority=\"" 
-                        + linkPriority.get(i) + "\"/>");
+        if (kinTypeOrder != null && ! kinTypeOrder.isEmpty()) {
+            silk.println("  <kinTypePriorities maleFirst=\"" + maleFirst + "\">");
+            for (int i=0; i < kinTypeOrder.size(); i++) {
+                silk.println("\t<kinType name=\"" + kinTypeOrder.get(i) + "\" priority=\"" 
+                        + kinTypePriority.get(i) + "\"/>");
             }
-            silk.println("  </linkPriorities>");            
+            silk.println("  </kinTypePriorities>");            
         }
         silk.println("  <snapToGrid val=\"" + Library.snapToGrid + "\" x=\"" 
                 + Library.gridX + "\" y=\"" + Library.gridY + "\"/>");
+        silk.println("  <adoptionHelp val=\"" + adoptionHelp + "\"/>");
+        silk.println("  <displayGEDCOM val=\"" + displayGEDCOM + "\"/>");
+        if (gedcomHeaderItems != null) {
+            printGEDCOMTree(silk, "gedcomHeaderItems", gedcomHeaderItems);            
+        }
+        if (gedcomNotes != null) {
+            printGEDCOMTree(silk, "gedcomNotes", gedcomNotes);
+        }        
+        if (gedcomSources != null) {
+            printGEDCOMTree(silk, "gedcomSources", gedcomSources);
+        }
+        if (gedcomExtra != null) {
+            printGEDCOMTree(silk, "gedcomExtra", gedcomExtra);
+        }        
+        if (specialRelationships != null && !specialRelationships.isEmpty()) {
+            silk.println("  <specialRelationships>");
+            Iterator srIter = specialRelationships.entrySet().iterator();
+            while (srIter.hasNext()) {
+                Map.Entry entry = (Map.Entry)srIter.next();
+                String chLtr = (String)entry.getKey();
+                ArrayList<SpecRelTriple> trips = (ArrayList<SpecRelTriple>)entry.getValue();
+                silk.println("    <chart name=\"" + chLtr + "\">");
+                for (SpecRelTriple trey : trips) {
+                    String parType, kidType;
+                    if (trey.parent instanceof Individual) {
+                        parType = "I-";
+                    } else {
+                        parType = (trey.parent instanceof Link ? "L-" : "F-");
+                    }
+                    kidType = (trey.child instanceof Link ? "L-" : "I-");
+                    silk.println("      <specRel parent=\"" + parType + trey.parent.getSerialNmbr() + 
+                            "\" child=\"" + kidType + trey.child.getSerialNmbr() +
+                             "\" udpName=\"" + trey.udpName + "\"/>");
+                }
+                silk.println("    </chart>");
+            }  
+            silk.println("  </specialRelationships>");
+        }
         silk.println("</editorSettings>\n");
         if (domTheoryRef != null) {
             silk.println(domTheoryRef.toSILKString(""));
@@ -902,6 +1287,17 @@ public class Context implements Serializable {
         if (autoDefAdr != null && !autoDefAdr.isEmpty()) {
             printAutoDefs(silk, "Adr");
         }
+    }
+    
+    void printGEDCOMTree(PrintWriter silk, String title, 
+            TreeMap<String, ParserGEDCOM.GEDCOMitem> gedcomItems) {
+        silk.println("  <" + title + ">");
+            Iterator itemIter = gedcomItems.values().iterator();
+            while (itemIter.hasNext()) {
+                ParserGEDCOM.GEDCOMitem item = (ParserGEDCOM.GEDCOMitem)itemIter.next();
+                silk.println(item.toSILKString());
+            }
+            silk.println("  </" + title + ">");
     }
 
     void printAutoDefs(PrintWriter pw, String typ) {
@@ -1329,8 +1725,7 @@ public class Context implements Serializable {
                 if (onlyBioLinks) {
                     starLinksFound = true;
                 } else {
-                    for (int i = 0; i < self.starLinks.size(); i++) //  A star-link is 2 star-preds that form a link between individuals, so PC_String is '**'
-                    {
+                    for (int i = 0; i < self.starLinks.size(); i++) {  //  A star-link is 2 star-preds that form a link between individuals, so PC_String is '**'
                         makeNextDyad(self, (Individual) self.starLinks.get(i), "**", ready);
                     }
                 }
@@ -1531,6 +1926,20 @@ public class Context implements Serializable {
             }
         }
         return true;
+    }
+    
+    public static class SpecRelTriple implements Serializable {
+        Locatable parent, child;
+        String udpName;
+        
+        public boolean equals(SpecRelTriple other) {
+            if (udpName.equals(other.udpName) && 
+                parent == other.parent && 
+                    child == other.child) {
+                return true;
+            }
+            return false;
+        }
     }
 
     public static class CB_Ptr implements Serializable {
@@ -2221,4 +2630,5 @@ public class Context implements Serializable {
         
     }  //  end of Inner class RejectedOverlap
 } // end of public class Context
+
 

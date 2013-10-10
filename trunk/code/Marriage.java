@@ -33,8 +33,9 @@
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
-public class Marriage {
+public class Marriage  {
 
     final static int UNKNOWN = -1;
     public static int size = 16;
@@ -100,6 +101,34 @@ public class Marriage {
             }
         }
         return null;
+    }
+    
+    public Point getLocation() {
+        return location;
+    }
+    
+    public int getLocationX() {
+        return location.x;
+    }
+
+    public int getLocationY() {
+        return location.y;
+    }
+
+    public void setLocation(Point p) {
+        location = p;
+    }
+    
+    public void setLocation(int x, int y) {
+        location = new Point(x,y);
+    }
+    
+    public void setLocationX(int x) {
+        location.x = x;
+    }
+    
+    public void setLocationY(int y) {
+        location.y = y;
     }
 
     public LinkedList getSpouses() {
@@ -242,22 +271,34 @@ public void delMarriage() {
                 kid.location.y -= dy;
                 people.add(kid);
             }
-        }        
+        }
+        TreeMap<String, ArrayList<Context.SpecRelTriple>> specialRels = 
+                Context.current.specialRelationships;
+        if (specialRels != null && specialRels.get(Context.current.currentChart) != null) {
+            ArrayList<Context.SpecRelTriple> srs = specialRels.get(Context.current.currentChart);
+            for (Context.SpecRelTriple srt : srs) { // move anything attached to a family member by special relationship
+                if (srt.parent == this || srt.parent == husband || srt.parent == wife
+                        || children.contains(srt.parent) || srt.parent == husbandLink
+                        || srt.parent == wifeLink || kidLinks.contains(srt.parent)) {
+                    Point loc = srt.child.getLocation();
+                    srt.child.setLocation(loc.x - dx, loc.y - dy);
+                }
+            }
+        }
         for (BirthGroup bg : birthGrps) {
             bg.topPtX -= dx;
         }
         SIL_Edit.editWindow.chart.draggedPersons.addAll(people);
         SIL_Edit.editWindow.chart.draggedLinks.addAll(lynx);
         SIL_Edit.editWindow.chart.draggedMarriages.add((Family)this);
-        ChartPanel.parent.chart.delayedAreaCk(people);
-        ChartPanel.parent.chart.delayedAreaCheck(lynx);
+        ChartPanel.edWin.chart.delayedAreaCk(people);
+        ChartPanel.edWin.chart.delayedAreaCheck(lynx);
     }
 
     public void lineageDeltaMove(int dx, int dy, ArrayList<Individual> people, ArrayList<Link> lynx) {
         // SPECIAL PROBLEM:  When marriage within family is allowed, then a daughter married to a 
-        // grandson is a double kin' and is getting the location delta applied twice. To solve this,
+        // grandson is a 'double kin' and is getting the location delta applied twice. To solve this,
         // we keep a list of people affected by the move, and treat each one once.
-        LinkedList sp = spouses;
         location.x -= dx;
         location.y -= dy;
         if (husbandLink != null) {
@@ -321,11 +362,21 @@ public void delMarriage() {
                 }
             }
         }
-        Family fam = (Family)this;
+        TreeMap<String, ArrayList<Context.SpecRelTriple>> specialRels =
+                Context.current.specialRelationships;
+        if (specialRels != null && specialRels.get(Context.current.currentChart) != null) {
+            ArrayList<Context.SpecRelTriple> srs = specialRels.get(Context.current.currentChart);
+            for (Context.SpecRelTriple srt : srs) { // move anything attached to a family member by special relationship
+                if (srt.parent == this || srt.parent == husband || srt.parent == wife
+                        || children.contains(srt.parent) || srt.parent == husbandLink
+                        || srt.parent == wifeLink || kidLinks.contains(srt.parent)) {
+                    Point loc = srt.child.getLocation();
+                    srt.child.setLocation(loc.x - dx, loc.y - dy);
+                }
+            }
+        }
+        Family fam = (Family) this;
         fam.computeBirthGrps();
-//        for (BirthGroup bg : birthGrps) {
-//            bg.topPtX -= dx;
-//        }
         SIL_Edit.editWindow.chart.draggedMarriages.add(fam);
     }
 
@@ -536,8 +587,8 @@ public void delMarriage() {
         // OR End-Reason = Divorce or Other, 
         // Then marriage has ended before death.
         Family fam = (Family) this;
-        boolean husbandNotDead = fam.husband == null || fam.husband.deathYr.equals("");
-        boolean wifeNotDead = fam.wife == null || fam.wife.deathYr.equals("");
+        boolean husbandNotDead = fam.husband == null || fam.husband.deathYY.equals("");
+        boolean wifeNotDead = fam.wife == null || fam.wife.deathYY.equals("");
         if ((hasEnded() && husbandNotDead && wifeNotDead)
                 || reason.equals("Divorce") || reason.equals("Other")) {
             return true;

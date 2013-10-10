@@ -1,6 +1,7 @@
 
 import java.util.*;
 import java.io.*;
+import java.awt.Color;
 
 /** A UserDefinedProperty is an optional, additional property (field) that will be assigned to each
 {@link Individual} object created in the context of a particular {@link DomainTheory}.  The user defines a new
@@ -30,11 +31,12 @@ following Java built-in types (where 'xx{}' means 'a list objects of type of xx'
 public class UserDefinedProperty implements Serializable {
 
     public String starName, typ;
-    public boolean singleValue;
+    public boolean singleValue, chartable = false;
     public ArrayList<Object> value = new ArrayList<Object>();
     public ArrayList<Object> validEntries;
     public Object defaultValue;
     public Number minVal, maxVal;
+    public Color chartColor = null;
 
     /**  Cloning constructor.
     
@@ -49,6 +51,7 @@ public class UserDefinedProperty implements Serializable {
         defaultValue = udp.defaultValue;
         minVal = udp.minVal;
         maxVal = udp.maxVal;
+        chartable = udp.chartable;
         if (useDefault && defaultValue != null) {
             value.add(defaultValue);
         }
@@ -65,6 +68,14 @@ public class UserDefinedProperty implements Serializable {
     /**
     Constructor with 0 arguments: for use ONLY by Serialization.  */
     public UserDefinedProperty() {
+    }
+    
+    public static boolean chartable(String udpName) {
+        UserDefinedProperty udp = (UserDefinedProperty) Context.current.userDefinedProperties.get(udpName);
+        if (udp == null) {
+            return false;
+        }
+        return udp.chartable;
     }
 
     /**  This method returns true only if the <code>entry</code> is of the correct type for this property.
@@ -111,10 +122,11 @@ public class UserDefinedProperty implements Serializable {
                 }
                 result += val;
             }
+                    
         }  //  end of value != null
         result += " </value>";
         if (full) {
-            result += "\n\t\t\t<singleValue>"  + singleValue + "</singleValue>\n";
+            result += "\n\t\t\t<singleValue>" + singleValue + "</singleValue>\n";
             result += "\t\t\t<validEntries> ";
             if (validEntries != null && validEntries.size() > 0) {
                 result += validEntries.get(0);
@@ -128,6 +140,14 @@ public class UserDefinedProperty implements Serializable {
             result += "</defaultValue>\n";
             result += "\t\t\t<minVal>" + (minVal == null ? "" : minVal) + "</minVal>\n";
             result += "\t\t\t<maxVal>" + (maxVal == null ? "" : maxVal) + "</maxVal>";
+            if (chartable) {
+                result += "\n\t\t\t<chartable>true</chartable>";
+                if (chartColor != null) {
+                    result += "\n\t\t\t<chartColor R=\"" + chartColor.getRed() + "\" G=\""
+                            + chartColor.getGreen() + "\" B=\"" + chartColor.getBlue()
+                            + "\"/>";
+                }
+            }
         }
         return result;
     }  //  end of method toSILKString
@@ -191,5 +211,17 @@ public class UserDefinedProperty implements Serializable {
         }  //  end of typ = float
         return answer;
     }  //  end of method getValidEntriesString
+    
+    public String[] getValidEntryArray() {
+        if (validEntries == null || validEntries.isEmpty()) {
+            return null;
+        }
+        String[] valids = new String[validEntries.size()];
+        for (int i=0; i < validEntries.size(); i++) {
+            valids[i] = validEntries.get(i).toString();
+        }
+        return valids;
+    }  //  end of method getValidEntryArray
+    
 }  //  end of class UserDefinedProperty
 

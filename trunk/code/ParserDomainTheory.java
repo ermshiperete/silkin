@@ -14,7 +14,7 @@ from the tokens found in the <code>Tokenizer's</code> input file.
 
 @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
  */
-public class Parser {
+public class ParserDomainTheory {
 
     public static String errorFound = "";
     public static ArrayList<Object> cachedStdMacros;
@@ -28,7 +28,7 @@ public class Parser {
 
     @param	tok	a <code>Tokenizer</code> which parses tokens from an input file on demand.
      */
-    public Parser(Tokenizer tok) {
+    public ParserDomainTheory(Tokenizer tok) {
         scanner = tok;
         lineMan = scanner.lineServer;
         this.filePath = tok.filePath;
@@ -39,7 +39,7 @@ public class Parser {
     @param	dtTokens	a <code>Tokenizer</code> which parses tokens from a DomainTheory file on demand.
     @param	macroTokens	a <code>Tokenizer</code> which parses tokens from a Macro file on demand.
      */
-    public Parser(Tokenizer dtTokens, Tokenizer macroTokens) {
+    public ParserDomainTheory(Tokenizer dtTokens, Tokenizer macroTokens) {
         scanner = dtTokens;
         lineMan = scanner.lineServer;
         this.filePath = dtTokens.filePath;
@@ -87,7 +87,7 @@ public class Parser {
         msgOut += "\nCurrent = " + current.token + ": " + current.lexeme;
         msgOut += "\nOn Line # " + current.lineNum + "  Character Position: " + current.charPos
                 + " of " + filePath;
-        if (Parser.errorFound.length() < 10) {
+        if (ParserDomainTheory.errorFound.length() < 10) {
             msgOut += "\n" + lineMan.lineImage;
         }
         throw new KSParsingErrorException(msgOut);

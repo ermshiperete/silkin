@@ -30,6 +30,7 @@ public class FamilyPanel extends JPanel {
            tempEndMon_DD = null;
     boolean dirty = false;  //  This 'dirty bit' applies to current infoMarriage.
     boolean storing = false;
+    Family currentFam;
 
     /** Creates new form FamilyPanel */
     public FamilyPanel() {
@@ -75,7 +76,7 @@ public class FamilyPanel extends JPanel {
         dataChgDateLabel = new javax.swing.JLabel();
         dataChgDate = new javax.swing.JTextField();
 
-        setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Selected Family", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 13), new java.awt.Color(0, 51, 204))); // NOI18N
+        setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Selected Family", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 51, 204)));
         setMaximumSize(new java.awt.Dimension(844, 309));
         setMinimumSize(new java.awt.Dimension(844, 309));
         setPreferredSize(new java.awt.Dimension(844, 309));
@@ -87,6 +88,11 @@ public class FamilyPanel extends JPanel {
 
         famStartMM.setColumns(2);
         famStartMM.setText("MM");
+        famStartMM.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                famStartMMFocusLost(evt);
+            }
+        });
 
         famStartYear.setColumns(4);
         famStartYear.setText("YYYY");
@@ -103,6 +109,11 @@ public class FamilyPanel extends JPanel {
 
         famEndMM.setColumns(2);
         famEndMM.setText("MM");
+        famEndMM.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                famEndMMFocusLost(evt);
+            }
+        });
 
         famEndYear.setColumns(4);
         famEndYear.setText("YYYY");
@@ -160,8 +171,8 @@ public class FamilyPanel extends JPanel {
         wifeName.setEditable(false);
         wifeName.setText("wife's name & ID#");
 
-        familyID.setColumns(3);
         familyID.setEditable(false);
+        familyID.setColumns(3);
         familyID.setText("nnn");
 
         famStartDD.setColumns(2);
@@ -231,7 +242,7 @@ public class FamilyPanel extends JPanel {
                                 .add(18, 18, 18)
                                 .add(dataChgDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 126, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                             .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 309, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(33, Short.MAX_VALUE))
                     .add(layout.createSequentialGroup()
                         .add(jLabel4)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
@@ -253,7 +264,7 @@ public class FamilyPanel extends JPanel {
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(jLabel3)
                             .add(familyID, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 46, Short.MAX_VALUE)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(jLabel4)
                             .add(famStartYear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -327,11 +338,11 @@ public class FamilyPanel extends JPanel {
     }//GEN-LAST:event_reasonBoxItemStateChanged
 
     private void famStartYearFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_famStartYearFocusGained
-        dirty = true;
+//        dirty = true;
     }//GEN-LAST:event_famStartYearFocusGained
 
     private void famEndYearFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_famEndYearFocusGained
-        dirty = true;
+//        dirty = true;
     }//GEN-LAST:event_famEndYearFocusGained
 
     private void famCommentsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_famCommentsFocusGained
@@ -339,16 +350,40 @@ public class FamilyPanel extends JPanel {
     }//GEN-LAST:event_famCommentsFocusGained
 
     private void famStartDDFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_famStartDDFocusLost
-        dirty = true;
+        String oldData = currentFam.getMarriageDD();
+        String newData = famStartDD.getText();
+        if (!newData.equals(oldData)) {
+            dirty = true;
+        }        
     }//GEN-LAST:event_famStartDDFocusLost
 
     private void famEndDDFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_famEndDDFocusLost
-        dirty = true;
+        String oldData = currentFam.getDivorceDD();
+        String newData = famEndDD.getText();
+        if (!newData.equals(oldData)) {
+            dirty = true;
+        } 
     }//GEN-LAST:event_famEndDDFocusLost
 
     private void dataChgDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dataChgDateActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_dataChgDateActionPerformed
+
+    private void famStartMMFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_famStartMMFocusLost
+        String oldData = currentFam.getMarriageMM();
+        String newData = famStartMM.getText();
+        if (!newData.equals(oldData)) {
+            dirty = true;
+        }
+    }//GEN-LAST:event_famStartMMFocusLost
+
+    private void famEndMMFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_famEndMMFocusLost
+        String oldData = currentFam.getDivorceMM();
+        String newData = famEndMM.getText();
+        if (!newData.equals(oldData)) {
+            dirty = true;
+        }
+    }//GEN-LAST:event_famEndMMFocusLost
     
 
     void clearInfo() {
@@ -371,8 +406,13 @@ public class FamilyPanel extends JPanel {
 
     void showInfo(Family fam) {
         storing = true;
+        currentFam = fam;
         parent.loadingCharts = false;
         famComments.setText(PersonPanel.restoreLineBreaks(fam.comment));
+        if (Context.current.displayGEDCOM) {
+            String items = fam.makeGEDCOMItems();
+            famComments.setText(famComments.getText() + items);
+        }
         famStartDD.setText(fam.getMarriageDD());
         famEndDD.setText(fam.getDivorceDD());
         famStartMM.setText(fam.getMarriageMM());
@@ -410,11 +450,11 @@ public class FamilyPanel extends JPanel {
 //        int actualOrder;
 //        for (Object o : kids) {
 //            Individual kid = (Individual)o;
-//            actualOrder = (kid.birthYr.equals("") ?
+//            actualOrder = (kid.birthYY.equals("") ?
 //                kid.serialNmbr :
-//                Integer.parseInt(kid.birthYr));
-//            Integer birthYr = new Integer(actualOrder);
-//            sorTree.put(birthYr, kid);
+//                Integer.parseInt(kid.birthYY));
+//            Integer birthYY = new Integer(actualOrder);
+//            sorTree.put(birthYY, kid);
 //        }
 //        return new ArrayList<Object>(sorTree.values());
 //    }
@@ -436,7 +476,7 @@ public class FamilyPanel extends JPanel {
                         kid.getBirthDD(), kid, false);
             } catch (Exception exc) {
             } // if error, leave it false
-            if (!kid.birthYr.equals("") && validBDate) {
+            if (!kid.birthYY.equals("") && validBDate) {
                 dated.add(kid);
             }
         }  // Now undated has all, and dated has kids with valid birthdates.

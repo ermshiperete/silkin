@@ -45,7 +45,6 @@ public class Node implements Serializable {
             throws KSInternalErrorException {
         ArrayList<Object> minis = new ArrayList<Object> ();
         ArrayList<Individual> path = new ArrayList<Individual>();
-        Individual prior = dy.ego;
         for (Object o : dy.path) {
             if (o instanceof Individual) {
                 path.add((Individual)o);
@@ -56,7 +55,7 @@ public class Node implements Serializable {
         }
         path.add(dy.alter);
         for (Individual current : path) {
-            String mini = findRelationship(current, prior);
+            String mini = findRelationship(current, dy.ego);
             minis.add(mini);
         }
         return minis;
@@ -228,7 +227,7 @@ public class Node implements Serializable {
 
     public String toSILKString() {
         String image = "";
-        image += "<pcString>" + pcString + "</pcString> ";
+        image += "<pcString>\"" + pcString + "\"</pcString> ";
         image += "<level>" + treelevel + "</level>\n\t\t";
         if (!miniPreds.isEmpty()) {
             image += "<miniPreds> ";
