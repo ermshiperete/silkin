@@ -165,6 +165,7 @@ public class ClauseBody implements Serializable, Comparator {
         newCB.pcCounter = pcCounter;
         newCB.sCounter = sCounter;
         newCB.starCounter = starCounter;
+        newCB.seqNmbr = seqNmbr;
         newCB.flags = new ArrayList<Object>(flags);
         if (expansionPath == null) {
             newCB.expansionPath = new ArrayList<Object>();
@@ -174,6 +175,27 @@ public class ClauseBody implements Serializable, Comparator {
         newCB.baseCB_Ptr = baseCB_Ptr;
         return newCB;
     }  //  end of deepCopy method
+    
+    public void clearPriorValues() {
+        for (Object o : body) {
+            clearPriorValues((Literal)o);
+        }
+    }
+   
+    public void clearPriorValues(Literal lit) {
+        for (Object a : lit.args) {
+            Argument arg = (Argument) a;
+            if (arg instanceof Variable) {
+                Variable v = (Variable) arg;
+                v.setVal(new ArrayList());
+            } else if (arg instanceof MathVariable) {
+                MathVariable mv = (MathVariable) arg;
+                mv.setVal(new ArrayList());
+            } else if (arg instanceof Literal) {
+                clearPriorValues((Literal)arg);
+            }
+        }  //  Don't mess with the value of a Constant.
+    }
 
     /** Add this Literal to the body of this ClauseBody.
     @param	lit	the Literal to be added to the body.
@@ -855,6 +877,7 @@ public class ClauseBody implements Serializable, Comparator {
                             for (int i = 0; i < next.args.size(); i++) {
                                 if (((Argument) next.args.get(i)).argName.equals("Ego")) {
                                     egoVar = (Variable) next.args.get(i);
+                                    break;
                                 }
                             }
                             //  Record which of Ego's star-props was blank before we started this CB.
@@ -870,7 +893,7 @@ public class ClauseBody implements Serializable, Comparator {
                                     }
                                 }
                             }
-                            oKay = next.meetsStarSpecs(ego, egoVar, constraints, starBindings, bindings, "commit", this);
+                        oKay = next.meetsStarSpecs(ego, egoVar, constraints, starBindings, bindings, "commit", this);
                             if (oKay) {  //  3rd OK
                                 //  Find/Create will use level, pcCounter & sCounter.  Re-initialize them to start.
                                 resetCounters();
@@ -895,7 +918,7 @@ public class ClauseBody implements Serializable, Comparator {
                                         if (failure.substring(0, 1).equals("*") && (!allStars.contains(failure))) {
                                             allStars.add(failure);
                                         }
-                                        if (failure.substring(0, 1).equals("*") && (!allStarMathVars.contains(argForUDPVal))) {
+                                        if (failure.startsWith("*") && (!allStarMathVars.contains(argForUDPVal))) {
                                             allStarMathVars.add(argForUDPVal);
                                         }
                                     }  //  Now allStars is a list of all possible *-props that might have caused failure & allStarMathVars is the associated variables.
@@ -973,7 +996,16 @@ public class ClauseBody implements Serializable, Comparator {
             }  //  end of catch KSConstraintInconsistency
             // We're OK!!  By side-effect, findOrCreate bound all variables to example individuals.
             // Now label Alter, the person who illustrates the kinTerm.
-            Individual alter = (Individual) bindings.get("Alter");
+            Individual alter = null;
+            Object boundVal = bindings.get("Alter");
+            if (boundVal instanceof Individual) {
+                alter = (Individual) boundVal;
+            } else if (boundVal instanceof ArrayList) {  //  i.e. if Alter is bound to a MathVar's value
+                alter = (Individual) ((ArrayList)boundVal).get(0);
+                if (alter.node == null) {
+                    alter.node = new Node();
+                }
+            }            
             if (alter == null) {
                 throw new KSBadHornClauseException("Clause body in domain theory does not mention 'Alter.'\n" + lineBreaker(body));
             }
@@ -1002,8 +1034,11 @@ public class ClauseBody implements Serializable, Comparator {
                 ArrayList<Object> egosList = (ArrayList<Object>) orca.noiseFacts.get(egoNumInt);
                 egosList.add(rec);
             }  //  end of recording noise on orca
+            
             pcString = makePCString(ego, alter);
-//            pcString = sumStr(pcStringReduction(pcStr, startEgo, startAlter, false));
+            if (pcString.isEmpty()) {
+                Context.breakpoint();
+            }
             if (Library.parseClauseCounterOn) {
                 if (illegalString(pcString) && !duplicative && !ktd.kinTerm.equals("a_nero")) { //  nero's weired, but OK.
                     System.out.println("ILLEGAL STRING --" + ktd.kinTerm + ": " + seqNmbr + " \t" + pcString
@@ -1063,14 +1098,14 @@ public class ClauseBody implements Serializable, Comparator {
     public String makePCString(Individual ego, Individual alter)
             throws KSInternalErrorException {
         String pcStr = null;
-        int oldEgo = SIL_Edit.editWindow.getCurrentEgo();
-        SIL_Edit.editWindow.setCurrentEgo(ego.serialNmbr);
+        int oldEgo = SIL_Edit.edWin.getCurrentEgo();
+        SIL_Edit.edWin.setCurrentEgo(ego.serialNmbr);
         boolean oldIndexBool = ChartPanel.doIndexes;
         ChartPanel.doIndexes = false;
  /*  // OLD CODE       
         Family fam = ego.birthFamily;
         if (fam != null) {
-            resetNodes(ego, SIL_Edit.editWindow.chart.distinctAdrTerms);
+            resetNodes(ego, SIL_Edit.edWin.chart.distinctAdrTerms);
             ChartPanel.createNode(ego, fam, "child");
             if (alter.node != null) {
                 pcStr = alter.node.pcString;
@@ -1080,14 +1115,14 @@ public class ClauseBody implements Serializable, Comparator {
             }
         } // if we reached Alter and gave her a PC String, we're done
         if (pcStr != null && pcStr.length() > 0) {
-            SIL_Edit.editWindow.setCurrentEgo(oldEgo);
+            SIL_Edit.edWin.setCurrentEgo(oldEgo);
             ChartPanel.doIndexes = oldIndexBool;
             return pcStr;
         }
         // else, try again with Ego's marriages
         for (Object o : ego.marriages) {
             fam = (Family) o;
-            resetNodes(ego, SIL_Edit.editWindow.chart.distinctAdrTerms);
+            resetNodes(ego, SIL_Edit.edWin.chart.distinctAdrTerms);
             ChartPanel.createNode(ego, fam, "spouse");
             if (alter.node != null) {
                 pcStr = alter.node.pcString;
@@ -1095,7 +1130,7 @@ public class ClauseBody implements Serializable, Comparator {
                     pcStr = neuterAlter(pcStr);
                 }
                 if (pcStr != null && pcStr.length() > 0) {
-                    SIL_Edit.editWindow.setCurrentEgo(oldEgo);
+                    SIL_Edit.edWin.setCurrentEgo(oldEgo);
                     ChartPanel.doIndexes = oldIndexBool;
                     return pcStr;
                 }
@@ -1119,13 +1154,13 @@ public class ClauseBody implements Serializable, Comparator {
             }
         }
         if (pcStr != null && pcStr.length() > 0) {
-            SIL_Edit.editWindow.setCurrentEgo(oldEgo);
+            SIL_Edit.edWin.setCurrentEgo(oldEgo);
             ChartPanel.doIndexes = oldIndexBool;
             return pcStr;
         }
         // END NEW CODE
         
-        SIL_Edit.editWindow.setCurrentEgo(oldEgo);
+        SIL_Edit.edWin.setCurrentEgo(oldEgo);
         ChartPanel.doIndexes = oldIndexBool;
         String msg = "While making a PC String for " + ktd.domTh.languageName;
         msg += ", " + ktd.kinTerm + ": " + seqNmbr;
@@ -1869,7 +1904,7 @@ public class ClauseBody implements Serializable, Comparator {
         //  true = there is a logical chain from ego to alter.
         //  singles & singlesCk look for single occurences of an arg (except ego & alter)
         //  If pcString contains a *-pred, its arg0 is allowed to appear once or more; arg1 is subject to normal rules.
-        //  If the logical chain has a gap, and the original has a literal that closes taht gap, then add the
+        //  If the logical chain has a gap, and the original has a literal that closes that gap, then add the
         //  gap-filler to pcString & return true.
         ArrayList<Object> bindings = new ArrayList<Object>(),
                 singles = new ArrayList<Object>(),
@@ -2883,21 +2918,23 @@ public class ClauseBody implements Serializable, Comparator {
         //  Components of sigStrings, when generified, could duplicate; hence the check
 if (pcStr == null) Context.breakpoint();
 
+        int sz = pcStr.length();
         char ch;
-        char[] symbol = "      ".toCharArray();  //  6 blanks
+        char[] symbol = new char[sz];
+        Arrays.fill(symbol, ' ');
         symbol[0] = pcStr.charAt(0);
-        if ((!Character.isUpperCase(symbol[0])) && (symbol[0] != '*')) //  All symbols begin with cap or asterisk.
-        {
+         //  All symbols begin with cap, plus-sign, or asterisk.
+        if (!Character.isUpperCase(symbol[0]) && symbol[0] != '*' && symbol[0] != '+') {
             throw new KSInternalErrorException("PC String started with non-capital letter");
         }
         String result = "";
         ArrayList<Object> resultSet = new ArrayList<Object>();
         int curr = 1;
-        for (int i = 1; i < pcStr.length(); i++) {
+        for (int i = 1; i < sz; i++) {
             ch = pcStr.charAt(i);
-            if (Character.isUpperCase(ch) || (ch == '*') || (ch == '_')) {
+            if (Character.isUpperCase(ch) || (ch == '*') || (ch == '+') || (ch == '_')) {
                 result += generify((new String(symbol)).trim());
-                symbol = "      ".toCharArray();
+                Arrays.fill(symbol, ' ');
                 curr = 0;
             }  //  end of processing completed symbol
             if (ch == '_') {
@@ -2908,7 +2945,7 @@ if (pcStr == null) Context.breakpoint();
                     resultSet.add(result);
                 }
                 result = "";
-                if (i < pcStr.length() - 1) {  //  more string left
+                if (i < sz - 1) {  //  more string left
                     symbol[curr++] = pcStr.charAt(++i);
                 }
             } else {
@@ -2928,6 +2965,14 @@ if (pcStr == null) Context.breakpoint();
         }
         return result;
     }  //  end of method structStr
+    
+    public static String generify(ArrayList<String> symbols) throws KSInternalErrorException  {
+        String result = "";
+        for (String symbol : symbols) {
+            result += generify(symbol);
+        }
+        return result;
+    }
 
     public static String generify(String symb) throws KSInternalErrorException {
         if (symb.equals("Fa") || symb.equals("Mo") || symb.equals("P")) {
@@ -2954,14 +2999,23 @@ if (pcStr == null) Context.breakpoint();
         if (symb.equals("Stso") || symb.equals("Stda") || symb.equals("Stc")) {
             return "Stc";
         }
-        if (symb.indexOf("*") == 0) {
+        if (symb.equals("**")) {
+            return "**";
+        }
+        if (symb.startsWith("*")) {
             return "*";
         }
-        if (symb.indexOf("_") == 0) {
+        if (symb.equals("+")) {
+            return "+";
+        }
+        if (symb.startsWith("_")) {
             return "_";
         }
         if (symb.equals("None")) {
             return "None";
+        }
+        if (symb.isEmpty()) {
+            return "";
         }
         throw new KSInternalErrorException("Unknown symbol encountered: " + symb);
     }  //  end of method generify
@@ -3025,7 +3079,7 @@ if (pcStr == null) Context.breakpoint();
         while (iter.hasNext()) {
             lit = (Literal) iter.next();
             if ((lit.predicate.category instanceof MathCategory)
-                    || (lit.predicate.name.substring(0, 1).equals("*"))) {
+                    || (lit.predicate.name.startsWith("*"))) {
 
                 for (int i = 0; i < lit.args.size(); i++) {
                     arg = (Argument) lit.args.get(i);
@@ -3096,7 +3150,7 @@ if (pcStr == null) Context.breakpoint();
         //  First, make a valid list of star-predicates
         for (int i = 0; i < bodyCopy.size(); i++) {
             lit = (Literal) bodyCopy.get(i);
-            if (lit.predicate.name.substring(0, 1).equals("*")) {
+            if (lit.predicate.name.startsWith("*")) {
                 starStuff.add(lit);
             }
         }  //  end of loop thru literals
@@ -3222,14 +3276,14 @@ if (pcStr == null) Context.breakpoint();
         ArrayList<Object> genderStuff = new ArrayList<Object>(), starStuff = new ArrayList<Object>(), starBindings = new ArrayList<Object>();
         for (int i = 0; i < body.size(); i++) // if any literal specifies an ego gender ‚ego.gender, skip this clause
         {
-            if (!(((Literal) body.get(i)).constraintCheck(ego.gender, constraints, genderStuff, starStuff))) {
+            if (!((Literal) body.get(i)).constraintCheck(ego.gender, constraints, genderStuff, starStuff)) {
                 return;
             }
         }
         //  constraintCheck, by side-effect, builds the lists of gender, age, equality, & inequality constraints
         TreeMap bindings = new TreeMap();
         bindings.put("Ego", ego);
-//  if (kinTerm.equals("bwada"))  Context.breakpoint(); 
+//  if (kinTerm.equals("daddy"))  Context.breakpoint(); 
         if (! LiteralAbstract1.finalConstraintCheck(ego.gender, bindings, constraints, body, genderStuff, starStuff)) {
             return;  // does post-processing
         }

@@ -88,7 +88,7 @@ public class EditTheoryFrame extends JFrame {
     /** Loads (or reloads) specific DomainTheory into this editor. */
     public void loadTheory(DomainTheory domTh) {
         if (dt != null) {
-            SIL_Edit.editWindow.chart.saveSILKFile();
+            SIL_Edit.edWin.chart.saveSILKFile();
         }
         dt = domTh;
         // Load fields from DomainTheory
@@ -97,7 +97,7 @@ public class EditTheoryFrame extends JFrame {
             authorName.setText(dt.author);
         }else {
             try  {
-            dt.author = SIL_Edit.editWindow.chart.getCurrentUser(this, "Choose PRIMARY AUTHOR");
+            dt.author = SIL_Edit.edWin.chart.getCurrentUser(this, "Choose PRIMARY AUTHOR");
             authorName.setText(dt.author);
             }catch(KSInternalErrorException exc){
                 MainPane.displayError(exc.toString(), "Internal Error", JOptionPane.ERROR_MESSAGE);
@@ -726,7 +726,7 @@ public class EditTheoryFrame extends JFrame {
                 String msg = nam + " is not a known author.\nYou must choose (or add) an author.";
                 JOptionPane.showMessageDialog(current, msg);
                 try {
-                    nam = SIL_Edit.editWindow.chart.getCurrentUser(current, "Choose PRIMARY AUTHOR");
+                    nam = SIL_Edit.edWin.chart.getCurrentUser(current, "Choose PRIMARY AUTHOR");
                 } catch (Exception exc) {
                     MainPane.displayError(exc.toString(),
                             "Error While Choosing Primary DT Author.",
@@ -810,7 +810,7 @@ public class EditTheoryFrame extends JFrame {
                 
             } else {  //  we're editing Context comments 
                 dt.ctxt.comments = latestTxt;
-                SIL_Edit.editWindow.chart.dirty = true;
+                SIL_Edit.edWin.chart.dirty = true;
             }
         }
 
@@ -1081,7 +1081,7 @@ public class EditTheoryFrame extends JFrame {
             }
             return;
         }
-        SIL_Edit.editWindow.chart.dirty = true;
+        SIL_Edit.edWin.chart.dirty = true;
         boolean aux = (eip.kinTerm.contains("[aux]"));
         editsInProgress.remove(eip.kinTerm);
         if (aux) {
@@ -1127,8 +1127,8 @@ public class EditTheoryFrame extends JFrame {
         int decision = JOptionPane.showConfirmDialog(this, msg,
                 "Apply Definition?", JOptionPane.YES_NO_OPTION);
         if (decision == JOptionPane.YES_OPTION) {
-            SIL_Edit.editWindow.rebuildKTMatrixEtc();
-            SIL_Edit.editWindow.applyDef(newDef, dt);
+            SIL_Edit.edWin.rebuildKTMatrixEtc();
+            SIL_Edit.edWin.applyDef(newDef, dt);
         }
     }//GEN-LAST:event_acceptDefBtnActionPerformed
 
@@ -1729,7 +1729,7 @@ public class EditTheoryFrame extends JFrame {
     class CloseListener extends WindowAdapter {
         public void windowClosing(WindowEvent evt) {
             dt.editsInProgress = editsInProgress;
-            SIL_Edit.editWindow.chart.dirty = true;
+            SIL_Edit.edWin.chart.dirty = true;
         }
     }
 

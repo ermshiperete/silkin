@@ -427,10 +427,10 @@ public class ActionOverlap extends javax.swing.JPanel {
         setDyadBtnGroupEnabled(false);      
         recordDyadEditBtn.setEnabled(true);
         dyadComboBox.setModel(new DefaultComboBoxModel(pendingModel));
-        SIL_Edit.editWindow.changeEgo(seed.ego.serialNmbr);
-        SIL_Edit.editWindow.getPPanel().resetEgoBox(seed.ego.serialNmbr);
-        SIL_Edit.editWindow.chart.setAlter(seed.alter.serialNmbr);  
-        SIL_Edit.editWindow.toFront();  
+        SIL_Edit.edWin.changeEgo(seed.ego.serialNmbr);
+        SIL_Edit.edWin.getPPanel().resetEgoBox(seed.ego.serialNmbr);
+        SIL_Edit.edWin.chart.setAlter(seed.alter.serialNmbr);  
+        SIL_Edit.edWin.toFront();  
     }//GEN-LAST:event_showOnChartBtnActionPerformed
     
     

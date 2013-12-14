@@ -411,7 +411,7 @@ public abstract class LiteralAbstract2 extends LiteralAbstract1  {
                 iter.remove();
 			}  //  end of loop thru starBindings
         return ind.findConformingValue(failedProp, (Argument)theVar, starBindings, bindings, constraints, "commit", cb);
-    }  //  end of method newUDPVal
+    }  //  end of method newUDPVal 
 
 
     void badBindingsRemove(String bindingMade, Argument argBound, TreeMap badBindings)  {
@@ -478,49 +478,61 @@ public abstract class LiteralAbstract2 extends LiteralAbstract1  {
 
 
     void updateBindingsEtc(TreeMap bindings, TreeMap badBindings, String bindingMade, Argument argBound,
-							ArrayList<Object> starBindings, int sbSize) {
-            //  This method is invoked when backtracking is about to occur.  We must retract the current bindingMade,
-            //  & add it to badBindings.  Any property bindings made in this round are un-done.
-            StarPropertyBinding spb;
-            UserDefinedProperty udp;
-            //  First Process StarBindings.  'Normal' SPBs reflect a linking and binding event.
-			//  But SPBs w/ PersonBound == null reflect addition of a value via assureContainedBy
-			for (int i = starBindings.size() - 1; i >= sbSize; i--)  {
-                spb = (StarPropertyBinding)starBindings.get(i);
-                if (spb.mathVarBound != null) {
-                    for (int j=0; j < spb.valsAssigned.size(); j++)
-						spb.mathVarBound.removeVal(spb.valsAssigned.get(j));
-					if (spb.personBound != null)  //  Person's UDP & MathVar were linked
-						spb.mathVarBound.unLink();
-				}else if (spb.variableBound != null) {
-					for (int j=0; j < spb.valsAssigned.size(); j++)
-						spb.variableBound.removeVal(spb.valsAssigned.get(j));
-					if (spb.personBound != null) {
-						udp = (UserDefinedProperty)spb.personBound.userDefinedProperties.get(spb.starPropName);
-						udp.value = setDifference(udp.value, spb.valsAssigned);
-						}  //  end of an-Individual's-property-was-bound
-					}  //  end of it's-a-Variable
-				starBindings.remove(i);
-			}  //  end of loop thru starBindings
-			//  Next Process BadBindings.
-            if (bindingMade != null)  {
-                ArrayList<Object> badList = (ArrayList<Object>)badBindings.get(bindingMade);
-                if (badList == null) badList = new ArrayList<Object>();
-				Object bMade = bindings.get(bindingMade);  //  a MathVar is bound to its values list
-				if (bMade instanceof ArrayList) badList.addAll((ArrayList<Object>)bMade);
-                else badList.add(bMade);
-				if (bMade instanceof Individual) {
-					if (((Individual)bMade).node.appearances > 1) ((Individual)bMade).node.appearances--;
-					else ((Individual)bMade).node = null;
-					}
-                badBindings.put(bindingMade, badList);
-                bindings.remove(bindingMade);
-				//  We unLink a MathVar if it is removed from Bindings
-				//  if (argBound instanceof MathVariable) ((MathVariable)argBound).unLink();
-				//  REMOVED ON THEORY THAT SPBs WILL MANAGE UN-LINKING
-				}
+            ArrayList<Object> starBindings, int sbSize) {
+        //  This method is invoked when backtracking is about to occur.  We must retract the current bindingMade,
+        //  & add it to badBindings.  Any property bindings made in this round are un-done.
+        StarPropertyBinding spb;
+        UserDefinedProperty udp;
+        //  First Process StarBindings.  'Normal' SPBs reflect a linking and binding event.
+        //  But SPBs w/ PersonBound == null reflect addition of a value via assureContainedBy
+        for (int i = starBindings.size() - 1; i >= sbSize; i--) {
+            spb = (StarPropertyBinding) starBindings.get(i);
+            if (spb.mathVarBound != null) {
+                for (int j = 0; j < spb.valsAssigned.size(); j++) {
+                    spb.mathVarBound.removeVal(spb.valsAssigned.get(j));
+                }
+                if (spb.personBound != null) //  Person's UDP & MathVar were linked
+                {
+                    spb.mathVarBound.unLink();
+                }
+            } else if (spb.variableBound != null) {
+                for (int j = 0; j < spb.valsAssigned.size(); j++) {
+                    spb.variableBound.removeVal(spb.valsAssigned.get(j));
+                }
+                if (spb.personBound != null) {
+                    udp = (UserDefinedProperty) spb.personBound.userDefinedProperties.get(spb.starPropName);
+                    udp.value = setDifference(udp.value, spb.valsAssigned);
+                }  //  end of an-Individual's-property-was-bound
+            }  //  end of it's-a-Variable
+            starBindings.remove(i);
+        }  //  end of loop thru starBindings
+        //  Next Process BadBindings.
+        if (bindingMade != null) {
+            ArrayList<Object> badList = (ArrayList<Object>) badBindings.get(bindingMade);
+            if (badList == null) {
+                badList = new ArrayList<Object>();
+            }
+            Object bMade = bindings.get(bindingMade);  //  a MathVar is bound to its values list
+            if (bMade instanceof ArrayList) {
+                badList.addAll((ArrayList<Object>) bMade);
+            } else {
+                badList.add(bMade);
+            }
+            if (bMade instanceof Individual) {
+                if (((Individual) bMade).node.appearances > 1) {
+                    ((Individual) bMade).node.appearances--;
+                } else {
+                    ((Individual) bMade).node = null;
+                }
+            }
+            badBindings.put(bindingMade, badList);
+            bindings.remove(bindingMade);
+            //  We unLink a MathVar if it is removed from Bindings
+            //  if (argBound instanceof MathVariable) ((MathVariable)argBound).unLink();
+            //  REMOVED ON THEORY THAT SPBs WILL MANAGE UN-LINKING
+        }
 
-			}  //  end of method updateBindingsEtc
+    }  //  end of method updateBindingsEtc
 
 
 
@@ -565,220 +577,284 @@ public abstract class LiteralAbstract2 extends LiteralAbstract1  {
     }  //  end of method addToPCString for SpouseLink
 
     boolean findOrCreateStarLink(ArrayList<Object> remLits, ArrayList<Object> starStuff, TreeMap bindings, TreeMap badBindings, ArrayList<Object> starBindings,
-                        ConstraintObj constraints, int tryFlag, boolean keepBB, String kinTerm, ClauseBody cb, ArrayList<Object> pcStr, Dyad dyad)
-        throws KSBadHornClauseException, KSInternalErrorException, KSConstraintInconsistency, ClassNotFoundException   {
+            ConstraintObj constraints, int tryFlag, boolean keepBB, String kinTerm, ClauseBody cb, ArrayList<Object> pcStr, Dyad dyad)
+            throws KSBadHornClauseException, KSInternalErrorException, KSConstraintInconsistency, ClassNotFoundException {
         //  The current literal is a *-predicate declaring a value (via a constant or variable) for a person's UDP.
         //  Arg0 is the value (a Variable/MathVariable/Constant); Arg1 is the Variable for the person whose UDP's value must equal arg0.
         //  *-predicates can serve as constraints, or can define a trait that "links" 2 individuals in the chain from Ego to Alter.
         //  Only the latter case is handled here; constraints were handled earlier in cb.constraintCheck.
+        
+        //  Because UDP values might be randomly distributed in the population, if we look for an existing person with a conforming value,
+        //  we might accidentally choose someone who already has a genealogical relationship to Ego (or Ego herself!).
+        //  Therefore, we force the creation of a new conforming person -- he'll never have a prior relationship to Ego.
 
         //  NOTE:  The semantics of a *-predicate are simplistic.  The literal "*friends(X, Gary)"  means that the MathVariable X has a
-        //	   value exactly equal to the value of Gary's UserDefinedProperty *friends.  Sub-sets and super-sets are not considered equal.
+        //	   value whichis contained in the (ArrayList) value of Gary's UserDefinedProperty *friends.  Sub-sets and super-sets are not considered equal.
         //	   The math operator "contains" expresses sub-set relationships, if desired.
 
-        int resetInd = Context.current.indSerNumGen,  resetFam = Context.current.famSerNumGen, sbSize = starBindings.size();
+        int resetInd = Context.current.indSerNumGen, resetFam = Context.current.famSerNumGen, sbSize = starBindings.size();
         String bindingMade = null;
         MathVariable mathVar = null;
         Constant konstant = null;
-        Variable personVar = (Variable)args.get(1), valPerVar = null;
-        Individual person = (Individual)bindings.get(personVar.argName), valPer = null;  //  null = that variable not yet bound
-//  if (Context.breakFlag) Context.breakpoint();
-
-			 //  arg0 is either a MathVariable, a Variable, or a Constant.
-		UserDefinedProperty udp;
-		Argument arg0 = (Argument)args.get(0), argBound = null;
-		if (arg0 instanceof MathVariable) mathVar = (MathVariable)arg0;
-		else if (arg0 instanceof Constant) konstant = (Constant)arg0;
-		else {  //  must be a Variable
-			valPerVar = (Variable)arg0;
-			valPer = (Individual)bindings.get(valPerVar.argName);  //  may be null if this Variable not yet bound
-			}
-		if (LiteralAbstract1.negativeConstraintPhase)  {
-			//  Person and valPer may have been bound earlier in a 'positive' phase, and carried (via bindings
-			//  list) into a 'negatedConstraintsSatisfied' phase.  So double check constraints.  Use the _Strictly_
-			//  versions,'cuz we don't want to change anything on a bound arg/object pair.
-			if ((person != null)  && (! person.meetsConstraintsStrictly(personVar, constraints, bindings, starBindings)))
-				return false;
-			if ((valPer != null)  && (! valPer.meetsConstraintsStrictly(valPerVar, constraints, bindings, starBindings)))
-				return false;
-			}  //  end of if-negativeConstraintPhase
-		if ((person != null) && ((mathVar != null) || (konstant != null)))  {
-		//  person-is-bound-and-arg0-is-a-mathVar-or-constant
-			udp = (UserDefinedProperty)person.userDefinedProperties.get(predicate.name);
-			if ((udp.value.size() > 1) && (udp.singleValue))  //  invalid condition: Panic!
-				throw new KSInternalErrorException("In findOrCreateStarLink: encountered single-valued UDP with multiple values");
-
-			//  findConformingValue will transfer person's value(s) to the mathVar's value(s) if person has any and they
-			//  are valid values for the mathVar.  Or it will copy the constant's (or the mathVar's) values to the udp.  If neither mathVar nor person has a value,
-			//  then it will invent a conforming value.  If no conforming value is possible, it returns 'false', otherwise 'true.'
-			if (! person.findConformingValue(predicate.name, arg0, starBindings, bindings, constraints, "commit", cb))  {
-				LiteralAbstract1.failReason = predicate.name;
-				return false;
-				}  //  end of failed to find a conforming value.
-			//  Found a conforming value.  Done.
-			bindingMade = arg0.argName;
-			if (dyad != null) dyad.path.add(person);
-			if (person.node == null) person.node = new Node();
-			else person.node.appearances++;
-			argBound = arg0;
-			person.yoke(mathVar, null, konstant, null, udp, bindingMade, bindings, starBindings);
-			}  //  end of person-is-bound-and-arg0-is-a-mathVar-or-constant
-
-		else if ((person != null) && (valPerVar != null))  {
-			//  person-is-bound-and-value-is-also-a-person
-			udp = (UserDefinedProperty)person.userDefinedProperties.get(predicate.name);
-			if (valPer != null) {  }  //  Do nothing.  We validity-checked both of them above & all is OK.
-			else if (! udp.typ.equals("individual"))
-				throw new KSInternalErrorException("In findOrCreateStarLink: Personal variable '" + valPerVar + "' used for UDP of type " + udp.typ);
-			else if (! person.findConformingValue(predicate.name, arg0, starBindings, bindings, constraints, "commit", cb))  {
-				LiteralAbstract1.failReason = predicate.name;
-				return false;
-				}  //  end of failed to find a conforming value.
-			//  Found a conforming value.  Done.
-			bindingMade = valPerVar.argName;			//  We bind valPerVar to the person who conforms.
-			if (dyad != null) dyad.path.add(valPer);
-			argBound = valPerVar;
-			if (valPer.node == null) valPer.node = new Node();
-			else valPer.node.appearances++;
-			bindings.put(valPerVar.argName, valPer);	//  Binding it extends the chain of relations
-			}  //  end of person-is-bound-and-value-is-also-a-person
-
-		else if ((person == null) && ((mathVar != null) || (konstant != null)))  {
-			//  Person-is-unbound-and-mathVar-or-constant-is-bound.  Call a Context instance method to find a person who has a value equal to
-			//	the mathVar/Constant's value, if any.  If none is found, create one and give him this (or a conforming) value.
-			person = Context.current.findConformingPerson(arg0, predicate.name, personVar, constraints, badBindings,
-															starBindings, bindings);  //  null -> found none
-			if (person != null) createPersonalStarLink(person, predicate.name, starBindings);
-			else {
-				String indNam = "Hypothetical Person", gender = "?", birthdate = "Jan 1, 1970";  //  neuter gender forces constructor to search constraints
-				BoolFlag failFlag = new BoolFlag(false);
-				person = new Individual(indNam, gender, null, birthdate, ((Argument)args.get(1)).argName, null, bindings,
-											starBindings, constraints, personVar, failFlag, cb);
-				if (failFlag.value) {
-                    LiteralAbstract1.failReason = failFlag.reason;
-                    return false;
-				}else createPersonalStarLink(person, predicate.name, starBindings);
-				}
-			//  If we're here, an appropriate person was found
-			bindingMade = personVar.argName;			//  We bind personVar to the conforming person who can take on this UDP value.
-			if (dyad != null) dyad.path.add(person);
-			argBound = personVar;
-			udp = (UserDefinedProperty)person.userDefinedProperties.get(predicate.name);
-			if (person.node == null) person.node = new Node();
-			else person.node.appearances++;
-			person.yoke(mathVar, null, konstant, personVar, udp, bindingMade, bindings, starBindings);
-			}  //  end of Person-is-unbound-and-mathVar-or-constant-is-bound
-
-		else if ((person == null) && (valPer != null))  {
-			//  person-is-unbound-and-valPerVar-is-bound.  Call a Context instance method to find a person who has this value.
-			//	If none is found, create one and give him this value.
-			person = Context.current.findConformingPerson(valPer, predicate.name, personVar, constraints, badBindings,
-															starBindings, bindings);  //  null -> found none
-			if (person == null) {
-				String indNam = "Hypothetical Person", gender = "?", birthdate = "Jan 1, 1970";
-				BoolFlag failFlag = new BoolFlag(false);
-				person = new Individual(indNam, gender, null, birthdate, personVar.argName, null, bindings,
-										starBindings, constraints, personVar, failFlag, cb);
-				if (failFlag.value) {
-                    LiteralAbstract1.failReason = failFlag.reason;
-                    return false;
-                }
-			}
-			//  If we're here, an appropriate person was found
-			bindingMade = personVar.argName;			//  We bind personVar to the conforming person who can take on this UDP value.
-			if (dyad != null) dyad.path.add(person);
-			bindings.put(personVar.argName, person);	//  Binding it extends the chain of relations
-			if (person.node == null) person.node = new Node();
-			else person.node.appearances++;
-			argBound = personVar;
-		}  //  end of person-is-unbound-and-valPerVar-is-bound
-		else throw new KSInternalErrorException("findOrCreateStarLink found no value to assign.");  // should never get here
-
-		//  OK.  We've traversed a starLink successfully.  Return or recurse.
-		cb.starCounter++;
-		//  Now emit a PC-String like '*(<value>, <Person.serial#>)'
-		String perSerial = "#" + person.serialNmbr, arg0Str;
-		if (valPer != null) arg0Str = "#" + valPer.serialNmbr;  //  a Variable for a person is bound to the Individual
-		else arg0Str = "value=" + ((ArrayList<Object>)bindings.get(arg0.argName)).get(0).toString();
-		pcStr.add("*(" + arg0Str + "," + perSerial + ")");
-		Literal next = null;
+        Variable personVar = (Variable) args.get(1), valPerVar = null;
+        Individual person = (Individual) bindings.get(personVar.argName), valPer = null;  //  null = that variable not yet bound
+  
+//        if (cb.ktd.kinTerm.equals("daddy")) {
+//            Context.breakpoint();
+//        }
+        
+        //  arg0 is either a MathVariable, a Variable, or a Constant.
+        UserDefinedProperty udp;
+        Argument arg0 = (Argument) args.get(0), argBound = null;
+        Object binding4arg0 = bindings.get(arg0.argName);
+        if (arg0 instanceof MathVariable) {
+            mathVar = (MathVariable) arg0;
+            if (binding4arg0 != null) {
+                mathVar.addVal(binding4arg0);
+            }
+        } else if (arg0 instanceof Constant) {
+            konstant = (Constant) arg0;
+        } else {  //  must be a Variable
+            valPerVar = (Variable) arg0;
+            valPer = (Individual) bindings.get(valPerVar.argName);  //  may be null if this Variable not yet bound
+        }
+        if (LiteralAbstract1.negativeConstraintPhase) {
+            //  Person and valPer may have been bound earlier in a 'positive' phase, and carried (via bindings
+            //  list) into a 'negatedConstraintsSatisfied' phase.  So double check constraints.  Use the _Strictly_
+            //  versions,'cuz we don't want to change anything on a bound arg/object pair.
+            if ((person != null) && (!person.meetsConstraintsStrictly(personVar, constraints, bindings, starBindings))) {
+                return false;
+            }
+            if ((valPer != null) && (!valPer.meetsConstraintsStrictly(valPerVar, constraints, bindings, starBindings))) {
+                return false;
+            }
+        }  //  end of if-negativeConstraintPhase
+        
+        if ((person != null) && ((mathVar != null) || (konstant != null))) {
+            //  person-is-bound-and-arg0-is-a-mathVar-or-constant
+            udp = (UserDefinedProperty) person.userDefinedProperties.get(predicate.name);
+            if ((udp.value.size() > 1) && (udp.singleValue)) { //  invalid condition: Panic!
+                throw new KSInternalErrorException("In findOrCreateStarLink: encountered single-valued UDP with multiple values");
+            }
+            //  findConformingValue will transfer person's value(s) to the mathVar's value(s) if person has any and they
+            //  are valid values for the mathVar.  Or it will copy the constant's (or the mathVar's) values to the udp.  If neither mathVar nor person has a value,
+            //  then it will invent a conforming value.  If no conforming value is possible, it returns 'false', otherwise 'true.'
+            if (!person.findConformingValue(predicate.name, arg0, starBindings, bindings, constraints, "commit", cb)) {
+                LiteralAbstract1.failReason = predicate.name;
+                return false;
+            }  //  end of failed to find a conforming value.
+            //  Found a conforming value.  Done.
+            bindingMade = arg0.argName;
+            if (dyad != null) {
+                dyad.path.add(person);
+            }
+            if (person.node == null) {
+                person.node = new Node();
+            } else {
+                person.node.appearances++;
+            }
+            argBound = arg0;
+            person.yoke(mathVar, null, konstant, null, udp, bindingMade, bindings, starBindings);
+        } //  end of person-is-bound-and-arg0-is-a-mathVar-or-constant
+        else if ((person != null) && (valPerVar != null)) {
+            //  person-is-bound-and-value-is-also-a-person
+            udp = (UserDefinedProperty) person.userDefinedProperties.get(predicate.name);
+            if (valPer != null) {
+            } //  Do nothing.  We validity-checked both of them above & all is OK.
+            else if (!udp.typ.equals("individual")) {
+                throw new KSInternalErrorException("In findOrCreateStarLink: Personal variable '" + valPerVar + "' used for UDP of type " + udp.typ);
+            } else if (!person.findConformingValue(predicate.name, arg0, starBindings, bindings, constraints, "commit", cb)) {
+                LiteralAbstract1.failReason = predicate.name;
+                return false;
+            }  //  end of failed to find a conforming value.
+            //  Found a conforming value.  Done.
+            bindingMade = valPerVar.argName;			//  We bind valPerVar to the person who conforms.
+            if (dyad != null) {
+                dyad.path.add(valPer);
+            }
+            argBound = valPerVar;
+            if (valPer.node == null) {
+                valPer.node = new Node();
+            } else {
+                valPer.node.appearances++;
+            }
+            bindings.put(valPerVar.argName, valPer);	//  Binding it extends the chain of relations
+        } //  end of person-is-bound-and-value-is-also-a-person
+        else if (person == null) {
+            //  Person-is-unbound.  Create a person who has a value equal to
+            //	the Arg's value, if any.  If none is found, create one and give him this (or a conforming) value.
+            String indNam = "Hypothetical Person", gender = "?", birthdate = "Jan 1, 1970";  //  neuter gender forces constructor to search constraints
+            BoolFlag failFlag = new BoolFlag(false);
+            person = new Individual(indNam, gender, null, birthdate, personVar.argName, null, bindings,
+                    starBindings, constraints, personVar, failFlag, cb);
+            if (failFlag.value) {
+                LiteralAbstract1.failReason = failFlag.reason;
+                return false;
+            } else {
+                createPersonalStarLink(person, predicate.name, starBindings);
+            }
+            //  If we're here, an appropriate person was created
+            bindingMade = personVar.argName;	//  We bind personVar to the conforming person who can take on this UDP value.
+            if (dyad != null) {
+                dyad.path.add(person);
+            }
+            argBound = personVar;
+            udp = (UserDefinedProperty) person.userDefinedProperties.get(predicate.name);
+            bindings.put(personVar.argName, person);	//  Binding it extends the chain of relations
+            if (person.node == null) {
+                person.node = new Node();
+            } else {
+                person.node.appearances++;
+            }
+            person.yoke(mathVar, personVar, konstant, personVar, udp, bindingMade, bindings, starBindings);
+        } //  end of Person-is-unbound-and-mathVar-or-constant-is-bound
+//        else if ((person == null) && (valPer != null)) {
+//            //  person-is-unbound-and-valPerVar-is-bound.  Call a Context instance method to find a person who has this value.
+//            //	If none is found, create one and give him this value.
+//            String indNam = "Hypothetical Person", gender = "?", birthdate = "Jan 1, 1970";
+//            BoolFlag failFlag = new BoolFlag(false);
+//            person = new Individual(indNam, gender, null, birthdate, personVar.argName, null, bindings,
+//                    starBindings, constraints, personVar, failFlag, cb);
+//            if (failFlag.value) {
+//                LiteralAbstract1.failReason = failFlag.reason;
+//                return false;
+//            }
+            //  If we're here, an appropriate person was created
+//            bindingMade = personVar.argName; //  We bind personVar to the conforming person who can take on this UDP value.
+//            if (dyad != null) {
+//                dyad.path.add(person);
+////            }
+//            bindings.put(personVar.argName, person);	//  Binding it extends the chain of relations
+//            if (person.node == null) {
+//                person.node = new Node();
+//            } else {
+//                person.node.appearances++;
+//            }
+////            argBound = personVar;
+//        } //  end of person-is-unbound-and-valPerVar-is-bound
+        else {
+            throw new KSInternalErrorException("findOrCreateStarLink found no value to assign.");  // should never get here
+        }
+        String predHead = predicate.name + "(";
+        // If this is a chartable UDP, record it.
+        if (person != null) {
+            udp = (UserDefinedProperty) person.userDefinedProperties.get(predicate.name);
+            if (udp != null && udp.chartable) {  // We've just traversed an adoption predicate. 
+                Context.SpecRelTriple triple = new Context.SpecRelTriple();
+                triple.parent = person;
+                triple.child = (Individual)arg0.getVal().get(0);
+                triple.udpName = udp.starName;
+                Context.current.addSpecialRelationship(triple, "A"); // includes inverse 
+//                predHead = "+(";
+            } // end of recording chartable UDP
+        }
+        //  OK.  We've traversed a starLink successfully.  Return or recurse.
+        cb.starCounter++;
+        //  Now emit a PC-String like '*(<value>, <Person.serial#>)'
+        String perSerial = "#" + person.serialNmbr, arg0Str;
+        if (valPer != null) {
+            arg0Str = "#" + valPer.serialNmbr;  //  a Variable for a person is bound to the Individual
+        } else {
+            Object bndVal = ((ArrayList<Object>) bindings.get(arg0.argName)).get(0);
+            if (bndVal instanceof Individual) {
+                arg0Str = "#" + ((Individual)bndVal).serialNmbr;
+            } else {
+                arg0Str = "value=" + bndVal;
+            }
+        }
+        pcStr.add(predHead + arg0Str + "," + perSerial + ")");
+        Literal next = null;
         ArrayList<Object> remLitsCopy = new ArrayList<Object>(remLits), starStuffCopy = new ArrayList<Object>(starStuff);
-        while ((next == null) && ((remLitsCopy.size() > 0) || (starStuffCopy.size() > 0)))
-                next = cb.pop(remLitsCopy, starStuffCopy, bindings, kinTerm);  //  pop returns the next processable literal
+        while ((next == null) && ((remLitsCopy.size() > 0) || (starStuffCopy.size() > 0))) {
+            next = cb.pop(remLitsCopy, starStuffCopy, bindings, kinTerm);  //  pop returns the next processable literal
+        }
         if (next == null) { //  at end of clause body.  Check clause-level constraints.
-            if (negatedConstraintsSatisfied(starStuff, bindings, badBindings, starBindings, constraints, kinTerm, cb))
+            if (negatedConstraintsSatisfied(starStuff, bindings, badBindings, starBindings, constraints, kinTerm, cb)) {
                 return true;
-            }  //  end of at-end-of-clauseBody
-        else if (next.findOrCreate(remLitsCopy, starStuffCopy, bindings, badBindings, starBindings, constraints, kinTerm, cb, pcStr, dyad))
+            }
+        } //  end of at-end-of-clauseBody
+        else if (next.findOrCreate(remLitsCopy, starStuffCopy, bindings, badBindings, starBindings, constraints, kinTerm, cb, pcStr, dyad)) {
             return true;
+        }
 
-		//  Recursive descent or negatedConstraints failed. LiteralAbstract1.failReason tells us if failure to
+        //  Recursive descent or negatedConstraints failed. LiteralAbstract1.failReason tells us if failure to
         //  find a conforming value for a person's UDP is the cause.  If not, then it's 'regular' causes.
-		//  The failure can only involve a person in this literal if we bound either personVar or valPerVar.
+        //  The failure can only involve a person in this literal if we bound either personVar or valPerVar.
         //  If the cause is a UDP for one of those, then try to pick a different UDP value & try again with current bindings.
         //  If not, then retract current binding & try again.
 
-		//  if (Context.breakFlag) System.out.println("F/C_StarLink FAILS on " + this);
+        //  if (Context.breakFlag) System.out.println("F/C_StarLink FAILS on " + this);
 
-		if ((LiteralAbstract1.failReason != null) && (bindingMade != null) &&
-			(bindingMade.equals(personVar.argName) || ((valPerVar != null) && bindingMade.equals(valPerVar.argName))))  {
+        if ((LiteralAbstract1.failReason != null) && (bindingMade != null)
+                && (bindingMade.equals(personVar.argName) || ((valPerVar != null) && bindingMade.equals(valPerVar.argName)))) {
             String failure = LiteralAbstract1.failReason;
             Variable whoVar = personVar;        //  bindingMade has to be one of them
-            if ((valPerVar != null) && bindingMade.equals(valPerVar.argName)) whoVar = valPerVar;
-            TreeMap thisUDMap = (TreeMap)constraints.userDefined.get(whoVar);
-            if ((thisUDMap != null) && (thisUDMap.get(failure) != null) &&
-                (! (thisUDMap.get(failure) instanceof Constant)))  {
+            if ((valPerVar != null) && bindingMade.equals(valPerVar.argName)) {
+                whoVar = valPerVar;
+            }
+            TreeMap thisUDMap = (TreeMap) constraints.userDefined.get(whoVar);
+            if ((thisUDMap != null) && (thisUDMap.get(failure) != null)
+                    && (!(thisUDMap.get(failure) instanceof Constant))) {
                 //  it was a StarProp failure, and this arg has a constraint on that StarProp,
                 //  and the argument defining its constraint is not a Constant (ergo, it's a MathVar or a Variable for a person)
-                if (thisUDMap.get(failure) instanceof MathVariable)  {
-					MathVariable argForUDPVal = (MathVariable)thisUDMap.get(failure);
-					//  If we can try again with a different value for UDP, do it.  If not, fall thru to failure.
-					LiteralAbstract1.failReason = null;
-					while (newUDPVal(failure, argForUDPVal, bindingMade, bindings, starBindings, constraints, cb))  {
-						if (((next != null) &&
-							next.findOrCreate(remLitsCopy, starStuff, bindings, badBindings, starBindings, constraints, kinTerm, cb, pcStr, dyad))
-							||  ((next == null) &&
-							negatedConstraintsSatisfied(starStuff, bindings, badBindings, starBindings, constraints, kinTerm, cb)))
-						return true;
-					}   //  end of while-loop.  In this loop, newUDPVal tries to find a new conforming value
-						//  for this UDP.  If it succeeds, then it calls find/create (or negatedConstraints)
-						//  in an attempt to complete the generation of this example.  If that succeeds,
-						//  it returns true; if that fails, it picks another and tries again. If all possible UDP values
-						//  are used up without success, the loop ends and we go on.
-				}  // end of it-was-a-MathVariable
-				else  {  //  it-must-be-a-Variabe-for-a-person
-					Variable argForUDPVal = (Variable)thisUDMap.get(failure);
-					//  If we can try again with a different value for UDP, do it.  If not, fall thru to failure.
-					LiteralAbstract1.failReason = null;
-					while (newUDPVal(failure, argForUDPVal, bindingMade, bindings, starBindings, constraints, cb))  {
-						if (((next != null) &&
-							next.findOrCreate(remLitsCopy, starStuff, bindings, badBindings, starBindings, constraints, kinTerm, cb, pcStr, dyad))
-							||  ((next == null) &&
-							negatedConstraintsSatisfied(starStuff, bindings, badBindings, starBindings, constraints, kinTerm, cb)))
-						return true;
-					}   //  end of while-loop.
-				}  //  end of it-was-a-Variabe-for-a-person
+                if (thisUDMap.get(failure) instanceof MathVariable) {
+                    MathVariable argForUDPVal = (MathVariable) thisUDMap.get(failure);
+                    //  If we can try again with a different value for UDP, do it.  If not, fall thru to failure.
+                    LiteralAbstract1.failReason = null;
+                    while (newUDPVal(failure, argForUDPVal, bindingMade, bindings, starBindings, constraints, cb)) {
+                        if (((next != null)
+                                && next.findOrCreate(remLitsCopy, starStuff, bindings, badBindings, starBindings, constraints, kinTerm, cb, pcStr, dyad))
+                                || ((next == null)
+                                && negatedConstraintsSatisfied(starStuff, bindings, badBindings, starBindings, constraints, kinTerm, cb))) {
+                            return true;
+                        }
+                    }   //  end of while-loop.  In this loop, newUDPVal tries to find a new conforming value
+                    //  for this UDP.  If it succeeds, then it calls find/create (or negatedConstraints)
+                    //  in an attempt to complete the generation of this example.  If that succeeds,
+                    //  it returns true; if that fails, it picks another and tries again. If all possible UDP values
+                    //  are used up without success, the loop ends and we go on.
+                } // end of it-was-a-MathVariable
+                else {  //  it-must-be-a-Variabe-for-a-person
+                    Variable argForUDPVal = (Variable) thisUDMap.get(failure);
+                    //  If we can try again with a different value for UDP, do it.  If not, fall thru to failure.
+                    LiteralAbstract1.failReason = null;
+                    while (newUDPVal(failure, argForUDPVal, bindingMade, bindings, starBindings, constraints, cb)) {
+                        if (((next != null)
+                                && next.findOrCreate(remLitsCopy, starStuff, bindings, badBindings, starBindings, constraints, kinTerm, cb, pcStr, dyad))
+                                || ((next == null)
+                                && negatedConstraintsSatisfied(starStuff, bindings, badBindings, starBindings, constraints, kinTerm, cb))) {
+                            return true;
+                        }
+                    }   //  end of while-loop.
+                }  //  end of it-was-a-Variabe-for-a-person
             }  //  end of there is a UDP constraint for this bound-arg
         }  //  end of failed-due-to-a-UDP-value
 
-		//  retract any binding made - put it on BadBindings list.  retract property bindings, too
-		updateBindingsEtc(bindings, badBindings, bindingMade, argBound, starBindings, sbSize);
+        //  retract any binding made - put it on BadBindings list.  retract property bindings, too
+        updateBindingsEtc(bindings, badBindings, bindingMade, argBound, starBindings, sbSize);
         cb.starCounter--;  //  un-do the counter increment
-		if (argBound == personVar) undoPersonalStarLink(person, predicate.name, bindings);
-		if (pcStr.size() >= 1) pcStr.remove(pcStr.size() -1); //  retract the PC-String addition
-		if (dyad != null && dyad.path.size() > 0) dyad.path.remove(dyad.path.size() -1);
-		if (tryFlag++ < 2) {
-			if (findOrCreateStarLink(remLits, starStuff, bindings, badBindings, starBindings, constraints,
-							tryFlag, true, kinTerm, cb, pcStr, dyad))
-			return true;
-			//  if we get this far, all binding attempts have failed.  Pass failure up to next higher level.
-			//  keepBB determines whether we retain our record of badBindings at this level.
-			//  If we're about to send a FAIL back to a higher-level literal in the chain, we want to
-			//  erase them.  But if we're FAILing back to an earlier iteration at this level, keep them.
-			//  In EITHER case, make sure any property bindings have been undone.
-			updateBindingsEtc(bindings, badBindings, null, null, starBindings, sbSize);
-			}
-        if (! keepBB) {
+        if (argBound == personVar) {
+            undoPersonalStarLink(person, predicate.name, bindings);
+        }
+        if (pcStr.size() >= 1) {
+            pcStr.remove(pcStr.size() - 1); //  retract the PC-String addition
+        }
+        if (dyad != null && dyad.path.size() > 0) {
+            dyad.path.remove(dyad.path.size() - 1);
+        }
+        if (tryFlag++ < 2) {
+            if (findOrCreateStarLink(remLits, starStuff, bindings, badBindings, starBindings, constraints,
+                    tryFlag, true, kinTerm, cb, pcStr, dyad)) {
+                return true;
+            }
+            //  if we get this far, all binding attempts have failed.  Pass failure up to next higher level.
+            //  keepBB determines whether we retain our record of badBindings at this level.
+            //  If we're about to send a FAIL back to a higher-level literal in the chain, we want to
+            //  erase them.  But if we're FAILing back to an earlier iteration at this level, keep them.
+            //  In EITHER case, make sure any property bindings have been undone.
+            updateBindingsEtc(bindings, badBindings, null, null, starBindings, sbSize);
+        }
+        if (!keepBB) {
             badBindingsRemove(bindingMade, argBound, badBindings);
             Context.current.resetTo(resetInd, resetFam);
         }  //  end of don't-keep-badBindings
@@ -787,24 +863,37 @@ public abstract class LiteralAbstract2 extends LiteralAbstract1  {
     }  //  end of method findOrCreateStarLink
 
 
-	public void createPersonalStarLink(Individual person2, String predName, ArrayList<Object> starBindings)
-			throws KSInternalErrorException  {
-		//  Find the person, via starBindings, who has the link to person2
-		for (int i = starBindings.size() -1; i >= 0; i--)  {
-			StarPropertyBinding spb = (StarPropertyBinding)starBindings.get(i);
-			if (spb.starPropName.equals(predName) && spb.personBound != null && spb.personBound != person2) {
-				Individual person1 = spb.personBound;
-				if (person1.starLinks == null) person1.starLinks = new ArrayList<Object>();
-				if (! person1.starLinks.contains(person2)) person1.starLinks.add(person2);
-                                if (person2.starLinks == null) person2.starLinks = new ArrayList<Object>();
-				if (! person2.starLinks.contains(person1)) person2.starLinks.add(person1);
-				return;
-				}  //  end of found-a-match
-			}  //  end of backwards loop thru SPBs
-		Context.breakpoint();
-		throw new KSInternalErrorException("Lit2.createPersonalStarLink failed to find origin of " + predName
-											+ "_link to " + person2);
-		}  //  end of method createPersonalStarLink
+    public void createPersonalStarLink(Individual person2, String predName, ArrayList<Object> starBindings)
+            throws KSInternalErrorException {
+        //  Find the person, via starBindings, who has the link to person2.  If the predicate is
+        //  for a chartable UDP, then we don't want to create a StarLink -- there is an explicit 'adoption' link.
+        UserDefinedProperty udp = (UserDefinedProperty)person2.userDefinedProperties.get(predName);
+        if (udp != null && udp.chartable) {
+            return;
+        }
+        for (int i = starBindings.size() - 1; i >= 0; i--) {
+            StarPropertyBinding spb = (StarPropertyBinding) starBindings.get(i);
+            if (spb.starPropName.equals(predName) && spb.personBound != null && spb.personBound != person2) {
+                Individual person1 = spb.personBound;
+                if (person1.starLinks == null) {
+                    person1.starLinks = new ArrayList<Object>();
+                }
+                if (!person1.starLinks.contains(person2)) {
+                    person1.starLinks.add(person2);
+                }
+                if (person2.starLinks == null) {
+                    person2.starLinks = new ArrayList<Object>();
+                }
+                if (!person2.starLinks.contains(person1)) {
+                    person2.starLinks.add(person1);
+                }
+                return;
+            }  //  end of found-a-match
+        }  //  end of backwards loop thru SPBs
+        Context.breakpoint();
+        throw new KSInternalErrorException("Lit2.createPersonalStarLink failed to find origin of " + predName
+                + "_link to " + person2);
+    }  //  end of method createPersonalStarLink
 
 
     public void undoPersonalStarLink(Individual linkee, String predName, TreeMap bindings)
@@ -925,34 +1014,39 @@ public abstract class LiteralAbstract2 extends LiteralAbstract1  {
     }  //  end of method findOrCreateMathLink
 
 
-	/**  Return a list with the arg's value -- bound or internal.  If neither exists, this is an under-constrained
-	     variable.  Pick a value within its constraints.  If none possible, return empty list.
-	*/
-	public ArrayList<Object> lastChanceToValue(Argument arg, TreeMap bindings, ArrayList<Object> starBindings, ConstraintObj constraints)
-			throws KSBadHornClauseException, ClassNotFoundException, KSConstraintInconsistency, KSInternalErrorException  {
-		//  1st choice: Value it's bound to
-		ArrayList<Object> argVal = (ArrayList<Object>)bindings.get(arg.argName), choices;
-		if (argVal == null || argVal.isEmpty()) {
-			//  2nd choice: Value of the arg itself (if any)
-			argVal = arg.getVal();
-			bindings.put(arg.argName, argVal);
-			if (argVal == null || argVal.isEmpty()) {
-				//	3rd choice:  generate a value based on arg's constraints.
-				Individual ind = new Individual("Dummy Person", "M");
-				Class reqClass = ind.getUDPClass(arg.valueType);
-				choices = ind.generateCandidateValues(reqClass, arg, bindings, starBindings, constraints, null);
-				if (choices.size() > 0)  {
-					if (argVal == null) argVal = new ArrayList<Object>();
-					argVal.add(choices.get(0));
-					if (arg.getVal() == null || (! arg.getVal().contains(choices.get(0))))
-						arg.addVal(choices.get(0));
-					bindings.put(arg.argName, argVal);
-					}
-				}
-			}
-		return argVal;
-		}  //  end of method lastChanceToValue
-
+    /**
+     * Return a list with the arg's value -- bound or internal. If neither
+     * exists, this is an under-constrained variable. Pick a value within its
+     * constraints. If none possible, return empty list.
+     */
+    public ArrayList<Object> lastChanceToValue(Argument arg, TreeMap bindings, ArrayList<Object> starBindings, ConstraintObj constraints)
+            throws KSBadHornClauseException, ClassNotFoundException, KSConstraintInconsistency, KSInternalErrorException {
+        //  1st choice: Value it's bound to
+        ArrayList<Object> argVal = (ArrayList<Object>) bindings.get(arg.argName), choices;
+        if (argVal == null || argVal.isEmpty()) {
+            //  2nd choice: Value of the arg itself (if any)
+            argVal = arg.getVal();
+            bindings.put(arg.argName, argVal);
+            if (argVal == null || argVal.isEmpty()) {
+                //	3rd choice:  generate a value based on arg's constraints.
+                Individual ind = new Individual("Dummy Person", "M");
+                Class reqClass = ind.getUDPClass(arg.valueType);
+                choices = ind.generateCandidateValues(reqClass, arg, bindings, 
+                        starBindings, constraints, null);
+                if (choices.size() > 0) {
+                    if (argVal == null) {
+                        argVal = new ArrayList<Object>();
+                    }
+                    argVal.add(choices.get(0));
+                    if (arg.getVal() == null || (!arg.getVal().contains(choices.get(0)))) {
+                        arg.addVal(choices.get(0));
+                    }
+                    bindings.put(arg.argName, argVal);
+                }
+            }
+        }
+        return argVal;
+    }  //  end of method lastChanceToValue
 
     boolean findOrCreateSpouse(ArrayList<Object> remLits, ArrayList<Object> starStuff, TreeMap bindings, TreeMap badBindings, ArrayList<Object> starBindings,
                         boolean divReq, ConstraintObj constraints, int mateFlag, boolean keepBB, String kinTerm, ClauseBody cb,
@@ -1757,6 +1851,13 @@ public abstract class LiteralAbstract2 extends LiteralAbstract1  {
             return false;
         }
     }  //  end of method meetsDivReqStrictly
+    
+    boolean meetsStarSpecs(Individual candidate, Variable candArg, ConstraintObj constraints, ArrayList<Object> starBindings,
+            TreeMap bindings, String queryOrCommit, ClauseBody cb)
+            throws KSInternalErrorException, KSBadHornClauseException, ClassNotFoundException, KSConstraintInconsistency {
+        // This version handles single-context cases by passing along a null for the CUC context.
+        return meetsStarSpecs(candidate, candArg, constraints, starBindings, bindings, queryOrCommit, cb, null);
+    }
 
 
     /**  Does candidate meet all the userDefinedConstraints -- or could she?
@@ -1767,6 +1868,7 @@ public abstract class LiteralAbstract2 extends LiteralAbstract1  {
       <li> the name of the star-property involved
       <li> a {@link MathVariable} or {link Variable} to which candidate's value for this star-prop will be bound.
            Recall that a MathVariable stands for an integer, float, string, boolean, or list.  A Variable stands for a person.
+           However, when the MathVar is the value of a UDP of type 'Individual', it could stand for a person.
       </ul>
       <p>
       Two kinds of constraints must be satisfied:
@@ -1819,83 +1921,123 @@ public abstract class LiteralAbstract2 extends LiteralAbstract1  {
                             backtrack and un-bind them)
       @param bindings   a list of all the bindings of people to variables so far
       @param queryOrCommit   either the string 'query' or 'commit'.  In commit mode we go ahead and bind values
-      @param cb         the ClauseBody this Literal came from
+      @param cb         the ClauseBody this Literal came from, with back-pointer to its context (perhaps from Library)
+      @param cucCtxt    if non-null, this is the Context Under Construction (domain theory to be learned)
     */
     boolean meetsStarSpecs(Individual candidate, Variable candArg, ConstraintObj constraints, ArrayList<Object> starBindings,
-                           TreeMap bindings, String queryOrCommit, ClauseBody cb)
-            throws KSInternalErrorException, KSBadHornClauseException, ClassNotFoundException, KSConstraintInconsistency  {
+            TreeMap bindings, String queryOrCommit, ClauseBody cb, Context cucCtxt)
+            throws KSInternalErrorException, KSBadHornClauseException, ClassNotFoundException, KSConstraintInconsistency {
         TreeMap cud = constraints.userDefined;
-		if ((cud == null) || (cud.isEmpty())) return true;  //  if there is no spec, we meet it vacuously.
-        Iterator cudIter = cud.entrySet().iterator(), propIter;
-        Map.Entry entry, propEntry;
-        String starProp, msg;  //  starProp = name of the star-property; it always begins with '*'
-        TreeMap indVarTM;
-        Variable indVar;
-        Argument mVC;  //  this Argument is either a MathVariable, Variable, or a Constant (mVC)
-        while (cudIter.hasNext())  {  //  actually, we'll stop as soon as we find candArg's entry
-            entry = (Map.Entry)cudIter.next();
-            indVar = (Variable)entry.getKey();
-            if (indVar == candArg)  {
-                //  Aha!  There are star-property constraints on the variable (candArg) that we are
-                //  considering binding candidate to.  Verify that candArg's values for these star-props (if any)
-                //  are compatible with these constraints.
-                indVarTM = (TreeMap)entry.getValue();
-                propIter = indVarTM.entrySet().iterator();
-                UserDefinedProperty udp;
-                while (propIter.hasNext())  {
-                    propEntry = (Map.Entry)propIter.next();
-                    starProp = (String)propEntry.getKey();
-                    mVC = (Argument)propEntry.getValue();
-                    udp = (UserDefinedProperty)candidate.userDefinedProperties.get(starProp);
-                    if (udp == null)  {
-                        msg = "Mandatory User Defined Property '" + starProp + 
-                                "' is not defined on Individual #" + candidate.serialNmbr;
-                        throw new KSInternalErrorException(msg);
-                        }  //  end of udp==null
-                    if (mVC instanceof Constant)  {
-                        Constant konstant = (Constant)mVC;
+        if ((cud == null) || (cud.isEmpty())) {
+            return true;
+        }  //  if there is no spec, we meet it vacuously.       
+        TreeMap indVarTM = (TreeMap)cud.get(candArg);
+        if (indVarTM == null) {
+            return true;
+        } else { //  Aha!  There are star-property constraints on the variable (candArg) that we are
+            //  considering binding candidate to.  Verify that candArg's values for these star-props (if any)
+            //  are compatible with these constraints.
+            Iterator propIter = indVarTM.entrySet().iterator();
+            boolean keepChecking = true;
+            while (propIter.hasNext() && keepChecking) {
+                Map.Entry propEntry = (Map.Entry) propIter.next();
+                String starProp = (String) propEntry.getKey();  //  starProp = name of the star-property; it always begins with '*'
+                Argument mVC = (Argument) propEntry.getValue();
+                keepChecking = false;
+                ArrayList<UserDefinedProperty> udps =
+                        pickUDPs(starProp, candidate, cb, cucCtxt);
+                for (UserDefinedProperty udp : udps) {
+                    if (mVC instanceof Constant) {
+                        Constant konstant = (Constant) mVC;
                         // for a Constant, the issue is whether this value can be candidate's value
                         // if candidate already has a different value: False
                         // if candidate has no value yet, and the Constant's value is conforming: OK
-                        if ((udp.value.size() > 0) && (! konstant.getVal().equals(udp.value)))
-                            return false;
+                        if ((udp.value.size() > 0) && (!konstant.getVal().equals(udp.value))) {
+                            continue;
+                        }
                         Class reqClass = candidate.getUDPClass(udp.typ);
                         Class otherClass = candidate.getUDPClass(konstant.valueType);
-                        if ((udp.value.isEmpty()) && (otherClass != reqClass))
-                            return false;
-                        if (udp.value.isEmpty())  //  we know checkProposedVal -> true
+                        if ((udp.value.isEmpty()) && (otherClass != reqClass)) {
+                            continue;
+                        }
+                        if (udp.value.isEmpty()) {  //  we know checkProposedVal -> true
                             if (queryOrCommit.equals("commit")) {
                                 udp.value = konstant.getVal();
                                 candidate.yoke(null, null, konstant, null, udp, konstant.argName, bindings, starBindings);
                             }  //  end of commit
-                    }  //  end of it's-a-Constant
-                    else  {  //  it's a MathVar or a Variable
+                            keepChecking = true;
+                            break;
+                        }
+                    } //  end of it's-a-Constant
+                    else {  //  it's a MathVar or a Variable
                         if ((mVC.getVal() != null) && (mVC.getVal().size() > 0)) {
                             //  mVC has a specific list of one or more values, and candidate also has a list of values.
                             //  If lists are equal, OK.  If candidate's list is empty, but mVC's is not,
-							//  then if 'query' just return true.  Else assign the value from mVC & return true.
-							//  If both lists are non-empty and non-equal, return false.
-							if ((udp.value.size() == mVC.getVal().size())  &&
-								(! udp.value.equals(mVC.getVal())))
-								return false;
-							else if (udp.value.isEmpty() &&
-									  (mVC.getVal().size() == 1 || (! udp.singleValue)) )  {
-								if (queryOrCommit.equals("commit")) udp.value.addAll(mVC.getVal());
-								return true;
-								}
-                        }else  { //  mVC does not have a value, so all depends on whether candidate's
-								 //  value (if any) conforms to the constraints on mVar
-                            if (! candidate.findConformingValue(starProp, mVC, starBindings, bindings, constraints, queryOrCommit, cb))
-                                return false;
-							}
+                            //  then if 'query' just return true.  Else assign the value from mVC & return true.
+                            //  If both lists are non-empty and non-equal, return false.
+                            if ((udp.value.size() == mVC.getVal().size())
+                                    && (!udp.value.equals(mVC.getVal()))) {
+                                continue;
+                            } else if (udp.value.isEmpty()
+                                    && (mVC.getVal().size() == 1 || (!udp.singleValue))) {
+                                if (queryOrCommit.equals("commit")) {
+                                    udp.value.addAll(mVC.getVal());
+                                }
+                                keepChecking = true;
+                                break;
+                            }
+                        } else { //  mVC does not have a value, so all depends on whether candidate's
+                            //  value (if any) conforms to the constraints on mVar
+                            if (!candidate.findConformingValue(udp.starName, mVC, starBindings, bindings, constraints, queryOrCommit, cb)) {
+                                continue;
+                            } else {
+                                keepChecking = true;
+                                break;
+                            }
+                        }
                     }  //  end of else-it's-a-MathVar-or-Variable
-				}  //  end of loop thru star-prop constraints for this variable
-            return true;  //  we don't care about any other variables, so end it here.
-            }  //  end of found-star-property-constraints-for-this-variable
-        }  //  end of loop thru all userDefined constraints
-        return true;
+                }  //  end of loop thru UDPs
+                if (!keepChecking) {
+                    return false;
+                }
+            }  //  end of loop thru star-prop constraints for this variable
+            return true;  //  We found a value that works for each UDP constraint
+        }  //  end of found-star-property-constraints-for-this-variable
     }  //  end of method meetsStarSpecs
 
+    public ArrayList<UserDefinedProperty> pickUDPs(String starProp, Individual candidate, 
+            ClauseBody cb, Context cucCtxt)  throws KSInternalErrorException {
+        ArrayList<UserDefinedProperty> lst = new ArrayList<UserDefinedProperty>();
+        UserDefinedProperty udp = null;
+        if (cucCtxt == null) {  // single context situation
+            udp = (UserDefinedProperty) candidate.userDefinedProperties.get(starProp);
+            if (udp == null) {
+                String msg = "Mandatory User Defined Property '" + starProp
+                        + "' is not defined on Individual #" + candidate.serialNmbr;
+                throw new KSInternalErrorException(msg);
+            }  //  end of udp==null
+            lst.add(udp);
+        } else {  //  multiple contexts
+            Context libCtxt = cb.ktd.domTh.ctxt;
+            udp = (UserDefinedProperty) libCtxt.userDefinedProperties.get(starProp);
+            if (udp == null) {
+                String msg = "Mandatory User Defined Property '" + starProp
+                        + "' is not defined in context " + libCtxt.languageName;
+                throw new KSInternalErrorException(msg);
+            }  //  end of udp==null
+            boolean libChartable = udp.chartable;
+            Iterator udpIter = candidate.userDefinedProperties.values().iterator();
+            while (udpIter.hasNext()) {
+                UserDefinedProperty candUDP = (UserDefinedProperty)udpIter.next();
+                if (candUDP.chartable == libChartable) {
+                    lst.add(candUDP);
+                }
+            } // list now has all candidate UDPs that could match the Library UDP
+        }
+        return lst;
+    }
+    
+    
 
      /**  Similar to <code>meetsStarSpecs</code>, but with no changes permitted to the Individual or her values.
       Here, a constraint implies that candidate's value must exist & must agree with the mVarOrConst's constraints.

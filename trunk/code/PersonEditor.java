@@ -769,8 +769,8 @@ public class PersonEditor extends KSJInternalFrame implements ListSelectionListe
                     ind.location = new Point(10,20);
                 }
                 ctxt.ktm.insertNewRow(ind.serialNmbr);
-                if (SIL_Edit.editWindow != null) {
-                    SIL_Edit.editWindow.ktm.insertNewRow(ind.serialNmbr);
+                if (SIL_Edit.edWin != null) {
+                    SIL_Edit.edWin.ktm.insertNewRow(ind.serialNmbr);
                     ind.homeChart = Context.current.currentChart;
                 }
             } else if (e.getActionCommand().equals("new birthdate")) {
@@ -1353,8 +1353,8 @@ public class PersonEditor extends KSJInternalFrame implements ListSelectionListe
                 //  Now determine what must be updated on the calling editor
                 if (fieldFlag.equals("census")) {
                     //  the Context Editor is automaticaly updated on close of this editor
-                    if (SIL_Edit.editWindow != null && SIL_Edit.editWindow.getPPanel() != null) {
-                        SIL_Edit.editWindow.getPPanel().displayUDPVals(ind);
+                    if (SIL_Edit.edWin != null && SIL_Edit.edWin.getPPanel() != null) {
+                        SIL_Edit.edWin.getPPanel().displayUDPVals(ind);
                     }
                 } else if (fieldFlag.equals("child")) {
                     FamilyEditor editor = (FamilyEditor) genericEd;

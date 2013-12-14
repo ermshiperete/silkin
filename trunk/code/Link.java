@@ -144,7 +144,7 @@ public class Link implements Locatable, Serializable {
         s += location.x + "\" locationY=\"";
         s += location.y + "\" serial=\"";
         s += serialNmbr + "\" author=\"";
-        s += dataAuthor + "\" chgDate=\"" + dataChangeDate + "\">";
+        s += dataAuthor + "\" chgDate=\"" + dataChangeDate + "\"/>";
         return s;
     }
     

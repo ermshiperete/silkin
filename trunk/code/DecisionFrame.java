@@ -217,7 +217,7 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
         model.removeElementAt(suggNmbr +1);
         updating = false;
         model.insertElementAt(newListing, suggNmbr +1);
-        SIL_Edit.editWindow.chart.dirty = true;
+        SIL_Edit.edWin.chart.dirty = true;
     }
     
     public void markUnProcessed(int suggNmbr) {
@@ -230,7 +230,7 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
         model.removeElementAt(suggNmbr +1);
         updating = false;
         model.insertElementAt(newListing, suggNmbr +1);
-        SIL_Edit.editWindow.chart.dirty = true;
+        SIL_Edit.edWin.chart.dirty = true;
     }
 
     void reset() {
@@ -355,7 +355,7 @@ public class DecisionFrame extends JFrame  implements HyperlinkListener {
     private class CloseListener extends WindowAdapter {
 
         public void windowClosing(WindowEvent we) {
-            SIL_Edit.editWindow.resetSuggsMenu();
+            SIL_Edit.edWin.resetSuggsMenu();
         }
 
     }

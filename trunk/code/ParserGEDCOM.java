@@ -75,8 +75,8 @@ public class ParserGEDCOM {
         assignChartAndLevel();
         processChartRows();
         expandToGridUnits();
-        SIL_Edit.editWindow.chart.checkSizeOfChart(ctxt);
-        SIL_Edit.editWindow.chart.resizeAndRepaint();
+        SIL_Edit.edWin.chart.checkSizeOfChart(ctxt);
+        SIL_Edit.edWin.chart.resizeAndRepaint();
     }
     
     void parseFirstPass() throws KSParsingErrorException {
@@ -89,16 +89,16 @@ public class ParserGEDCOM {
             error("First tag of GEDCOM file must be 'HEAD'. Found " + current.lexeme);
         }  //  OK. Set up new context to receive data.
         if (Context.current != null && Context.current.languageName != null 
-                && SIL_Edit.editWindow != null) {
+                && SIL_Edit.edWin != null) {
             String msg = "Importing GEDCOM will create a new context to hold the data.";
-            String fName = SIL_Edit.editWindow.getTitle();
+            String fName = SIL_Edit.edWin.getTitle();
             msg += "\nCurrent context (in " + fName + ") will be saved & closed.";
-            int ch = JOptionPane.showConfirmDialog(SIL_Edit.editWindow, msg, 
+            int ch = JOptionPane.showConfirmDialog(SIL_Edit.edWin, msg, 
                     "Making a New Context", JOptionPane.INFORMATION_MESSAGE);
             if (ch != JOptionPane.OK_OPTION) {
                 return;
             }
-            SIL_Edit.editWindow.chart.saveSILKFile();            
+            SIL_Edit.edWin.chart.saveSILKFile();            
         }
         parseHeader();
         parseBody();
@@ -322,7 +322,7 @@ public class ParserGEDCOM {
                     ps += "for Person # " + ind.serialNmbr;
                     ps += "\nSILKin will ignore this date.\n";
                     ps += "GEDCOM data will not be disturbed.";
-                    JOptionPane.showMessageDialog(SIL_Edit.editWindow, ps, 
+                    JOptionPane.showMessageDialog(SIL_Edit.edWin, ps, 
                     "For Your Information", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
@@ -339,7 +339,7 @@ public class ParserGEDCOM {
                     ps += "for Person # " + ind.serialNmbr;
                     ps += "\nSILKin will ignore this date.\n";
                     ps += "GEDCOM data will not be disturbed.";
-                    JOptionPane.showMessageDialog(SIL_Edit.editWindow, ps, 
+                    JOptionPane.showMessageDialog(SIL_Edit.edWin, ps, 
                     "For Your Information", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
@@ -375,7 +375,7 @@ public class ParserGEDCOM {
                     ps += "for Person # " + ind.serialNmbr;
                     ps += "\nSILKin will ignore this date.\n";
                     ps += "GEDCOM data will not be disturbed.";
-                    JOptionPane.showConfirmDialog(SIL_Edit.editWindow, ps, 
+                    JOptionPane.showConfirmDialog(SIL_Edit.edWin, ps, 
                     "For Your Information", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
@@ -477,7 +477,7 @@ public class ParserGEDCOM {
                     ps += "for Family # " + fam.serialNmbr;
                     ps += "\nSILKin will ignore this date.\n";
                     ps += "GEDCOM data will not be disturbed.";
-                    JOptionPane.showMessageDialog(SIL_Edit.editWindow, ps, 
+                    JOptionPane.showMessageDialog(SIL_Edit.edWin, ps, 
                     "For Your Information", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
@@ -494,7 +494,7 @@ public class ParserGEDCOM {
                     ps += "for Family # " + fam.serialNmbr;
                     ps += "\nSILKin will ignore this date.\n";
                     ps += "GEDCOM data will not be disturbed.";
-                    JOptionPane.showMessageDialog(SIL_Edit.editWindow, ps, 
+                    JOptionPane.showMessageDialog(SIL_Edit.edWin, ps, 
                     "For Your Information", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
@@ -520,7 +520,7 @@ public class ParserGEDCOM {
                     ps += "for Family # " + fam.serialNmbr;
                     ps += "\nSILKin will ignore this date.\n";
                     ps += "GEDCOM data will not be disturbed.";
-                    JOptionPane.showMessageDialog(SIL_Edit.editWindow, ps, 
+                    JOptionPane.showMessageDialog(SIL_Edit.edWin, ps, 
                     "For Your Information", JOptionPane.INFORMATION_MESSAGE);
                 }
             }

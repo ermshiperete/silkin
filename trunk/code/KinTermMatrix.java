@@ -88,8 +88,8 @@ public class KinTermMatrix implements Serializable {
     }
     
     public void renameChartableUDP(String oldName, String newName) {
-        String oldInverse = "*inverse_" + oldName.substring(1),
-               newInverse = "*inverse_" + newName.substring(1);
+        String oldInverse = "*inverse" + oldName.substring(1),
+               newInverse = "*inverse" + newName.substring(1);
         Iterator egoIter = matrix.values().iterator();
         while (egoIter.hasNext()) {
             TreeMap egoRow = (TreeMap) egoIter.next();
@@ -116,7 +116,7 @@ public class KinTermMatrix implements Serializable {
     }
     
     public void removeChartableUDP(String udName) {
-        String inverse = "*inverse_" + udName.substring(1);
+        String inverse = "*inverse" + udName.substring(1);
         Iterator egoIter = matrix.values().iterator();
         while (egoIter.hasNext()) {
             TreeMap egoRow = (TreeMap) egoIter.next();
@@ -368,7 +368,7 @@ public class KinTermMatrix implements Serializable {
                     Integer[] pair = {egoInt, alterInt};
                     kti.removePair(oldPC, pair);
                 }
-                if (SIL_Edit.editWindow.chart.distinctAdrTerms) {
+                if (SIL_Edit.edWin.chart.distinctAdrTerms) {
                     dt = Context.current.domTheoryAdr();
                     deletedTerms = oldNode.getKinTerms(true);
                     deletedTerms.removeAll(node.getKinTerms(true));

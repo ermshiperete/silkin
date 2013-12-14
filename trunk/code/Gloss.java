@@ -39,6 +39,7 @@ public class Gloss implements Serializable  {
         if (elements.isEmpty()) {
             return "";
         }
+        boolean doCitations = false;
         String s = bacer + "<gloss>\n" , spacer = "\t";
         for (String el : elements) {
             s += bacer + spacer + "<element text=\"" + 
@@ -53,12 +54,29 @@ public class Gloss implements Serializable  {
                 s += bacer + spacer + spacer + "<cultural-pred kinTerm=\"" 
                         + entry.getKey() + "\">\n";
                 for (String el : entry.getValue()) {
-                    s += bacer + spacer + spacer + spacer + "<element text=\"" 
-                            + FamilyPanel.convertBannedCharacters(el)  + "\"/>\n";
+                    s += bacer + spacer + spacer + spacer + "<element text=\"";
+                    if (el.equals("null")) {
+                        String cits = " No details available.";
+                        if (citations != null && !citations.isEmpty()) {
+                            cits = " See the citations for details.";
+                            doCitations = true;
+                        }
+                        s += "an auxilliary predicate." + cits;
+                    } else {
+                        s += FamilyPanel.convertBannedCharacters(el);
+                    }
+                    s += "\"/>\n";
                 }
                 s += bacer + spacer + spacer + "</cultural-pred>\n";
             }  //  end of loop thru culturalPreds  
             s += bacer + spacer + "</where>\n" ;
+        }
+        if (doCitations) { 
+            s += bacer + spacer + "<citations>\n" ;
+            for (String cite : citations) {
+                s += bacer + spacer + spacer + "<cite text=\"" + cite + "\"/>\n";
+            }
+            s += bacer + spacer + "</citations>\n" ;
         }
         return s + bacer + "</gloss>\n";
     }

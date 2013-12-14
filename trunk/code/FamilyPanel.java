@@ -35,7 +35,7 @@ public class FamilyPanel extends JPanel {
     /** Creates new form FamilyPanel */
     public FamilyPanel() {
         initComponents();
-        parent = SIL_Edit.editWindow;
+        parent = SIL_Edit.edWin;
         famComments.getDocument().addDocumentListener(new CommentListener());
         familyID.setColumns(3);
         setMaximumSize(new Dimension(910,320));

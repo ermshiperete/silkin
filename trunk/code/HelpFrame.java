@@ -228,10 +228,10 @@ public class HelpFrame extends JFrame implements HyperlinkListener {
         topRow.add(Box.createHorizontalGlue());
     //  Help on Start-Up
         startUpCkBox = new JCheckBox("Show Help on Start-Up");
-        startUpCkBox.setSelected(SIL_Edit.editWindow.helpScreenOnStartUp);
+        startUpCkBox.setSelected(SIL_Edit.edWin.helpScreenOnStartUp);
         startUpCkBox.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {                    
-                    SIL_Edit.editWindow.helpScreenOnStartUp = startUpCkBox.isSelected();                    
+                    SIL_Edit.edWin.helpScreenOnStartUp = startUpCkBox.isSelected();                    
                 }
             });
     // create menu

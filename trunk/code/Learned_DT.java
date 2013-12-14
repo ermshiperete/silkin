@@ -49,8 +49,8 @@ public class Learned_DT extends DomainTheory implements Serializable {
             nonTerms.add("no__term");
         }
         userDefinedProperties = papa.ctxt.userDefinedProperties;
-        dyadsUndefined = (DyadTMap)papa.dyadsUndefined.clone();
-        dyadsDefined = (DyadTMap)papa.dyadsDefined.clone();
+        dyadsUndefined = (DyadTMap)papa.dyadsUndefined.deepCopy();
+        dyadsDefined = (DyadTMap)papa.dyadsDefined.deepCopy();
         wiseGuy.synonyms = papa.synonyms;
         wiseGuy.umbrellas = papa.umbrellas;
         wiseGuy.overlaps = papa.overlaps;
@@ -91,7 +91,46 @@ public class Learned_DT extends DomainTheory implements Serializable {
         }
         return true;
     }  //  end of method allDone
-
+    
+    public void truncateUDPpcStrings(Context c) {
+        dyadsUndefined = truncateUDPKeys(dyadsUndefined, c);
+        dyadsDefined = truncateUDPKeys(dyadsDefined, c);
+    }
+    
+    public DyadTMap truncateUDPKeys(DyadTMap oldMap, Context c) {
+        DyadTMap newMap = new DyadTMap();
+        Iterator ktdIter = oldMap.entrySet().iterator();
+        while (ktdIter.hasNext()) {
+            Map.Entry ktdEntry = (Map.Entry)ktdIter.next();
+            String kinTerm = (String)ktdEntry.getKey();
+            TreeMap kinTypeMap = (TreeMap)ktdEntry.getValue();
+            TreeMap newKTMap = new TreeMap();
+            newMap.put(kinTerm, newKTMap);            
+            Iterator typeIter = kinTypeMap.entrySet().iterator();
+            while (typeIter.hasNext()) {
+                Map.Entry typEntry = (Map.Entry)typeIter.next();
+                ArrayList dyadList = (ArrayList)typEntry.getValue();
+                String kinType = (String)typEntry.getKey();
+                String newKinType = DyadTMap.truncate(KinTermDef.explodePCSymbols(kinType), c);
+                newKTMap.put(newKinType, dyadList);
+                for (Object o : dyadList) {
+                    Dyad dad = (Dyad)o;
+                    dad.pcString = 
+                            DyadTMap.truncate(KinTermDef.explodePCSymbols(dad.pcString), ctxt);
+                    try {
+                    // The pc string now contains '*' or '+' only (truncated). 
+                    // CB.generify will pass those thru, but make all other symbols neuter
+                        dad.pcStringStructural = 
+                                ClauseBody.generify(KinTermDef.explodePCSymbols(dad.pcString));       
+                    } catch (KSInternalErrorException ie) {
+                        dad.pcStringStructural = "";
+                    }
+                }
+            }
+        }
+        return newMap;
+    }
+    
     public void learnKinTermLGG(String kinTerm, int maxNoise, int ignorable)
             throws KSInternalErrorException, KSParsingErrorException, KSBadHornClauseException, KSNoChainOfRelations2Alter,
             KSConstraintInconsistency, ClassNotFoundException, JavaSystemException, FileNotFoundException, IOException {
@@ -195,8 +234,12 @@ public class Learned_DT extends DomainTheory implements Serializable {
             MainPane.activity.log.append(msg);
             return;  //  there aren't enough terms to make negative examples.
         }
+        if (containsChartableUDPs(pos)) {  // No suggestions for adoptions
+            return;
+        }
         Counter maxDist = new Counter();
-        TreeMap candidates = findCandidates(Library.cbIndex, pos, Library.cbCounts, sourceDT, maxDist);  //  candidates is exactStr -> List of CB_EQCs
+        TreeMap candidates = findCandidates(Library.cbIndex, pos, Library.cbCounts, sourceDT, maxDist);  
+        //  candidates is exactStr -> List of CB_EQCs
         evalCandidates(candidates, solidCBMatches, potFalseNeg, potFalsePos, pos, neg, maxNoise);
         findKTMatches(kinTerm, solidCBMatches, potFalseNeg, potFalsePos, pos, neg, maxNoise, ignorable,
                 solidKTMatches, noisyKTMatches, anomalies, rejectedDefs);
@@ -228,7 +271,19 @@ public class Learned_DT extends DomainTheory implements Serializable {
         detectSynonymsAndUmbrellas(kinTerm, pos, neg, maxNoise);  //  always
         Context.current = ctxt;
     }  //  end of method learnKinTerm
-
+    
+    boolean containsChartableUDPs(TreeMap pos) {
+        //  POS is KinType -> AList of Dyads
+        Iterator keyIter = pos.keySet().iterator();
+        while (keyIter.hasNext()) {
+            String kinType = (String)keyIter.next();
+            if (kinType.contains("+")) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public void processSuggestions(int round, int subRound, DomainTheory sourceDT, int maxNoise,
             int ignorable, int minDyadsPerPCStr)
             throws KSBadHornClauseException, KSInternalErrorException, KSConstraintInconsistency, ClassNotFoundException, KinshipSystemException,

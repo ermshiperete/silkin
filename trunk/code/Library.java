@@ -472,7 +472,7 @@ public class Library {
         }
         name = name.trim();
         if (starName) {  //  this is a name that must start with a '*'
-            if (!name.substring(0, 1).equals("*")) {
+            if (!name.startsWith("*")) {
                 return false;
             }
             name = name.substring(1);  //  after checking that first char is *, check rest normally
@@ -1666,7 +1666,10 @@ public class Library {
                 put(langTerm, Counter.makeArray(maxDist + 1));
             }
             Counter[] counters = (Counter[]) get(langTerm);
-            int strDist = Math.min(Math.max((cb.pcString.length() / 2) - 1, 0), maxDist);
+            String pcString = cb.pcString;
+            ArrayList<String> symbols = KinTermDef.explodePCSymbols(pcString);
+            pcString = DyadTMap.truncate(symbols, Context.current);             
+            int strDist = Math.min(Math.max((pcString.length() / 2) - 1, 0), maxDist);
             //  strDist = (half the length of the pcStr, rounded down) - 1.  With min of 0 and max of maxDist
             for (int i = strDist; i <= maxDist; i++) {
                 counters[i].incr();
@@ -1790,6 +1793,8 @@ public class Library {
             //  If so, add it.  Else, make new EQC for this guy.
             nmbrOfCBs++;  //  no matter what happens
             String pcString = ptr.getClause().pcString;
+            ArrayList<String> symbols = KinTermDef.explodePCSymbols(pcString);
+            pcString = DyadTMap.truncate(symbols, Context.current);
             ArrayList<Object> cbEQCList = (ArrayList<Object>) tMap.get(pcString);
             boolean slurp = false;
             if (cbEQCList != null) {
@@ -1832,7 +1837,10 @@ public class Library {
             //  for that branch to see if one of them can properly absorb this one.
             //  If so, do it.  Else, add this new EQC.
             nmbrOfCBs += eqc.members.size();  //  no matter what happens
-            ArrayList<Object> cbEQCList = (ArrayList<Object>) tMap.get(eqc.pcString);
+            String pcString = eqc.pcString;
+            ArrayList<String> symbols = KinTermDef.explodePCSymbols(pcString);
+            pcString = DyadTMap.truncate(symbols, Context.current);            
+            ArrayList<Object> cbEQCList = (ArrayList<Object>) tMap.get(pcString);
             boolean slurp = false;
             if (cbEQCList != null) {
                 for (int i = 0; i < cbEQCList.size(); i++) {
@@ -1861,10 +1869,10 @@ public class Library {
             } else {
                 nmbrOfCB_EQCs++;
                 nmbrOfKinTypes++;
-                tMap.put(eqc.pcString, eqc);
+                tMap.put(pcString, eqc);
                 cbEQCList = new ArrayList<Object>();
                 cbEQCList.add(eqc);
-                tMap.put(eqc.pcString, cbEQCList);
+                tMap.put(pcString, cbEQCList);
             }
         }  //  end of method addToIndex(CB_EQC)
 
@@ -1935,7 +1943,14 @@ public class Library {
             prototype.cbEQC = this;
             pcString = cb.pcString;
             members.add(prototype);
-            compactCBString = makeCCBS(cb);
+            //  When the Learning Module is translating UDPs, CBs are created with
+            //  UDP names from the CUC instead of the Library context. So creating
+            //  a compact CB String is not possible. In those cases, a null is OK.
+            try {
+                compactCBString = makeCCBS(cb);
+            } catch(NullPointerException npe) {
+                compactCBString = null;
+            }
         }  //  end of constructor
 
         CB_EQC(CB_Ptr ptr) throws KSParsingErrorException, JavaSystemException, KSBadHornClauseException,
@@ -1978,7 +1993,7 @@ public class Library {
                 end = parenSet.indexOf("}", start) + 1;
                 correction = 1;
             }
-            if (!(prototype instanceof BaseCB_Ptr)) {  //  CE_EQCs of base CBs have CCBS = null
+            if (!(prototype instanceof BaseCB_Ptr)) {  //  CB_EQCs of base CBs have CCBS = null
                 start += correction;
                 end = parenSet.length() - 2;
                 compactCBString = parenSet.substring(start, end);
@@ -3084,7 +3099,7 @@ public class Library {
     }  //  end of method saveClusterStateToDisk()
 
     /** 
-    Read an intput stream from disk, reconstruct FV Clustering, and store to Library.clSt
+    Read an input stream from disk, reconstruct FV Clustering, and store to Library.clSt
 
     @throws    a FileNotFoundException  if the named file does not exist.
     @throws    an IOException           if there is a generic read/write failure.
@@ -3095,6 +3110,21 @@ public class Library {
         ObjectInputStream str = new ObjectInputStream(new FileInputStream(fileName));
         clSt = (ClusterState) str.readObject();
     }  //  end of method readClusterStateFromDisk()
+    
+    public static void copyFile(String oldFileName, String newFileName) 
+            throws KSInternalErrorException,IOException {
+        BufferedWriter out = new BufferedWriter(new FileWriter(newFileName));
+        BufferedReader in = new BufferedReader(new FileReader(oldFileName));
+        String line = in.readLine();
+        while (line != null) {
+            out.write(line + "\n");
+            line = in.readLine();
+        }
+        out.flush();
+        out.close();
+        in.close();
+    }
+    
 
     /** 
     Parse a new {@link DomainTheory} from Horn Clauses and add it to the Library.
@@ -3193,6 +3223,18 @@ public class Library {
             ctxt = new Context(dt); // new context automatically becomes current & active
         }
         DomainTheory.current = dt;
+        // Now update kinTypeOrder etc. if needed.
+        ctxt.userDefinedProperties = dt.userDefinedProperties;
+        Iterator udpIter = dt.userDefinedProperties.values().iterator();
+        while (udpIter.hasNext()) {
+            UserDefinedProperty udp = (UserDefinedProperty) udpIter.next();
+            if (udp.chartable) {
+                if (ctxt.kinTypeOrder == null) {
+                    ctxt.loadDefaultKinTypeStuff();
+                }
+                ctxt.insertAdoptionPriority(udp.starName);
+            }
+        }
         KinTermDef ktd;
         Iterator iter = dt.theory.values().iterator();  //  each value is a KinTermDef
         //  Expand all the definitions.
@@ -3297,12 +3339,15 @@ public class Library {
         return langs;
     }  //  end of method genCtxtMenu
 
-    public static String[] genCtxtMenu(String all) {
+    public static String[] genCtxtMenu(String topChoice) {
         //  Generate a string array for use in a Menu.  
-        String[] langs = new String[stubs.size() + 1];
-        langs[0] = "All";
-        for (int i = 0; i < stubs.size(); i++) {
-            langs[i + 1] = stubs.get(i).languageName;
+        int adder = (topChoice == null ? 0 : 1);
+        String[] langs = new String[stubs.size() + adder];
+        if (topChoice != null && !topChoice.isEmpty()) {
+            langs[0] = topChoice;
+        }        
+        for (int i = adder; i < stubs.size(); i++) {
+            langs[i] = stubs.get(i).languageName;
         }
         return langs;
     }  //  end of method genCtxtMenu

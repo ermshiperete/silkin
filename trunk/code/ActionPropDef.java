@@ -148,13 +148,21 @@ public class ActionPropDef extends JPanel {
 
 
     private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
-        Context ctxt = Context.current;
+        Context currCtxt = Context.current;
         if (accepted) {  
             try {
+                String sourceContextName = propDef.ktd.domTh.languageName;
+                String fileName = Library.libraryDirectory + "Contexts/" + sourceContextName + ".ctxt";
+                Context sourceCtxt = Library.readContextFromDisk(fileName, false);
+                if (propDef.ktd.domTh.addressTerms) {
+                    sourceCtxt.domTheoryAdr(); // loads it on sourceCtxt
+                } else {
+                    sourceCtxt.domTheoryRef();
+                }
                 KinTermDef newDef = new KinTermDef(propDef.kinTerm);
                 newDef.comments = FamilyPanel.convertBannedCharacters(notesText.getText());
                 newDef.definitions = propDef.ktd.definitions;
-                newDef.expandClauses(ctxt);
+                newDef.expandClauses(sourceCtxt);
                 makePCStrings(newDef, propDef.eqc.sigString);
                 updateCBPtrs(newDef);
                 newDef.makeSigStrings();
@@ -166,10 +174,10 @@ public class ActionPropDef extends JPanel {
                 TreeMap<String, ArrayList<Object>> dyads;
                 dyads = (TreeMap<String, ArrayList<Object>>)dt.dyadsUndefined.remove(newDef.kinTerm);
                 dt.dyadsDefined.put(newDef.kinTerm, dyads);
-                SIL_Edit.editWindow.chart.dirty = true;
+                SIL_Edit.edWin.chart.dirty = true;
                 //  Set up auto-def for this KTD
                 TreeMap<String, ArrayList<Context.CB_Ptr>> autoDef = // autoDef: kinType => AList of Context.CB_Ptrs
-                        (dt.addressTerms ? ctxt.autoDefAdr : ctxt.autoDefRef);
+                        (dt.addressTerms ? currCtxt.autoDefAdr : currCtxt.autoDefRef);
                 for (Object o : newDef.expandedDefs) {
                     ClauseBody cb = (ClauseBody)o;
                     String kinType = cb.pcString;
@@ -184,7 +192,7 @@ public class ActionPropDef extends JPanel {
                 int decision = JOptionPane.showConfirmDialog(this, msg,
                         "Apply Definition?", JOptionPane.YES_NO_OPTION);
                 if (decision == JOptionPane.YES_OPTION) {
-                    SIL_Edit.editWindow.applyDef(newDef, dt);
+                    SIL_Edit.edWin.applyDef(newDef, dt);
                 }                
                 //  Mark this suggestion as processed and update menu
                 papa.markProcessed(suggNmbr);

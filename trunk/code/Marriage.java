@@ -288,9 +288,9 @@ public void delMarriage() {
         for (BirthGroup bg : birthGrps) {
             bg.topPtX -= dx;
         }
-        SIL_Edit.editWindow.chart.draggedPersons.addAll(people);
-        SIL_Edit.editWindow.chart.draggedLinks.addAll(lynx);
-        SIL_Edit.editWindow.chart.draggedMarriages.add((Family)this);
+        SIL_Edit.edWin.chart.draggedPersons.addAll(people);
+        SIL_Edit.edWin.chart.draggedLinks.addAll(lynx);
+        SIL_Edit.edWin.chart.draggedMarriages.add((Family)this);
         ChartPanel.edWin.chart.delayedAreaCk(people);
         ChartPanel.edWin.chart.delayedAreaCheck(lynx);
     }
@@ -377,7 +377,7 @@ public void delMarriage() {
         }
         Family fam = (Family) this;
         fam.computeBirthGrps();
-        SIL_Edit.editWindow.chart.draggedMarriages.add(fam);
+        SIL_Edit.edWin.chart.draggedMarriages.add(fam);
     }
 
     void adjustLocation(int extraWidth, int extraHeight) {

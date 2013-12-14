@@ -94,7 +94,7 @@ public class MainPane extends JFrame implements ActionListener {
         }
         JFrame topWindow = topPane;
         if (topWindow == null || !topWindow.isVisible()) {
-            topWindow = SIL_Edit.editWindow;
+            topWindow = SIL_Edit.edWin;
         }
         JOptionPane.showMessageDialog(topWindow, msg, title, typ);
         MainPane.activity.log.append(msg + "\n\n");
@@ -228,7 +228,6 @@ public class MainPane extends JFrame implements ActionListener {
         miEditUserContext.setActionCommand("edit user context");
         miEditUserContext.addActionListener(this);
 
-
         JMenuItem miTest1 = menuAdmin.add("Compute Similarity Matrix");
         miTest1.setActionCommand("Compute Similarity Matrix");
         miTest1.addActionListener(this);
@@ -250,6 +249,9 @@ public class MainPane extends JFrame implements ActionListener {
         JMenuItem miTest7 = menuAdmin.add("Merge Indexes");
         miTest7.setActionCommand("Merge Indexes");
         miTest7.addActionListener(this);
+        JMenuItem miTest8 = menuAdmin.add("Index & Merge 1 New Language"); 
+        miTest8.setActionCommand("Index & Merge");
+        miTest8.addActionListener(this);
         JMenuItem miTest10 = menuAdmin.add("Simulate User Data");
         miTest10.setActionCommand("Simulate User Data");
         miTest10.addActionListener(this);
@@ -259,7 +261,15 @@ public class MainPane extends JFrame implements ActionListener {
         JMenuItem miTest12 = menuAdmin.add("Leave 1 Instant Replay");
         miTest12.setActionCommand("Leave 1 Instant Replay");
         miTest12.addActionListener(this);
-
+        
+ //  Disabling of menu options no longer used       
+        miTest2.setEnabled(false);      
+        miTest3.setEnabled(false);      
+        miTest5.setEnabled(false);
+        miTest10.setEnabled(false);
+        miTest11.setEnabled(false);        
+        miTest12.setEnabled(false);
+        
         menuBar.add(menuFile);
         menuBar.add(menuEdit);
         menuBar.add(menuView);
@@ -339,9 +349,9 @@ public class MainPane extends JFrame implements ActionListener {
             }
         } //  end of action-is-close-window
         else if (e.getActionCommand().equals("exit")) {
-            if (SIL_Edit.editWindow != null
-                    && SIL_Edit.editWindow.chart.dirty) {
-                SIL_Edit.editWindow.chart.doWantToSave();
+            if (SIL_Edit.edWin != null
+                    && SIL_Edit.edWin.chart.dirty) {
+                SIL_Edit.edWin.chart.doWantToSave();
             }
             System.exit(0);
         } else if (e.getActionCommand().equals("delete from library")) {
@@ -774,8 +784,8 @@ public class MainPane extends JFrame implements ActionListener {
             changeActivity(Library.DATA_GATHERING);
         } //  end of action-is-delete-context
         else if (e.getActionCommand().equals("save context")) {
-            if (SIL_Edit.editWindow != null) {
-                SIL_Edit.editWindow.chart.saveSILKFile();
+            if (SIL_Edit.edWin != null) {
+                SIL_Edit.edWin.chart.saveSILKFile();
             }else try {
                 Library.saveUserContext(currentFrame, false);
             } catch (Exception ex) {
@@ -784,8 +794,8 @@ public class MainPane extends JFrame implements ActionListener {
             changeActivity(Library.DATA_GATHERING);
         } //  end of action-is-save-context
         else if (e.getActionCommand().equals("save context as")) {
-            if (SIL_Edit.editWindow != null) {
-                SIL_Edit.editWindow.chart.saveAsFile();
+            if (SIL_Edit.edWin != null) {
+                SIL_Edit.edWin.chart.saveAsFile();
             }else try {
                 Library.saveUserContext(currentFrame, true);
             } catch (Exception ex) {
@@ -802,8 +812,8 @@ public class MainPane extends JFrame implements ActionListener {
             //  DomTh.writeThyFile() is all set to go.
         } //  end of action-is-export-domain-theory
         else if (e.getActionCommand().equals("edit prefs")) {
-            if (SIL_Edit.editWindow != null) {
-                SIL_Edit.editWindow.editPrefsItemActionPerformed(null);
+            if (SIL_Edit.edWin != null) {
+                SIL_Edit.edWin.editPrefsItemActionPerformed(null);
             }else {
                 String msg = "You may only edit Prefs for a Context Under Construction." 
                         + "\nThere currently is none.";
@@ -863,14 +873,7 @@ public class MainPane extends JFrame implements ActionListener {
             }
         } //  end of action-is-Make-dyadsUndefined
         else if (e.getActionCommand().equals("Gen Indexes")) {
-            /*        try  {
-            String fileName = Library.libraryDirectory + "ClauseIndex";
-            BufferedReader file = new BufferedReader(new FileReader(fileName));
-            Library.cbIndex = new Library.ClauseIndex(file);
-            System.out.println(Library.cbIndex.stats());
-            return;
-            }catch(Exception exc) { System.out.println("You messed up!\n" + exc); }
-             */ try {
+            try {
                 String startStr = JOptionPane.showInputDialog(this, "Start with what Language number?"),
                         endStr = JOptionPane.showInputDialog(this, "End with what Language number (inclusive)?"),
                         tag = JOptionPane.showInputDialog(this, "Suffix for this segment");
@@ -893,7 +896,7 @@ public class MainPane extends JFrame implements ActionListener {
                         JOptionPane.ERROR_MESSAGE);
                 activity.log.append(msg + "\n\n");
             }
-        } //  end of action-is-Gen-Clause-Index
+        } //  end of action-is-Gen-Indexes
         else if (e.getActionCommand().equals("Merge Indexes")) {
             String[] suffixes = new String[10];
             int index = 0;
@@ -938,14 +941,7 @@ public class MainPane extends JFrame implements ActionListener {
 
             } catch (RuntimeException rte) {
                 throw new RuntimeException(rte);
-                /*		}catch(IndexOutOfBoundsException oobe)  {
-                String msg = "PROBLEM: During merger of Index files,\n" + prettify(oobe.toString()) +
-                "\nPerhaps slippery fingers?" +
-                "\nRECOMMENDATION: Try Again!";
-                JOptionPane.showMessageDialog(desktop, msg,  "Testing Error",
-                JOptionPane.ERROR_MESSAGE);
-                activity.log.append(msg + "\n\n");
-                 */            } catch (Exception exc) {
+            } catch (Exception exc) {
                 String msg = "PROBLEM: During merger of Index files,\n" + prettify(exc.toString())
                         + "\nRECOMMENDATION: DeBug!";
                 JOptionPane.showMessageDialog(desktop, msg, "Testing Error",
@@ -954,6 +950,90 @@ public class MainPane extends JFrame implements ActionListener {
             }
             return;
         } //  end of action-is-Merge-Indexes
+        else if (e.getActionCommand().equals("Index & Merge")) {
+        // 1    Identify the context to be added
+            String[] langs = Library.genCtxtMenu(null);
+            String chosen = (String) JOptionPane.showInputDialog(desktop,
+                    "What language would you like to index & merge?",
+                    "Pick a Language, Any Language...",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    langs,
+                    langs[0]);
+            //Check for cancellation.
+            if (chosen == null) {
+                return;
+            }
+            int start = Arrays.binarySearch(langs, chosen);
+       // 2    Generate index segments for that DT into the Segments directory, marked "B"
+            if (Library.predEncodings == null) {
+                Library.predEncodings = new TreeMap();
+            }
+            if (Library.predDecodings == null) {
+                Library.predDecodings = new TreeMap();
+            }
+            Library.parseClauseCounterOn = false;
+            try {
+                Library.generateAllIndexes(start, start, "-B");
+            } catch (Exception exc) {
+                String msg = "Problem loading the language '" + chosen + "'\n" + exc;
+                JOptionPane.showMessageDialog(desktop, msg, "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        // 3    Move the current cum indexes to the Segments directory, marked "A"
+            String  oldcbIbase = Library.libraryDirectory + "ClauseIndex",
+                    oldbcbIbase = Library.libraryDirectory + "BaseCBIndex",
+                    oldktBase = Library.libraryDirectory + "KinTermSigTree",
+                    oldktCompressedBase =  Library.libraryDirectory + "KTSigCompressed",
+                    oldcbCountBase = Library.libraryDirectory + "ClauseCounts",
+                    oldpredEncodeBase = Library.libraryDirectory + "PredEncodings",
+                    oldpredDecodeBase = Library.libraryDirectory + "PredDecodings",
+                    newcbIbase = Library.libraryDirectory + "Index Segments/ClauseIndex",
+                    newbcbIbase = Library.libraryDirectory + "Index Segments/BaseCBIndex",
+                    newktBase = Library.libraryDirectory + "Index Segments/KinTermSigTree",
+                    newktCompressedBase =  Library.libraryDirectory + "Index Segments/KTSigCompressed",
+                    newcbCountBase = Library.libraryDirectory + "Index Segments/ClauseCounts",
+                    newpredEncodeBase = Library.libraryDirectory + "Index Segments/PredEncodings",
+                    newpredDecodeBase = Library.libraryDirectory + "Index Segments/PredDecodings";            
+            try {
+                Library.copyFile(oldcbIbase, newcbIbase + "-A");
+                Library.copyFile(oldbcbIbase, newbcbIbase + "-A");
+                Library.copyFile(oldktBase, newktBase + "-A");
+                Library.copyFile(oldktCompressedBase, newktCompressedBase + "-A");
+                Library.copyFile(oldcbCountBase, newcbCountBase + "-A");
+                Library.copyFile(oldpredEncodeBase, newpredEncodeBase + "-A");
+                Library.copyFile(oldpredDecodeBase, newpredDecodeBase + "-A");
+            } catch (Exception iee) {
+                String msg = "Problem copying old cumulative Indexes:\n" + iee;
+                msg += "\nPossible Library corruption.";
+                JOptionPane.showMessageDialog(desktop, msg, "Library Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }            
+        // 4    Call 'Merge Indexes' with A & B.
+            ArrayList<Object> cbIfiles = new ArrayList<Object>(),
+                    bcbIfiles = new ArrayList<Object>(),
+                    ktFiles = new ArrayList<Object>(),
+                    cbCountFiles = new ArrayList<Object>(),
+                    predEncodeFiles = new ArrayList<Object>(),
+                    predDecodeFiles = new ArrayList<Object>();
+            String[] suffixes = {"-A", "-B"};
+            for (String s : suffixes) {
+                cbIfiles.add(newcbIbase + s);
+                bcbIfiles.add(newbcbIbase + s);
+                ktFiles.add(newktBase + s);
+                cbCountFiles.add(newcbCountBase + s);
+                predEncodeFiles.add(newpredEncodeBase + s);
+                predDecodeFiles.add(newpredDecodeBase + s);
+            }
+            try {
+            Library.mergeIndexes(cbIfiles, bcbIfiles, ktFiles, cbCountFiles, predEncodeFiles, predDecodeFiles);
+            } catch(Exception exc) {
+                String msg = "Problem merging Indexes:\n" + exc;
+                msg += "\nA likely file system problem.";
+                JOptionPane.showMessageDialog(desktop, msg, "File Merge Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }  // end of index-and-merge
         else if (e.getActionCommand().equals("Leave 1 Instant Replay")) {
             File file = null;
             try {
@@ -1631,20 +1711,20 @@ public class MainPane extends JFrame implements ActionListener {
     if (Library.predDecodings == null) Library.readPredDecodings();
     dt.ctxt.simDataGen = true;
     String[] defs = dt.genKTDarray("All");
-    String victim = "dummy victim";
-    while (victim != null)  {
-    victim = (String)JOptionPane.showInputDialog(desktop,
+    String chosen = "dummy chosen";
+    while (chosen != null)  {
+    chosen = (String)JOptionPane.showInputDialog(desktop,
     "Choose definitions to delete.  Cancel ends deletions.",
     "Existing KTDs to Delete",
     JOptionPane.PLAIN_MESSAGE,
     null,
     defs,
     defs[0]);
-    if (victim == null) {  //  do nothing; we're done.
-    }else if (victim.equals("All"))  {
+    if (chosen == null) {  //  do nothing; we're done.
+    }else if (chosen.equals("All"))  {
     dt.theory = new TreeMap();
-    victim = null;
-    }else dt.theory.remove(victim);
+    chosen = null;
+    }else dt.theory.remove(chosen);
     }  //  end of picking KTDs to kill
     Context.current = dt.ctxt;
     dt.resolveSynonymsInDyads();
@@ -2372,11 +2452,11 @@ public class MainPane extends JFrame implements ActionListener {
     public class CleanUpThread extends Thread {
 
         public void run() {
-            if (SIL_Edit.editWindow != null &&
-                    SIL_Edit.editWindow.chart.saveFile != null) {
+            if (SIL_Edit.edWin != null &&
+                    SIL_Edit.edWin.chart.saveFile != null) {
                 try {
-                    SIL_Edit.editWindow.chart.saveSILKFile();
-                    System.out.println("Wrote: " + SIL_Edit.editWindow.chart.saveFile);
+                    SIL_Edit.edWin.chart.saveSILKFile();
+                    System.out.println("Wrote: " + SIL_Edit.edWin.chart.saveFile);
                 } catch (Exception ex) {
                     System.out.println("Hit File-Save exception in clean-up thread.");
                 }

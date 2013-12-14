@@ -37,10 +37,10 @@ public class PrintChart implements Printable {
     }
 
     public void printTheChart() {
-        chart = SIL_Edit.editWindow.chart;
+        chart = SIL_Edit.edWin.chart;
         if (chart == null) {
             String msg = "Must have a chart visible before you can print it.";
-            JOptionPane.showMessageDialog(SIL_Edit.editWindow, msg, 
+            JOptionPane.showMessageDialog(SIL_Edit.edWin, msg, 
                     "Invalid Print Command", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -52,10 +52,10 @@ public class PrintChart implements Printable {
         }
         // Using page format selected, calculate how many sheets wide and
         // high the printed output must be for whole chart.
-        int[] chartSize = SIL_Edit.editWindow.chart.chartSize(null);
+        int[] chartSize = SIL_Edit.edWin.chart.chartSize(null);
         if (chartSize[0] == 0) {
             String msg = "Must have at least one symbol on chart.";
-            JOptionPane.showMessageDialog(SIL_Edit.editWindow, msg,
+            JOptionPane.showMessageDialog(SIL_Edit.edWin, msg,
                     "Invalid Print Command", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -106,7 +106,7 @@ public class PrintChart implements Printable {
                 // Print page header
                 g2d.setFont(tinyFont);
                 String header = chartTitle + " pg " + chartPageNmbr;
-                File saveFile = SIL_Edit.editWindow.chart.saveFile;
+                File saveFile = SIL_Edit.edWin.chart.saveFile;
                 if (saveFile != null) {
                     header += "\t\t\t\t\t\t\t\tFrom: " + saveFile.getName();
                 }
@@ -122,7 +122,7 @@ public class PrintChart implements Printable {
             g2d.setFont(printFont);
             Rectangle segmentBounds = pane.getViewport().getViewRect();
             // Adjust bounds to remove white space left and top
-            int[] chartSize = SIL_Edit.editWindow.chart.chartSize(segmentBounds);
+            int[] chartSize = SIL_Edit.edWin.chart.chartSize(segmentBounds);
             // chartSize: width, height, offsetX, offsetY
             int offsetX = chartSize[2],
                     offsetY = chartSize[3];

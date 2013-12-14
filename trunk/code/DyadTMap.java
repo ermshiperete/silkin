@@ -20,13 +20,57 @@ public class DyadTMap extends TreeMap implements Serializable {
     /**  The total number of dyads in this TreeMap.  */
     public int total = 0;
 
-//    public DyadTMap() {  }
-//
-//    public DyadTMap(DyadTMap model) {
-//        return model.clone();
-//    }
+    public DyadTMap deepCopy() { 
+        //  Make a copy that can be altered without affecting original
+        DyadTMap clone = new DyadTMap();
+        Iterator ktdIter = values().iterator();
+        while (ktdIter.hasNext()) {
+            TreeMap typeMap = (TreeMap)ktdIter.next();
+            Iterator typeIter = typeMap.values().iterator();
+            while (typeIter.hasNext()) {
+                ArrayList dyadList = (ArrayList)typeIter.next();
+                for (Object o : dyadList) {
+                    clone.dyAdd(new Dyad((Dyad)o));
+                }
+            }            
+        }
+        return clone;    
+    }
+    
+    static String truncate(ArrayList<String> symbols, Context ctxt) {
+        String result = "";
+        for (String symbol : symbols) {
+            if (symbol.startsWith("*")) {
+                String predicate = symbol;            
+                if (symbol.startsWith("*inverse")) {
+                    predicate = "*" +  symbol.substring(8);
+                }
+                UserDefinedProperty udp = 
+                        (UserDefinedProperty)ctxt.userDefinedProperties.get(predicate);
+                result += (udp.chartable ? "+" : "*");
+            } else {
+                result += symbol;
+            }
+        }
+        return result;        
+    }
+    
+    static String truncate(String symbol, Context ctxt) {
+        if (symbol.startsWith("*")) {
+            String predicate = symbol;
+            if (symbol.startsWith("*inverse")) {
+                predicate = "*" + symbol.substring(8);
+            }
+            UserDefinedProperty udp =
+                    (UserDefinedProperty) ctxt.userDefinedProperties.get(predicate);
+            return (udp.chartable ? "+" : "*");
+        } else {  // Don't change normal symbols
+            return symbol;
+        }
+    }
+    
 
-    public int total() {
+   public int total() {
         return DT_Abstract1.countLeaves(this);
     }
 

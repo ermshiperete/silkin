@@ -9,9 +9,10 @@
 <body>
 <a name="ego"></a>
 <h3> Ego, Alter, and Linking Kinsmen</h3>
-<p>The first person created on a chart becomes the default <span style="color:red">Ego</span>, i.e. the focal point of the family tree. <span style="color:red">Ego</span> is always colored red, and the name (and serial number) of <span style="color:red">Ego</span> is displayed in a drop-down menu in the upper right corner of the Person display. You may select a different <span style="color:red">Ego</span> at any time using this drop-down menu. If you <span style="font-style: italic">Alt-Click</span> (on some Macs <span style="font-style: italic">Option-Click</span>) on any person in the chart, they become <span style="color:red">Ego</span>.
+<p>The first person created on a chart becomes the default <span style="color:red">Ego</span>, i.e. the focal point of the family tree. <span style="color:red">Ego</span> is always colored red, and the name (and serial number) of <span style="color:red">Ego</span> is displayed in a drop-down menu in the upper right corner of the Detail Display. You may select a different <span style="color:red">Ego</span> at any time using this drop-down menu. If you <span style="font-style: italic">Alt-Click</span> (on some Macs <span style="font-style: italic">Option-Click</span>) on any person in the chart, they become <span style="color:red">Ego</span>. When you change Ego, the new Ego's detailed information will appear in the Detail 
+Display (so you can be sure you got the right one). Clicking on your intended Alter will restore the display to Alter's information.
 </p>
-<p>When you click on anyone else on the chart, they are displayed in blue and their information appears in the Person display. They are
+<p>When you click on anyone else on the chart, they are displayed in blue and their information appears in the Detail Display. They are
 called <span style="color:blue">Alter</span>. The kin term boxes on the Person display show what <span style="color:red">Ego</span> calls <span style="color:blue">Alter</span> and vice versa. Each <span style="color:blue">Alter</span>, of course, may have many sets of kin terms: one set for each possible Ego.
 </p>
 <p>All persons who are part of the chain of relations between <span style="color:red">Ego</span> and
@@ -62,7 +63,7 @@ smaller.
 <ul>
 <li>Do 'Save As' to a new file name. For example: if your project is called <span style="font-style: italic">Zulu</span> then 'Save As' to <span style="font-style: italic">Zulu-A</span>. All changes you make will only affect the new file; the original file will preserve the prior state of your project. </li>
 <li> Perhaps just editing the person will correct the errors. </li>
-<li> If a member of a family has died, you should not delete them. Simply enter the date of death in their Data Panel. Their chart symbol will gain a cross-out to signify their demise. </li>
+<li> If a member of a family has died, you should not delete them. Simply enter the date of death in their Detail Display. Their chart symbol will gain a cross-out to signify their demise. </li>
 </ul>
 </p>
 <a name="del-ppl"></a>
@@ -70,13 +71,70 @@ smaller.
 <p>If you hold down the <span style="font-style: italic">Control key</span> and click on a person's symbol, they will be deleted <span style="font-style: italic">if</span> they are not Ego and are not linked to any union. This is a safety precaution because deleting a person has side-effects: 
 </p>
 <ul>
-	<li> Ego cannot be deleted because the Data Panel cannot display kin terms without an Ego. If you need to delete Ego, choose someone else to be Ego first, then delete. </li>
+	<li> Ego cannot be deleted because the Detail Display cannot display kin terms without an Ego. If you need to delete Ego, choose someone else to be Ego first, then delete. </li>
 	<li> All dyads involving the deleted person as either Ego or Alter are immediately destroyed. </li>
 	<li> If the deleted person is a linking kinsman between two other people, that link is destroyed along with all dyads that rely on that link. </li>
 </ul>
 <p>Likewise, if you attempt to delete a union that still has persons linked to it, SILKin may reject your deletion attempt. <span style="font-weight: bold">BE CAREFUL.</span> Do not delete the person if you only need to delete a relationship (see <a href="#del-rel">above</a>).</p>
 <p>The next time you Save (or Save As) your data, all the people and unions you deleted will be erased from the SILK file. This action cannot be undone.</p>
-<p>The <span style="font-weight: bold">Clear All</span> entry under the File menu deletes all people, unions and relationships <span style="font-weight: bold">from your screen</span>. It does not erase them from the SILK file; it disconnects your chart from the SILK file. It gives you a blank slate upon which to create a new chart (with a new project name and new SILK file).
+<p>The <span style="font-weight: bold">Clear All</span> entry under the File menu blanks all people, unions and relationships <span style="font-weight: bold">from your screen</span>. It does not erase them from the SILK file; it disconnects your chart from the SILK file. It gives you a blank slate upon which to create a new chart (with a new project name and new SILK file), or to load a new SILK file.
 </p>
+<a name="multicharts"></a>
+<h3>Multiple Charts</h3>
+<p>There are several reasons why you might want to create multiple family tree charts: 
+<ul>
+<li>You may have more people than will fit conveniently on one chart. </li>
+<li>You may want to keep each family on its own chart. </li>
+<li>You may have a partner who also conducts interviews and creates charts. Each of you can edit your own charts. </li>
+</ul>
+Of course, you would  <span style="font-weight: bold">NOT</span> use multiple charts to document multiple cultures or languages. Each culture (context) must be kept in its own SILK file.
+</p>
+<p> When you first launch SILKin, the label over the chart area says 'Draw Family Tree Charts Below.' When you create a new context (by beginning a family tree chart) SILKin automatically creates an initial chart (with description 'Default Chart') containing your initial people and families. SILKin assigns the name 'A' to your first chart, and will name subsequent charts 'B' 'C' etc. The name and description of the current chart is displayed in the drop-down menu at the top of the chart area.
+</p>
+<p>You may edit the description of the current chart to be anything you want. Choose Edit > Edit Chart Description, then type in your new description.
+</p>
+<p>To create an additional chart, click on the drop-down menu at the top of the chart area and choose 'Create New 
+Chart'. You will be prompted for a description (that can be edited later) and your new blank chart will then be displayed. You may begin creating people and unions. If your new chart was named (by SILKin) 'Chart B' then all persons and families you create on this chart will have a home chart of 'B'. The Detail Display for Alter always shows his/her home chart just to the right of the birth date. 
+</p>
+<a name="links"></a>
+<h3>Links Between Charts</h3>
+<p>Frequently, you will want to create <span style="font-style: italic">links</span> between people on different charts. If, for example, you put each family on a different chart, every marriage of a child on Chart A will likely be to someone on another chart. When you click on a blank area of any chart to create a person or union, you also have the choice 'Link to Person'. Choosing 'Link to Person' brings up a menu of all persons in your context. Choosing an existing person creates a male/female symbol drawn in<span style="color:green"> green</span>. Links will always be green unless the link represents Ego (red), Alter (blue), or a linking kinsman (orange). When you click on a link to make her/him Alter, the Detail Display will show the information for the person linked to (the 'original' so to speak). If you edit the information in the Detail Display, you are editing the original. 
+</p>
+<p>To put it another way: when you create a link to Mary Smith &lt;27&gt;, you are not making another copy or version of Mary Smith &lt;27&gt;. There is only one version of any person. A link is just a 'stand in' for the original. The link can be placed on a different chart from the original, or on the same chart. (You would use a link on the same chart to prevent long crossing lines on the chart.) <span style="font-weight: bold">For example:</span> Assume that the Adams family is all drawn on Chart A and the Campbell family is all on Chart C. When Amy Adams marries Glenn Campbell you decide whether you want their marriage to be shown on Chart A, C or a new chart. If you choose Chart C, then you create the union symbol next to Glenn and create a link to Amy next to the union symbol. Then you drag Glenn and Amy (her link) to the union symbol as you normally would. SILKin now knows that they are married. If you choose Glenn as Ego and make Amy's mother Alter, the <span style="font-style: italic">kin type</span> of Amy's mother relative to Glenn will be WiMo (wife's mother) and you will enter the kin terms in her Detail Display (on Chart A).
+</p>
+<p> If you had chosen to put Glenn and Amy on their own new chart page, then you would draw a union symbol and 2 links on that new chart. If you need to show multiple marriages for someone, you may use multiple links to the same person. A link is just a graphical convenience. The underlying data for your context shows the marriages and birth families of individuals without regard to chart names. 
+</p>
+<a name="deletingcharts"></a>
+<h3>Deleting Charts</h3>
+<p>If you should ever need to delete a chart, it might get complicated; you need to know the rules.
+<ul>
+<li> You go to the chart you want to delete by choosing it in the drop-down menu. Then choose Edit > Delete Current Chart. </li>
+<li> If the current chart is empty, there are no complications. The chart goes away and your display switches to Chart A. </li>
+<li> If there are people, links, or unions on the chart, you will get a warning that these will all be deleted.</li> 
+<li>Deleting a person has potentially wide consequences:
+<ul>
+<li> All dyads involving the deleted person as either Ego or Alter are immediately destroyed. </li>
+<li>If the deleted person is a linking kinsman between two other people, that connection is destroyed along with all dyads that rely on that connection. </li>
+<li> If the deleted person is the connection between one family and the rest of the community, then everyone in the family loses all their connections to non-family members. </li>
+</ul>
+Therefore, SILKin will enforce the rule that only disconnected individuals may be deleted. They cannot be connected to any unions as spouse or child.
+ </li>
+<li> Deleting a union is simpler: the husband and wife each lose all record of that marriage (as if it never happened), and the children no longer have a birth family. The union itself is deleted and disappears. </li>
+<li> Deleting a link is the simplest. The link is deleted and disappears. The original is not affected. However, the relationship that the link showed is broken. </li>
+<li> When all people, links, and unions have been deleted from a chart, it disappears. If you previously had charts A-F and you deleted Chart D, then charts E & F would be renamed D & E, retaining their proper descriptions. </li>
+</ul>
+</p>
+<a name="print"></a>
+<h3>Printing Your Charts</h3>
+<p>If you want to print a chart, you can select Portrait or Landscape mode by clicking 'File > Page Setup'. Landscape mode
+(wider than it is long) is the default. Your computer's page setup dialog may have a 'Scale' setting (expressed as a percentage). Unfortunately, changing the scale will not affect SILKin's printing. 
+<!-- The 'Edit Prefs' menu allows you to 
+<a href="Prefs.html#printing">change the font.</a> 
+-->
+</p>
+<p>Under 'File > Print' you have three options. You can print just the portion of your chart that is visible now, or the entire
+current chart, or all charts. Printing a large chart may require several sheets of paper, and printing all charts will require at least one sheet for each chart.
+</p>
+
 </body>
 </html>

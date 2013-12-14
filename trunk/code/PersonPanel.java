@@ -35,7 +35,7 @@ public class PersonPanel extends javax.swing.JPanel {
         linksComboBox.setVisible(false);
         chartLabel.setVisible(false);
         chartField.setVisible(false);
-        parent = SIL_Edit.editWindow;
+        parent = SIL_Edit.edWin;
         alterID.setColumns(3);
         alterRefTerm.setEditable(false);
         recipRefTerm.setEditable(false);
@@ -1104,6 +1104,9 @@ public class PersonPanel extends javax.swing.JPanel {
             }
             try {
                 KinTermDef ktd = (KinTermDef) dt.theory.get(ptr.kinTerm);
+                if (ktd == null) {
+                    continue;
+                }
                 ClauseBody cb = (ClauseBody) ktd.expandedDefs.get(ptr.clauseNmbr);
                 if (dt.fit(cb, dad)) {
                     String clas = (dt.addressTerms ? "address" : "reference");
@@ -1156,6 +1159,9 @@ public class PersonPanel extends javax.swing.JPanel {
     }
 
     void fillTextField(Node nod, JTextField field, boolean addr) {
+        if (nod == null) {
+            return;
+        }
         ArrayList<String> terms = nod.getKinTerms(addr);
         if (terms.isEmpty()) {
             field.setText("");
@@ -1256,7 +1262,9 @@ public class PersonPanel extends javax.swing.JPanel {
             throws KSParsingErrorException, JavaSystemException,
 		   KSBadHornClauseException, KSInternalErrorException,
                    KSConstraintInconsistency, KSDateParseException {
-	if (! dirty) return;  //  No changes have been made
+	if (! dirty) {
+            return;
+        }  //  No changes have been made
         storing = true;
         String a, b, c;
         int currEgoNum = parent.getCurrentEgo();
@@ -1283,7 +1291,9 @@ public class PersonPanel extends javax.swing.JPanel {
                 c = "Invalid date of birth: '" + b + "-" + a + "-" + c;
                 throw new KSDateParseException(c);
             }
-            infoPerson.birthFamily.computeBirthGrps();
+            if (infoPerson.birthFamily != null) {
+                infoPerson.birthFamily.computeBirthGrps();
+            }
         }
         a = personDeathMon.getText().trim();
         if (a.length() == 1) a = "0"+ a;
@@ -1378,7 +1388,7 @@ public class PersonPanel extends javax.swing.JPanel {
         }
         if (list1.size() != list2.size()) {
             String msg = "Removed duplicates from your entry\n'" + s + "'.";
-            JOptionPane.showMessageDialog(SIL_Edit.editWindow, msg, 
+            JOptionPane.showMessageDialog(SIL_Edit.edWin, msg, 
                     "Restrictions on Kin Term Characters", 
                     JOptionPane.ERROR_MESSAGE);
         }
@@ -1400,7 +1410,7 @@ public class PersonPanel extends javax.swing.JPanel {
             if (!newTerms.contains(oldie)) {
                 deletedTerms.add(oldie);
             } // NOTE: In both the node and dyad, we assume (for now) that
-        }     //       only primary terms are being captured. To be Reviewed.
+        }     // only primary terms are being captured. To be Reviewed.
         nod.replaceTerms(newTerms, "primary", (typ.equals("Ref") ? "reference" : "address"));
         try {
             DomainTheory dt = (typ.equals("Ref") ? Context.current.domTheoryRef()
@@ -1459,21 +1469,24 @@ public class PersonPanel extends javax.swing.JPanel {
      * @return  the count
      */
     public static int symbolCount(String pcString) {
-        int cnt = 0;
-        char ch;
-        for (int i=0; i < pcString.length(); i++) {
+        int cnt = 0,
+            siz = pcString.length();
+        char ch, peek;
+        for (int i=0; i < siz; i++) {
             ch = pcString.charAt(i);
             if (Character.isJavaIdentifierStart(ch) &&
 		Character.isUpperCase(ch)) { // Capital Ltr
                 cnt++;
-            }else if (ch == '*') { // double-asterisk
-                ch = pcString.charAt(++i);
-                if (ch != '*') {
-                    String msg = "\nERROR: Single '*' found in a PC String.\n";
-                    msg += "String = " + pcString;
-                    System.out.println(msg);
-                    Context.breakpoint();
-                }else cnt++;
+            } else if (ch == '*') { // single-asterisk
+                if (i < siz -1) {
+                    peek = pcString.charAt(i +1);
+                    if (peek == '*') { // double-asterisk
+                        ch = pcString.charAt(++i);                        
+                    }
+                }
+                cnt++;
+            } else if (ch == '+') {
+                cnt++;
             }
         }
         return cnt;
@@ -1505,13 +1518,13 @@ public class PersonPanel extends javax.swing.JPanel {
     }
 
     public static void debugDyads() {
-        if (SIL_Edit.editWindow.chart.recomputingDyads) {
+        if (SIL_Edit.edWin.chart.recomputingDyads) {
             return;
         }
         if (ktMatrixInBalance(false)) {
             return;
         }
-        SIL_Edit.editWindow.rebuildKTMatrixEtc();
+        SIL_Edit.edWin.rebuildKTMatrixEtc();
         if (ktMatrixInBalance(true)) {
             return;
         }

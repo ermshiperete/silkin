@@ -367,85 +367,118 @@ public class Literal extends LiteralAbstract2  {
 	
 	
 	
-	void findAllStarLinks(String kinTerm, ArrayList<Object> remLits, ArrayList<Object> starStuff, ClauseBody cb, TreeMap bindings, ConstraintObj constraints) 
-		throws KSBadHornClauseException, KSNoChainOfRelations2Alter, KSInternalErrorException,  
-			   KSConstraintInconsistency, ClassNotFoundException  {
-	//  The current literal is a User Defined Property (UDP) like "bald(X, GM)."  If the variable GM is unbound, we will find ALL
-	//  the persons who (1) have baldness = X, and (2) meet all other constraints on the variable GM.  For each one, we recurse on 
-	//  remLits (the Remaining Literals) until we've found Alter and labeled that person with kinTerm.
-	//  If X (the value of the UDP) is blank but GM's *bald UDP already has a value, we'll adopt that value for X and recurse.
-	//  If X is bound to an empty list, and GM is unbound, we'll bind GM successively to each person whose baldness meets the
-	//  constraints on X, and who otherwise meets the constraints on GM.
-	
-		//  One or both args to this literal are already bound.
-		Variable personVar = (Variable)args.get(1);
-        Individual person = (Individual)bindings.get(personVar.argName);  //  null = that variable not yet bound
-        Argument arg0 = (Argument)args.get(0);
-		if (arg0 instanceof Constant) bindings.put(arg0.argName, arg0.bindingVal());  //  if this is a fresh constant, bind it.
-		//  Check to see if both arguments are bound already.  If so, just recurse.  There's no need to validate that this
-		//  literal is true, because a star-literal is also a constraint; it was validated when the args were bound.
-		if ((person != null) && (bindings.get(arg0.argName) != null))  
-			recurse(kinTerm, remLits, starStuff, cb, bindings, constraints);
-		//  If we're here, only one arg is bound.  Recurse on all legal bindings of the unbound arg.
-		else if (person != null)  {  //  arg0 is unbound
-			UserDefinedProperty udp = (UserDefinedProperty)person.userDefinedProperties.get(predicate.name);
-			if (udp.value.size() > 0)  {  //  person-has-a-value-for-this-UDP
-				// if arg0 has a different value, FAIL
-				if ((arg0.getVal().size() > 0) && (! listEqual(arg0.getVal(), udp.value))) return;
-				//  unbound Variable, Constant or MathVariable has no value, so proceed to bind & recurse
-				if (arg0 instanceof MathVariable) ((MathVariable)arg0).link(udp);
-				else arg0.addVal(udp.value);  
-				bindings.put(arg0.argName, arg0.bindingVal());  //  tail recursion - we can use original copy of bindings
-				recurse(kinTerm, remLits, starStuff, cb, bindings, constraints);
-				}  //  end of person-had-a-value-for-this-UDP
-			else return;  //  person has no value & arg0 has no value.  FAIL.
-			}  //  end of person-was-bound
-		else {  //  person-is-unbound.  So recurse on each person in population that has the prescribed value
-			//  NOTE:  It is possible to reach this point with person unbound and arg0 bound to an empty list = arg0.value
-			//  In that case, there is no prescribed value EXCEPT for the constraints on the value of the MathVarible arg0
+    void findAllStarLinks(String kinTerm, ArrayList<Object> remLits, ArrayList<Object> starStuff, ClauseBody cb, TreeMap bindings, ConstraintObj constraints)
+            throws KSBadHornClauseException, KSNoChainOfRelations2Alter, KSInternalErrorException,
+            KSConstraintInconsistency, ClassNotFoundException {
+        //  The current literal is a User Defined Property (UDP) like "bald(X, GM)."  If the variable GM is unbound, we will find ALL
+        //  the persons who (1) have baldness = X, and (2) meet all other constraints on the variable GM.  For each one, we recurse on 
+        //  remLits (the Remaining Literals) until we've found Alter and labeled that person with kinTerm.
+        //  If X (the value of the UDP) is blank but GM's *bald UDP already has a value, we'll adopt that value for X and recurse.
+        //  If X is bound to an empty list, and GM is unbound, we'll bind GM successively to each person whose baldness meets the
+        //  constraints on X, and who otherwise meets the constraints on GM.
+
+        //  One or both args to this literal are already bound.
+        Variable personVar = (Variable) args.get(1);
+        Individual person = (Individual) bindings.get(personVar.argName);  //  null = that variable not yet bound
+        Argument arg0 = (Argument) args.get(0);
+        if (arg0 instanceof Constant) {
+            bindings.put(arg0.argName, arg0.bindingVal());  //  if this is a fresh constant, bind it.
+        } //  Check to see if both arguments are bound already.  If so, just recurse.  There's no need to validate that this
+        //  literal is true, because a star-literal is also a constraint; it was validated when the args were bound.
+        if ((person != null) && (bindings.get(arg0.argName) != null)) {
+            recurse(kinTerm, remLits, starStuff, cb, bindings, constraints);
+        } //  If we're here, only one arg is bound.  Recurse on all legal bindings of the unbound arg.
+        else if (person != null) {  //  arg0 is unbound
+            UserDefinedProperty udp = (UserDefinedProperty) person.userDefinedProperties.get(predicate.name);
+            if (udp.value.size() > 0) {  //  person-has-a-value-for-this-UDP
+                // if arg0 has a different value, FAIL
+                if (arg0.getVal() != null && !arg0.getVal().isEmpty() 
+                        && !containsAll(udp.value, arg0.getVal())) {
+                    return;
+                } else if (arg0.getVal() != null && !arg0.getVal().isEmpty()
+                        && containsAll(udp.value, arg0.getVal())) {
+                    bindings.put(arg0.argName, arg0.bindingVal());  
+                    //  tail recursion - we can use original copy of bindings
+                    recurse(kinTerm, remLits, starStuff, cb, bindings, constraints);
+                } else if (arg0.getVal() == null || arg0.getVal().isEmpty()) {
+                    //  Maybe one of person's values is correct. try them all.
+                    for (Object o : udp.value) {
+                        TreeMap newBindings = new TreeMap(bindings);
+                        newBindings.put(arg0.argName, o);
+                        ArrayList newValList = new ArrayList();
+                        newValList.add(o);
+                        arg0.setVal(newValList);
+                        recurse(kinTerm, remLits, starStuff, cb, newBindings, constraints);
+                    }
+                }
+                //  unbound Variable, Constant or MathVariable has no value, so proceed to bind & recurse
+                if (arg0 instanceof MathVariable) {
+                    ((MathVariable) arg0).link(udp);
+                } else {
+                    arg0.addVal(udp.value);
+                }
+                bindings.put(arg0.argName, arg0.bindingVal());  //  tail recursion - we can use original copy of bindings
+                recurse(kinTerm, remLits, starStuff, cb, bindings, constraints);
+            } //  end of person-had-a-value-for-this-UDP
+            else {
+                return;  //  person has no value & arg0 has no value.  FAIL.
+            }
+        } //  end of person-was-bound
+        else {  //  person-is-unbound.  So recurse on each person in population that has the prescribed value
+            //  NOTE:  It is possible to reach this point with person unbound and arg0 bound to an empty list = arg0.value
+            //  In that case, there is no prescribed value EXCEPT for the constraints on the value of the MathVarible arg0
             ArrayList<Individual> census = Context.current.individualCensus;
-			ArrayList<Object> requiredVal = arg0.getVal(), starBindings = new ArrayList<Object>();  //  starBindings is a throwaway list
-			Individual guy, valPerson = null;
-			UserDefinedProperty udp;
-			TreeMap bindingsCopy = new TreeMap(bindings);  // for multiple recursive descents
-			boolean winner = false;
-			for (int i=0; i < census.size(); i++)  {
-				guy = (Individual)census.get(i);
-				udp = (UserDefinedProperty)guy.userDefinedProperties.get(predicate.name);
-				if ((i == 0) && (arg0.argType.equals("Variable")) && (! udp.typ.equals("individual")))
-					throw new KSInternalErrorException("In FindAllStarLinks: Variable set equal to UDP of type '" + udp.typ
-						+ "' in\n" + cb);  //  only need to check once
-				if ((requiredVal.size() > 0) && listEqual(requiredVal, udp.value)  && 
-					guy.meetsConstraintsStrictly(personVar, constraints, bindings, starBindings)) //  arg0 NOT empty, & a match
-					winner = true;
-				else if ((requiredVal.isEmpty()) && (arg0 instanceof MathVariable) &&			//  arg0 empty
-						valListCheck(arg0, udp, guy, bindings, constraints, starBindings)  &&	//  UDP val meets arg0 constraints
-						guy.meetsConstraintsStrictly(personVar, constraints, bindings, starBindings)) //  other constraints met
-					winner = true;
-				else if (arg0.argType.equals("Variable")) {
-					//  arg0 is bound to SOMETHING - an empty list or a person
-					Object mysteryObj = bindings.get(arg0.argName);
-					if (mysteryObj instanceof Individual) valPerson = (Individual)mysteryObj; 
-					if ((valPerson != null) && (udp.value.size() == 1) && udp.value.contains(valPerson)
-						 && guy.meetsConstraintsStrictly(personVar, constraints, bindings, starBindings))
-						 winner = true;  //  arg0 is already bound to a person, who matches UDP's value
-					else if ((valPerson == null) && (udp.value.size() == 1) 
-							 && valPersonCheck(arg0, udp, bindings, constraints, starBindings, cb)
-							 && guy.meetsConstraintsStrictly(personVar, constraints, bindings, starBindings)) {
-						bindingsCopy.put(arg0.argName, udp.value.get(0));
-						winner = true;  //  bind arg0 to the person in the UDP's value, but only on the COPY of bindings
-						}
-					}  //  end of arg0-is-a-Variable
-				if (winner) {
-					winner = false;
-					bindingsCopy.put(personVar.argName, guy);
-					recurse(kinTerm, remLits, starStuff, cb, bindingsCopy, constraints);
-					}  //  end of found-a-winner
-				}  //  end of loop thru all people in this context
-			}  //  end of person-was-unbound
-		return;
-		}  //  end of method findAllStarLinks
-	
+            ArrayList<Object> requiredVal = arg0.getVal(), 
+                              starBindings = new ArrayList<Object>();  //  starBindings is a throwaway list
+            if (requiredVal == null) {
+                requiredVal = new ArrayList<Object>();
+            }
+            Individual guy, valPerson = null;
+            UserDefinedProperty udp;
+            TreeMap bindingsCopy = new TreeMap(bindings);  // for multiple recursive descents
+            boolean winner = false;
+            for (int i = 0; i < census.size(); i++) {
+                guy = (Individual) census.get(i);
+                udp = (UserDefinedProperty) guy.userDefinedProperties.get(predicate.name);
+                if ((i == 0) && (arg0.argType.equals("Variable")) && (!udp.typ.equals("individual"))) {
+                    throw new KSInternalErrorException("In FindAllStarLinks: Variable set equal to UDP of type '" + udp.typ
+                            + "' in\n" + cb);  //  only need to check once
+                }
+                if ((requiredVal.size() > 0) && listEqual(requiredVal, udp.value)
+                        && guy.meetsConstraintsStrictly(personVar, constraints, bindings, starBindings)) //  arg0 NOT empty, & a match
+                {
+                    winner = true;
+                } else if ((requiredVal.isEmpty()) && (arg0 instanceof MathVariable) && //  arg0 empty
+                        valListCheck(arg0, udp, guy, bindings, constraints, starBindings) && //  UDP val meets arg0 constraints
+                        guy.meetsConstraintsStrictly(personVar, constraints, bindings, starBindings)) //  other constraints met
+                {
+                    winner = true;
+                } else if (arg0.argType.equals("Variable")) {
+                    //  arg0 is bound to SOMETHING - an empty list or a person
+                    Object mysteryObj = bindings.get(arg0.argName);
+                    if (mysteryObj instanceof Individual) {
+                        valPerson = (Individual) mysteryObj;
+                    }
+                    if ((valPerson != null) && (udp.value.size() == 1) && udp.value.contains(valPerson)
+                            && guy.meetsConstraintsStrictly(personVar, constraints, bindings, starBindings)) {
+                        winner = true;  //  arg0 is already bound to a person, who matches UDP's value
+                    } else if ((valPerson == null) && (udp.value.size() == 1)
+                            && valPersonCheck(arg0, udp, bindings, constraints, starBindings, cb)
+                            && guy.meetsConstraintsStrictly(personVar, constraints, bindings, starBindings)) {
+                        bindingsCopy.put(arg0.argName, udp.value.get(0));
+                        winner = true;  //  bind arg0 to the person in the UDP's value, but only on the COPY of bindings
+                    }
+                }  //  end of arg0-is-a-Variable
+                if (winner) {
+                    winner = false;
+                    bindingsCopy.put(personVar.argName, guy);
+                    recurse(kinTerm, remLits, starStuff, cb, bindingsCopy, constraints);
+                }  //  end of found-a-winner
+            }  //  end of loop thru all people in this context
+        }  //  end of person-was-unbound
+        return;
+    }  //  end of method findAllStarLinks
+
 	
 	boolean valListCheck(Argument arg0, UserDefinedProperty udp, Individual guy, TreeMap bindings, 
 						ConstraintObj constraints, ArrayList<Object> starBindings)   
@@ -522,30 +555,40 @@ public class Literal extends LiteralAbstract2  {
 		}  //  end of method findAllMathLinks
 	
 	
-	void recurse(String kinTerm, ArrayList<Object> remLits, ArrayList<Object> starStuff, ClauseBody cb, TreeMap bindings, ConstraintObj constraints) 
-		throws KSBadHornClauseException, KSNoChainOfRelations2Alter, KSInternalErrorException, KSConstraintInconsistency  {
-		Literal nextLit = null;
-		ArrayList<Object> remLitsCopy = new ArrayList<Object>(remLits), starStuffCopy = new ArrayList<Object>(starStuff);
-		try {
-		while (((remLitsCopy.size() > 0) || (starStuffCopy.size() > 0)) && (nextLit == null)) 
-			nextLit = cb.pop(remLitsCopy, starStuffCopy, bindings, kinTerm);
-		if (nextLit != null) {
-			nextLit.fillInNames(kinTerm, remLitsCopy, starStuffCopy, cb, bindings, constraints);
-			return;
-		} else {  //  bingo!
-			if (negatedConstraintsStrictlySatisfied(starStuffCopy, bindings, constraints, kinTerm)) {
-				Individual alter = (Individual)bindings.get("Alter"); 
-				if (alter == null) 
-					throw new KSNoChainOfRelations2Alter("in fillInNames: End of logical chain reached without finding 'Alter' in definition of " + kinTerm);
-				else LiteralAbstract1.assignKinTerm(kinTerm, alter, cb, true, null);
-				}  //  end of remLitsCopy-is-empty-and-negated-constraints-are-strictly-met
-			return;
-			}  //  end of bingo!
-			}catch(ClassNotFoundException exc) {
-				throw new KSInternalErrorException("In FindAllStarLinks: ClassNotFound Exception via negatedConstraintsStrictlySatisfied");}
-		}  //  end of method recurse
-	
-	boolean negatedConstraintsStrictlySatisfied(ArrayList<Object> starStuff, TreeMap bindings, ConstraintObj constraints, String kinTerm)  
+    void recurse(String kinTerm, ArrayList<Object> remLits, ArrayList<Object> starStuff, ClauseBody cb, TreeMap bindings, ConstraintObj constraints)
+            throws KSBadHornClauseException, KSNoChainOfRelations2Alter, KSInternalErrorException, KSConstraintInconsistency {
+        Literal nextLit = null;
+        ArrayList<Object> remLitsCopy = new ArrayList<Object>(remLits), starStuffCopy = new ArrayList<Object>(starStuff);
+        try {
+            while (((remLitsCopy.size() > 0) || (starStuffCopy.size() > 0)) && (nextLit == null)) {
+                nextLit = cb.pop(remLitsCopy, starStuffCopy, bindings, kinTerm);
+            }
+            if (nextLit != null) {
+                nextLit.fillInNames(kinTerm, remLitsCopy, starStuffCopy, cb, bindings, constraints);
+                return;
+            } else {  //  bingo!
+                if (negatedConstraintsStrictlySatisfied(starStuffCopy, bindings, constraints, kinTerm)) {
+                    Individual alter = null;
+                    Object altObj = bindings.get("Alter");
+                    if (altObj instanceof Individual) {
+                        alter = (Individual) altObj;
+                    } else if (altObj instanceof ArrayList) {
+                        alter = (Individual) ((ArrayList)altObj).get(0);
+                    }
+                    if (alter == null) {
+                        throw new KSNoChainOfRelations2Alter("in fillInNames: End of logical chain reached without finding 'Alter' in definition of " + kinTerm);
+                    } else {
+                        LiteralAbstract1.assignKinTerm(kinTerm, alter, cb, true, null);
+                    }
+                }  //  end of remLitsCopy-is-empty-and-negated-constraints-are-strictly-met
+                return;
+            }  //  end of bingo!
+        } catch (ClassNotFoundException exc) {
+            throw new KSInternalErrorException("In FindAllStarLinks: ClassNotFound Exception via negatedConstraintsStrictlySatisfied");
+        }
+    }  //  end of method recurse
+
+    boolean negatedConstraintsStrictlySatisfied(ArrayList<Object> starStuff, TreeMap bindings, ConstraintObj constraints, String kinTerm)  
             throws KSBadHornClauseException, KSNoChainOfRelations2Alter, KSInternalErrorException, ClassNotFoundException    {
 		//  This method mirrors negatedConstraintsSatisfied above, except that it uses fillInNames_bool to test
 		//  for satisfiability;  fillInNames_bool, in turn, requires strict satisfaction of all constraints.
@@ -725,35 +768,41 @@ public class Literal extends LiteralAbstract2  {
         return false;
     }  //  end of method findAllSpice_bool
 
-	boolean recurse_bool(String kinTerm, ArrayList<Object> remLits, ArrayList<Object> starStuff, ClauseBody cb, 
-		TreeMap bindings, ConstraintObj constraints, Individual goalPerson, ArrayList<Object> path, Individual alter) 
-		throws KSBadHornClauseException, KSNoChainOfRelations2Alter, KSInternalErrorException, KSConstraintInconsistency  {
-		
-		Literal nextLit = null;
-		while (((remLits.size() > 0) || (starStuff.size() > 0)) && (nextLit == null)) 
-			nextLit = cb.pop(remLits, starStuff, bindings, kinTerm);
-		try {
-			if (nextLit != null) 
-				return nextLit.fillInNames_bool(kinTerm, remLits, starStuff, cb, bindings, constraints, goalPerson, path);
-			else {
-				if ((remLits.isEmpty()) && (alter != null))  {
-					if ((goalPerson == null) && (negatedConstraintsStrictlySatisfied(starStuff, bindings, constraints, kinTerm))) 
-						return true;
-					else if ((goalPerson != null) && (goalPerson == alter) 
-							&& (negatedConstraintsStrictlySatisfied(starStuff, bindings, constraints, kinTerm))) 
-						return true;
-					else return false;
-				}else throw new KSNoChainOfRelations2Alter("In fillInNames_bool: End of logical chain reached without finding 'Alter' in definition of " + kinTerm);
-				}  //  end of nextLit-is-null
-		}catch(ClassNotFoundException cnf)  { throw new KSInternalErrorException("In fillInNames_bool: ClassNotFound Exception"); }
-		}  //  end of method recurse_bool
+    boolean recurse_bool(String kinTerm, ArrayList<Object> remLits, ArrayList<Object> starStuff, ClauseBody cb,
+            TreeMap bindings, ConstraintObj constraints, Individual goalPerson, ArrayList<Object> path, Individual alter)
+            throws KSBadHornClauseException, KSNoChainOfRelations2Alter, KSInternalErrorException, KSConstraintInconsistency {
 
-    
-    public void updatePath(ArrayList<Object> path, ArrayList<Object> pathCopy)  {
-        for (int i = path.size(); i < pathCopy.size(); i++)
+        Literal nextLit = null;
+        while (((remLits.size() > 0) || (starStuff.size() > 0)) && (nextLit == null)) {
+            nextLit = cb.pop(remLits, starStuff, bindings, kinTerm);
+        }
+        try {
+            if (nextLit != null) {
+                return nextLit.fillInNames_bool(kinTerm, remLits, starStuff, cb, bindings, constraints, goalPerson, path);
+            } else {
+                if ((remLits.isEmpty()) && (alter != null)) {
+                    if ((goalPerson == null) && (negatedConstraintsStrictlySatisfied(starStuff, bindings, constraints, kinTerm))) {
+                        return true;
+                    } else if ((goalPerson != null) && (goalPerson == alter)
+                            && (negatedConstraintsStrictlySatisfied(starStuff, bindings, constraints, kinTerm))) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    throw new KSNoChainOfRelations2Alter("In fillInNames_bool: End of logical chain reached without finding 'Alter' in definition of " + kinTerm);
+                }
+            }  //  end of nextLit-is-null
+        } catch (ClassNotFoundException cnf) {
+            throw new KSInternalErrorException("In fillInNames_bool: ClassNotFound Exception");
+        }
+    }  //  end of method recurse_bool
+
+    public void updatePath(ArrayList<Object> path, ArrayList<Object> pathCopy) {
+        for (int i = path.size(); i < pathCopy.size(); i++) {
             path.add(pathCopy.get(i));
+        }
     }  //  end of method updatePath
-    
 
     boolean findAllBirthLinks_bool(int kidArgNmbr, String kinTerm, ArrayList<Object> remLits, ArrayList<Object> starStuff, ClauseBody cb, 
                             TreeMap bindings, ConstraintObj constraints, Individual goalPerson, ArrayList<Object> path) 
@@ -937,102 +986,147 @@ public class Literal extends LiteralAbstract2  {
     }  //  end of method findAllBirthLinks_bool
 
 	
-	boolean findAllStarLinks_bool(String kinTerm, ArrayList<Object> remLits, ArrayList<Object> starStuff, ClauseBody cb, TreeMap bindings, 
-		ConstraintObj constraints, Individual goalPerson, ArrayList<Object> path) 
-		throws KSBadHornClauseException, KSNoChainOfRelations2Alter, KSInternalErrorException,  
-			   KSConstraintInconsistency, ClassNotFoundException  {
-	//  This method mimics findAllStarLinks, but returns true instead of labelling anyone
-	
-		//  One or both args to this literal are already bound.
-		Variable personVar = (Variable)args.get(1);
-        Individual person = (Individual)bindings.get(personVar.argName);  //  null = that variable not yet bound
-        Argument arg0 = (Argument)args.get(0);
-		if (arg0 instanceof Constant) bindings.put(arg0.argName, arg0.bindingVal());  //  if this is a fresh constant, bind it.
-		
-		Individual alter = (Individual)bindings.get("Alter");
+    boolean findAllStarLinks_bool(String kinTerm, ArrayList<Object> remLits, ArrayList<Object> starStuff, ClauseBody cb, TreeMap bindings,
+            ConstraintObj constraints, Individual goalPerson, ArrayList<Object> path)
+            throws KSBadHornClauseException, KSNoChainOfRelations2Alter, KSInternalErrorException,
+            KSConstraintInconsistency, ClassNotFoundException {
+        //  This method mimics findAllStarLinks, but returns true instead of labelling anyone
+
+        //  One or both args to this literal are already bound.
+        Variable personVar = (Variable) args.get(1);
+        Individual person = (Individual) bindings.get(personVar.argName);  //  null = that variable not yet bound
+        Argument arg0 = (Argument) args.get(0);
+        if (arg0 instanceof Constant) {
+            bindings.put(arg0.argName, arg0.bindingVal());  //  if this is a fresh constant, bind it.
+        }
+        Individual alter = null;
+        Object altObj = bindings.get("Alter");
+        if (altObj instanceof Individual) {
+            alter = (Individual) altObj;
+        } else if (altObj instanceof ArrayList) {
+            alter = (Individual) ((ArrayList) altObj).get(0);
+        }
         if ((remLits.isEmpty()) && (alter != null) && (bindings.get(arg0.argName) != null) && (person != null)) {
-        //  Validate the *-link.  If not correct for this predicate, FAIL
-            UserDefinedProperty udp = (UserDefinedProperty)person.userDefinedProperties.get(predicate.name);
-			if ((bindings.get(arg0.argName) instanceof Individual) && ((udp.value.size() > 1) 
-				 || (! udp.value.contains(bindings.get(arg0.argName))))) return false;
-			if ((bindings.get(arg0.argName) instanceof ArrayList) && 
-				(! listEqual((ArrayList<Object>)bindings.get(arg0.argName), udp.value))) return false;
-            if ((goalPerson == null) && (negatedConstraintsStrictlySatisfied(starStuff, bindings, constraints, kinTerm))) 
+            //  Validate the *-link.  If not correct for this predicate, FAIL
+            UserDefinedProperty udp = (UserDefinedProperty) person.userDefinedProperties.get(predicate.name);
+            if (bindings.get(arg0.argName) instanceof Individual && 
+                    !udp.value.contains(bindings.get(arg0.argName))) {
+                return false;
+            }
+            if ((bindings.get(arg0.argName) instanceof ArrayList)
+                    && (!containsAll(udp.value, (ArrayList<Object>) bindings.get(arg0.argName)))) {
+                return false;
+            }
+            if ((goalPerson == null) && (negatedConstraintsStrictlySatisfied(starStuff, bindings, constraints, kinTerm))) {
                 return true;
-            if ((goalPerson != null) && (goalPerson == (Individual)bindings.get("Alter")) 
-				 && (negatedConstraintsStrictlySatisfied(starStuff, bindings, constraints, kinTerm))) 
+            }
+            if ((goalPerson != null) && (goalPerson == (Individual) bindings.get("Alter"))
+                    && (negatedConstraintsStrictlySatisfied(starStuff, bindings, constraints, kinTerm))) {
                 return true;
-            else return false;
+            } else {
+                return false;
+            }
         }
         //  Check to see if both arguments are bound already.  If so, just recurse.  There's no need to validate that this
-		//  literal is true, because a star-literal is also a constraint; it was validated when the args were bound.
-		if ((person != null) && (bindings.get(arg0.argName) != null))  
-			return recurse_bool(kinTerm, remLits, starStuff, cb, bindings, constraints, goalPerson, path, alter);
-		//  If we're here, only one arg is bound.  Recurse on all legal bindings of the unbound arg.
-		else if (person != null)  {  //  arg0 is unbound
-			UserDefinedProperty udp = (UserDefinedProperty)person.userDefinedProperties.get(predicate.name);
-			if (udp.value.size() > 0)  {  //  person-has-a-value-for-this-UDP
-				// if arg0 has a different value, FAIL
-				if ((arg0.getVal().size() > 0) && (! listEqual(arg0.getVal(), udp.value))) return false;
-				//  An unbound Variable or MathVariable has no value, so proceed to bind & recurse
-				//  A constant's value must agree or we'd have failed above
-				if (arg0 instanceof MathVariable) ((MathVariable)arg0).link(udp);
-				else arg0.addVal(udp.value);  
-				bindings.put(arg0.argName, arg0.bindingVal());  //  tail recursion - we can use original copy of bindings
-				return recurse_bool(kinTerm, remLits, starStuff, cb, bindings, constraints, goalPerson, path, alter);
-				}  //  end of person-had-a-value-for-this-UDP
-			else return false;  //  person has no value & arg0 has no value.  FAIL.
-			}  //  end of person-was-bound
-		else {  //  person-is-unbound.  So recurse on each person in population that has the prescribed value
-			//  NOTE:  It is possible to reach this point with person unbound and arg0 bound to an empty list = arg0.value
-			//  In that case, there is no prescribed value EXCEPT for the constraints on the value of the MathVarible arg0
+        //  literal is true, because a star-literal is also a constraint; it was validated when the args were bound.
+        if ((person != null) && (bindings.get(arg0.argName) != null)) {
+            return recurse_bool(kinTerm, remLits, starStuff, cb, bindings, constraints, goalPerson, path, alter);
+        } //  If we're here, only one arg is bound.  Recurse on all legal bindings of the unbound arg.
+        else if (person != null) {  //  arg0 is unbound
+            UserDefinedProperty udp = (UserDefinedProperty) person.userDefinedProperties.get(predicate.name);
+            if (udp.value.size() > 0) {  //  person-has-a-value-for-this-UDP
+                // if arg0 has a different value, FAIL
+                if (arg0.getVal() != null && !arg0.getVal().isEmpty() 
+                        && !containsAll(udp.value, arg0.getVal())) {
+                    return false;
+                } else if (arg0.getVal() != null && !arg0.getVal().isEmpty()
+                        && containsAll(udp.value, arg0.getVal())) {
+                    bindings.put(arg0.argName, arg0.bindingVal());  
+                    //  tail recursion - we can use original copy of bindings
+                    return recurse_bool(kinTerm, remLits, starStuff, cb, bindings, constraints, goalPerson, path, alter);
+                } else if (arg0.getVal() == null || arg0.getVal().isEmpty()) {
+                    //  Maybe one of person's values is correct. try them all. 
+                    //  One success is enough. If all fail, then fail.
+                    for (Object o : udp.value) {
+                        bindings.put(arg0.argName, o);
+                        ArrayList newValList = new ArrayList();
+                        newValList.add(o);
+                        arg0.setVal(newValList);
+                        altObj = bindings.get("Alter");
+                        if (altObj instanceof Individual) {
+                            alter = (Individual) altObj;
+                        } else if (altObj instanceof ArrayList) {
+                            alter = (Individual) ((ArrayList) altObj).get(0);
+                        }
+                        boolean success = recurse_bool(kinTerm, remLits, starStuff,
+                                cb, bindings, constraints, goalPerson, path, alter);
+                        if (success) {
+                            return true;
+                        }
+                    }
+                    //  No success. Undo & fail.
+                    bindings.remove(arg0.argName);
+                    arg0.setVal(new ArrayList());
+                    return false;
+                }
+            } //  end of person-had-a-value-for-this-UDP
+            else {
+                return false;  //  person has no value & arg0 has no value.  FAIL.
+            }
+        } //  end of person-was-bound
+        else {  //  person-is-unbound.  So recurse on each person in population that has the prescribed value
+            //  NOTE:  It is possible to reach this point with person unbound and arg0 bound to an empty list = arg0.value
+            //  In that case, there is no prescribed value EXCEPT for the constraints on the value of the MathVarible arg0
             ArrayList<Individual> census = Context.current.individualCensus;
-			ArrayList<Object> requiredVal = arg0.getVal(), starBindings = new ArrayList<Object>();  //  starBindings is a throwaway list
-			Individual guy, valPerson = null;
-			UserDefinedProperty udp;
-			TreeMap bindingsCopy = new TreeMap(bindings);  // for multiple recursive descents
-			boolean winner = false;
-			for (int i=0; i < census.size(); i++)  {
-				guy = (Individual)census.get(i);
-				udp = (UserDefinedProperty)guy.userDefinedProperties.get(predicate.name);
-				if ((requiredVal.size() > 0) && listEqual(requiredVal, udp.value)  && //  arg0 NOT empty, & a match
-					guy.meetsConstraintsStrictly(personVar, constraints, bindings, starBindings)) 
-					winner = true;
-				else if ((requiredVal.isEmpty()) && (arg0 instanceof MathVariable) &&			//  arg0 empty
-						valListCheck(arg0, udp, guy, bindings, constraints, starBindings)  &&	//  UDP val meets arg0 constraints
-						guy.meetsConstraintsStrictly(personVar, constraints, bindings, starBindings)) //  other constraints met
-					winner = true;
-				else if (arg0.argType.equals("Variable"))  {
-					if (! udp.typ.equals("individual")) 
-						throw new KSInternalErrorException("In FindAllStarLinks: Variable set equal to UDP of type '" + udp.typ
-						+ "' in\n" + cb);
-					//  arg0 is bound to SOMETHING - an empty list or a person
-					Object mysteryObj = bindings.get(arg0.argName);
-					if (mysteryObj instanceof Individual) valPerson = (Individual)mysteryObj; 
-					if ((valPerson != null) && (udp.value.size() == 1) && udp.value.contains(valPerson)
-						 && guy.meetsConstraintsStrictly(personVar, constraints, bindings, starBindings))
-						 winner = true;  //  arg0 is already bound to a person, who matches UDP's value
-					else if ((valPerson == null) && (udp.value.size() == 1) 
-							 && valPersonCheck(arg0, udp, bindings, constraints, starBindings, cb)
-							 && guy.meetsConstraintsStrictly(personVar, constraints, bindings, starBindings)) {
-						bindingsCopy.put(arg0.argName, udp.value.get(0));
-						winner = true;  //  bind arg0 to the person in the UDP's value, but only on the COPY of bindings
-						}
-					}  //  end of arg0-is-a-Variable
-				if (winner) {
-					bindingsCopy.put(personVar.argName, guy);
-					return recurse_bool(kinTerm, remLits, starStuff, cb, bindingsCopy, constraints, goalPerson, path, alter);
-					}  //  end of found-a-winner
-				}  //  end of loop thru all people in this context
-			}  //  end of person-was-unbound
-		return false;
-		}  //  end of method findAllStarLinks
-	
-		
-	boolean findAllMathLinks_bool(String kinTerm, ArrayList<Object> remLits, ArrayList<Object> starStuff, ClauseBody cb, TreeMap bindings, 
-		ConstraintObj constraints, Individual goalPerson, ArrayList<Object> path) 
-		throws KSBadHornClauseException, KSNoChainOfRelations2Alter, KSInternalErrorException,  
-			   KSConstraintInconsistency, ClassNotFoundException  {
+            ArrayList<Object> requiredVal = arg0.getVal(), starBindings = new ArrayList<Object>();  //  starBindings is a throwaway list
+            Individual guy, valPerson = null;
+            UserDefinedProperty udp;
+            TreeMap bindingsCopy = new TreeMap(bindings);  // for multiple recursive descents
+            boolean winner = false;
+            for (int i = 0; i < census.size(); i++) {
+                guy = (Individual) census.get(i);
+                udp = (UserDefinedProperty) guy.userDefinedProperties.get(predicate.name);
+                if ((requiredVal.size() > 0) && listEqual(requiredVal, udp.value) && //  arg0 NOT empty, & a match
+                        guy.meetsConstraintsStrictly(personVar, constraints, bindings, starBindings)) {
+                    winner = true;
+                } else if ((requiredVal.isEmpty()) && (arg0 instanceof MathVariable) && //  arg0 empty
+                        valListCheck(arg0, udp, guy, bindings, constraints, starBindings) && //  UDP val meets arg0 constraints
+                        guy.meetsConstraintsStrictly(personVar, constraints, bindings, starBindings)) //  other constraints met
+                {
+                    winner = true;
+                } else if (arg0.argType.equals("Variable")) {
+                    if (!udp.typ.equals("individual")) {
+                        throw new KSInternalErrorException("In FindAllStarLinks: Variable set equal to UDP of type '" + udp.typ
+                                + "' in\n" + cb);
+                    }
+                    //  arg0 is bound to SOMETHING - an empty list or a person
+                    Object mysteryObj = bindings.get(arg0.argName);
+                    if (mysteryObj instanceof Individual) {
+                        valPerson = (Individual) mysteryObj;
+                    }
+                    if ((valPerson != null) && (udp.value.size() == 1) && udp.value.contains(valPerson)
+                            && guy.meetsConstraintsStrictly(personVar, constraints, bindings, starBindings)) {
+                        winner = true;  //  arg0 is already bound to a person, who matches UDP's value
+                    } else if ((valPerson == null) && (udp.value.size() == 1)
+                            && valPersonCheck(arg0, udp, bindings, constraints, starBindings, cb)
+                            && guy.meetsConstraintsStrictly(personVar, constraints, bindings, starBindings)) {
+                        bindingsCopy.put(arg0.argName, udp.value.get(0));
+                        winner = true;  //  bind arg0 to the person in the UDP's value, but only on the COPY of bindings
+                    }
+                }  //  end of arg0-is-a-Variable
+                if (winner) {
+                    bindingsCopy.put(personVar.argName, guy);
+                    return recurse_bool(kinTerm, remLits, starStuff, cb, bindingsCopy, constraints, goalPerson, path, alter);
+                }  //  end of found-a-winner
+            }  //  end of loop thru all people in this context
+        }  //  end of person-was-unbound
+        return false;
+    }  //  end of method findAllStarLinks
+
+    boolean findAllMathLinks_bool(String kinTerm, ArrayList<Object> remLits, ArrayList<Object> starStuff, ClauseBody cb, TreeMap bindings,
+            ConstraintObj constraints, Individual goalPerson, ArrayList<Object> path)
+            throws KSBadHornClauseException, KSNoChainOfRelations2Alter, KSInternalErrorException,
+            KSConstraintInconsistency, ClassNotFoundException {
 	//  This method mimics findAllMathLinks, except instead of labelling Alter with a kinTerm, we return true to indicate we could have.
 		Argument xVar, yVar;
 		MathOperator mathOp = null;

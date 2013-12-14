@@ -243,6 +243,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 } else {
                     priorAlter = whichFolk;
                     whichFolk = theInd;
+                    edWin.getPPanel().dirty = true;
                 }
                 lastPersonLoc = new Point(Person.folks.get(theInd).location);
                 whichKnot = -1;
@@ -257,6 +258,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 } else {
                     priorLink = whichLink;
                     whichLink = theLink;
+                    edWin.getPPanel().dirty = true;
                 }
                 lastPersonLoc = new Point(Context.current.linkCensus.get(theLink).location);
                 whichKnot = -1;
@@ -270,6 +272,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                     lastLoc = new Point(mouseX, mouseY);
                 } else {
                     whichKnot = theFam;
+                    edWin.getFPanel().dirty = true;
                 }
                 whichFolk = -1;
                 whichLink = -1;
@@ -959,9 +962,11 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             }
         }        
         int oldEgo = edWin.getCurrentEgo();
+        edWin.hideEgoChange = true;
         edWin.changeEgo(parent_Initiator.serialNmbr);  //  force rebuild of KTM row
         edWin.changeEgo(child_Recipient.serialNmbr);
         edWin.changeEgo(oldEgo);
+        edWin.hideEgoChange = false;
         edWin.showInfo(parent_Initiator);
         edWin.getPPanel().setUDPSelection(uName);
         edWin.infoPerson = parent_Initiator;
@@ -1033,7 +1038,8 @@ public class ChartPanel extends JPanel implements MouseInputListener {
                 Individual p = lk.personPointedTo;
                 if (p.serialNmbr == edWin.getCurrentEgo()) {
                     lk.drawSymbol(g, myRect, Color.red);
-                } else if (lk.serialNmbr == whichLink) { // clicked on Link
+                }  // If we clicked on Ego, he'll be blue (Alter)
+                if (lk.serialNmbr == whichLink) { // clicked on Link
                     lk.drawSymbol(g, myRect, Color.blue);
                     whichFolk = p.serialNmbr; // makes original blue also
                     showInfo(p);
@@ -1679,8 +1685,10 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             }
             // Changing Ego forces flesh out of new Ego's KTM row
             int storedEgo = edWin.getCurrentEgo();
+            edWin.hideEgoChange = true;
             edWin.changeEgo(ix.serialNmbr);
             edWin.changeEgo(storedEgo);
+            edWin.hideEgoChange = false;
             
             showInfo(ix);
             dirty = true;
@@ -1808,8 +1816,10 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         fx.addChild(ix);
         // Changing Ego forces flesh out of new Ego's KTM row
         int storedEgo = edWin.getCurrentEgo();
+        edWin.hideEgoChange = true;
         edWin.changeEgo(ix.serialNmbr);
         edWin.changeEgo(storedEgo);
+        edWin.hideEgoChange = false;
         //  end of NEW CODE
         showInfo(ix);
         dirty = true;
@@ -1940,7 +1950,6 @@ public class ChartPanel extends JPanel implements MouseInputListener {
      * @param fam  Family object from serialNum to remove ix.
      */
     void removePersonAndRecomputeNodes(Individual ix, Family fam) {
-        recomputingDyads = true;
         if (ix == fam.husband) {
             fam.husband = null;
         } else if (ix == fam.wife) {
@@ -1948,6 +1957,23 @@ public class ChartPanel extends JPanel implements MouseInputListener {
         } else if (fam.children.contains(ix)) {
             fam.children.remove(ix);
         }
+        recomputeNodes();
+        try {
+            if ((Context.current.domTheoryRefExists()
+                    && !Context.current.domTheoryRef().issuesForUser.isEmpty())
+                    || (Context.current.domTheoryAdrExists()
+                    && !Context.current.domTheoryAdr().issuesForUser.isEmpty())) {
+                String msg = "The Suggestions from prior learning sessions may\n"
+                        + "contain references to " + ix.name + " that are\n"
+                        + " no longer valid. If so, you should Get New Suggestions.\n";
+                MainPane.displayError(msg, "Potential Problem", JOptionPane.PLAIN_MESSAGE);
+            }
+        } catch (Exception ex) {
+        } // skip it
+    }
+    
+    void recomputeNodes() {
+        recomputingDyads = true;
         int savedEgo = edWin.getCurrentEgo();
         edWin.rebuildKTMatrixEtc();
         edWin.changeEgo(savedEgo);
@@ -1961,18 +1987,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             nod.indiv.node = nod;
         }
         recomputingDyads = false;
-        try {
-            if ((Context.current.domTheoryRefExists()
-                    && !Context.current.domTheoryRef().issuesForUser.isEmpty())
-                    || (Context.current.domTheoryAdrExists()
-                    && !Context.current.domTheoryAdr().issuesForUser.isEmpty())) {
-                String msg = "The Suggestions from prior learning sessions may\n"
-                        + "contain references to " + ix.name + " that are\n"
-                        + " no longer valid. If so, you should Get New Suggestions.\n";
-                MainPane.displayError(msg, "Potential Problem", JOptionPane.PLAIN_MESSAGE);
-            }
-        } catch (Exception ex) {
-        } // skip it
+        
     }
 
 //    /**The nodes in this Ego's row represent paths to Ego that may have been
@@ -2100,7 +2115,7 @@ public class ChartPanel extends JPanel implements MouseInputListener {
             System.err.println(msg);
             MainPane.displayError(msg, "Internal Problem", JOptionPane.PLAIN_MESSAGE);
         }
-        edWin.editWindow.setTitle("Editing: " + saveFile.getName() + ".");
+        edWin.edWin.setTitle("Editing: " + saveFile.getName() + ".");
         dirty = false;
     }
 

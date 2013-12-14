@@ -1206,96 +1206,115 @@ public boolean hasDoD() {
       
       @return   true only if the proposed Values, if any, are conforming, or a conforming value has been generated.
     */       
-    public boolean findConformingValue(String starPropName, Argument arg, ArrayList<Object> starBindings, TreeMap bindings, 
-										ConstraintObj constraints, String queryOrCommit, ClauseBody cb) 
+    public boolean findConformingValue(String starPropName, Argument arg, ArrayList<Object> starBindings, TreeMap bindings,
+            ConstraintObj constraints, String queryOrCommit, ClauseBody cb)
             throws KSBadHornClauseException, ClassNotFoundException, KSConstraintInconsistency, KSInternalErrorException {
-        UserDefinedProperty udp = (UserDefinedProperty)userDefinedProperties.get(starPropName);
+        UserDefinedProperty udp = (UserDefinedProperty) userDefinedProperties.get(starPropName);
         Class requiredClass = getUDPClass(udp.typ);
-        ArrayList<Object> proposedVals = udp.value;
-        StarPropertyBinding spb;
-        if ((proposedVals != null) && (proposedVals.size() > 0))  {  
-    //  Values have been proposed.  Test whether they're all acceptable.  Return true only if ALL are OK.
-            if ((proposedVals.size() > 1) && udp.singleValue) 
+        ArrayList<Object> proposedVals = new ArrayList<Object>(udp.value);
+        if ((proposedVals != null) && (proposedVals.size() > 0)) {
+            //  Values have been proposed.  Test whether any are acceptable.  Remove those that aren't.
+            if ((proposedVals.size() > 1) && udp.singleValue) {
                 throw new KSBadHornClauseException("Multiple values proposed for single-valued property " + starPropName);
-            for (int i=0; i < proposedVals.size(); i++)  {  //  check each proposed value for conformity to the variable's constraints
-                if (requiredClass != proposedVals.get(i).getClass())
-                    throw new KSBadHornClauseException("A value of type " + proposedVals.get(i).getClass().getName() + 
-                                    " was proposed for a property of type " + requiredClass.getName());
-                if (! checkProposedVal(requiredClass, proposedVals.get(i), arg, bindings, starBindings, constraints)) 
-					return false;
-            }  //  end of loop thru all proposed values.  Now check the "contains" constraint if a MathVariable
-            if ((arg instanceof MathVariable) && (queryOrCommit.equals("commit")) 
-                 && (! udp.singleValue) && (((MathVariable)arg).contains != null))
-                assureContains((MathVariable)arg, proposedVals, ((MathVariable)arg).contains, starPropName, starBindings, 
-								bindings, requiredClass, constraints, cb);
-            if ((arg instanceof Variable) && (queryOrCommit.equals("commit")) 
-                 && (! udp.singleValue) && (((Variable)arg).containedBy != null))
-                assureContainedBy(arg, proposedVals, ((Variable)arg).containedBy, starPropName, starBindings, 
-									bindings, requiredClass, constraints, cb);
+            }
+            Iterator valIter = proposedVals.iterator();
+            while (valIter.hasNext()) {  //  check each proposed value for conformity to the variable's constraints
+                Object val = valIter.next();
+                if (requiredClass != val.getClass()) {
+                    throw new KSBadHornClauseException("A value of type " + val.getClass().getName()
+                            + " was proposed for a property of type " + requiredClass.getName());
+                }
+                if (!checkProposedVal(requiredClass, val, arg, bindings, starBindings, constraints)) {
+                    valIter.remove();
+                }
+            }  //  end of loop thru all proposed values.  
+            if (proposedVals.isEmpty()) {
+                return false;
+            }
+            // Now check the "contains" constraint if a MathVariable
+            if ((arg instanceof MathVariable) && (queryOrCommit.equals("commit"))
+                    && (!udp.singleValue) && (((MathVariable) arg).contains != null)) {
+                assureContains((MathVariable) arg, proposedVals, ((MathVariable) arg).contains, starPropName, starBindings,
+                        bindings, requiredClass, constraints, cb);
+            }
+            if ((arg instanceof Variable) && (queryOrCommit.equals("commit"))
+                    && (!udp.singleValue) && (((Variable) arg).containedBy != null)) {
+                assureContainedBy(arg, proposedVals, ((Variable) arg).containedBy, starPropName, starBindings,
+                        bindings, requiredClass, constraints, cb);
+            }
             //  if we get this far, all proposed values have type-checked OK and are conforming
-            if ((queryOrCommit.equals("commit")) && (arg instanceof MathVariable)) 
-                yoke((MathVariable)arg, null, null, null, udp, arg.argName, bindings, starBindings);
-            else if ((queryOrCommit.equals("commit")) && (arg instanceof Variable))  
-				yoke(null, (Variable)arg, null, null, udp, arg.argName, bindings, starBindings);
-			return true;
-        }  //  end of if-proposedVals!=null
-
-    //  No values are proposed.  See if arg already has a conforming value
-        else if ((arg instanceof MathVariable) && (arg.getVal() != null) && (arg.getVal().size() > 0))  {
+            if ((queryOrCommit.equals("commit")) && (arg instanceof MathVariable)) {
+                yoke((MathVariable) arg, null, null, null, udp, arg.argName, bindings, starBindings);
+            } else if ((queryOrCommit.equals("commit")) && (arg instanceof Variable)) {
+                yoke(null, (Variable) arg, null, null, udp, arg.argName, bindings, starBindings);
+            }
+            return true;
+        } //  end of if-proposedVals!=null
+        //  No values are proposed.  See if arg already has a conforming value
+        else if ((arg instanceof MathVariable) && (arg.getVal() != null) && (arg.getVal().size() > 0)) {
             //   Assumption: if arg has a value already, it is conforming.
-            if (queryOrCommit.equals("commit"))
-                yoke((MathVariable)arg, null, null, null, udp, arg.argName, bindings, starBindings);
+            if (queryOrCommit.equals("commit")) {
+                yoke((MathVariable) arg, null, null, null, udp, arg.argName, bindings, starBindings);
+            }
             return true;
-        }  //  end of its-a-mathVar-and-it-has-a-value
-        else if ((arg instanceof Variable) && (arg.getVal() != null) && (arg.getVal().size() > 0)) {  
-            if (! udp.singleValue)
-					throw new KSBadHornClauseException("Personal variable '" + arg.argName + "' set equal to value of a multi-valued UDP.");
-			if (udp.typeCheck(arg.getVal().get(0)) && 
-				((udp.validEntries == null) || (udp.validEntries.isEmpty()) || (udp.validEntries.contains(arg.getVal().get(0)))))  {
-				if (queryOrCommit.equals("commit")) {
-					udp.value.add(arg.bindingVal()); 
-					yoke(null, (Variable)arg, null, null, udp, arg.argName, bindings, starBindings);
-				}
-				return true;
-			} else return false;
-        }  //  end of its-a-Variable-with-value
-        else if (arg instanceof Constant)  {  //  Constants by definition always have a value
-            if (udp.typeCheck(arg.getVal().get(0)) && 
-				((udp.validEntries == null) || (udp.validEntries.isEmpty()) || (udp.validEntries.contains(arg.getVal().get(0)))))  {
-				if (queryOrCommit.equals("commit")) {
-					udp.value.add(arg.getVal().get(0)); 
-					yoke(null, null, (Constant)arg, null, udp, arg.argName, bindings, starBindings);
-				}
-				return true;
-			} else return false;
-        }  //  end of its-a-Constant
-
-    //  No values are proposed.  See if the udp has a default value
-        else if ((udp.defaultValue != null) && (checkProposedVal(requiredClass, udp.defaultValue, arg, bindings, starBindings, constraints)))  {
+        } //  end of its-a-mathVar-and-it-has-a-value
+        else if ((arg instanceof Variable) && (arg.getVal() != null) && (arg.getVal().size() > 0)) {
+            if (!udp.singleValue) {
+                throw new KSBadHornClauseException("Personal variable '" + arg.argName + "' set equal to value of a multi-valued UDP.");
+            }
+            if (udp.typeCheck(arg.getVal().get(0))
+                    && ((udp.validEntries == null) || (udp.validEntries.isEmpty()) || (udp.validEntries.contains(arg.getVal().get(0))))) {
+                if (queryOrCommit.equals("commit")) {
+                    udp.value.add(arg.bindingVal());
+                    yoke(null, (Variable) arg, null, null, udp, arg.argName, bindings, starBindings);
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } //  end of its-a-Variable-with-value
+        else if (arg instanceof Constant) {  //  Constants by definition always have a value
+            if (udp.typeCheck(arg.getVal().get(0))
+                    && ((udp.validEntries == null) || (udp.validEntries.isEmpty()) || (udp.validEntries.contains(arg.getVal().get(0))))) {
+                if (queryOrCommit.equals("commit")) {
+                    udp.value.add(arg.getVal().get(0));
+                    yoke(null, null, (Constant) arg, null, udp, arg.argName, bindings, starBindings);
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } //  end of its-a-Constant
+        //  No values are proposed.  See if the udp has a default value
+        else if ((udp.defaultValue != null) && (checkProposedVal(requiredClass, udp.defaultValue, arg, bindings, starBindings, constraints))) {
             //   Default value is conforming.  Yay!
-			if (queryOrCommit.equals("commit")) {
-				udp.value.add(udp.defaultValue); 
-				if (arg instanceof MathVariable)  //  it can't be a Constant, 'cuz it has no value
-					yoke((MathVariable)arg, null, null, null, udp, arg.argName, bindings, starBindings);
-				else yoke(null, (Variable)arg, null, null, udp, arg.argName, bindings, starBindings);
-			}
+            if (queryOrCommit.equals("commit")) {
+                udp.value.add(udp.defaultValue);
+                if (arg instanceof MathVariable) //  it can't be a Constant, 'cuz it has no value
+                {
+                    yoke((MathVariable) arg, null, null, null, udp, arg.argName, bindings, starBindings);
+                } else {
+                    yoke(null, (Variable) arg, null, null, udp, arg.argName, bindings, starBindings);
+                }
+            }
             return true;
-        }  //  end of check-the-udp's-default-value
-
-    //  No values are proposed; arg does not have one.  See if a conforming value can be found in the valid entries
-        else if ((udp.validEntries != null) && (udp.validEntries.size() > 0))  {
-            for (int j=0; j < udp.validEntries.size(); j++)  {
-                if (checkProposedVal(requiredClass, udp.validEntries.get(j), arg, bindings, starBindings, constraints))  {
+        } //  end of check-the-udp's-default-value
+        //  No values are proposed; arg does not have one.  See if a conforming value can be found in the valid entries
+        else if ((udp.validEntries != null) && (udp.validEntries.size() > 0)) {
+            for (int j = 0; j < udp.validEntries.size(); j++) {
+                if (checkProposedVal(requiredClass, udp.validEntries.get(j), arg, bindings, starBindings, constraints)) {
                     if (queryOrCommit.equals("commit")) {  //  found-one!
-                        MathVariable mathVar = (MathVariable)arg;  //  since Constants always have a value, and ValidEntries not legal for type Person
+                        MathVariable mathVar = (MathVariable) arg;  //  since Constants always have a value, and ValidEntries not legal for type Person
                         udp.value.add(udp.validEntries.get(j));
-                        if ((! udp.singleValue) && (mathVar.contains != null))
+                        if ((!udp.singleValue) && (mathVar.contains != null)) {
                             assureContains(mathVar, udp.value, mathVar.contains, starPropName, starBindings, bindings,
-											requiredClass, constraints, cb);
-                        if ((! udp.singleValue) && (mathVar.containedBy != null))
-							assureContainedBy(arg, udp.value, ((Variable)mathVar).containedBy, starPropName, starBindings, 
-									bindings, requiredClass, constraints, cb);
-						yoke(mathVar, null, null, null, udp, mathVar.argName, bindings, starBindings);
+                                    requiredClass, constraints, cb);
+                        }
+                        if ((!udp.singleValue) && (mathVar.containedBy != null)) {
+                            assureContainedBy(arg, udp.value, ((Variable) mathVar).containedBy, starPropName, starBindings,
+                                    bindings, requiredClass, constraints, cb);
+                        }
+                        yoke(mathVar, null, null, null, udp, mathVar.argName, bindings, starBindings);
                     }  //  end of commit
                     return true;
                 }  //  end of found-one!
@@ -1303,84 +1322,117 @@ public boolean hasDoD() {
             return false;  //  We'll never find one -- all valid entries are non-conforming to the arg's constraints
         }  //  end of validEntries-exist
 
-    //  OK. All easy routes failed; generate a conforming value if possible
-        ArrayList<Object> genVals = generateCandidateValues(requiredClass, arg, bindings, starBindings, constraints, udp); 
-        for (int i=0; i < genVals.size(); i++)
-            if (checkProposedVal(requiredClass, genVals.get(i), arg, bindings, starBindings, constraints))  {
+        //  OK. All easy routes failed; generate a conforming value if possible
+        ArrayList<Object> genVals = generateCandidateValues(requiredClass, arg, bindings, starBindings, constraints, udp);
+        for (int i = 0; i < genVals.size(); i++) {
+            if (checkProposedVal(requiredClass, genVals.get(i), arg, bindings, starBindings, constraints)) {
                 if (queryOrCommit.equals("commit")) {			//  since Constants always have a value, and
-                    if (arg instanceof MathVariable)  {			//  arg doesn't, it must be a MathVar or Variable
-						MathVariable mathVar = (MathVariable)arg;   
-						udp.value.add(genVals.get(i));
-						if ((! udp.singleValue) && (mathVar.contains != null))
-							assureContains(mathVar, udp.value, mathVar.contains, starPropName, starBindings, 
-											bindings, requiredClass, constraints, cb);
-						if ((! udp.singleValue) && (mathVar.containedBy != null))
-							assureContainedBy(arg, udp.value, ((Variable)mathVar).containedBy, starPropName, starBindings, 
-									bindings, requiredClass, constraints, cb);
-						yoke(mathVar, null, null, null, udp, mathVar.argName, bindings, starBindings);
-					}else  {		//  it is a Variable
-						udp.value.add(genVals.get(i));
-						yoke(null, (Variable)arg, null, null, udp, arg.argName, bindings, starBindings);
-					}
-				}  //  end of commit
+                    if (arg instanceof MathVariable) {			//  arg doesn't, it must be a MathVar or Variable
+                        MathVariable mathVar = (MathVariable) arg;
+                        udp.value.add(genVals.get(i));
+                        if ((!udp.singleValue) && (mathVar.contains != null)) {
+                            assureContains(mathVar, udp.value, mathVar.contains, starPropName, starBindings,
+                                    bindings, requiredClass, constraints, cb);
+                        }
+                        if ((!udp.singleValue) && (mathVar.containedBy != null)) {
+                            assureContainedBy(arg, udp.value, ((Variable) mathVar).containedBy, starPropName, starBindings,
+                                    bindings, requiredClass, constraints, cb);
+                        }
+                        yoke(mathVar, null, null, null, udp, mathVar.argName, bindings, starBindings);
+                    } else {		//  it is a Variable
+                        udp.value.add(genVals.get(i));
+                        yoke(null, (Variable) arg, null, null, udp, arg.argName, bindings, starBindings);
+                    }
+                    // if udp is chartable, post this new special relationship to the context
+                    if (udp.chartable) {
+                        if (Context.current.specialRelationships == null) {
+                            Context.current.specialRelationships = new TreeMap<String, ArrayList<Context.SpecRelTriple>>();
+                        }
+                        if (Context.current.specialRelationships.get("A") == null) {
+                            Context.current.specialRelationships.put("A", new ArrayList<Context.SpecRelTriple>());
+                        }
+                        Context.SpecRelTriple triple = new Context.SpecRelTriple();
+                        triple.parent = this;
+                        triple.child = (Individual) udp.value.get(0);
+                        triple.udpName = udp.starName;
+                        Context.current.specialRelationships.get("A").add(triple);
+                        if (Context.current.inverseSpecialRelationships == null) {
+                            Context.current.inverseSpecialRelationships = new TreeMap<Individual, TreeMap<String, ArrayList<Individual>>>();
+                        }
+                        if (Context.current.inverseSpecialRelationships.get(triple.child) == null) {
+                            Context.current.inverseSpecialRelationships.put(
+                                    (Individual)triple.child, new TreeMap<String, ArrayList<Individual>>());
+                        }
+                        if (Context.current.inverseSpecialRelationships.get(triple.child).get(udp.starName) == null) {
+                            Context.current.inverseSpecialRelationships.get(triple.child).put(
+                                    udp.starName, new ArrayList<Individual>());
+                        }
+                        Context.current.inverseSpecialRelationships.get(triple.child).get(udp.starName).add(this);
+                    }
+                }  //  end of commit
                 return true;
             }  //  end of search thru generated values
+        }
         return false;  //  last hope is dashed.  report failure (and hang head)
     }  //  end of method findConformingValue
-    
-	
-	public void yoke(MathVariable mathVar, Variable vari, Constant konstant, Argument personArg, 
-					UserDefinedProperty udp, String bindingMade, TreeMap bindings, ArrayList<Object> starBindings) 
-					throws KSInternalErrorException	{
-		
-		Object boundVal = null;
-		if (mathVar != null)  {
-			mathVar.link(udp); 
-			mathVar.updatePriorVals(udp.value);
-			boundVal = mathVar.bindingVal();
-		}else if (vari != null)  {
-			vari.addVal(udp.value);
-			boundVal = vari.bindingVal();
-		}else {  //  must be konstant != null
-			Object obj = konstant.getVal().get(0);
-			if (! udp.value.contains(obj)) 
-				udp.value.add(obj);
-			boundVal = konstant.bindingVal();
-			}
-		if ((personArg != null) && (bindingMade.equals(personArg.argName)))
-			bindings.put(bindingMade, this); 
-		else bindings.put(bindingMade, boundVal);
-		StarPropertyBinding spb = new StarPropertyBinding();
-		spb.mathVarBound = mathVar;
-		spb.variableBound = vari;
-		spb.personBound = this;
-		spb.valsAssigned = new ArrayList<Object>(udp.value);
-		spb.starPropName = udp.starName;
-		spb.addTo(starBindings);
-		}  //  end of method yoke
-	
-    
-    /**  This method merely dispatches calls to the other, type-specific, forms of this method.  */
+
+    public void yoke(MathVariable mathVar, Variable vari, Constant konstant, Argument personArg,
+            UserDefinedProperty udp, String bindingMade, TreeMap bindings, ArrayList<Object> starBindings)
+            throws KSInternalErrorException {
+
+        Object boundVal = null;
+        if (mathVar != null) {
+            mathVar.link(udp);
+            mathVar.updatePriorVals(udp.value);
+            boundVal = mathVar.bindingVal();
+        } else if (vari != null) {
+            vari.addVal(udp.value);
+            boundVal = vari.bindingVal();
+        } else {  //  must be konstant != null
+            Object obj = konstant.getVal().get(0);
+            if (!udp.value.contains(obj)) {
+                udp.value.add(obj);
+            }
+            boundVal = konstant.bindingVal();
+        }
+        if ((personArg != null) && (bindingMade.equals(personArg.argName))) {
+            bindings.put(bindingMade, this);
+        } else {
+            bindings.put(bindingMade, boundVal);
+        }
+        StarPropertyBinding spb = new StarPropertyBinding();
+        spb.mathVarBound = mathVar;
+        spb.variableBound = vari;
+        spb.personBound = this;
+        spb.valsAssigned = new ArrayList<Object>(udp.value);
+        spb.starPropName = udp.starName;
+        spb.addTo(starBindings);
+    }  //  end of method yoke
+
+    /**
+     * This method merely dispatches calls to the other, type-specific, forms of
+     * this method.
+     */
     public boolean checkProposedVal(Class clazz, Object obj, Argument arg, TreeMap bindings, ArrayList<Object> starBindings, ConstraintObj constraints)
-				throws KSConstraintInconsistency, KSInternalErrorException, ClassNotFoundException {
-        if (clazz.getName().equals("java.lang.Float"))  {
-            Float fltObj = (Float)obj;
+            throws KSConstraintInconsistency, KSInternalErrorException, ClassNotFoundException {
+        if (clazz.getName().equals("java.lang.Float")) {
+            Float fltObj = (Float) obj;
             return checkProposedVal(fltObj, arg);
         }  //  end of class=Float
-        if (clazz.getName().equals("java.lang.Integer"))  {
-            Integer intObj = (Integer)obj;
+        if (clazz.getName().equals("java.lang.Integer")) {
+            Integer intObj = (Integer) obj;
             return checkProposedVal(intObj, arg);
         }  //  end of class=Integer
-        if (clazz.getName().equals("java.lang.String"))  {
-            String strObj = (String)obj;
+        if (clazz.getName().equals("java.lang.String")) {
+            String strObj = (String) obj;
             return checkProposedVal(strObj, arg);
         }  //  end of class=String
-        if (clazz.getName().equals("java.lang.Boolean"))  {
-            Boolean boolObj = (Boolean)obj;
+        if (clazz.getName().equals("java.lang.Boolean")) {
+            Boolean boolObj = (Boolean) obj;
             return checkProposedVal(boolObj, arg);
         }  //  end of class=Boolean
-        if (clazz.getName().equals("Individual"))  {
-            Individual indObj = (Individual)obj;
+        if (clazz.getName().equals("Individual")) {
+            Individual indObj = (Individual) obj;
             return checkProposedVal(indObj, arg, bindings, starBindings, constraints);
         }  //  end of class=Individual
         return false;
@@ -1699,82 +1751,112 @@ public boolean hasDoD() {
             if (mathVar.priorValues != null)  {  //  priorValues contains the current value & all priors.  If indObj matches a current value
                 Individual priorFailure;		 //  we don't get this far.  So any match here = a propr value.
                 for (int i=0; i < mathVar.priorValues.size(); i++)  {  // there could be 2                     
-                priorFailure = (Individual)mathVar.priorValues.get(i);
-                     if (priorFailure.equals(indObj)) return false;
+                    priorFailure = (Individual)mathVar.priorValues.get(i);
+                    if (priorFailure.equals(indObj)) return false;
                 }  //  end of loop thru priorValues
             }  //  end of priorValues-check
             return true;
         }  //  end of its-a-MathVar
         //  Don't need to check for a Constant; you can't reach here if it is.
-        else if (arg instanceof Variable)  {
-            if (bindings.get(arg.argName) == indObj) return true;
-			else if ((bindings.get(arg.argName) == null) &&  // an unbound Variable
-					 (indObj.meetsConstraintsStrictly((Variable)arg, constraints, bindings, starBindings)))  return true;
-            else return false;
+        else if (arg instanceof Variable) {
+            if (bindings.get(arg.argName) == indObj) {
+                return true;
+            } else if ((bindings.get(arg.argName) == null) && // an unbound Variable
+                    (indObj.meetsConstraintsStrictly((Variable) arg, constraints, bindings, starBindings))) {
+                return true;
+            } else {
+                return false;
+            }
         }  //  end of its-a-Variable
         return false;
     }  //  end of method checkProposedVal(Individual)
     
     
-   /**  Generate a list of potential values of the designated type (class).  Since the first "conforming value"
-        in this list will be used (& the rest disgarded), a generous-sized list is provided.  If none of them prove to
-        be "conforming" then the search will fail.  For the numeric types integer and float, arg must be a MathVariable.
-		So we'll conform to any constraints available on the arg (e.g. value must be < 5).
-        
-        @param  requiredClass  the designated type (class).
-        
-        @return  the list
-   */
-    public ArrayList<Object> generateCandidateValues(Class requiredClass, Argument arg, TreeMap bindings, ArrayList<Object> starBindings, 
-											ConstraintObj constraints, UserDefinedProperty udp) 
-					throws KSBadHornClauseException, ClassNotFoundException, KSConstraintInconsistency, KSInternalErrorException  {
+    /**
+     * Generate a list of potential values of the designated type (class). Since
+     * the first "conforming value" in this list will be used (& the rest
+     * discarded), a generous-sized list is provided. If none of them prove to
+     * be "conforming" then the search will fail. For the numeric types integer
+     * and float, arg must be a MathVariable. So we'll conform to any
+     * constraints available on the arg (e.g. value must be < 5).
+     *
+        @param requiredClass the designated type (class).
+     *
+     * @return the list
+     */
+    public ArrayList<Object> generateCandidateValues(Class requiredClass, Argument arg, TreeMap bindings, 
+            ArrayList<Object> starBindings, ConstraintObj constraints, UserDefinedProperty udp)
+            throws KSBadHornClauseException, ClassNotFoundException, KSConstraintInconsistency, KSInternalErrorException {
         int nmbrOfSmpls = 5;
         ArrayList<Object> list = new ArrayList<Object>(), unEqLst = new ArrayList<Object>();
-        if (requiredClass.getName().equals("java.lang.Integer"))  {
+        if (requiredClass.getName().equals("java.lang.Integer")) {
             Integer intObj;
-			MathVariable mathVar = (MathVariable)arg;
-			float[] limits = {Float.MIN_VALUE, Float.MAX_VALUE};
-			if ((udp != null) && (udp.minVal != null)) limits[0] = udp.minVal.floatValue();
-			if ((udp != null) && (udp.maxVal != null)) limits[1] = udp.maxVal.floatValue();
-			adjustLimitsToMathVarConstraints(limits, mathVar, unEqLst);	
-			float hi = limits[1], lo = limits[0], range = hi - lo;	
-			if (lo > hi) return list;  //  no range of permissible values; return empty list.
-			if (lo == hi)  {
-				intObj = new Integer((Math.round(lo)));
-				list.add(intObj);
-				return list;  //  only 1 number available -- do or die
-				}
-			for (int j=0; j < nmbrOfSmpls; j++)  {
-				Float floatObj = new Float((Math.random() * range) + lo); 
-				intObj = new Integer((Math.round(floatObj.floatValue())));
-				if ((! list.contains(intObj)) && (! unEqLst.contains(intObj)))
-					list.add(intObj);
-				}
-             //  end of generation loop
-        return list;
+            MathVariable mathVar = (MathVariable) arg;
+            float[] limits = {Float.MIN_VALUE, Float.MAX_VALUE};
+            if ((udp != null) && (udp.minVal != null)) {
+                limits[0] = udp.minVal.floatValue();
+            }
+            if ((udp != null) && (udp.maxVal != null)) {
+                limits[1] = udp.maxVal.floatValue();
+            }
+            adjustLimitsToMathVarConstraints(limits, mathVar, unEqLst);
+            float hi = limits[1], lo = limits[0];
+            //  If there were no limits anywhere, make some constrained ones
+            if (hi == Float.MAX_VALUE) {
+                hi = 10000f;
+            }
+            if (lo == Float.MIN_VALUE) {
+                lo = 10f;
+            }
+            Float range = hi - lo;
+            if (lo > hi) {
+                return list;  //  no range of permissible values; return empty list.
+            }
+            if (lo == hi) {
+                intObj = new Integer((Math.round(lo)));
+                list.add(intObj);
+                return list;  //  only 1 number available -- do or die
+            }
+            for (int j = 0; j < nmbrOfSmpls; j++) {
+                Double rand = Math.random();
+                Float floatObj = new Float((rand * range) + lo);
+                intObj = new Integer((Math.round(floatObj.floatValue())));
+                if ((!list.contains(intObj)) && (!unEqLst.contains(intObj))) {
+                    list.add(intObj);
+                }
+            }
+            //  end of generation loop
+            return list;
         }  //  end of Integer section
-        if (requiredClass.getName().equals("java.lang.Float"))  {
+        if (requiredClass.getName().equals("java.lang.Float")) {
             Float floatObj;
-			MathVariable mathVar = (MathVariable)arg;
-			float[] limits = {Float.MIN_VALUE, Float.MAX_VALUE};
-			if ((udp != null) && (udp.minVal != null)) limits[0] = udp.minVal.floatValue();
-			if ((udp != null) && (udp.maxVal != null)) limits[1] = udp.maxVal.floatValue();
-			adjustLimitsToMathVarConstraints(limits, mathVar, unEqLst);	
-			float hi = limits[1], lo = limits[0], range = hi - lo;	
-			if (lo > hi) return list;  //  no range of permissible values; return empty list.
-			if (lo == hi)  {
-				floatObj = new Float(lo);
-				list.add(floatObj);
-				return list;  //  only 1 number available -- do or die
-				}
-            for (int i=0; i < (3 * nmbrOfSmpls); i++) {
+            MathVariable mathVar = (MathVariable) arg;
+            float[] limits = {Float.MIN_VALUE, Float.MAX_VALUE};
+            if ((udp != null) && (udp.minVal != null)) {
+                limits[0] = udp.minVal.floatValue();
+            }
+            if ((udp != null) && (udp.maxVal != null)) {
+                limits[1] = udp.maxVal.floatValue();
+            }
+            adjustLimitsToMathVarConstraints(limits, mathVar, unEqLst);
+            float hi = limits[1], lo = limits[0], range = hi - lo;
+            if (lo > hi) {
+                return list;  //  no range of permissible values; return empty list.
+            }
+            if (lo == hi) {
+                floatObj = new Float(lo);
+                list.add(floatObj);
+                return list;  //  only 1 number available -- do or die
+            }
+            for (int i = 0; i < (3 * nmbrOfSmpls); i++) {
                 floatObj = new Float((Math.random() * range) + lo);
-			    if ((! list.contains(floatObj)) && (! unEqLst.contains(floatObj)))
-						list.add(floatObj);
-				}  //  end of generation loop
-			return list;
+                if ((!list.contains(floatObj)) && (!unEqLst.contains(floatObj))) {
+                    list.add(floatObj);
+                }
+            }  //  end of generation loop
+            return list;
         }  //  end of Float section
-        if (requiredClass.getName().equals("java.lang.String"))  {
+        if (requiredClass.getName().equals("java.lang.String")) {
             list.add("cat");
             list.add("dog");
             list.add("Mary");
@@ -1799,35 +1881,50 @@ public boolean hasDoD() {
             list.add("ends");
             list.add("the");
             list.add("list");
-        return list;
+            return list;
         }  //  end of String section
-       if (requiredClass.getName().equals("java.lang.Boolean"))  {
+        if (requiredClass.getName().equals("java.lang.Boolean")) {
             list.add(new Boolean(true));
             list.add(new Boolean(false));
-        return list;
+            return list;
         }  //  end of Boolean section
-        if (requiredClass.getName().equals("Individual"))  {
+        if (requiredClass.getName().equals("Individual")) {
+            if (udp != null && udp.chartable) {
+                // A chartable UDP can't afford to pick a random person. It might accidentally be someone
+                // who already has a relationship to the candidate, thus creating multiple paths from
+                // Ego to Alter. So always make new persons to fill a chartable's value.
+                list.add(new Individual("Created Example", "M", null, "", arg.argName, null, bindings, starBindings,
+                        constraints, (Variable) arg, new BoolFlag(false), new ClauseBody()));
+                list.add(new Individual("Created Example", "F", null, "", arg.argName, null, bindings, starBindings,
+                        constraints, (Variable) arg, new BoolFlag(false), new ClauseBody()));
+                return list;
+            }
             int maxNum = Context.current.individualCensus.size(), listSize = Math.min(maxNum, 25),
-				num, limit = 3 * listSize;
+                    num, limit = 3 * listSize;
             Individual ind;
-			for (int i=0; i < nmbrOfSmpls; i++) {
+            for (int i = 0; i < nmbrOfSmpls; i++) {
                 num = (new Double(Math.random() * maxNum)).intValue();
-                ind = (Individual)Context.current.individualCensus.get(num);
-				limit--;
-				if ((! list.contains(ind)) && (! unEqLst.contains(ind)))
-						list.add(ind);
-				else i--;  //  if we hit a duplicate, don't count that one
-				if (limit == 0) i = nmbrOfSmpls;  //  if we've failed that many times, give up!
-				//  if (i > ) i = listSize;
-                }  //  end of generation loop
-			if (list.size() < nmbrOfSmpls)  //  it was slim pickin's; toss in one more
-				list.add(new Individual("Extra", "?", null, "", arg.argName, null, bindings, starBindings, 
-										constraints, (Variable)arg, new BoolFlag(false), new ClauseBody()));
-			return list;
+                ind = (Individual) Context.current.individualCensus.get(num);
+                limit--;
+                if ((!list.contains(ind)) && (!unEqLst.contains(ind))) {
+                    list.add(ind);
+                } else {
+                    i--;  //  if we hit a duplicate, don't count that one
+                }
+                if (limit == 0) {
+                    i = nmbrOfSmpls;  //  if we've failed that many times, give up!
+                }				//  if (i > ) i = listSize;
+            }  //  end of generation loop
+            if (list.size() < nmbrOfSmpls) //  it was slim pickin's; toss in one more
+            {
+                list.add(new Individual("Extra", "?", null, "", arg.argName, null, bindings, starBindings,
+                        constraints, (Variable) arg, new BoolFlag(false), new ClauseBody()));
+            }
+            return list;
         }  //  end of Individual section
         return list;  //  so if we get an erroneous class name, we return an empty list
     }  //  end of method generateCandidateValues
-    
+
 	
 	 /**Assure that this person meets all the constraints found on the {@link ConstraintObj} 'constraints'. By 'strictly'
 	    we mean that if the constraint is 'dead', it is not sufficient for this person to have a null date of death;
@@ -1861,58 +1958,64 @@ public boolean hasDoD() {
 	
 	
 
-    /**Assure that all elements of <code>constraintSet</code> are included in <code>superSet</code> without duplication. 
-    The elements of constraintSet are either Variables (which bind to Individuals), MathVariables (which bind to
-    lists of property values), or Constants.
-	
-	@param	mathVarOrig		the Variable whose value is being set
-	@param	superSet		the set which must contain all elements of constraintSet's members' values
-	@param	constraintSet	the list of variables whose members' values are required elements
-	@param	starPropName	name of the {@link UserDefinedProperty} (UDP) involved
-	@param	starBindings	a cumulative list of all the values assigned to UDPs
-	@param	bindings		the list of variable bindings to date
-	@param	requiredClass	the mandatory type of any value for mathVarOrig
-	@param	constraints		all the constraints for this ClauseBody
-	
-	@throws	KSConstraintInconsistency  if there is a conflict beween the containment requirement and other constraints.
+    /**
+     * Assure that all elements of
+     * <code>constraintSet</code> are included in
+     * <code>superSet</code> without duplication. The elements of constraintSet
+     * are either Variables (which bind to Individuals), MathVariables (which
+     * bind to lists of property values), or Constants.
+     *
+     * @param	mathVarOrig	the Variable whose value is being set
+     * @param	superSet	the set which must contain all elements of
+     * constraintSet's members' values
+     * @param	constraintSet	the list of variables whose members' values are
+     * required elements
+     * @param	starPropName	name of the {@link UserDefinedProperty} (UDP)
+     * involved
+     * @param	starBindings	a cumulative list of all the values assigned to UDPs
+     * @param	bindings	the list of variable bindings to date
+     * @param	requiredClass	the mandatory type of any value for mathVarOrig
+     * @param	constraints	all the constraints for this ClauseBody
+     *
+     * @throws	KSConstraintInconsistency if there is a conflict between the
+     * containment requirement and other constraints.
      */
-    public void assureContains(MathVariable mathVarOrig, ArrayList<Object> superSet, ArrayList<Object> constraintSet, String starPropName, 
-								ArrayList<Object> starBindings, TreeMap bindings, Class requiredClass, 
-								ConstraintObj constraints, ClauseBody cb) 
-				throws KSConstraintInconsistency, KSInternalErrorException, ClassNotFoundException {
-				
+    public void assureContains(MathVariable mathVarOrig, ArrayList<Object> superSet, ArrayList<Object> constraintSet, String starPropName,
+            ArrayList<Object> starBindings, TreeMap bindings, Class requiredClass,
+            ConstraintObj constraints, ClauseBody cb)
+            throws KSConstraintInconsistency, KSInternalErrorException, ClassNotFoundException {
+
         Argument arg;
-        MathVariable mathVar;
-        for (int i=0; i < constraintSet.size(); i++)  {
-            arg = (Argument)constraintSet.get(i);
-            if ((arg instanceof MathVariable) || (arg instanceof Constant))  { 
-                for (int j = 0; j < arg.getVal().size(); j++)  {
-                    if (! superSet.contains(arg.getVal().get(j))) {
-                        if (! checkProposedVal(requiredClass, arg.getVal().get(j), (Argument)mathVarOrig, 
-							 bindings, starBindings, constraints))
-							throw new KSConstraintInconsistency("Containment requirement conflicts with other constraints" +
-										" on the value of " + mathVarOrig.argName + " in\n" + cb);
-						else {
-							superSet.add(arg.getVal().get(j));  
-							mathVarOrig.updatePriorVals(arg.getVal().get(j));
-							}
+        for (int i = 0; i < constraintSet.size(); i++) {
+            arg = (Argument) constraintSet.get(i);
+            if ((arg instanceof MathVariable) || (arg instanceof Constant)) {
+                for (int j = 0; j < arg.getVal().size(); j++) {
+                    if (!superSet.contains(arg.getVal().get(j))) {
+                        if (!checkProposedVal(requiredClass, arg.getVal().get(j), (Argument) mathVarOrig,
+                                bindings, starBindings, constraints)) {
+                            throw new KSConstraintInconsistency("Containment requirement conflicts with other constraints"
+                                    + " on the value of " + mathVarOrig.argName + " in\n" + cb);
+                        } else {
+                            superSet.add(arg.getVal().get(j));
+                            mathVarOrig.updatePriorVals(arg.getVal().get(j));
+                        }
                     }  // end of found-missing-element
                 }  //  end of loop thru the values of arg
-            }else  {  //  it's a regular Variable
-                Individual ind = (Individual)bindings.get(arg.argName);  // if ind == null, this variable is not yet bound
-                if ((ind != null) && (! superSet.contains(ind)))  {
-					if (! checkProposedVal(requiredClass, (Object)ind, (Argument)mathVarOrig, bindings, starBindings, constraints))
-						throw new KSConstraintInconsistency("Containment requirement conflicts with other constraints" +
-										" on the value of " + mathVarOrig.argName + " in\n" + cb);
-					else {
-						superSet.add(ind);
-						mathVarOrig.updatePriorVals(ind);
-						}
+            } else {  //  it's a regular Variable
+                Individual ind = (Individual) bindings.get(arg.argName);  // if ind == null, this variable is not yet bound
+                if ((ind != null) && (!superSet.contains(ind))) {
+                    if (!checkProposedVal(requiredClass, (Object) ind, (Argument) mathVarOrig, bindings, starBindings, constraints)) {
+                        throw new KSConstraintInconsistency("Containment requirement conflicts with other constraints"
+                                + " on the value of " + mathVarOrig.argName + " in\n" + cb);
+                    } else {
+                        superSet.add(ind);
+                        mathVarOrig.updatePriorVals(ind);
+                    }
                 }  // end of found-missing-element
             }  // end of else-it-is-a-regular-Variable
         }  //  end of loop thru required elements
     }  //  end of method assureContains 
-	
+
 	
 
     /**Assure that all members of <code>constraintSet</code> include in their values, without duplication,
@@ -1928,35 +2031,35 @@ public boolean hasDoD() {
 	
 	@throws	KSConstraintInconsistency  if there is a conflict beween the containment requirement and other constraints.
      */
-    public void assureContainedBy(Argument arg, ArrayList<Object> reqElements, ArrayList<Object> constraintSet, String starPropName, ArrayList<Object> starBindings, 
-								TreeMap bindings, Class requiredClass, ConstraintObj constraints, ClauseBody cb) 
-			throws KSConstraintInconsistency, KSInternalErrorException, ClassNotFoundException  {
-			
+    public void assureContainedBy(Argument arg, ArrayList<Object> reqElements, ArrayList<Object> constraintSet, String starPropName, ArrayList<Object> starBindings,
+            TreeMap bindings, Class requiredClass, ConstraintObj constraints, ClauseBody cb)
+            throws KSConstraintInconsistency, KSInternalErrorException, ClassNotFoundException {
+
         MathVariable mathVar;
-        for (int i=0; i < constraintSet.size(); i++)  {
-            mathVar = (MathVariable)constraintSet.get(i);  //  Only a mathVar can contain multiple values
-			for (int j = 0; j < reqElements.size(); j++)  {
-				if (! mathVar.getVal().contains(reqElements.get(j))) {
-					if (! checkProposedVal(requiredClass, reqElements.get(j), (Argument)mathVar, 
-											bindings, starBindings, constraints))
-						throw new KSConstraintInconsistency("Containment requirement conflicts with other constraints" +
-										" on the value of " + arg.argName + " in\n" + cb);
-					else {
-	//  NOTE:  This is the only place we create an SPB without naming the PersonBound; indeed, that person may
-	//		   be unknown at this point.  This records the addition of a value.
-						mathVar.addVal(reqElements.get(j));
-						mathVar.updatePriorVals(reqElements.get(j));
-						StarPropertyBinding spb = new StarPropertyBinding();
-						spb.mathVarBound = mathVar;
-						spb.valsAssigned.add(reqElements.get(j));
-						spb.starPropName = starPropName;
-						spb.addTo(starBindings);
-						}
-				}  // end of found-missing-element
-			}  //  end of loop thru the values of mathVar
+        for (int i = 0; i < constraintSet.size(); i++) {
+            mathVar = (MathVariable) constraintSet.get(i);  //  Only a mathVar can contain multiple values
+            for (int j = 0; j < reqElements.size(); j++) {
+                if (!mathVar.getVal().contains(reqElements.get(j))) {
+                    if (!checkProposedVal(requiredClass, reqElements.get(j), (Argument) mathVar,
+                            bindings, starBindings, constraints)) {
+                        throw new KSConstraintInconsistency("Containment requirement conflicts with other constraints"
+                                + " on the value of " + arg.argName + " in\n" + cb);
+                    } else {
+                        //  NOTE:  This is the only place we create an SPB without naming the PersonBound; indeed, that person may
+                        //		   be unknown at this point.  This records the addition of a value.
+                        mathVar.addVal(reqElements.get(j));
+                        mathVar.updatePriorVals(reqElements.get(j));
+                        StarPropertyBinding spb = new StarPropertyBinding();
+                        spb.mathVarBound = mathVar;
+                        spb.valsAssigned.add(reqElements.get(j));
+                        spb.starPropName = starPropName;
+                        spb.addTo(starBindings);
+                    }
+                }  // end of found-missing-element
+            }  //  end of loop thru the values of mathVar
         }  //  end of loop thru constraintSet
     }  //  end of method assureContainedBy 
-    
+  
     
     /**  Analyze the constraints on this mathVar and determine the correct limits on its value.
          
@@ -2072,20 +2175,23 @@ public boolean hasDoD() {
 		 @param useDefaults		true = assign a default value, if one is defined.
          
          @return    a new copy of the template with unique value fields for this Individual
-    */
-    public TreeMap makeNewUDPTreeMap(TreeMap ctxtUDPTreeMap, boolean useDefaults)  {
+
+     */
+    public TreeMap makeNewUDPTreeMap(TreeMap ctxtUDPTreeMap, boolean useDefaults) {
         TreeMap newTM = new TreeMap();
         UserDefinedProperty templateUDP, newUDP;
         Map.Entry entry;
         String propName;
         Iterator iter = ctxtUDPTreeMap.entrySet().iterator();
-        while (iter.hasNext())  {
-            entry = (Map.Entry)iter.next();
-            propName = (String)entry.getKey();
-            templateUDP = (UserDefinedProperty)entry.getValue();
+        while (iter.hasNext()) {
+            entry = (Map.Entry) iter.next();
+            propName = (String) entry.getKey();
+            templateUDP = (UserDefinedProperty) entry.getValue();
             newUDP = new UserDefinedProperty(templateUDP, false);  //  copy with a fresh, empty 'value' field
-			if (useDefaults && (newUDP.defaultValue != null)) newUDP.value.add(newUDP.defaultValue);
-			newTM.put(propName, newUDP);
+            if (useDefaults && (newUDP.defaultValue != null)) {
+                newUDP.value.add(newUDP.defaultValue);
+            }
+            newTM.put(propName, newUDP);
         }  //  end of loop thru UDP's in the template treemap
         return newTM;
     }  //  end of method makeNewUDPTreeMap

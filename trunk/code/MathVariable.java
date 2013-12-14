@@ -3,7 +3,7 @@ import java.util.*;
 
 /**  This class defines a math variable in Prolog syntax.  Its name (by convention) must
 begin with a capitol letter; that convention is NOT enforced.  This sub-class of Variable
-is for arguments that will be bound to numbers, booleans, or strings, not Individuals.
+is for arguments that will be bound to numbers, booleans, strings, or Individuals.
 In Example-Generation, constraints on the value of this variable are stored in its fields.
 
 @author		Gary Morris, Northern Virginia Community College		garymorris2245@verizon.net
@@ -75,8 +75,16 @@ public class MathVariable extends Variable {
 
     public void addVal(Object obj) {
         //  we assume this object meets all constraints for this MathVar; verified elsewhere
+        if (obj instanceof ArrayList) {
+            if (((ArrayList) obj).isEmpty()) {
+                return;
+            }
+            obj = ((ArrayList) obj).get(0);
+        }
         if (linkedTo != null) {
-            linkedTo.value.add(obj);
+            if (!linkedTo.value.contains(obj)) {
+                linkedTo.value.add(obj);
+            }
         } else {
             super.addVal(obj);
         }

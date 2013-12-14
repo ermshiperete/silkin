@@ -773,8 +773,8 @@ public class Context implements Serializable {
             } catch (Exception exc) {
             } // No parsing errors expected.
         }
-        if (SIL_Edit.editWindow != null) {
-            SIL_Edit.editWindow.getPPanel().initUDPCombo();
+        if (SIL_Edit.edWin != null) {
+            SIL_Edit.edWin.getPPanel().initUDPCombo();
         }
         Individual ind;
         UserDefinedProperty newInstance;
@@ -793,12 +793,20 @@ public class Context implements Serializable {
     }
     
     void addSpecialRelationship(SpecRelTriple trpl, String chartLtr) {
-        // This method used only by GEDCOM Parser, so child/parent are never links.
+        // This method used by GEDCOM Parser and CB.generateExamples, so child/parent are never links.
+        if (specialRelationships == null) {
+            specialRelationships = new TreeMap<String, ArrayList<SpecRelTriple>>();
+        }
+        if (inverseSpecialRelationships == null) {
+            inverseSpecialRelationships = new TreeMap<Individual, TreeMap<String, ArrayList<Individual>>>();
+        }
         if (specialRelationships.get(chartLtr) == null) {
             specialRelationships.put(chartLtr, new ArrayList<SpecRelTriple>());
         }
         ArrayList<SpecRelTriple> array = specialRelationships.get(chartLtr);
-        array.add(trpl);
+        if (!array.contains(trpl)) {
+            array.add(trpl);
+        }
         Individual kid;
         if (trpl.child instanceof Link) {
             kid = ((Link)trpl.child).personPointedTo;
@@ -858,10 +866,12 @@ public class Context implements Serializable {
     public boolean hasNonChartables(ArrayList miniPreds) {
         for (Object o : miniPreds) {
             String s = (String)o;
-            if ((s.startsWith("*inverse_") && ! kinTypeOrder.contains(s.substring(9)))) {
+            int paren = s.indexOf("(");
+            if (s.startsWith("*inverse") && ! kinTypeOrder.contains("*" + s.substring(8, paren))) {
                 return true;
             }
-            if (s.startsWith("*") && ! kinTypeOrder.contains(s)) {
+            if (s.startsWith("*") && !s.startsWith("*inverse") 
+                    && ! kinTypeOrder.contains(s.substring(0, paren))) {
                 return true;
             }
         }
@@ -869,13 +879,13 @@ public class Context implements Serializable {
     }
     
     public boolean isAdoptionPred(String pred) {
-        return (pred.startsWith("*") && !pred.startsWith("*inverse_")
+        return (pred.startsWith("*") && !pred.startsWith("*inverse")
                 && kinTypeOrder.contains(pred));
     }
     
     public boolean isInverseAdoptionPred(String pred) {
-        return (pred.startsWith("*inverse_") && 
-                kinTypeOrder.contains(pred.substring(9)));
+        return (pred.startsWith("*inverse") && 
+                kinTypeOrder.contains(pred.substring(8)));
     }
     
     public void insertAdoptionPriority(String newUDPname) {
@@ -974,7 +984,7 @@ public class Context implements Serializable {
             kinTypeOrder.remove(ndx);
             kinTypePriorityTMap.remove(udpName);
         }
-        SIL_Edit.editWindow.rebuildKTMatrixEtc();
+        SIL_Edit.edWin.rebuildKTMatrixEtc();
     }
     
     public String getChartDescription(String chart) {
@@ -1934,8 +1944,7 @@ public class Context implements Serializable {
         
         public boolean equals(SpecRelTriple other) {
             if (udpName.equals(other.udpName) && 
-                parent == other.parent && 
-                    child == other.child) {
+                parent == other.parent && child == other.child) {
                 return true;
             }
             return false;
@@ -2092,7 +2101,7 @@ public class Context implements Serializable {
         public void unDo(DomainTheory dt) {
             KinTermDef ktd = (KinTermDef) dt.theory.remove(kinTerm);
             rescinded = true;
-            SIL_Edit win = SIL_Edit.editWindow;
+            SIL_Edit win = SIL_Edit.edWin;
             for (Integer[] pair : autoDefPairs) {
                 win.removeDef(dt, pair[0], pair[1], kinTerm);
             }

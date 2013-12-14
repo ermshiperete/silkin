@@ -841,8 +841,8 @@ public class KinTypePriorityFrame extends javax.swing.JFrame {
             }            
             row++;
         }        
-        SIL_Edit.editWindow.chart.dirty = true;
-        SIL_Edit.editWindow.rebuildKTMatrixEtc();
+        SIL_Edit.edWin.chart.dirty = true;
+        SIL_Edit.edWin.rebuildKTMatrixEtc();
         dispose();
     }//GEN-LAST:event_doneBtnActionPerformed
 

@@ -254,22 +254,27 @@ public class KinTermDef implements Serializable, Comparable {
 		}  //  end of method findExpDef
 	
 	
-	void addToEQCs(ClauseBody cb)	{	//  Add cb to the 2 EQCs it belongs in.
-		if (cb.pcString != null)  {
-			if (exactEQCs == null) exactEQCs = new TreeMap();
-			if (exactEQCs.get(cb.pcString) == null) 
-				exactEQCs.put(cb.pcString, new ArrayList<Object>());
-			((ArrayList<Object>)exactEQCs.get(cb.pcString)).add(cb);
-			}
-		if (cb.pcStringStructural != null)  {
-			if (structEQCs == null) structEQCs = new TreeMap();
-			if (structEQCs.get(cb.pcStringStructural) == null) 
-				structEQCs.put(cb.pcStringStructural, new ArrayList<Object>());
-			((ArrayList<Object>)structEQCs.get(cb.pcStringStructural)).add(cb);
-			}
-		}  //  end of method addToEQCs
-	
-	
+    void addToEQCs(ClauseBody cb) {	//  Add cb to the 2 EQCs it belongs in.
+        if (cb.pcString != null) {
+            if (exactEQCs == null) {
+                exactEQCs = new TreeMap();
+            }
+            if (exactEQCs.get(cb.pcString) == null) {
+                exactEQCs.put(cb.pcString, new ArrayList<Object>());
+            }
+            ((ArrayList<Object>) exactEQCs.get(cb.pcString)).add(cb);
+        }
+        if (cb.pcStringStructural != null) {
+            if (structEQCs == null) {
+                structEQCs = new TreeMap();
+            }
+            if (structEQCs.get(cb.pcStringStructural) == null) {
+                structEQCs.put(cb.pcStringStructural, new ArrayList<Object>());
+            }
+            ((ArrayList<Object>) structEQCs.get(cb.pcStringStructural)).add(cb);
+        }
+    }  //  end of method addToEQCs
+
     public void retrieveSigExact() {
         //  To avoid a disk read, get signature from Library
         TreeMap termTree = (TreeMap) Library.predEncodings.get(domTh.languageName);
@@ -814,7 +819,7 @@ public class KinTermDef implements Serializable, Comparable {
         int cap = 0;
         for (int i = 1; i < pcString.length(); i++) {
             ch = pcString.charAt(i);
-            if (Character.isUpperCase(ch) || ch == '*') {
+            if (Character.isUpperCase(ch) || ch == '*' || ch == '+') {
                 String symbol = pcString.substring(cap, i);
                 symbols.add(symbol);
                 cap = i;
@@ -1053,10 +1058,11 @@ public class KinTermDef implements Serializable, Comparable {
         int serial = 0;
         while (cbIter.hasNext()) {
             cb = (ClauseBody) cbIter.next();
-//     if (ctxt.languageName.equals("Cogui") && kinTerm.equals("augui")) {
+//     if (kinTerm.equals("daddy")) {
 //         Context.breakpoint();
 //     }
             cb.generateExamples(ctxt, egoBag, null, orca);
+
             if (cb.duplicative && !ctxt.simDataGen) {
                 cbIter.remove();
             } else {

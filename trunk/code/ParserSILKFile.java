@@ -2947,6 +2947,11 @@ public class ParserSILKFile extends ParserDomainTheory {
         newDyad.pcString = pcStr;
         newDyad.kinTerm = kinTerm;
         parseDyadComponents(newDyad, innards);
+        try {
+            newDyad.pcStringStructural = ClauseBody.structStr(newDyad.pcString);
+        } catch(KSInternalErrorException ie) {
+            newDyad.pcStringStructural = "";
+        }
         dList.add(newDyad);
     }
 
@@ -3302,42 +3307,55 @@ public class ParserSILKFile extends ParserDomainTheory {
         scanner.readToken();  //  consume the start tag
         current = scanner.lookAhead();  //  at least 1 element required.
         if (!current.lexeme.startsWith("<element")) {
-            error("parseKinTermDef seeking tag '<element>' in a <gloss> block.");
+            error("parseGloss seeking tag '<element>' in a <gloss> block.");
         }
         while (current.lexeme.startsWith("<element")) {
-            gloz.elements.add(readOneAttribute("element", "text", "parseKinTermDef"));
+            gloz.elements.add(readOneAttribute("element", "text", "parseGloss"));
             current = scanner.lookAhead();
         }
         if (current.lexeme.equals("<where>")) {
             scanner.readToken();  //  consume the start tag
             current = scanner.lookAhead();
             if (!current.lexeme.startsWith("<cultural-pred")) {   //  at least 1 cultural-pred required.
-                error("parseKinTermDef seeking tag '<cultural-pred>' in a <where> block.");
+                error("parseGloss seeking tag '<cultural-pred>' in a <where> block.");
             }
             while (current.lexeme.startsWith("<cultural-pred")) {
-                String cPred = readOneAttribute("cultural-pred", "kinTerm", "parseKinTermDef");
+                String cPred = readOneAttribute("cultural-pred", "kinTerm", "parseGloss");
                 current = scanner.lookAhead();
                 if (!current.lexeme.startsWith("<element")) {  //  at least 1 element required.
-                    error("parseKinTermDef seeking tag '<element>' in a <cultural-pred> block.");
+                    error("parseGloss seeking tag '<element>' in a <cultural-pred> block.");
                 }
                 while (current.lexeme.startsWith("<element")) {
-                    gloz.addCulturalPred(cPred, readOneAttribute("element", "text", "parseKinTermDef"));
+                    gloz.addCulturalPred(cPred, readOneAttribute("element", "text", "parseGloss"));
                     current = scanner.lookAhead();
                 }
                 if (!current.lexeme.equals("</cultural-pred>")) {
-                    error("parseKinTermDef seeking end tag '</cultural-pred>'.");
+                    error("parseGloss seeking end tag '</cultural-pred>'.");
                 }
                 scanner.readToken();  //  consume the end tag                    
                 current = scanner.lookAhead();
             }
             if (!current.lexeme.equals("</where>")) {
-                error("parseKinTermDef seeking end tag '</where>'.");
+                error("parseGloss seeking end tag '</where>'.");
+            }
+            scanner.readToken();  //  consume the end tag
+            current = scanner.lookAhead();
+        }
+        if (current.lexeme.equals("<citations>")) {
+            scanner.readToken();  //  consume the start tag
+            current = scanner.lookAhead();
+            while (current.lexeme.startsWith("<cite")) {
+                gloz.addCitation(readOneAttribute("cite", "text", "parseGloss"));
+                current = scanner.lookAhead();
+            }
+            if (!current.lexeme.equals("</citations>")) {
+                error("parseGloss seeking end tag '</citations>'.");
             }
             scanner.readToken();  //  consume the end tag
             current = scanner.lookAhead();
         }
         if (!current.lexeme.equals("</gloss>")) {  //  end of gloss block required.
-            error("parseKinTermDef seeking end tag '</gloss>'.");
+            error("parseGloss seeking end tag '</gloss>'.");
         }
         scanner.readToken();  //  consume the end tag
         current = scanner.lookAhead();

@@ -266,6 +266,9 @@ public abstract class DT_Abstract1 implements Serializable {
                 if (udp.defaultValue != null) {
                     file.print(", default, " + quoter + udp.defaultValue + quoter);
                 }
+                if (udp.chartable) {
+                    file.print(", chartable, true");
+                }
                 file.println(")" + (udIter.hasNext() ? "," : ""));
             }  //  end of loop thru UDP's
             file.println("  )");
@@ -623,9 +626,8 @@ public abstract class DT_Abstract1 implements Serializable {
             current = (DomainTheory) this;
             KinTermDef ktd;
             ArrayList<Object> egoBag = maleAndFemaleCreatedHeThem();
-            Collection values = theory.values();
-            Iterator iter = values.iterator();  //  each value is a KinTermDef
-            boolean suppressPrint, selectedKinTerm, selectAll = false;
+            Iterator iter = theory.values().iterator();  //  each value is a KinTermDef
+            boolean suppressPrint, selectAll = false;
             if (hypo.selectedKinTerms == null) {
                 selectAll = true;
             }

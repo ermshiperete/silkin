@@ -169,6 +169,11 @@ public class UserDefinedProperty implements Serializable {
     }  //  end of over-riding method toString
 
     public String truncate(Object obj) {
+        if (obj instanceof Individual) {
+            return ((Individual)obj).name;
+        } else if (obj instanceof Family) {
+            return "Family #" + ((Family)obj).serialNmbr;
+        }
         String shortOne = obj.toString();
         if ((shortOne.length() < 20) && (shortOne.indexOf("\n") == -1)) {
             return shortOne;

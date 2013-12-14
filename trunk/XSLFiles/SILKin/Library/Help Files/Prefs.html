@@ -9,11 +9,11 @@
 <body>
 <a name="intro"></a>
 <h3> Preferences Control Learning and Other Behavior</h3>
-<p>Editing Preferences for a particular context controls the <span style="font-style: italic">Learning Module</span> -- the part of SILKin that makes Suggestions. For more information about the Learning Module and how SILKin makes Suggestions, see <a href="Suggs.html">Help - Suggestions</a>. The bottom two parameters in this window control the behavior of the 'Tab' key when entering data for a Person.
+<p>Editing Preferences for a particular context controls the <span style="font-style: italic">Learning Module</span> -- the part of SILKin that makes Suggestions. For more information about the Learning Module and how SILKin makes Suggestions, see <a href="Suggs.html">Help - Suggestions</a>. Two parameters in this window have nothing to do with learning; they control the behavior of the 'Tab' key when entering data for a Person. They are described below.
 </p>
 <p>Once you have set the preferences, they are saved in the SILK file and apply only to that file. If you create a new context (i.e. a different language or project), you must set its Preferences seperately.
 </p>
-<p>You can experiment with these parameters. For example: after you gather 
+<p>You can experiment with the Learning Module parameters. For example: after you gather 
 a fair number of dyads you click on "Get New Suggestions" and get just a
 few proposed definitions for your kin terms. You wonder if you would have
 gotten more (or better) suggestions with different learning parameters. So
@@ -84,8 +84,15 @@ on all the other learning strategies SILKin employs. (But you can always experim
 </p>
 <p>Don't worry about making the grid smaller so the chart will fit in the window. Remember that when you <a href="Chart.html#reshape">expand your chart</a> beyond the size of your chart window, scroll bars will appear. Charts may be arbitrarily large.
 </p>
+<a name="adoption"></a>
+<h3>Help Screen for Adoptions</h3>
+<p>SILKin can use User Defined Properties to represent adoption on charts. Most contexts do not require this, and the rules for
+using this are slightly different. Therefore, by default the Help page about adoptions ('Non-Genealogical Relationships') pops
+up whenever the User is designating a special (non-genealogical) relationship. If this option is unchecked, the page will not
+pop up automatically.
+</p>
 <a name="priority"></a>
-<h3>Link Priorities</h3>
+<h3>Kin Type Priorities</h3>
 <p>Although you seldom see it, SILKin records the kin type of the relationship between each pair of persons in a Context. 
     The kin types (e.g. mother, brother, step-father) are discovered by tracing all possible paths from Ego to other persons. 
     The first step in each path is through a linking kinsman, the second step is through that person's linking kinsmen, etc. 
@@ -127,7 +134,7 @@ down-arrow to 'demote' any row so its links will be followed later.
 On the right end of each row is a 'Priority Group' letter. The priority groups are also used for tie-breaking when there are two kin types
 with the same path length and SILKin must choose one of them as the kin type. If the first linking kinsman in one kin type has a higher 
 priority group than the first linking kinsman in the other kin type, the higher priority link will be chosen. If the first linking
-kinsmen in each type have the same priority, then SILKin will try to break the time based on the second linking kinsmen. If the two
+kinsmen in each type have the same priority, then SILKin will try to break the tie based on the second linking kinsmen. If the two
 kin types have the same priority group at each position (for each pair of corresponding kinsmen), then the tie is broken by selecting
 whichever kin type was found first (i.e. whichever path was followed first, according to the list).
 </p>
@@ -135,15 +142,31 @@ whichever kin type was found first (i.e. whichever path was followed first, acco
 <span style="font-weight: bold">For example:</span> if the two kin types were mother's-sister ('MoSis') and husband's-sister ('HuSis')
 then according to the default priorities, MoSis would be chosen because parental links ('Fa', 'Mo', and 'P') are in priority group A 
 and spousal links ('Hu', 'Wi', and 'S') are in group B. You may edit the priority groups any way you like. A group letter closer to the
-from of the alphabet will always be chosen over a letter later in the alphabet. Unused letters are OK; you may assign A, B, Q, and Z if
+front of the alphabet will always be chosen over a letter later in the alphabet. Unused letters are OK; you may assign A, B, Q, and Z if
 you like.
 </p><p>
 <span style="font-weight: bold">Remember:</span> the priority of links only matters in a context where people marry close relatives. In
 America, for instance, one may marry a fourth cousin. But the parental path to a fourth cousin will never be as short as the spousal
 path, so no 'tie breaker' will likely ever be needed.
 </p><p>
-Any changes you make to the Link Priorities are tentative until you click 'Done'. If you
+Any changes you make to the Kin Type Priorities are tentative until you click 'Done'. If you
 close the editor window before clicking 'Done' your changes will not be saved.
+</p>
+<a name="printing"></a>
+<h3>Chart Printing</h3>
+<p>The default font for printing Family Tree Charts is a plain 10-point font that virtually any printer can use.
+(It is called 'Dialog' because it is used for any messages shown to the USER by SILKin.) There are a few other
+choices that are almost universally recognized: 
+<ul>
+<li><span style="font-weight: bold">Monospaced</span> is a fixed-width font (i.e. a 'w' and an 'i' are the same width).</li> 
+<li><span style="font-weight: bold">Serif</span> is a small font that packs a lot of letters in a narrow space.</li> 
+<li><span style="font-weight: bold">SansSerif</span> is similar to Dialog, but on some printers/computers it is different.</li> 
+</ul>
+Choose any font and size you like for printing charts. The font size will determine how long a name or kin term can fit
+in a given space under the symbol. Note that the font size will <span style="font-style: italic">not</span> change the 
+size of the symbols. 
+</p>
+<p>Your font choice will be remembered between sessions; it is stored in the SILK file.
 </p>
 </body>
 </html>

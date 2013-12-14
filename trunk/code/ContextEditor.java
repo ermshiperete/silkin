@@ -311,9 +311,9 @@ public class ContextEditor extends KSJInternalFrame {
     
     public static String localFileName(Context cntxt) {
         String fileName = cntxt.languageName;
-        if (SIL_Edit.editWindow != null && SIL_Edit.editWindow.chart != null
-                && SIL_Edit.editWindow.chart.saveFile != null) {
-            fileName = SIL_Edit.editWindow.chart.saveFile.getName(); 
+        if (SIL_Edit.edWin != null && SIL_Edit.edWin.chart != null
+                && SIL_Edit.edWin.chart.saveFile != null) {
+            fileName = SIL_Edit.edWin.chart.saveFile.getName(); 
         }
         return fileName;
     }
@@ -492,27 +492,27 @@ public class ContextEditor extends KSJInternalFrame {
             if (e.getActionCommand().equals("polygamy yes")) {
                 ctxt.saveState = true;
                 ctxt.polygamyPermit = true;
-                SIL_Edit.editWindow.chart.dirty = true;
+                SIL_Edit.edWin.chart.dirty = true;
             }
             if (e.getActionCommand().equals("polygamy no")) {
                 ctxt.saveState = true;
                 ctxt.polygamyPermit = false;
-                SIL_Edit.editWindow.chart.dirty = true;
+                SIL_Edit.edWin.chart.dirty = true;
             }
             if (e.getActionCommand().equals("distinct yes")) {
                 ctxt.saveState = true;
                 ctxt.distinctAdrTerms = true;
-                SIL_Edit.editWindow.setDistinctAdrMenuItemSelected(true);
-                SIL_Edit.editWindow.distinctAdrItemActionPerformed(null);
-                SIL_Edit.editWindow.chart.dirty = true;
+                SIL_Edit.edWin.setDistinctAdrMenuItemSelected(true);
+                SIL_Edit.edWin.distinctAdrItemActionPerformed(null);
+                SIL_Edit.edWin.chart.dirty = true;
                 MainPane.topPane.setVisible(true);
             }
             if (e.getActionCommand().equals("distinct no")) {
                 ctxt.saveState = true;
                 ctxt.distinctAdrTerms = false;
-                SIL_Edit.editWindow.setDistinctAdrMenuItemSelected(false);
-                SIL_Edit.editWindow.distinctAdrItemActionPerformed(null);
-                SIL_Edit.editWindow.chart.dirty = true;
+                SIL_Edit.edWin.setDistinctAdrMenuItemSelected(false);
+                SIL_Edit.edWin.distinctAdrItemActionPerformed(null);
+                SIL_Edit.edWin.chart.dirty = true;
                 MainPane.topPane.setVisible(true);
             }
             if (e.getActionCommand().equals("edit matrix")) {

@@ -344,149 +344,184 @@ public abstract class LiteralAbstract1 extends Argument  {
 								expansion of a non-primitive predicate, so that we can re-set our state to that after 
 								we finish expanding this predicate.
 		@param origCB			the original (non-expanded) clause we are expanding.
-		@param path				a trace of the expansion path followed in generating the current clauseSoFar.
-		
-		@throws					KSBadHornClauseException if an invalid condidiotn is encountered.
+		@param path				a trace of the expansion path followed in generating the current clauseSoFar.		
+		@throws					KSBadHornClauseException if an invalid condition is encountered.
 	*/
-public void expand(Context hypo, ArrayList<Object> clauseSoFar, ArrayList<Object> remainingLits, ArrayList<Object> expandedDefs, 
-        ArrayList<Object> save4Last, StackMarkerObj marker, ClauseBody origCB, ArrayList<Object> path)
-        throws KSBadHornClauseException, KSInternalErrorException    {
-	
-	/*	DeBug code, for tracing causes of OutOfMemoryErrors when mutually-recursive definitions get too hairy.
-	if (Context.breakFlag)  {
-		System.out.print("\n\nSerial# " + debugSerial++  + "\n\tCSF = \t");
-		for (int i=0; i < clauseSoFar.size(); i++) System.out.print(clauseSoFar.get(i) + ",  ");
-		System.out.print("\n\tExpanding: " + this);
-		System.out.print("\n\tRemLits = ");
-		for (int i=0; i < remainingLits.size(); i++) System.out.print(remainingLits.get(i) + ",  ");
-		System.out.print("\n\tParam marker = " + marker);
-		System.out.print("\n\tPath = ");
-		for (int i=0; i < path.size(); i++) System.out.print(path.get(i) + ",  ");
-		System.out.println();
-		//  if (predicate.name.equals("not")) Context.breakpoint();
-		}
-*/
-	if (clauseSoFar.size() >= 8 && clauseSoFar.size() % 4 == 0)  {  //  Getting pretty big.  Ck for size limit.
-		try  {
-		ArrayList<Object> miniPreds = lits2MiniStrings(clauseSoFar),
-				  reducedPCStr = origCB.pcStringReduction(miniPreds, "Ego", "Alter", true);
-		String redString = ClauseBody.sumStr(reducedPCStr);
-		int stringDist = Math.min(Math.max((redString.length() / 2) - 1, 0), Library.ClauseCounts.maxDist);
-		if (stringDist > Library.maxExpansionStringDist) 
-			return;
-		int alterLevel = Math.abs(computeLevel(redString));
-		if (alterLevel > Library.maxLevelForExpansion) 
-			return;
-		}catch(KSInternalErrorException iex)  { if (clauseSoFar.size() >= 16) return;  }
-		}  //  end of check for expansion limits
-	
-	if (predicate.category instanceof PrimitiveCategory) {
-		//	test the assumption that no args are Literals
-		for (int i=0; i < args.size(); i++)
-			if (((Argument)args.get(i) instanceof Literal) && (! predicate.name.equals("not")))
-				throw new KSBadHornClauseException("A predicate other than 'not' had a Literal as an argument; Not Allowed\n");
-		try  {
-			if ((! predicate.name.equals("not"))  ||
-					((args.size() == 1) && (((Literal)args.get(0)).predicate.category instanceof PrimitiveCategory)))  
-				clauseSoFar.add(new Literal(predicate, args));
-			else save4Last.add(this); // must be 'not' with multiple arg(s) or arg0 is non-primitive
-			//	That was easy.  Now recurse on any remaining literals.
-			if (remainingLits.isEmpty())  
-				finishExpansion(hypo, clauseSoFar, origCB, expandedDefs, save4Last, path);
-			else {	//  remLits not empty.  Pop & recurse
-				StackMarkerObj newMarker = (StackMarkerObj)marker.copy(); //  Use copies, so recursive calls don't increment the counts in marker
-				Argument remLitArg = (Argument)remainingLits.remove(0);  //  pop it off remLits
-				while (remLitArg.argType.equals("StackMarkerObj")) {
-					newMarker = (StackMarkerObj)((StackMarkerObj)remLitArg).copy(); // restore old marker state
-					remLitArg = (Argument)remainingLits.get(0);
-					remainingLits.remove(0);  //  pop it off remLits
-					}  //  end of while-it's-a-stack-marker
-				Literal nextLit = (Literal)remLitArg;
-				nextLit.expand(hypo, clauseSoFar, remainingLits, expandedDefs, save4Last, newMarker, origCB, path);
-				}  //  end of RemLits was not empty
-		}catch(ClassCastException exc)  { 
-			throw new KSBadHornClauseException("The predicate 'not' was used with an argument that wasn't a Literal\n" + exc); }
-			
-	}else  {  //  it's a non-primitive predicate
-		int lvl = 0;
-		boolean internalRecursFlag = false;
-		KinTermDef ktd = (KinTermDef)DomainTheory.current.theory.get(predicate.name);
-		if (ktd == null) //  try both locations before giving up
-			ktd = (KinTermDef)origCB.ktd.domTh.theory.get(predicate.name);
-		if (ktd == null) 
-			throw new KSBadHornClauseException("Undefined predicate '" + predicate.name + "' used in a definition.");
-		Literal head = ktd.clauseHead;
-		ArrayList<Object> subDefs = ktd.definitions; //  subDefs is a list of the ClauseBodies defining this predicate
-		//	Check for recursive level exceeded.  Post this for future checks on StackMarkerObj.
-		if (marker.kinTermLst.contains(predicate.name)) {  //  we've discovered a recursive definition
-			int position = marker.kinTermLst.indexOf(predicate.name);
-			internalRecursFlag = true;
-			lvl = ((Integer)marker.recursLvlLst.get(position)).intValue() + 1;
-			marker.recursLvlLst.set(position, new Integer(lvl));
-			}  //  end of if-this-is-a-recursive-clause
-		if ((! internalRecursFlag) || (lvl <= DomainTheory.current.levelsOfRecursion)) { 
-			//  we've not yet exceeded the limit for recursive expansions
-			for (int i=0; i < subDefs.size(); i++) {
-				ClauseBody cb = (ClauseBody)subDefs.get(i);  // the i-th ClauseBody in def'n
-				ArrayList<Object> oldVarName = new ArrayList<Object>(), newVarName = new ArrayList<Object>(), 
-					newPath = new ArrayList<Object>(path);
-				ClauseBody newcb = argSubst(head, args, cb, oldVarName, newVarName);  
-					// argSubst makes a copy w/ arg substitutions
-				newPath.add(predicate.name + ":" + i);
-				ArrayList<Object> newClauseSoFar = new ArrayList<Object>(), newSave4Last = new ArrayList<Object>(save4Last); 
-				for (int k=0; k < clauseSoFar.size(); k++) // Make a deep copy of clauseSoFar
-					newClauseSoFar.add( ((Literal)clauseSoFar.get(k)).copy() );
-				ArrayList<Object> newKinTermLst = new ArrayList<Object>(marker.kinTermLst), 
-						newRecursLvlLst = new ArrayList<Object>(marker.recursLvlLst);
-				if (! internalRecursFlag) { // this is the first time we've encountered this predicate.
-					newKinTermLst.add(predicate.name);
-					newRecursLvlLst.add(new Integer(0));
-					}  //  end of if-this-is-a-new-predicate
-				StackMarkerObj newMarker = new StackMarkerObj(newKinTermLst, newRecursLvlLst);
-				Literal nextLit = (Literal)newcb.body.get(0);
-				ArrayList<Object> newRemainingLits = new ArrayList<Object>(newcb.body.subList(1, newcb.body.size()));
-				if (remainingLits.size() > 0) {
-					newRemainingLits.add(marker); //  push a copy of the incoming marker onto remLits 
-					newRemainingLits.addAll(remainingLits);  // followed by prior remainingLits
-					}  //  end of if-remLits-is-not-empty
-				ClauseBody newOrigCB = origCB.copy();
-				newOrigCB.flags.addAll(cb.flags);  					
-				nextLit.expand(hypo, newClauseSoFar, newRemainingLits, expandedDefs, newSave4Last, 
-								newMarker, newOrigCB, newPath);  // recurse on nextLit
-				}  // end of for-i=each-clauseBody-in-subDefs
-			}  //  end of we-have-not-yet-exceeded-the-limit-for-recursive-expansions
-		} // end of else-it's-not-primitive
-	return;	
-	}	//	end of method expand
-	
-	
-	public void finishExpansion(Context hypo, ArrayList<Object> clauseSoFar, ClauseBody origCB, ArrayList<Object> expandedDefs, 
-									ArrayList<Object> save4Last, ArrayList<Object> path) throws KSBadHornClauseException, KSInternalErrorException   {
-		
-		ArrayList<Object> expNegConstraints = new ArrayList<Object>(), subPaths = new ArrayList<Object>(), subPath;
-		if (save4Last.size() > 0) 
-			neg_expand(hypo, save4Last, expNegConstraints, origCB, subPaths);
-		ClauseBody cb = new ClauseBody();
-		cb.ktd = origCB.ktd;
-		Literal lit;
-		for (int i=0; i < clauseSoFar.size(); i++) {
-			lit = (Literal)clauseSoFar.get(i);
-			cb.addLiteral(lit);
-			}  // end of for i = each lit in clauseSoFar
-		cb.flags = origCB.flags;
-		Iterator newLitIter = expNegConstraints.iterator();
-		cb.expansionPath.addAll(path);
-		for (int j=0; j < subPaths.size(); j++)  {
-			subPath = (ArrayList<Object>)subPaths.get(j);
-			cb.expansionPath.addAll(subPath);
-			}  //  end of loop thru ALists of Strings in subPaths
-		while (newLitIter.hasNext()) 
-			cb.addLiteral((Literal)newLitIter.next());
-		expandedDefs.add(cb);
-		}	//  end of method finishExpansion	
-	
-	
-	
+    public void expand(Context hypo, ArrayList<Object> clauseSoFar, ArrayList<Object> remainingLits, ArrayList<Object> expandedDefs,
+            ArrayList<Object> save4Last, StackMarkerObj marker, ClauseBody origCB, ArrayList<Object> path)
+            throws KSBadHornClauseException, KSInternalErrorException {
+
+        /*	DeBug code, for tracing causes of OutOfMemoryErrors when mutually-recursive definitions get too hairy.
+         if (Context.breakFlag)  {
+         System.out.print("\n\nSerial# " + debugSerial++  + "\n\tCSF = \t");
+         for (int i=0; i < clauseSoFar.size(); i++) System.out.print(clauseSoFar.get(i) + ",  ");
+         System.out.print("\n\tExpanding: " + this);
+         System.out.print("\n\tRemLits = ");
+         for (int i=0; i < remainingLits.size(); i++) System.out.print(remainingLits.get(i) + ",  ");
+         System.out.print("\n\tParam marker = " + marker);
+         System.out.print("\n\tPath = ");
+         for (int i=0; i < path.size(); i++) System.out.print(path.get(i) + ",  ");
+         System.out.println();
+         //  if (predicate.name.equals("not")) Context.breakpoint();
+         }
+         */
+        if (clauseSoFar.size() >= 8 && clauseSoFar.size() % 4 == 0) {  //  Getting pretty big.  Ck for size limit.
+            try {
+                ArrayList<Object> miniPreds = lits2MiniStrings(clauseSoFar),
+                        reducedPCStr = origCB.pcStringReduction(miniPreds, "Ego", "Alter", true);
+                String redString = ClauseBody.sumStr(reducedPCStr);
+                int stringDist = Math.min(Math.max((redString.length() / 2) - 1, 0), Library.ClauseCounts.maxDist);
+                if (stringDist > Library.maxExpansionStringDist) {
+                    return;
+                }
+                int alterLevel = Math.abs(computeLevel(redString));
+                if (alterLevel > Library.maxLevelForExpansion) {
+                    return;
+                }
+            } catch (KSInternalErrorException iex) {
+                if (clauseSoFar.size() >= 16) {
+                    return;
+                }
+            }
+        }  //  end of check for expansion limits
+
+        if (predicate.category instanceof PrimitiveCategory) {
+            //	test the assumption that no args are Literals
+            for (int i = 0; i < args.size(); i++) {
+                if (((Argument) args.get(i) instanceof Literal) && (!predicate.name.equals("not"))) {
+                    throw new KSBadHornClauseException("A predicate other than 'not' had a Literal as an argument; Not Allowed\n");
+                }
+            }
+            try {
+                if ((!predicate.name.equals("not"))
+                        || ((args.size() == 1) && (((Literal) args.get(0)).predicate.category instanceof PrimitiveCategory))) {
+                    clauseSoFar.add(new Literal(predicate, args));
+                } else {
+                    save4Last.add(this); // must be 'not' with multiple arg(s) or arg0 is non-primitive
+                }			//	That was easy.  Now recurse on any remaining literals.
+                if (remainingLits.isEmpty()) {
+                    finishExpansion(hypo, clauseSoFar, origCB, expandedDefs, save4Last, path);
+                } else {	//  remLits not empty.  Pop & recurse
+                    StackMarkerObj newMarker = (StackMarkerObj) marker.copy(); //  Use copies, so recursive calls don't increment the counts in marker
+                    Argument remLitArg = (Argument) remainingLits.remove(0);  //  pop it off remLits
+                    while (remLitArg.argType.equals("StackMarkerObj")) {
+                        newMarker = (StackMarkerObj) ((StackMarkerObj) remLitArg).copy(); // restore old marker state
+                        remLitArg = (Argument) remainingLits.get(0);
+                        remainingLits.remove(0);  //  pop it off remLits
+                    }  //  end of while-it's-a-stack-marker
+                    Literal nextLit = (Literal) remLitArg;
+                    nextLit.expand(hypo, clauseSoFar, remainingLits, expandedDefs, save4Last, newMarker, origCB, path);
+                }  //  end of RemLits was not empty
+            } catch (ClassCastException exc) {
+                throw new KSBadHornClauseException("The predicate 'not' was used with an argument that wasn't a Literal\n" + exc);
+            }
+        } else if (predicate.name.startsWith("*")) {  // It's a UDP
+            clauseSoFar.add(new Literal(predicate, args));
+            if (remainingLits.isEmpty()) {
+                finishExpansion(hypo, clauseSoFar, origCB, expandedDefs, save4Last, path);
+            } else {	//  remLits not empty.  Pop & recurse
+                StackMarkerObj newMarker = (StackMarkerObj) marker.copy(); //  Use copies, so recursive calls don't increment the counts in marker
+                Argument remLitArg = (Argument) remainingLits.remove(0);  //  pop it off remLits
+                while (remLitArg.argType.equals("StackMarkerObj")) {
+                    newMarker = (StackMarkerObj) ((StackMarkerObj) remLitArg).copy(); // restore old marker state
+                    remLitArg = (Argument) remainingLits.get(0);
+                    remainingLits.remove(0);  //  pop it off remLits
+                }  //  end of while-it's-a-stack-marker
+                Literal nextLit = (Literal) remLitArg;
+                nextLit.expand(hypo, clauseSoFar, remainingLits, expandedDefs, save4Last, newMarker, origCB, path);
+            }  //  end of RemLits was not empty
+        } else {  //  it's a defined cultural predicate
+            int lvl = 0;
+            boolean internalRecursFlag = false;
+            KinTermDef ktd = (KinTermDef) DomainTheory.current.theory.get(predicate.name);
+            if (ktd == null) //  try all locations before giving up
+            {
+                ktd = (KinTermDef) origCB.ktd.domTh.theory.get(predicate.name);
+            }
+            if (ktd == null) {
+                boolean addr = DomainTheory.current.addressTerms;
+                try {
+                    DomainTheory dt = (addr ? hypo.domTheoryAdr() : hypo.domTheoryRef());
+                    ktd = (KinTermDef) dt.theory.get(predicate.name);
+                } catch (Exception exc) {
+                }  // Failure leaves ktd = null                    
+            }
+            if (ktd == null) {
+                throw new KSBadHornClauseException("Undefined predicate '" + predicate.name + "' used in a definition.");
+            }
+            Literal head = ktd.clauseHead;
+            ArrayList<Object> subDefs = ktd.definitions; //  subDefs is a list of the ClauseBodies defining this predicate
+            //	Check for recursive level exceeded.  Post this for future checks on StackMarkerObj.
+            if (marker.kinTermLst.contains(predicate.name)) {  //  we've discovered a recursive definition
+                int position = marker.kinTermLst.indexOf(predicate.name);
+                internalRecursFlag = true;
+                lvl = ((Integer) marker.recursLvlLst.get(position)).intValue() + 1;
+                marker.recursLvlLst.set(position, new Integer(lvl));
+            }  //  end of if-this-is-a-recursive-clause
+            if ((!internalRecursFlag) || (lvl <= DomainTheory.current.levelsOfRecursion)) {
+                //  we've not yet exceeded the limit for recursive expansions
+                for (int i = 0; i < subDefs.size(); i++) {
+                    ClauseBody cb = (ClauseBody) subDefs.get(i);  // the i-th ClauseBody in def'n
+                    ArrayList<Object> oldVarName = new ArrayList<Object>(), newVarName = new ArrayList<Object>(),
+                            newPath = new ArrayList<Object>(path);
+                    ClauseBody newcb = argSubst(head, args, cb, oldVarName, newVarName);
+                    // argSubst makes a copy w/ arg substitutions
+                    newPath.add(predicate.name + ":" + i);
+                    ArrayList<Object> newClauseSoFar = new ArrayList<Object>(), newSave4Last = new ArrayList<Object>(save4Last);
+                    for (int k = 0; k < clauseSoFar.size(); k++) // Make a deep copy of clauseSoFar
+                    {
+                        newClauseSoFar.add(((Literal) clauseSoFar.get(k)).copy());
+                    }
+                    ArrayList<Object> newKinTermLst = new ArrayList<Object>(marker.kinTermLst),
+                            newRecursLvlLst = new ArrayList<Object>(marker.recursLvlLst);
+                    if (!internalRecursFlag) { // this is the first time we've encountered this predicate.
+                        newKinTermLst.add(predicate.name);
+                        newRecursLvlLst.add(new Integer(0));
+                    }  //  end of if-this-is-a-new-predicate
+                    StackMarkerObj newMarker = new StackMarkerObj(newKinTermLst, newRecursLvlLst);
+                    Literal nextLit = (Literal) newcb.body.get(0);
+                    ArrayList<Object> newRemainingLits = new ArrayList<Object>(newcb.body.subList(1, newcb.body.size()));
+                    if (remainingLits.size() > 0) {
+                        newRemainingLits.add(marker); //  push a copy of the incoming marker onto remLits 
+                        newRemainingLits.addAll(remainingLits);  // followed by prior remainingLits
+                    }  //  end of if-remLits-is-not-empty
+                    ClauseBody newOrigCB = origCB.copy();
+                    newOrigCB.flags.addAll(cb.flags);
+                    nextLit.expand(hypo, newClauseSoFar, newRemainingLits, expandedDefs, newSave4Last,
+                            newMarker, newOrigCB, newPath);  // recurse on nextLit
+                }  // end of for-i=each-clauseBody-in-subDefs
+            }  //  end of we-have-not-yet-exceeded-the-limit-for-recursive-expansions
+        } // end of else-it's-not-primitive
+        return;
+    }	//	end of method expand
+
+    public void finishExpansion(Context hypo, ArrayList<Object> clauseSoFar, ClauseBody origCB, ArrayList<Object> expandedDefs,
+            ArrayList<Object> save4Last, ArrayList<Object> path) throws KSBadHornClauseException, KSInternalErrorException {
+
+        ArrayList<Object> expNegConstraints = new ArrayList<Object>(), subPaths = new ArrayList<Object>(), subPath;
+        if (save4Last.size() > 0) {
+            neg_expand(hypo, save4Last, expNegConstraints, origCB, subPaths);
+        }
+        ClauseBody cb = new ClauseBody();
+        cb.ktd = origCB.ktd;
+        Literal lit;
+        for (int i = 0; i < clauseSoFar.size(); i++) {
+            lit = (Literal) clauseSoFar.get(i);
+            cb.addLiteral(lit);
+        }  // end of for i = each lit in clauseSoFar
+        cb.flags = origCB.flags;
+        Iterator newLitIter = expNegConstraints.iterator();
+        cb.expansionPath.addAll(path);
+        for (int j = 0; j < subPaths.size(); j++) {
+            subPath = (ArrayList<Object>) subPaths.get(j);
+            cb.expansionPath.addAll(subPath);
+        }  //  end of loop thru ALists of Strings in subPaths
+        while (newLitIter.hasNext()) {
+            cb.addLiteral((Literal) newLitIter.next());
+        }
+        expandedDefs.add(cb);
+    }	//  end of method finishExpansion	
+
 	/** Expand the negated predicates (e.g. 'not(parents(A,B), parents(B,C))' ) found in save4Last and
 		build a logically equivalent group of negated primitive predicates in expNegConstraints.
 		<p>
@@ -955,201 +990,239 @@ public void neg_expand(Context hypo, ArrayList<Object> save4Last, ArrayList<Obje
             
         @return		false if any conflicting constraints are encountered for Ego; true otherwise.
         */
-    public static boolean finalConstraintCheck(String egoGender, TreeMap bindings, ConstraintObj constraints, 
-                                                ArrayList<Object> body, ArrayList<Object> genderStuff, ArrayList<Object> starStuff)   
-				throws KSConstraintInconsistency  {
-		
-		genderInferences(constraints, body);
-		// Now that all gender constraints have been inferred, check implications of gender predicates.
-		// GenderStuff is a list of all the gender, equal, and not-equal literals in this clause.
-		// Mine it for gender inferences.  If 2 people are bound to the same gender variable, and they have
-		// different genders: Problem.  If one of them is Ego, then return false so this clause will be skipped
-		// as non-applicable.  If Ego isn't one of them, the inconsistency is built into the clause: throw exception.
-		Literal lit;
-		ArrayList<Object> egvl = new ArrayList<Object>();  //  egvl = Ego's Gender Variable List
-		String infGndr = null, varBinding, arg0, arg1;
-		for (int i=0; i < genderStuff.size(); i++) {
-			lit = (Literal)genderStuff.get(i);
-			if (lit.predicate.name.equals("gender")) {
-				arg0 = ((Argument)lit.args.get(0)).argName;
-				arg1 = ((Argument)lit.args.get(1)).argName;
-				if (arg1.equals("Ego")) egvl.add(arg0);
-				infGndr = lit.inferGender(i, new ArrayList<Object>(), constraints, genderStuff);
-				if (infGndr != null) {
-					varBinding = (String)bindings.get(arg0);
-					if (varBinding == null) bindings.put(arg0, infGndr);
-					else {  //  infGndr has a gender, and so does the arg binding -- compare them
-						if (! varBinding.equals(infGndr)) {  //  Inconsistency in constraints
-							if (egvl.contains(arg0)) return false;  //  It's only due to Ego's gender - skip this clause
-							else throw new KSConstraintInconsistency("Inconsistent gender constraints for " + arg0);
-						}
-					}
-				} else bindings.put(arg0, "genderBinding");
-			}  //  end of predicate-name-equals-"gender"
-		}  //  end of loop thru genderStuff
-		//  Now check to see if we've generated a specification that contradicts Ego's known gender,
-		//  unless egoGender = "?" in which case anything goes
-		ArrayList<Object> egoSpecList = (ArrayList<Object>)constraints.gender.get("Ego");
-		String egoSpec;
-		if (egoSpecList != null) {
-			Iterator egoIter = egoSpecList.iterator();
-			while (egoIter.hasNext()) {
-				egoSpec = (String)egoIter.next();
-				if ((! egoGender.equals("?")) && (egoSpec.indexOf("Same") == -1) && 
-					(egoSpec.indexOf("Opposite") == -1) && (! egoSpec.equals(egoGender)))
-					return false;
-			}  //  end of iteration-thru-gender-specs
-		}  //  end of if-egoSpecList != null
-		
-		//  Now insert Ego's explicit gender (which can't conflict - we just checked) 
-		//  and re-do the inferences, to mine any domino effects of knowing Ego's gender.
-		ArrayList<Object> newList = new ArrayList<Object>();
-		newList.add(egoGender);
-		constraints.gender.put("Ego", newList);
-		try  {  genderInferences(constraints, body);
-		}catch(KSConstraintInconsistency exc)  {	
-			throw new KSConstraintInconsistency("After checking for ego gender conflicts in FinalCk, \n" + exc);  }
-		
-		//  Now process the starConstraints, if any exist.
-		if ((starStuff != null) && (starStuff.size() > 0))  {
-			Iterator iter = starStuff.iterator();
-			String predName;
-			Argument argument0, argument1;
-			TreeMap cud = constraints.userDefined, indVarTM;
-			while (iter.hasNext())  {
-				lit = (Literal)iter.next();
-				predName = lit.predicate.name;
-				if (predName.substring(0,1).equals("*"))  {
-					argument0 = (Argument)lit.args.get(0);  //  variable = property's value  
-					argument1 = (Argument)lit.args.get(1);  //  the Individual who has this property
-					if (cud.get(argument1) == null) cud.put(argument1, new TreeMap());
-					indVarTM = (TreeMap)cud.get(argument1);
-					ArrayList<Object> valList0 = argument0.getVal(), valList1 = null;
-					if (indVarTM.get(predName) != null) valList1 = ((Argument)indVarTM.get(predName)).getVal();
-					if (LiteralAbstract1.negativeConstraintPhase && lit.listEqual(valList0, valList1))  {
-						//  If checking negated constraints, we may be comparing a variable's value against a constant's value.  OK.
-					}else if ((indVarTM.get(predName) != null) && (indVarTM.get(predName) != argument0))  {
-						//  Otherwise, if 2 different variables are assigned to the same *property, that's an error.
-						throw new KSConstraintInconsistency("Found 2 different variables assigned to " + predName + " for "
-											+ argument1.argName + ":\n'" + ((Argument)indVarTM.get(predName)).argName 
-											+ "' and '" + argument0.argName + "'.  Not Allowed!");
-						}  //  end of check for duplicate variable assignments
-					indVarTM.put(predName, argument0);
-					UserDefinedProperty udp = (UserDefinedProperty)Context.current.userDefinedProperties.get(predName);
-					if (udp == null) {
-						String msg = "User-Defined Property '" + predName + "' is not defined for this domain.";
-						throw new KSConstraintInconsistency(msg);
-						}  //  end of udp-is-null:  ERROR
-					argument0.valueType = udp.typ;
-					if (argument0 instanceof MathVariable)  {
-						MathVariable mv = (MathVariable)argument0;
-						if (udp.maxVal != null)  {  // a Max value implies that type is Integer or Float
-							if (mv.lessOrEql == null) mv.lessOrEql = new ArrayList<Object>();
-							Constant kMax = new Constant("UDP Max");
-							kMax.addVal(udp.maxVal);
-							kMax.valueType = udp.typ;
-							mv.lessOrEql.add(kMax);
-							}  //  end of UDP-has-a-Max-Value-specified
-						if (udp.minVal != null)  { 
-							if (mv.greaterOrEql == null) mv.greaterOrEql = new ArrayList<Object>();
-							Constant kMin = new Constant("UDP Min");
-							kMin.addVal(udp.minVal);
-							kMin.valueType = udp.typ;
-							mv.greaterOrEql.add(kMin);
-							}  //  end of UDP-has-a-Min-Value-specified
-						}  //  end of its-a-MathVar
-					if (argument0 instanceof Constant)  {
-						Constant konstant = (Constant)argument0;
-						// Because the parser cannot validity-check the values of constants that will eventually
-						// be assigned to UserDefinedProperties with UserDefinedTypes, we must do that here.
-						for (int i=0; i < konstant.getVal().size(); i++) {
-							if ((udp.validEntries != null) && (udp.validEntries.size() > 0) &&
-								 (! (udp.validEntries.contains(konstant.getVal().get(i)))))  {
-								throw new KSConstraintInconsistency("Attempt to assign the value '" +
-											konstant.getVal().get(i) + "' to a UserDefinedProperty" +
-											"\nwhich only accepts: " + udp.validEntries + ".");
-							}  //  end of check for UserDefinedTypes
-							if (! udp.typ.equals(konstant.valueType))
-								throw new KSConstraintInconsistency("Attempt to assign the value '" +
-											konstant.getVal().get(i) + "' to a UserDefinedProperty" +
-											"\nwhich only accepts " + udp.typ + ".");
-						}
-					}  //  end of validity-checks for Constants
-				}  //  end of if-it's-a-star-pred
-				else apply(lit);  //  lit must be a math-predicate or not(equal())
-			}  //  end of iteration thru star2
-		}  //  end of starStuff-is-not-empty
-		return true; 
-	}  //  end of static method finalConstraintCheck
-	
-	
-	public static void genderInferences(ConstraintObj constraints, ArrayList<Object> body) throws KSConstraintInconsistency  {
-		//  The literal spouse(X,Y) or a gender-equality construction may precede a literal 
-		//  that implies the gender of X.  Check on that.
-		//  genderPairIter loops over all the (key, valueList) gender constraints in genderSpecs
-		String gender, otherSex, genderArgName, personArgName, rightAnswer;
-		ArrayList<Object> sexList, otherSexList;
-		Map.Entry genderConstraint;
-		boolean useful = true;
-		while (useful) {	 // If we infer at least one gender in a loop, must loop again for chain-effects.
-			useful = false;  // We'll halt when no useful changes have been made.
-			Iterator genderPairIter = constraints.gender.entrySet().iterator();
-			while (genderPairIter.hasNext())  {
-				genderConstraint = (Map.Entry)genderPairIter.next();
-				ArrayList<Object> newSexList = new ArrayList<Object>();
-				rightAnswer = null;
-				sexList = (ArrayList<Object>)genderConstraint.getValue();
-				if (sexList != null)  {
-					Iterator sexIter = sexList.iterator();
-					while ((sexIter.hasNext()) && (rightAnswer == null)) {
-						gender = (String)sexIter.next();
-						if ((gender.equals("M")) || (gender.equals("F"))) rightAnswer = gender;
-						else if (gender.indexOf("Opposite of") == 0) {
-							otherSexList = (ArrayList<Object>)constraints.gender.get(gender.substring(12)); // the constraint list of the Opposite person
-							if ((otherSexList != null) && 
-								((otherSexList.contains("M")) || (otherSexList.contains("F")))) {
-								useful = true;
-								if (otherSexList.contains("M")) { 
-									if ((rightAnswer != null) && (rightAnswer.equals("M")))
-										throw new KSConstraintInconsistency("Gender conflict in " + body);
-									else rightAnswer = "F";
-								}  //  end of Oppo-sex-is-male
-								else if (otherSexList.contains("F")) { 
-									if ((rightAnswer != null) && (rightAnswer.equals("F")))
-										throw new KSConstraintInconsistency("Gender conflict in " + body);
-									else rightAnswer = "M";
-								}  //  end of Oppo-sex-is-female
-							}  //  end of if-otherSexList-contains-definite-sex
-						}  // end of Opposite-appears-in-the-constraint
-						else if (gender.indexOf("Same as") == 0) {
-							otherSexList = (ArrayList<Object>)constraints.gender.get(gender.substring(8)); // the constraint list of the Same-As person
-							if ((otherSexList != null) && 
-								((otherSexList.contains("M")) || (otherSexList.contains("F")))) {
-								useful = true;
-								if (otherSexList.contains("M")) { 
-									if ((rightAnswer != null) && (rightAnswer.equals("F")))
-										throw new KSConstraintInconsistency("Gender conflict in " + body);
-									else rightAnswer = "M";
-								}  //  end of Same-sex-is-male
-								else if (otherSexList.contains("F")) { 
-									if ((rightAnswer != null) && (rightAnswer.equals("M")))
-										throw new KSConstraintInconsistency("Gender conflict in " + body);
-									else rightAnswer = "F";
-								}  //  end of Same-sex-is-female
-							}  //  end of if-otherSexList-contains-definite-sex
-						}  // end of Same-As-appears-in-the-constraint
-					}  //  end of while-loop-thru-sexList-members
-					if (rightAnswer != null) {
-						newSexList.add(rightAnswer);
-						genderConstraint.setValue(newSexList);
-					}  //  end of if-rightAnswer != null
-				}  //  end of if-sexList-is-not-null
-			}  //  end of while-genderPairIter.hasNext
-		}  //  end of while-useful
-	}  //  end of method genderInferences
-	
-        	
-	
+    public static boolean finalConstraintCheck(String egoGender, TreeMap bindings, ConstraintObj constraints,
+            ArrayList<Object> body, ArrayList<Object> genderStuff, ArrayList<Object> starStuff)
+            throws KSConstraintInconsistency {
+
+        genderInferences(constraints, body);
+        // Now that all gender constraints have been inferred, check implications of gender predicates.
+        // GenderStuff is a list of all the gender, equal, and not-equal literals in this clause.
+        // Mine it for gender inferences.  If 2 people are bound to the same gender variable, and they have
+        // different genders: Problem.  If one of them is Ego, then return false so this clause will be skipped
+        // as non-applicable.  If Ego isn't one of them, the inconsistency is built into the clause: throw exception.
+        Literal lit;
+        ArrayList<Object> egvl = new ArrayList<Object>();  //  egvl = Ego's Gender Variable List
+        String infGndr = null, varBinding, arg0, arg1;
+        for (int i = 0; i < genderStuff.size(); i++) {
+            lit = (Literal) genderStuff.get(i);
+            if (lit.predicate.name.equals("gender")) {
+                arg0 = ((Argument) lit.args.get(0)).argName;
+                arg1 = ((Argument) lit.args.get(1)).argName;
+                if (arg1.equals("Ego")) {
+                    egvl.add(arg0);
+                }
+                infGndr = lit.inferGender(i, new ArrayList<Object>(), constraints, genderStuff);
+                if (infGndr != null) {
+                    varBinding = (String) bindings.get(arg0);
+                    if (varBinding == null) {
+                        bindings.put(arg0, infGndr);
+                    } else {  //  infGndr has a gender, and so does the arg binding -- compare them
+                        if (!varBinding.equals(infGndr)) {  //  Inconsistency in constraints
+                            if (egvl.contains(arg0)) {
+                                return false;  //  It's only due to Ego's gender - skip this clause
+                            } else {
+                                throw new KSConstraintInconsistency("Inconsistent gender constraints for " + arg0);
+                            }
+                        }
+                    }
+                } else {
+                    bindings.put(arg0, "genderBinding");
+                }
+            }  //  end of predicate-name-equals-"gender"
+        }  //  end of loop thru genderStuff
+        //  Now check to see if we've generated a specification that contradicts Ego's known gender,
+        //  unless egoGender = "?" in which case anything goes
+        ArrayList<Object> egoSpecList = (ArrayList<Object>) constraints.gender.get("Ego");
+        String egoSpec;
+        if (egoSpecList != null) {
+            Iterator egoIter = egoSpecList.iterator();
+            while (egoIter.hasNext()) {
+                egoSpec = (String) egoIter.next();
+                if ((!egoGender.equals("?")) && (egoSpec.indexOf("Same") == -1)
+                        && (egoSpec.indexOf("Opposite") == -1) && (!egoSpec.equals(egoGender))) {
+                    return false;
+                }
+            }  //  end of iteration-thru-gender-specs
+        }  //  end of if-egoSpecList != null
+
+        //  Now insert Ego's explicit gender (which can't conflict - we just checked) 
+        //  and re-do the inferences, to mine any domino effects of knowing Ego's gender.
+        ArrayList<Object> newList = new ArrayList<Object>();
+        newList.add(egoGender);
+        constraints.gender.put("Ego", newList);
+        try {
+            genderInferences(constraints, body);
+        } catch (KSConstraintInconsistency exc) {
+            throw new KSConstraintInconsistency("After checking for ego gender conflicts in FinalCk, \n" + exc);
+        }
+
+        //  Now process the starConstraints, if any exist.
+        if ((starStuff != null) && (starStuff.size() > 0)) {
+            Iterator iter = starStuff.iterator();
+            String predName;
+            Argument argument0, argument1;
+            TreeMap cud = constraints.userDefined, indVarTM;
+            while (iter.hasNext()) {
+                lit = (Literal) iter.next();
+                predName = lit.predicate.name;
+                if (predName.substring(0, 1).equals("*")) {
+                    argument0 = (Argument) lit.args.get(0);  //  variable = property's value  
+                    argument1 = (Argument) lit.args.get(1);  //  the Individual who has this property
+                    if (cud.get(argument1) == null) {
+                        cud.put(argument1, new TreeMap());
+                    }
+                    indVarTM = (TreeMap) cud.get(argument1);
+                    ArrayList<Object> valList0 = argument0.getVal(), valList1 = null;
+                    if (indVarTM.get(predName) != null) {
+                        valList1 = ((Argument) indVarTM.get(predName)).getVal();
+                    }
+                    if (LiteralAbstract1.negativeConstraintPhase && lit.listEqual(valList0, valList1)) {
+                        //  If checking negated constraints, we may be comparing a variable's value against a constant's value.  OK.
+                    } else if ((indVarTM.get(predName) != null) && (indVarTM.get(predName) != argument0)) {
+                        //  Otherwise, if 2 different variables are assigned to the same *property, that's an error.
+                        throw new KSConstraintInconsistency("Found 2 different variables assigned to " + predName + " for "
+                                + argument1.argName + ":\n'" + ((Argument) indVarTM.get(predName)).argName
+                                + "' and '" + argument0.argName + "'.  Not Allowed!");
+                    }  //  end of check for duplicate variable assignments
+                    indVarTM.put(predName, argument0);
+                    UserDefinedProperty udp = (UserDefinedProperty) Context.current.userDefinedProperties.get(predName);
+                    if (udp == null) {
+                        String msg = "User-Defined Property '" + predName + "' is not defined for this domain.";
+                        throw new KSConstraintInconsistency(msg);
+                    }  //  end of udp-is-null:  ERROR
+                    argument0.valueType = udp.typ;
+                    if (argument0 instanceof MathVariable) {
+                        MathVariable mv = (MathVariable) argument0;
+                        if (udp.maxVal != null) {  // a Max value implies that type is Integer or Float
+                            if (mv.lessOrEql == null) {
+                                mv.lessOrEql = new ArrayList<Object>();
+                            }
+                            Constant kMax = new Constant("UDP Max");
+                            kMax.addVal(udp.maxVal);
+                            kMax.valueType = udp.typ;
+                            mv.lessOrEql.add(kMax);
+                        }  //  end of UDP-has-a-Max-Value-specified
+                        if (udp.minVal != null) {
+                            if (mv.greaterOrEql == null) {
+                                mv.greaterOrEql = new ArrayList<Object>();
+                            }
+                            Constant kMin = new Constant("UDP Min");
+                            kMin.addVal(udp.minVal);
+                            kMin.valueType = udp.typ;
+                            mv.greaterOrEql.add(kMin);
+                        }  //  end of UDP-has-a-Min-Value-specified
+                    }  //  end of its-a-MathVar
+                    if (argument0 instanceof Constant) {
+                        Constant konstant = (Constant) argument0;
+                        // Because the parser cannot validity-check the values of constants that will eventually
+                        // be assigned to UserDefinedProperties with UserDefinedTypes, we must do that here.
+                        for (int i = 0; i < konstant.getVal().size(); i++) {
+                            if ((udp.validEntries != null) && (udp.validEntries.size() > 0)
+                                    && (!(udp.validEntries.contains(konstant.getVal().get(i))))) {
+                                throw new KSConstraintInconsistency("Attempt to assign the value '"
+                                        + konstant.getVal().get(i) + "' to a UserDefinedProperty"
+                                        + "\nwhich only accepts: " + udp.validEntries + ".");
+                            }  //  end of check for UserDefinedTypes
+                            if (!udp.typ.equals(konstant.valueType)) {
+                                throw new KSConstraintInconsistency("Attempt to assign the value '"
+                                        + konstant.getVal().get(i) + "' to a UserDefinedProperty"
+                                        + "\nwhich only accepts " + udp.typ + ".");
+                            }
+                        }
+                    }  //  end of validity-checks for Constants
+                } //  end of if-it's-a-star-pred
+                else {
+                    apply(lit);  //  lit must be a math-predicate or not(equal())
+                }
+            }  //  end of iteration thru star2
+        }  //  end of starStuff-is-not-empty
+        return true;
+    }  //  end of static method finalConstraintCheck
+
+
+    public static void genderInferences(ConstraintObj constraints, ArrayList<Object> body) throws KSConstraintInconsistency {
+        //  The literal spouse(X,Y) or a gender-equality construction may precede a literal 
+        //  that implies the gender of X.  Check on that.
+        //  genderPairIter loops over all the (key, valueList) gender constraints in genderSpecs
+        String gender, otherSex, genderArgName, personArgName, rightAnswer;
+        ArrayList<Object> sexList, otherSexList;
+        Map.Entry genderConstraint;
+        boolean useful = true;
+        while (useful) {	 // If we infer at least one gender in a loop, must loop again for chain-effects.
+            useful = false;  // We'll halt when no useful changes have been made.
+            Iterator genderPairIter = constraints.gender.entrySet().iterator();
+            while (genderPairIter.hasNext()) {
+                genderConstraint = (Map.Entry) genderPairIter.next();
+                ArrayList<Object> newSexList = new ArrayList<Object>();
+                rightAnswer = null;
+                sexList = (ArrayList<Object>) genderConstraint.getValue();
+                if (sexList != null) {
+                    Iterator sexIter = sexList.iterator();
+                    while ((sexIter.hasNext()) && (rightAnswer == null)) {
+                        gender = (String) sexIter.next();
+                        if ((gender.equals("M")) || (gender.equals("F"))) {
+                            rightAnswer = gender;
+                        } else if (gender.indexOf("Opposite of") == 0) {
+                            otherSexList = (ArrayList<Object>) constraints.gender.get(gender.substring(12)); // the constraint list of the Opposite person
+                            if ((otherSexList != null)
+                                    && ((otherSexList.contains("M")) || (otherSexList.contains("F")))) {
+                                useful = true;
+                                if (otherSexList.contains("M")) {
+                                    if ((rightAnswer != null) && (rightAnswer.equals("M"))) {
+                                        throw new KSConstraintInconsistency("Gender conflict in " + body);
+                                    } else {
+                                        rightAnswer = "F";
+                                    }
+                                } //  end of Oppo-sex-is-male
+                                else if (otherSexList.contains("F")) {
+                                    if ((rightAnswer != null) && (rightAnswer.equals("F"))) {
+                                        throw new KSConstraintInconsistency("Gender conflict in " + body);
+                                    } else {
+                                        rightAnswer = "M";
+                                    }
+                                }  //  end of Oppo-sex-is-female
+                            }  //  end of if-otherSexList-contains-definite-sex
+                        } // end of Opposite-appears-in-the-constraint
+                        else if (gender.indexOf("Same as") == 0) {
+                            otherSexList = (ArrayList<Object>) constraints.gender.get(gender.substring(8)); // the constraint list of the Same-As person
+                            if ((otherSexList != null)
+                                    && ((otherSexList.contains("M")) || (otherSexList.contains("F")))) {
+                                useful = true;
+                                if (otherSexList.contains("M")) {
+                                    if ((rightAnswer != null) && (rightAnswer.equals("F"))) {
+                                        throw new KSConstraintInconsistency("Gender conflict in " + body);
+                                    } else {
+                                        rightAnswer = "M";
+                                    }
+                                } //  end of Same-sex-is-male
+                                else if (otherSexList.contains("F")) {
+                                    if ((rightAnswer != null) && (rightAnswer.equals("M"))) {
+                                        throw new KSConstraintInconsistency("Gender conflict in " + body);
+                                    } else {
+                                        rightAnswer = "F";
+                                    }
+                                }  //  end of Same-sex-is-female
+                            }  //  end of if-otherSexList-contains-definite-sex
+                        }  // end of Same-As-appears-in-the-constraint
+                    }  //  end of while-loop-thru-sexList-members
+                    if (rightAnswer != null) {
+                        newSexList.add(rightAnswer);
+                        genderConstraint.setValue(newSexList);
+                    }  //  end of if-rightAnswer != null
+                }  //  end of if-sexList-is-not-null
+            }  //  end of while-genderPairIter.hasNext
+        }  //  end of while-useful
+    }  //  end of method genderInferences
+    
+    public boolean containsAll(ArrayList list1, ArrayList list2) {
+        for (Object o : list2) {
+            if (!list1.contains(o)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 	boolean listEqual(ArrayList<Object> list1, ArrayList<Object> list2)  {
 		if ((list1 == null) && (list2 == null)) return true;	//  both null
 		if ((list1 == null) || (list2 == null)) return false;	//  only one is null

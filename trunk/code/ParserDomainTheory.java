@@ -344,7 +344,7 @@ public class ParserDomainTheory {
             current = scanner.readToken();  // read next, which must be a rightParen
             if (!current.token.equals("rightParen")) {
                 error("parseHdrOpts2 seeking a rightParen.");
-            }
+            }            
             return;
         }  // end of if = userDefinedProperties
         if (current.lexeme.equals("synonyms")) {
@@ -552,7 +552,7 @@ public class ParserDomainTheory {
         current = scanner.lookAhead();
         if (current.token.equals("comma")) {  //  non-empty
             scanner.readToken();  //  consume the comma
-            parseRestrictOrDefault(prop);
+            parseFinalOptions(prop);
             parseUDP_Opts(prop);
         } else if (current.token.equals("rightParen")) {
             return;  //  empty
@@ -566,12 +566,13 @@ public class ParserDomainTheory {
     |  "default", comma, Int_Float_String.
     |  "max", comma, Int_Float.
     |  "min", comma, Int_Float.
+    |  "chartable", comma, Boolean.
     First: ["restricted_to", "default", "max", "min"]		Follow: [comma, rightParen]
      */
-    private void parseRestrictOrDefault(UserDefinedProperty udp) throws KSParsingErrorException {
+    private void parseFinalOptions(UserDefinedProperty udp) throws KSParsingErrorException {
         current = scanner.readToken(); //  read next, which must be a keyword
         if ((!current.token.equals("symbol")) || (current.lexeme == null)) {
-            error("parseRestrictOrDefault seeking keywords: 'default', 'max', min', or 'restricted_to'.");
+            error("parseFinalOptions seeking keywords: 'default', 'max', min', 'restricted_to', or 'chartable'.");
         }
 
         if (current.lexeme.equals("restricted_to")) {  //  restricted values declaration
@@ -580,25 +581,25 @@ public class ParserDomainTheory {
             }
             current = scanner.readToken();  //  read next, which must be a comma
             if (!current.token.equals("comma")) {
-                error("parseRestrictOrDefault seeking a comma.");
+                error("parseFinalOptions seeking a comma.");
             }
             current = scanner.readToken();  //  read next, which must be a leftParen
             if (!current.token.equals("leftParen")) {
-                error("parseRestrictOrDefault seeking a leftParen.");
+                error("parseFinalOptions seeking a leftParen.");
             }
             udp.validEntries = parseInts_Floats_Strings(udp);
             current = scanner.readToken();  //  read next, which must be a rightParen
             if (!current.token.equals("rightParen")) {
-                error("parseRestrictOrDefault seeking a rightParen.");
+                error("parseFinalOptions seeking a rightParen.");
             }
 
         } else if (current.lexeme.equals("default")) {  //  default value declaration
             current = scanner.readToken();  //  read next, which must be a comma
             if (udp.typ.equals("individual")) {
-                error("UserDefinedProperty '" + udp.starName + "' is " + udp.typ + ".  Default value not allowed.");
+                error("parseFinalOptions '" + udp.starName + "' is " + udp.typ + ".  Default value not allowed.");
             }
             if (!current.token.equals("comma")) {
-                error("parseRestrictOrDefault seeking a comma.");
+                error("parseFinalOptions seeking a comma.");
             }
             udp.defaultValue = parseInt_Float_String();
 
@@ -608,7 +609,7 @@ public class ParserDomainTheory {
                 error("UserDefinedProperty '" + udp.starName + "' is " + udp.typ + ".  Max value not allowed.");
             }
             if (!current.token.equals("comma")) {
-                error("parseRestrictOrDefault seeking a comma.");
+                error("parseFinalOptions seeking a comma.");
             }
             udp.maxVal = parseInt_Float();
             if (!current.token.equals(udp.typ)) {
@@ -621,17 +622,25 @@ public class ParserDomainTheory {
                 error("UserDefinedProperty '" + udp.starName + "' is " + udp.typ + ".  Min value not allowed.");
             }
             if (!current.token.equals("comma")) {
-                error("parseRestrictOrDefault seeking a comma.");
+                error("parseFinalOptions seeking a comma.");
             }
             udp.minVal = parseInt_Float();
             if (!current.token.equals(udp.typ)) {
                 error("UserDefinedProperty '" + udp.starName + "' has type = " + udp.typ + ", but Max Value is a " + current.token);
             }
 
+        } else if (current.lexeme.equals("chartable")) {
+            current = scanner.readToken();  //  read next, which must be a comma
+            // No validity check for chartables. They will be created via SIL_Edit, which validity checks.
+            if (!current.token.equals("comma")) {
+                error("parseFinalOptions seeking a comma.");
+            }
+            udp.chartable = parseBoolean();
+
         } else {
-            error("parseRestrictOrDefault seeking keywords: 'default', 'max', min', or 'restricted_to'.");
+            error("parseFinalOptions seeking keywords: 'default', 'max', min', 'restricted_to', or 'chartable'.");
         }
-    }  //  end of method parseRestrictOrDefault
+    }  //  end of method parseFinalOptions
 
     /* Int_Float -> integer.
     |  float.
@@ -1095,8 +1104,7 @@ public class ParserDomainTheory {
             ktd.comments = current.lexeme;
         }
         parseExpansion(ktd);
-        for (int i = 0; i < ktd.expandedDefs.size(); i++) //  number the expanded defintions
-        {
+        for (int i = 0; i < ktd.expandedDefs.size(); i++) { //  number the expanded defintion
             ((ClauseBody) ktd.expandedDefs.get(i)).seqNmbr = i;
         }
         parseOtherDefs();
@@ -1725,14 +1733,15 @@ public class ParserDomainTheory {
     |  varWithStars, MoreVarsOrStars.
     |  starName, MoreVarsOrStars.
     |  stars, MoreVarsOrStars.
-    First: [var, starName, stars]		Follow: [rightCurly]
+    |  plus, MoreVarsOrStars.
+    First: [var, varWithStars, starName, stars, plus]		Follow: [rightCurly]
      */
     private String parseVarOrStar() throws KSParsingErrorException {
         String pcStr = "";
         current = scanner.readToken(); // consume the token, which must be a var, starName, or stars.
-        if ((!current.token.equals("var")) && (!current.token.equals("stars"))
-                && (!current.token.equals("starName")) && (!current.token.equals("varWithStars"))) {
-            error("parseVarOrStar seeking a var, starName, varWithStars, or stars.");
+        if (!current.token.equals("var") && !current.token.equals("stars") && !current.token.equals("plus")
+                && !current.token.equals("starName") && !current.token.equals("varWithStars")) {
+            error("parseVarOrStar seeking a var, starName, varWithStars, plus, or stars.");
         }
         pcStr += current.lexeme;
         pcStr += parseMoreVarsOrStars();
@@ -1744,8 +1753,9 @@ public class ParserDomainTheory {
     |  varWithStars, MoreVarsOrStars.
     |  starName, MoreVarsOrStars.
     |  stars, MoreVarsOrStars.
+    |  plus, MoreVarsOrStars.
     |  \empty.
-    First: [var, starName, stars]		Follow: [rightCurly]
+    First: [var, varWithStars, starName, stars, plus]		Follow: [rightCurly]
      */
     private String parseMoreVarsOrStars() throws KSParsingErrorException {
         String pcStr = "";
@@ -1753,9 +1763,9 @@ public class ParserDomainTheory {
         if (current.token.equals("rightCurly")) {
             return pcStr;
         }
-        if ((!current.token.equals("var")) && (!current.token.equals("stars"))
-                && (!current.token.equals("starName")) && (!current.token.equals("varWithStars"))) {
-            error("parseMoreVarsOrStars seeking a var, starName, varWithStars, or stars.");
+        if (!current.token.equals("var") && !current.token.equals("stars") && !current.token.equals("plus")
+                && !current.token.equals("starName") && !current.token.equals("varWithStars")) {
+            error("parseMoreVarsOrStars seeking a var, starName, varWithStars, plus, or stars.");
         }
         current = scanner.readToken(); // consume the var, starName, or stars.
         pcStr += current.lexeme;

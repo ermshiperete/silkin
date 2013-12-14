@@ -85,8 +85,8 @@ public class KinTypeIndex implements Serializable {
     }
     
     public void renameChartableUDP(String oldName, String newName) {
-        String oldInverse = "*inverse_" + oldName.substring(1),
-                newInverse = "*inverse_" + newName.substring(1);
+        String oldInverse = "*inverse" + oldName.substring(1),
+                newInverse = "*inverse" + newName.substring(1);
         TreeMap<String, TreeMap<Integer, ArrayList<Integer>>> newTMap =
                 new TreeMap<String, TreeMap<Integer, ArrayList<Integer>>>();
         Iterator iter = tmap.entrySet().iterator();
@@ -101,7 +101,7 @@ public class KinTypeIndex implements Serializable {
     }
     
     public void removeChartableUDP(String udName) {
-        String inverse = "*inverse_" + udName.substring(1);
+        String inverse = "*inverse" + udName.substring(1);
         Iterator iter = tmap.entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry entry = (Map.Entry)iter.next();
@@ -167,9 +167,10 @@ public class KinTypeIndex implements Serializable {
      */
     public boolean updateIndex(Context ctxt) {
         boolean oKay = true, hold, noSkips = true;
-        SIL_Edit edwin = SIL_Edit.editWindow;
+        SIL_Edit edwin = SIL_Edit.edWin;
         int formerEgo = edwin.getCurrentEgo();
         KinTermMatrix ktm = ctxt.ktm;
+        edwin.hideEgoChange = true;
         for (int i = lastSerial + 1; i < ctxt.individualCensus.size(); i++) {
             if (ctxt.individualCensus.get(i).deleted) {
                 continue;
@@ -206,6 +207,7 @@ public class KinTypeIndex implements Serializable {
         }
         removeDuplicates();
         edwin.changeEgo(formerEgo);
+        edwin.hideEgoChange = false;
         return oKay;
     }
     

@@ -78,7 +78,7 @@
            is quite extensive. But sometimes a unique or seldom-used concept may be part of the kinship system you are studying.
            To allow for this, SILKin provides User-Defined Properties (UDPs). The meaning of a UDP is whatever the User decides
            it is, and the name is chosen by the User. However,  <span style="font-style: italic">the name of any UDP must begin
-           with an asterisk/star ('*').</span> SILKin will treat any property/predicate as a UDP if and only if the name begins
+           with an asterisk/star ('*') and contain only lowercase letters.</span> SILKin will treat any property/predicate as a UDP if and only if the lowercase name begins
            with the asterisk/star (the upper case symbol on the '8' key of most keyboards).            
 		</p>
 		<p>You may think of UDPs as either <span style="font-style: italic">properties</span> or <span style="font-style:
@@ -92,14 +92,15 @@
 		<p>A typical use of UDPs would arise in a context that uses <span style="font-style: italic">clans</span> in the
 		kinship system. Not every society that recognizes clans uses them in their kinship system. But in some systems, a
 		person of the same gender and the same clan has a kin term (gloss: 'clan brother'). In that case, you would want
-		to create a UDP named '*clan' (or any other name you like, so long as it starts with a star). You do this by clicking
+		to create a UDP named '*clan' (or any other name you like, so long as it follows the naming rules). You do this by clicking
 		on the 'Add UDP' button of the Context Editor. This brings up the 'Create New UDP' screen.			
         </p>
         <p>After choosing a name for your UDP, you must decide what kind of value it will have. In the example above, a UDP
         named '*bald' probably describes a property that is either true or false. So in the drop-down menu of Data Types you
         would choose 'boolean' (the mathematical name for true/false variables). Or if the *clan property has values like 'bear',
         'turtle', or 'fish' then you would choose the Data Type 'string' (i.e. a string of letters and numbers). A UDP may also
-        have a Data Type of 'person'; you might use this for a *owner UDP in a slave-holding society. UDPs can have numeric Data
+        have a Data Type of 'person'; you might use this for a *owner UDP in a slave-holding society, or for
+        <a href="NonGen.html#adoption">adoption</a>. UDPs can have numeric Data
         Types also: either 'integer' (whole numbers) or 'real number' (a decimal number, like 98.6).
         </p>
         <p>A UDP may have multiple values, or not. A UDP describing the relative(s) responsible for passing on cultural knowledge
@@ -111,14 +112,15 @@
         </p>
         <p>Sometimes there is a common value that applies to most people but not all. In that case you may check 'Yes' for the
         Default Value and type that value in the box. This value will then be entered automatically for every person created. You
-        can use the Context Editor's 'View/Edit Person' feature to enter the few values that are different from the default. (NOTE:
-        in a future version of SILKin, you will be able to view and edit a person's UDP values in their Detail Display panel in the
-        top of the chart screen. But to create a UDP in your Context -- or modify it -- you must always use the Context Editor.)
-        Finally, for numeric values you can enter minimum and maximum values.
+        can edit the few values that are different from the default in a person's Detail Display panel. But to create a UDP in your
+         Context -- or modify it -- you must always use the Context Editor. Finally, for numeric values you can enter minimum 
+         and maximum values.
         </p>
         <p>When you have entered all the information about a new UDP, you click the 'Check for Errors' button. SILKin will 
         assure all your entries make sense, then give you a 'Save' button. When you click 'Save' a UDP will be created for
-        every person in the context. If a default value was provided, that value will be inserted for everyone. 
+        every person in the context. If a default value was provided, that value will be inserted for everyone. Thereafter, a
+        UDP drop-down box will appear in the Detail Display for every person. The value(s) of their UDP(s) can be viewed and 
+        edited in the Detail Display. (Adoption UDPs have their values changed graphically.)
         </p>
         <a name="EditTheory"></a> 
         <h3>Editing a Domain Theory</h3>

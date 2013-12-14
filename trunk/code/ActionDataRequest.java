@@ -142,7 +142,7 @@ public class ActionDataRequest extends javax.swing.JPanel {
     }//GEN-LAST:event_doneBtnActionPerformed
 
     private void chartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chartBtnActionPerformed
-        SIL_Edit.editWindow.toFront();
+        SIL_Edit.edWin.toFront();
     }//GEN-LAST:event_chartBtnActionPerformed
 
 

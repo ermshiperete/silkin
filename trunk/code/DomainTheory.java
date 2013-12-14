@@ -3948,6 +3948,7 @@ public class DomainTheory extends DT_Abstract2 {
     public boolean fit(ClauseBody cb, Dyad dad) throws KSBadHornClauseException, KSNoChainOfRelations2Alter,
             KSInternalErrorException, KSConstraintInconsistency, ClassNotFoundException {
         int size = cb.body.size();
+        cb.clearPriorValues();
         ConstraintObj constraints = new ConstraintObj();
         ArrayList<Object> genderStuff = new ArrayList<Object>(), starStuff = new ArrayList<Object>(), starBindings = new ArrayList<Object>();
         for (int i = 0; i < size; i++) {  // if any literal specifies an ego gender other than ego.gender, we fail.
@@ -3956,7 +3957,7 @@ public class DomainTheory extends DT_Abstract2 {
             }
         }
         //  constraintCheck, by side-effect, builds all constraints
-        TreeMap bindings = new TreeMap(), badBindings = new TreeMap();
+        TreeMap bindings = new TreeMap();
         bindings.put("Ego", dad.ego);
         if (!LiteralAbstract1.finalConstraintCheck(dad.ego.gender, bindings, constraints, cb.body, genderStuff, starStuff)) {
             return false;
@@ -3977,7 +3978,8 @@ public class DomainTheory extends DT_Abstract2 {
                     egoVar = (Variable) next.args.get(i);
                 }
             }
-            if (!next.meetsStarSpecs(dad.ego, egoVar, constraints, starBindings, bindings, "commit", cb)) {
+            if (!next.meetsStarSpecs(dad.ego, egoVar, constraints, starBindings, 
+                    bindings, "query", cb, null)) {
                 return false;
             }
             return next.fillInNames_bool(kinTerm, bodyCopy, starStuffCopy, cb, bindings, constraints, dad.alter, new ArrayList<Object>());
@@ -4047,6 +4049,7 @@ public class DomainTheory extends DT_Abstract2 {
             throws KSParsingErrorException, KSBadHornClauseException, KSNoChainOfRelations2Alter,
             KSInternalErrorException, KSConstraintInconsistency, ClassNotFoundException, JavaSystemException {
         float maxN = maxNoise / 100f;
+        Context.current = ctxt;
         Iterator candIter = candidates.entrySet().iterator();
         while (candIter.hasNext()) {
             Map.Entry entry = (Map.Entry) candIter.next();
@@ -4104,6 +4107,7 @@ public class DomainTheory extends DT_Abstract2 {
             }  //  end of loop thru these CB_Ptrs
         }  //  end of loop thru candidates entries (exact EQCs)
     }  //  end of method evalCandidates
+    
 
     /*	For all the exact signatures of positive examples, extract the
     corresponding lists of all known CB_EQCs = potential matches. Filter out the huge ones unlikely to be matches.*/

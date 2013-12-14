@@ -30,6 +30,7 @@ following alphabet:
 <li>    NonAtSign	anything but '@'   </li>
 <li>    Pound		'#'   </li>
 <li>    Star		'*'   </li>
+<li>    Plus		'+'   </li>
 <li>	QuestionMark    '?'  </li>
 <li>	Exclamation	'!'   </li>
 <li>	LineTerm	any character that causes a new line to start (\n, \r, etc.)   </li>
@@ -131,6 +132,8 @@ public class JavaLex {
             answer = (ch != '@');
         } else if (target.equals("Star")) {
             answer = (ch == '*');
+        } else if (target.equals("Plus")) {
+            answer = (ch == '+');
         } else if (target.equals("Pound")) {
             answer = (ch == '#');
         } else if (target.equals("QuestionMark")) {

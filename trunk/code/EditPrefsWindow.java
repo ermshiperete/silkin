@@ -67,7 +67,7 @@ public class EditPrefsWindow extends JFrame {
             Font demoFont = new Font(face, Font.PLAIN, demoSizes[ndx]);
             sampleTextLabel.setFont(demoFont);
         }
-        String fileName = SIL_Edit.editWindow.chart.saveFile.getName();
+        String fileName = SIL_Edit.edWin.chart.saveFile.getName();
         setTitle("Edit Preferences for " + fileName);
         loading = false;
     }
@@ -468,7 +468,7 @@ public class EditPrefsWindow extends JFrame {
             return;
         }
         Context.current.polygamyPermit = polygamyCkBox.isSelected();
-        SIL_Edit.editWindow.chart.dirty = true;
+        SIL_Edit.edWin.chart.dirty = true;
     }
         private void ignorableFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ignorableFieldActionPerformed
         // TODO add your handling code here:}//GEN-LAST:event_ignorableFieldActionPerformed
@@ -481,7 +481,7 @@ public class EditPrefsWindow extends JFrame {
             if (!iggy.getValueIsAdjusting()) {
                 int val = (int) iggy.getValue();
                 ignorableField.setText(val + "%");
-                SIL_Edit.editWindow.chart.dirty = true;
+                SIL_Edit.edWin.chart.dirty = true;
                 Context.current.ignorableP = val;
             }
     }//GEN-LAST:event_ignorableSliderStateChanged
@@ -495,7 +495,7 @@ public class EditPrefsWindow extends JFrame {
             int val = (int) maxy.getValue();
             maxField.setText(val + "%");
             Context.current.maxNoiseP = val;
-            SIL_Edit.editWindow.chart.dirty = true;
+            SIL_Edit.edWin.chart.dirty = true;
         }
     }//GEN-LAST:event_maxSliderStateChanged
 
@@ -504,7 +504,7 @@ public class EditPrefsWindow extends JFrame {
             return;
         }
         Context.current.doBaseCBs = subpatternCkBox.isSelected();
-        SIL_Edit.editWindow.chart.dirty = true;
+        SIL_Edit.edWin.chart.dirty = true;
     }//GEN-LAST:event_subpatternCkBoxActionPerformed
 
     private void inductionCkBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inductionCkBoxActionPerformed
@@ -512,7 +512,7 @@ public class EditPrefsWindow extends JFrame {
             return;
         }
         Context.current.doInduction = inductionCkBox.isSelected();
-        SIL_Edit.editWindow.chart.dirty = true;
+        SIL_Edit.edWin.chart.dirty = true;
     }//GEN-LAST:event_inductionCkBoxActionPerformed
 
     private void doneBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneBtnActionPerformed
@@ -548,8 +548,8 @@ public class EditPrefsWindow extends JFrame {
             return;
         }
         Context.current.surnameNormallyCaptured = surnameCheckBox.isSelected();
-        SIL_Edit.editWindow.getPPanel().buildFocusFields();
-        SIL_Edit.editWindow.chart.dirty = true;
+        SIL_Edit.edWin.getPPanel().buildFocusFields();
+        SIL_Edit.edWin.chart.dirty = true;
     }//GEN-LAST:event_surnameCheckBoxActionPerformed
 
     private void birthdateCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_birthdateCheckBoxActionPerformed
@@ -557,8 +557,8 @@ public class EditPrefsWindow extends JFrame {
             return;
         }
         Context.current.birthDateNormallyCaptured = birthdateCheckBox.isSelected();
-        SIL_Edit.editWindow.getPPanel().buildFocusFields();
-        SIL_Edit.editWindow.chart.dirty = true;
+        SIL_Edit.edWin.getPPanel().buildFocusFields();
+        SIL_Edit.edWin.chart.dirty = true;
     }//GEN-LAST:event_birthdateCheckBoxActionPerformed
 
     private void snapToGridHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_snapToGridHelpActionPerformed
@@ -577,8 +577,8 @@ public class EditPrefsWindow extends JFrame {
             wideTxtFld.setEditable(false);
         }
         Library.snapToGrid = snapToGridCkBox.isSelected();
-        SIL_Edit.editWindow.setSnapToGrid(Library.snapToGrid);
-        SIL_Edit.editWindow.chart.dirty = true;
+        SIL_Edit.edWin.setSnapToGrid(Library.snapToGrid);
+        SIL_Edit.edWin.chart.dirty = true;
     }//GEN-LAST:event_snapToGridCkBoxActionPerformed
 
     private void wideTxtFldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_wideTxtFldFocusLost
@@ -591,14 +591,14 @@ public class EditPrefsWindow extends JFrame {
         } catch (Exception ex) {
             String msg = "You must enter an integer between 20 and 120.",
                    ttl = "Invalid Entry for Grid Width.";
-            JOptionPane.showMessageDialog(SIL_Edit.editWindow, msg, ttl, JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(SIL_Edit.edWin, msg, ttl, JOptionPane.WARNING_MESSAGE);
             wideTxtFld.setText(String.valueOf(Library.gridX));
             return;
         }
         if (wide < 20 || wide > 120) {
             String msg = "You must enter an integer between 20 and 120.",
                    ttl = "Invalid Entry for Grid Width.";
-            JOptionPane.showMessageDialog(SIL_Edit.editWindow, msg, ttl, JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(SIL_Edit.edWin, msg, ttl, JOptionPane.WARNING_MESSAGE);
             wideTxtFld.setText(String.valueOf(Library.gridX));
             return;
         }
@@ -615,14 +615,14 @@ public class EditPrefsWindow extends JFrame {
         } catch (Exception ex) {
             String msg = "You must enter an integer between 40 and 180.",
                    ttl = "Invalid Entry for Grid Height.";
-            JOptionPane.showMessageDialog(SIL_Edit.editWindow, msg, ttl, JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(SIL_Edit.edWin, msg, ttl, JOptionPane.WARNING_MESSAGE);
             wideTxtFld.setText(String.valueOf(Library.gridX));
             return;
         }
         if (high < 40 || high > 180) {
             String msg = "You must enter an integer between 40 and 180.",
                    ttl = "Invalid Entry for Grid Height.";
-            JOptionPane.showMessageDialog(SIL_Edit.editWindow, msg, ttl, JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(SIL_Edit.edWin, msg, ttl, JOptionPane.WARNING_MESSAGE);
             wideTxtFld.setText(String.valueOf(Library.gridY));
             return;
         }

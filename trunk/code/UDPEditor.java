@@ -667,7 +667,7 @@ public class UDPEditor extends KSJInternalFrame {
                 if (!newName.startsWith("*") || !rest.equals(test)
                         || newName.length() < 2) {
                     msg = "The name '" + newName + "' violates the rules for names:\n"
-                            + "The name MUST start with a star ('*')\nfollowed by at least one lower case letter.";
+                            + "The name MUST start with a star ('*')\nfollowed by (at least one) all lower case letters.";
                     JOptionPane.showMessageDialog(ed, msg, "Violation of Naming Rules",
                             JOptionPane.WARNING_MESSAGE);
                     flipFinalBtn("check");
@@ -733,15 +733,7 @@ public class UDPEditor extends KSJInternalFrame {
                 // If a new UDP, reject for name error only.
                 // Other faults for new UDP => offer to fix.
                 if (newUDP) {
-                    if (s != null && !s.contains("adopt")) {
-                        msg = "A chartable UDP must have the letters 'adopt'\n"
-                                + "in its name (all lowercase).";
-                        JOptionPane.showMessageDialog(ctxtEd, msg, "Illegal Combination",
-                                JOptionPane.ERROR_MESSAGE);
-                        chartNo.setSelected(true);
-                        colorBox.setVisible(false);
-                        return;
-                    } else if (newSingleValue || newType == null 
+                    if (newSingleValue || newType == null 
                             || !newType.equals("individual")) {
                         msg = "A chartable UDP must allow multiple values of type 'Person'.\n"
                                 + "Shall I make those settings for you?";
@@ -756,10 +748,9 @@ public class UDPEditor extends KSJInternalFrame {
                             return;
                         }                        
                     }
-                } else if ((s != null && !s.contains("adopt")) || newSingleValue  //  not new
+                } else if (newSingleValue  //  not new
                         || ! newType.equals("individual")) {
-                    msg = "A chartable UDP must have the letters 'adopt'\n" +
-                            "in its name, allow multiple values, and\n"
+                    msg = "A chartable UDP must allow multiple values, and\n"
                             + "have values of type 'Person'";
                     JOptionPane.showMessageDialog(ctxtEd, msg, "Illegal Combination",
                             JOptionPane.ERROR_MESSAGE);
@@ -1032,9 +1023,9 @@ public class UDPEditor extends KSJInternalFrame {
                     if (theUDP.chartable) {                                                
                         ctxt.removeChartableUDP(theUDP.starName);                        
                     }
-                    if (SIL_Edit.editWindow != null) {
-                        SIL_Edit.editWindow.getPPanel().initUDPCombo();
-                        SIL_Edit.editWindow.chart.repaint();
+                    if (SIL_Edit.edWin != null) {
+                        SIL_Edit.edWin.getPPanel().initUDPCombo();
+                        SIL_Edit.edWin.chart.repaint();
                     }
                 }  //  end of User-chose-to-delete-UDP-from-all-persons
                 try {
@@ -1135,10 +1126,9 @@ public class UDPEditor extends KSJInternalFrame {
                     errorFlag = true;
                 }
                 String s;
-                if (chartYes.isSelected() && (! newStarName.contains("adopt") || newSingleValue
+                if (chartYes.isSelected() && (newSingleValue
                         || ! newType.equals("individual"))) {
-                    s = "A chartable UDP must have the letters 'adopt'\n" +
-                            "in its name, allow multiple values, and\n"
+                    s = "A chartable UDP must allow multiple values, and\n"
                             + "have values of type 'Person'";
                     JOptionPane.showMessageDialog(ctxtEd, s, "Illegal Combination",
                             JOptionPane.ERROR_MESSAGE);
@@ -1192,8 +1182,8 @@ public class UDPEditor extends KSJInternalFrame {
                         }
                     } catch (Exception exc) {  } // No parsing errors expected.
                 }
-                if (SIL_Edit.editWindow != null) {
-                    SIL_Edit.editWindow.getPPanel().initUDPCombo();
+                if (SIL_Edit.edWin != null) {
+                    SIL_Edit.edWin.getPPanel().initUDPCombo();
                 }
                 progBox.setVisible(true);
                 UserDefinedProperty oldudp, newInstance;
@@ -1326,7 +1316,7 @@ public class UDPEditor extends KSJInternalFrame {
                         ctxt.removeAdoptionPriority(theUDP.starName);
                         ctxt.ktm.removeChartableUDP(theUDP.starName);
                         ctxt.kti.removeChartableUDP(theUDP.starName);
-                        SIL_Edit.editWindow.rebuildKTMatrixEtc();
+                        SIL_Edit.edWin.rebuildKTMatrixEtc();
                     }
                     try {
                         ed.setClosed(true);

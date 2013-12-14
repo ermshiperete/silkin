@@ -48,16 +48,17 @@ public abstract class DT_Abstract2 extends DT_Abstract1  {
 		}
 	
 	public static ArrayList<Object> kinTypeSymbols = loadKTSymbols(),
-							kinTypePreds = loadKTPreds(),
-							pluralKTPreds = loadPluralKTPreds(),
-							pluralKTSymbols = loadPluralKTSymbols();
+					kinTypePreds = loadKTPreds(),
+					pluralKTPreds = loadPluralKTPreds(),
+					pluralKTSymbols = loadPluralKTSymbols();
 	
 	public static ArrayList<Object> loadKTSymbols()  {
 		ArrayList<Object> lst = new ArrayList<Object>();
 		lst.add("So");  lst.add("Da");  lst.add("Stso");  lst.add("Stda");  lst.add("C"); 
 		lst.add("Fa");  lst.add("Mo");  lst.add("Stfa");  lst.add("Stmo");  lst.add("P");
 		lst.add("Hu");  lst.add("Wi");  lst.add("Bro");  lst.add("Sis");  lst.add("Sp");
-		lst.add("Hbro");  lst.add("Hsis");  lst.add("Stbro");  lst.add("Stsis");  lst.add("Sib"); lst.add("*");
+		lst.add("Hbro");  lst.add("Hsis");  lst.add("Stbro");  lst.add("Stsis");  
+                lst.add("Sib"); lst.add("*"); lst.add("+");
 		return lst;
 		}  //  end of method loadKTSymbols
 	
@@ -67,7 +68,7 @@ public abstract class DT_Abstract2 extends DT_Abstract1  {
 		lst.add("father");  lst.add("mother");  lst.add("step_father");  lst.add("step_mother");  lst.add("parent");
 		lst.add("husband");  lst.add("wife");  lst.add("brother");  lst.add("sister");  lst.add("spouse");
 		lst.add("half_brother");  lst.add("half_sister");  lst.add("step_brother");  lst.add("step_sister");
-		lst.add("sibling");  lst.add("*");
+		lst.add("sibling");  lst.add("*"); lst.add("+");
 		return lst;
 		}  //  end of method loadKTPreds
 
@@ -154,7 +155,7 @@ public abstract class DT_Abstract2 extends DT_Abstract1  {
         TreeMap predCodes = new TreeMap();
         Library.predEncodings.put(languageName, predCodes);
         int seqNmbr = 0,
-                udpSize = (userDefinedProperties == null ? 0 : userDefinedProperties.size());
+            udpSize = (userDefinedProperties == null ? 0 : userDefinedProperties.size());
         String[] deCodes = new String[theory.size() - standardMacroTree.size() + udpSize];
         Library.predDecodings.put(languageName, deCodes);
         while (iter.hasNext()) {

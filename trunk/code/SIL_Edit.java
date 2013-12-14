@@ -30,7 +30,7 @@ import java.util.*;
  */
 public class SIL_Edit extends JFrame {
 
-    static SIL_Edit editWindow;
+    static SIL_Edit edWin;
     static DecisionFrame decisionFrame;
     static final int REF = 0, ADR = 1;
     static final int minDyadsPerPCStr = 2;
@@ -74,7 +74,7 @@ public class SIL_Edit extends JFrame {
      * Creates new form SIL_Edit
      */
     public SIL_Edit() {
-        editWindow = this;
+        edWin = this;
         initComponents();  //  initComponents is NetBeans-generated code
         prepComponents();  //  prepComponents is my own code
         try {
@@ -772,8 +772,8 @@ public class SIL_Edit extends JFrame {
     }
 
     private void quitItemActionPerformed(ActionEvent evt) {
-        if (SIL_Edit.editWindow.chart.dirty) {
-            SIL_Edit.editWindow.chart.doWantToSave();
+        if (SIL_Edit.edWin.chart.dirty) {
+            SIL_Edit.edWin.chart.doWantToSave();
         }
         System.exit(0);
     }
@@ -785,7 +785,8 @@ public class SIL_Edit extends JFrame {
         msg += Context.current.chartDescriptions.get(ndx);
         String newDescription = JOptionPane.showInputDialog(this, msg);
         if (newDescription != null) {
-            Context.current.chartDescriptions.set(ndx, newDescription);
+            Context.current.chartDescriptions.set(ndx, 
+                    FamilyPanel.convertBannedCharacters(newDescription));
             rebuildChartCombo();
         }
     }
@@ -911,7 +912,7 @@ public class SIL_Edit extends JFrame {
     }
 
     public void editPrefsItemActionPerformed(ActionEvent evt) {
-        if (chart.saveFile == null) {
+        if (chart.saveFile == null || Context.current == null) {
             String msg3 = "You must edit the Preferences for a particular context (SILK file).";
             msg3 += "\nFirst OPEN a context (or create & SAVE one), then set it's preferences.";
             JOptionPane.showMessageDialog(this, msg3, "Cannot Perform Your Command", JOptionPane.WARNING_MESSAGE);
@@ -944,7 +945,7 @@ public class SIL_Edit extends JFrame {
     }
 
     private void adminSILKinItemActionPerformed(ActionEvent evt) {
-        String pwd = JOptionPane.showInputDialog(editWindow, "Enter Administrator Password");
+        String pwd = JOptionPane.showInputDialog(edWin, "Enter Administrator Password");
         if (pwd.equals(Library.PASSWORD)) {
             Library.currentActivity = Library.ADMIN;
             if (SILKin.mainPane == null) {
@@ -1134,6 +1135,7 @@ public class SIL_Edit extends JFrame {
             DomainTheory dtRef = ctxt.domTheoryRef();
             Learned_DT learner = new Learned_DT(dtRef);
             loadParameters(learner);
+            learner.truncateUDPpcStrings(ctxt);
             doActiveLearning(learner);
             // in case artificial people were created during learning
             ctxt.resetTo(priorIndSerial, priorFamSerial);
@@ -1390,7 +1392,9 @@ public class SIL_Edit extends JFrame {
         Context.current.ktm = ktm;
         PersonPanel.fillDyadsFromMatrix();
         regenerateKTI();  // rebuild Kin Type Index
-        currentEgo = oldEgo;
+        edWin.hideEgoChange = true;
+        edWin.changeEgo(oldEgo);
+        edWin.hideEgoChange = false;
     }
 
     void regenerateKTI() {
@@ -1403,6 +1407,8 @@ public class SIL_Edit extends JFrame {
             kti.updateFromRow(egoInt, row);
         }
     }
+    
+    boolean hideEgoChange = false;
 
     boolean changeEgo(int egoNum) {
         boolean oKay = true;
@@ -1458,9 +1464,14 @@ public class SIL_Edit extends JFrame {
             newRow = ktm.getRow(currentEgo);
             oKay = copyNodes(oldRowCopy, newRow);
         }
-        infoPerson = ego;
-        showInfo(infoPerson);
         personPanel1.resetEgoBox(currentEgo);
+        if (!hideEgoChange) {
+            infoPerson = ego;
+            showInfo(infoPerson);
+            chart.whichFolk = currentEgo;
+            chart.whichLink = -1;
+            chart.whichKnot = -1;
+        }
         chart.repaint();
         return oKay;
     }
@@ -1497,10 +1508,10 @@ public class SIL_Edit extends JFrame {
                     PropagationMethod method = linkMethods.get(kt);
                     method.prop(currInd, kt, bfq, newRow, target, priorities);
                     if (kt.startsWith("*")) {
-                        String inverse = "*inverse_" + kt.substring(1);
+                        String inverse = "*inverse" + kt.substring(1);
                         method.prop(currInd, inverse, bfq, newRow, target, priorities);
                     }
-                } //  and finally, star links
+                } //  and finally star links (not adoptions; they're handled by AdoptMethod.prop)
                 if (currInd.starLinks != null) {
                     for (Object o : currInd.starLinks) {
                         nextInd = (Individual) o;
@@ -1519,6 +1530,7 @@ public class SIL_Edit extends JFrame {
             String kinTyp, KSQ bfq, TreeMap newRow, Individual target,
             TreeMap<String, String> priorities)
             throws KSDateParseException {
+        // When target != null, we are building PC strings for CB.createExamples
         if (nextInd == null) {
             return;
         }
@@ -1567,17 +1579,18 @@ public class SIL_Edit extends JFrame {
         }
         // The new path will replace any prior path
         toNode.miniPreds = new ArrayList<Object>(fromNode.miniPreds);
-        toNode.pcString = fromNode.pcString + kinTyp;
         String miniPred = kinTyp + "(#" + nextInd.serialNmbr
                 + ",#" + currInd.serialNmbr + ")";
         toNode.miniPreds.add(miniPred);
+        // When target != null, toNode.pcString is the main objective
+        toNode.pcString = fromNode.pcString + kinTyp;
         int level = fromNode.getLevel();
         if (kinTyp.equals("Mo") || kinTyp.equals("Fa") || kinTyp.equals("Stmo")
-                || kinTyp.equals("Stfa") || ctxt.isAdoptionPred(kinTyp)) {
+                || kinTyp.equals("Stfa") || ctxt.isInverseAdoptionPred(kinTyp)) {  
             level++;
         }
         if (kinTyp.equals("So") || kinTyp.equals("Da") || kinTyp.equals("Stso")
-                || kinTyp.equals("Stda") || ctxt.isInverseAdoptionPred(kinTyp)) {
+                || kinTyp.equals("Stda") || ctxt.isAdoptionPred(kinTyp)) {
             level--;
         }
         toNode.setLevel(level);
@@ -1594,32 +1607,9 @@ public class SIL_Edit extends JFrame {
 
     public static boolean higherPriority(ArrayList<String> newPCS,
             ArrayList<String> oldPCS, TreeMap<String, String> priorities) {
-        ArrayList<String> newPriorities = new ArrayList<String>(),
-                oldPriorities = new ArrayList<String>();
-        for (String pcs : newPCS) {
-            String pri = priorities.get(pcs);
-            if (pri == null) {
-                if (pcs.startsWith("*inverse_")) {
-                    pri = priorities.get("*" + pcs.substring(9));
-                }
-                if (pri == null) {
-                    throw new NullPointerException("No priority found for " + pcs);
-                }
-            }
-            newPriorities.add(pri);
-        }
-        for (String pcs : oldPCS) {
-            String pri = priorities.get(pcs);
-            if (pri == null) {
-                if (pcs.startsWith("*inverse_")) {
-                    pri = priorities.get("*" + pcs.substring(9));
-                }
-                if (pri == null) {
-                    throw new NullPointerException("No priority found for " + pcs);
-                }
-            }
-            oldPriorities.add(pri);
-        }
+        
+        ArrayList<String> newPriorities = getPriorities(newPCS, priorities),
+                          oldPriorities = getPriorities(oldPCS, priorities);
         for (int i = 0; i < newPriorities.size(); i++) {
             int comp = newPriorities.get(i).compareTo(oldPriorities.get(i));
             if (comp < 0) {
@@ -1630,6 +1620,28 @@ public class SIL_Edit extends JFrame {
             }
         }
         return false;
+    }
+    
+    static ArrayList<String> getPriorities(ArrayList<String> aPCS, TreeMap<String, String> priorityMap) {
+        // In Data-Gathering mode, all pc strings contain symbols found in the priorityMap
+        // In example generation (Library processing), we can have *, **, or + as symbols.
+        ArrayList<String> priorities = new ArrayList<String>();
+        for (String pcs : aPCS) {
+            String pri = priorityMap.get(pcs);
+            if (pri == null) {
+                if (pcs.startsWith("*inverse")) {
+                    pri = priorityMap.get("*" + pcs.substring(8));
+                } else if (pri == null && pcs.startsWith("*")) {
+                    pri = "M";
+                } else if (pri == null && pcs.startsWith("+")) {
+                    pri = "C";
+                } else if (pri == null) {
+                    throw new NullPointerException("No priority found for " + pcs);
+                }
+            }
+            priorities.add(pri);
+        }
+        return priorities;
     }
 
     //  SETTERS AND GETTERS
@@ -1880,7 +1892,7 @@ public class SIL_Edit extends JFrame {
             }
             Individual nextInd;
             if (kinTyp.equals("Fa") && currInd.birthFamily.husband != null
-                    && currInd.birthFamily.husband.gender.equals("M")) {
+                    && currInd.birthFamily.husband.gender.equals("M")) {  //  not neuter
                 nextInd = currInd.birthFamily.husband;
                 propagate(currInd, nextInd, "Fa", bfq, newRow, target, priorities);
             } else if (kinTyp.equals("Mo") && currInd.birthFamily.wife != null
@@ -1925,8 +1937,9 @@ public class SIL_Edit extends JFrame {
         void prop(Individual currInd, String kinTyp, KSQ bfq,
                 TreeMap newRow, Individual target, TreeMap<String, String> priorities)
                 throws KSDateParseException {
+            // When target != null, we are building PC strings for CB.createExamples
             if (kinTyp.startsWith("*inverse")) {  // propagate to adoptive parents
-                String origKinTyp = "*" + kinTyp.substring(9);
+                String origKinTyp = "*" + kinTyp.substring(8);
                 if (Context.current.inverseSpecialRelationships == null
                         || Context.current.inverseSpecialRelationships.get(currInd) == null) {
                     return;
@@ -1937,7 +1950,7 @@ public class SIL_Edit extends JFrame {
                         propagate(currInd, next, kinTyp, bfq, newRow, target, priorities);
                     } //  end of propagation to adoptive parents
                 }  
-            } else {  // propagate to adopted children and adoptive parents
+            } else {  // propagate to adopted children
                 if (Context.current.specialRelationships == null
                         || Context.current.specialRelationships.isEmpty()) {
                     return;

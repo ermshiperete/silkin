@@ -327,10 +327,10 @@ public class ActionAnomaly extends JPanel {
         String[] pendingModel = { "After viewing/editing chart, choose action, then 'Record'." };
         oddballDyadsCombo.setModel(new DefaultComboBoxModel(pendingModel));
         dyadCorrectBtn.setSelected(true);      
-        SIL_Edit.editWindow.changeEgo(before.ego.serialNmbr);
-        SIL_Edit.editWindow.getPPanel().resetEgoBox(before.ego.serialNmbr);
-        SIL_Edit.editWindow.chart.setAlter(before.alter.serialNmbr);  
-        SIL_Edit.editWindow.toFront();                                     
+        SIL_Edit.edWin.changeEgo(before.ego.serialNmbr);
+        SIL_Edit.edWin.getPPanel().resetEgoBox(before.ego.serialNmbr);
+        SIL_Edit.edWin.chart.setAlter(before.alter.serialNmbr);  
+        SIL_Edit.edWin.toFront();                                     
     }//GEN-LAST:event_showOnChartBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
